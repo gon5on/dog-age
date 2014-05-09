@@ -13,20 +13,21 @@ import android.widget.LinearLayout;
 
 import com.tmrnk.gongon.dogage.R;
 import com.tmrnk.gongon.dogage.common.AndroidUtils;
+import com.tmrnk.gongon.dogage.common.PetAgeApplication;
 import com.tmrnk.gongon.dogage.dialog.ConfirmDialog;
 import com.tmrnk.gongon.dogage.dialog.ErrorDialog;
 import com.tmrnk.gongon.dogage.model.AppSQLiteOpenHelper;
 import com.tmrnk.gongon.dogage.model.PetDao;
 import com.tmrnk.gongon.dogage.model.PetEntity;
-import com.tmrnk.gongon.dogage.module.MainFragment;
+import com.tmrnk.gongon.dogage.module.PetAgeFragment;
 import com.tmrnk.gongon.dogage.module.PetAgeFragmentPagerAdapter;
 
 /**
- * メインアクテビティ
+ * ペット年齢アクテビティ
  * 
  * @access public
  */
-public class MainActivity extends AppActivity implements ConfirmDialog.CallbackListener
+public class PetAgeActivity extends AppActivity implements ConfirmDialog.CallbackListener
 {
     private ViewPager viewPager = null;                     // ViewPager
     private PetAgeFragmentPagerAdapter adapter = null;      // ページアダプター
@@ -44,7 +45,7 @@ public class MainActivity extends AppActivity implements ConfirmDialog.CallbackL
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_pet_age);
 
         if (savedInstanceState == null) {
             //ペット情報一覧を取得
@@ -52,7 +53,8 @@ public class MainActivity extends AppActivity implements ConfirmDialog.CallbackL
 
             //データがない場合は入力画面に飛ばす
             if (mData.size() == 0) {
-                Intent intent = new Intent(MainActivity.this, InputActivity.class);
+                Intent intent = new Intent(PetAgeActivity.this, InputActivity.class);
+                intent.putExtra("initFlag", 1);
                 startActivity(intent);
                 finish();
                 return;
@@ -89,11 +91,14 @@ public class MainActivity extends AppActivity implements ConfirmDialog.CallbackL
         Integer id = item.getItemId();
 
         if (id == R.id.action_add) {
-            Intent intent = new Intent(MainActivity.this, InputActivity.class);
+            Intent intent = new Intent(PetAgeActivity.this, InputActivity.class);
             startActivity(intent);
         }
         else if (id == R.id.action_edit) {
-            Intent intent = new Intent(MainActivity.this, InputActivity.class);
+            PetAgeApplication petAgeApplication = (PetAgeApplication) getApplication();
+            petAgeApplication.mPageNum = mPageNum;
+
+            Intent intent = new Intent(PetAgeActivity.this, InputActivity.class);
             intent.putExtra("item", mData.get(mPageNum));
             startActivity(intent);
         }
@@ -132,7 +137,7 @@ public class MainActivity extends AppActivity implements ConfirmDialog.CallbackL
             @Override
             public void onPageSelected(int position) {
                 mPageNum = position;
-                flickEvent();
+                flickEvent(mPageNum);
             }
         });
     }
@@ -179,41 +184,38 @@ public class MainActivity extends AppActivity implements ConfirmDialog.CallbackL
                 linearLayoutPager.addView(imageViewPager);
             }
         }
-
-        //1ページ目をONにしておく
-        ImageView now = (ImageView) findViewById(mPageNum);
-        now.setImageResource(R.drawable.img_dot_on);
     }
 
     /**
      * ページがフリックされた時のイベント
      * 
+     * @param Integer pageNum
      * @return void
-     * @access private
+     * @access public
      */
-    private void flickEvent()
+    public void flickEvent(Integer pageNum)
     {
         // ページング
-        ImageView now = (ImageView) findViewById(mPageNum);
+        ImageView now = (ImageView) findViewById(pageNum);
         now.setImageResource(R.drawable.img_dot_on);
 
-        if (mPageNum == 0) {
-            ImageView next = (ImageView) findViewById(mPageNum + 1);
+        if (pageNum == 0) {
+            ImageView next = (ImageView) findViewById(pageNum + 1);
             next.setImageResource(R.drawable.img_dot_off);
         }
-        else if (mPageNum == adapter.getCount() - 1) {
-            ImageView back = (ImageView) findViewById(mPageNum - 1);
+        else if (pageNum == adapter.getCount() - 1) {
+            ImageView back = (ImageView) findViewById(pageNum - 1);
             back.setImageResource(R.drawable.img_dot_off);
         }
         else {
-            ImageView next = (ImageView) findViewById(mPageNum + 1);
-            ImageView back = (ImageView) findViewById(mPageNum - 1);
+            ImageView next = (ImageView) findViewById(pageNum + 1);
+            ImageView back = (ImageView) findViewById(pageNum - 1);
             next.setImageResource(R.drawable.img_dot_off);
             back.setImageResource(R.drawable.img_dot_off);
         }
 
         // フラグメント内の処理
-        MainFragment fragment = (MainFragment) adapter.instantiateItem(viewPager, mPageNum);
+        PetAgeFragment fragment = (PetAgeFragment) adapter.instantiateItem(viewPager, pageNum);
         fragment.setDispItem();
     }
 

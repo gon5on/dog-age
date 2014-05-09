@@ -20,7 +20,6 @@ import android.widget.EditText;
 
 import com.tmrnk.gongon.dogage.R;
 import com.tmrnk.gongon.dogage.common.AndroidUtils;
-import com.tmrnk.gongon.dogage.common.AppLog;
 import com.tmrnk.gongon.dogage.common.DateUtils;
 import com.tmrnk.gongon.dogage.common.Utils;
 import com.tmrnk.gongon.dogage.dialog.ErrorDialog;
@@ -39,8 +38,6 @@ import com.tmrnk.gongon.dogage.validate.Validate;
  */
 public class InputActivity extends AppActivity
 {
-    private PetEntity mSavedItem = null;        //編集の場合、編集対象データ
-
     /**
      * onCreate
      * 
@@ -55,13 +52,10 @@ public class InputActivity extends AppActivity
         setContentView(R.layout.activity_input);
 
         //編集の場合は値がわたってくる
-        mSavedItem = (PetEntity) getIntent().getSerializableExtra("item");
-        if (mSavedItem != null) {
-            AppLog.d("on create" + mSavedItem.getId());
-        }
+        PetEntity savedItem = (PetEntity) getIntent().getSerializableExtra("item");
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction().add(R.id.container, new InputFragment(mSavedItem)).commit();
+            getFragmentManager().beginTransaction().add(R.id.container, new InputFragment(savedItem)).commit();
         }
     }
 
@@ -75,7 +69,11 @@ public class InputActivity extends AppActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        getMenuInflater().inflate(R.menu.input, menu);
+        //初回起動以外だったラ、アクションバーに戻るボタンをセット
+        if (getIntent().getIntExtra("initFlag", 0) == 0) {
+            getMenuInflater().inflate(R.menu.input, menu);
+        }
+
         return true;
     }
 
@@ -118,6 +116,7 @@ public class InputActivity extends AppActivity
         /**
          * コンストラクタ
          * 
+         * @param PetEntity item
          * @access public
          */
         public InputFragment(PetEntity item)
@@ -285,8 +284,8 @@ public class InputActivity extends AppActivity
 
             if (saveDb(data) == true) {
                 AndroidUtils.showToastS(getActivity(), "保存しました。");
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                Intent intent = new Intent(getActivity(), PetAgeActivity.class);
                 startActivity(intent);
                 getActivity().finish();
             } else {

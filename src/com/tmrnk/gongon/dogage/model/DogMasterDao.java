@@ -31,12 +31,12 @@ public class DogMasterDao extends AppDao
     public static final String TABLE_NAME = "dog_masters";
 
     // カラム名
-    public static final String COLUMN_ID = "id";
-    public static final String COLUMN_KIND_NAME = "kind_name";
-    public static final String COLUMN_CATEGORY = "category";
-    public static final String COLUMN_OTHER_FLAG = "other_flag";
-    public static final String COLUMN_CREATED = "created";
-    public static final String COLUMN_MODIFIED = "modified";
+    public static final String COLUMN_ID = "dog_masters_id";
+    public static final String COLUMN_KIND_NAME = "dog_masters_kind_name";
+    public static final String COLUMN_CATEGORY = "dog_masters_category";
+    public static final String COLUMN_OTHER_FLAG = "dog_masters_other_flag";
+    public static final String COLUMN_CREATED = "dog_masters_created";
+    public static final String COLUMN_MODIFIED = "dog_masters_modified";
 
     //CREATE TABLE文
     public static final String CREATE_TABLE_SQL =

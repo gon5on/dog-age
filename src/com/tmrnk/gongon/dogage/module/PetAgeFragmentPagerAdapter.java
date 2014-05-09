@@ -47,10 +47,11 @@ public class PetAgeFragmentPagerAdapter extends FragmentPagerAdapter
 
         //バンドルにデータをセット
         Bundle bundle = new Bundle();
+        bundle.putInt("pageNum", position);
         bundle.putSerializable("item", item);
 
         //フラグメント起動
-        MainFragment petAgeFragment = new MainFragment();
+        PetAgeFragment petAgeFragment = new PetAgeFragment();
         petAgeFragment.setArguments(bundle);
 
         return petAgeFragment;
@@ -81,7 +82,7 @@ public class PetAgeFragmentPagerAdapter extends FragmentPagerAdapter
     }
 
     /**
-     * ページを全て追加
+     * ページを一気に追加
      * 
      * @param ArrayList<PetEntity> list
      * @return void
