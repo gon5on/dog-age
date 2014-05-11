@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 
 import com.tmrnk.gongon.dogage.R;
 import com.tmrnk.gongon.dogage.common.AndroidUtils;
-import com.tmrnk.gongon.dogage.common.PetAgeApplication;
+import com.tmrnk.gongon.dogage.dialog.AppDialog;
 import com.tmrnk.gongon.dogage.dialog.ConfirmDialog;
 import com.tmrnk.gongon.dogage.dialog.ErrorDialog;
 import com.tmrnk.gongon.dogage.model.AppSQLiteOpenHelper;
@@ -33,6 +33,8 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
     private PetAgeFragmentPagerAdapter adapter = null;      // ページアダプター
     private ArrayList<PetEntity> mData = null;              // ペット情報一覧
     private Integer mPageNum = 0;                           // 現在表示中のページ数
+
+    private Integer mInitFlag = 1;                          //viewPager初回表示フラグ
 
     /**
      * onCreate
@@ -75,6 +77,7 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
     public boolean onCreateOptionsMenu(Menu menu)
     {
         getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
@@ -90,27 +93,45 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
     {
         Integer id = item.getItemId();
 
+        //追加
         if (id == R.id.action_add) {
             Intent intent = new Intent(PetAgeActivity.this, InputActivity.class);
             startActivity(intent);
         }
+        //編集
         else if (id == R.id.action_edit) {
-            PetAgeApplication petAgeApplication = (PetAgeApplication) getApplication();
-            petAgeApplication.mPageNum = mPageNum;
-
             Intent intent = new Intent(PetAgeActivity.this, InputActivity.class);
+            intent.putExtra("pageNum", mPageNum);
             intent.putExtra("item", mData.get(mPageNum));
             startActivity(intent);
         }
+        //削除
         else if (id == R.id.action_delete) {
-            ConfirmDialog confirmDialog = ConfirmDialog.getInstance("確認", "本当に削除してよろしいですか？");
-            confirmDialog.setCallbackListener(this);
+            ConfirmDialog confirmDialog = ConfirmDialog.getInstance(AppDialog.LISTENER_ACTIVITY, "確認", "本当に削除してよろしいですか？");
             confirmDialog.show(getFragmentManager(), "dialog");
         }
+        //アプリについて
         else if (id == R.id.action_setting) {
+            Intent intent = new Intent(PetAgeActivity.this, AboutActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * viewPager初回表示の場合は、ページを生成する
+     * フラグメントから呼ばれる
+     * 
+     * @return void
+     * @access public
+     */
+    public void createInitPage()
+    {
+        if (mInitFlag == 1) {
+            mInitFlag = 0;
+            flickEvent();
+        }
     }
 
     /**
@@ -121,6 +142,9 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
      */
     private void createViewPager()
     {
+        // ページングの○を動的にページ分生成
+        createPaging();
+
         // ページアダプタ生成
         adapter = new PetAgeFragmentPagerAdapter(getSupportFragmentManager());
         adapter.addAll(mData);
@@ -129,15 +153,20 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
 
-        // ページングの○を動的にページ分生成
-        createPaging();
+        //前画面からページ数がわたってくれば、そのページを表示する（0がくれば最終ページを表示）
+        if (getIntent().hasExtra("pageNum")) {
+            Integer pageNum = getIntent().getIntExtra("pageNum", 0);
+            mPageNum = (pageNum != 0) ? pageNum : (mData.size() - 1);
+
+            viewPager.setCurrentItem(mPageNum);
+        }
 
         // ページフリック遷移のイベントを受け取る
         viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 mPageNum = position;
-                flickEvent(mPageNum);
+                flickEvent();
             }
         });
     }
@@ -189,33 +218,34 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
     /**
      * ページがフリックされた時のイベント
      * 
-     * @param Integer pageNum
      * @return void
      * @access public
      */
-    public void flickEvent(Integer pageNum)
+    public void flickEvent()
     {
         // ページング
-        ImageView now = (ImageView) findViewById(pageNum);
-        now.setImageResource(R.drawable.img_dot_on);
+        ImageView now = (ImageView) findViewById(mPageNum);
+        now.setImageResource(R.drawable.img_page_on);
 
-        if (pageNum == 0) {
-            ImageView next = (ImageView) findViewById(pageNum + 1);
-            next.setImageResource(R.drawable.img_dot_off);
-        }
-        else if (pageNum == adapter.getCount() - 1) {
-            ImageView back = (ImageView) findViewById(pageNum - 1);
-            back.setImageResource(R.drawable.img_dot_off);
-        }
-        else {
-            ImageView next = (ImageView) findViewById(pageNum + 1);
-            ImageView back = (ImageView) findViewById(pageNum - 1);
-            next.setImageResource(R.drawable.img_dot_off);
-            back.setImageResource(R.drawable.img_dot_off);
+        if (mData.size() != 1) {
+            if (mPageNum == 0) {
+                ImageView next = (ImageView) findViewById(mPageNum + 1);
+                next.setImageResource(R.drawable.img_page_off);
+            }
+            else if (mPageNum == adapter.getCount() - 1) {
+                ImageView back = (ImageView) findViewById(mPageNum - 1);
+                back.setImageResource(R.drawable.img_page_off);
+            }
+            else {
+                ImageView next = (ImageView) findViewById(mPageNum + 1);
+                ImageView back = (ImageView) findViewById(mPageNum - 1);
+                next.setImageResource(R.drawable.img_page_off);
+                back.setImageResource(R.drawable.img_page_off);
+            }
         }
 
         // フラグメント内の処理
-        PetAgeFragment fragment = (PetAgeFragment) adapter.instantiateItem(viewPager, pageNum);
+        PetAgeFragment fragment = (PetAgeFragment) adapter.instantiateItem(viewPager, mPageNum);
         fragment.setDispItem();
     }
 
@@ -238,6 +268,11 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
 
             if (petDao.deleteById(db, mData.get(mPageNum).getId()) == true) {
                 AndroidUtils.showToastS(getApplicationContext(), "削除しました。");
+
+                Intent intent = new Intent(this, PetAgeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("pageNum", (mPageNum != 0) ? (mPageNum - 1) : 0);
+                startActivity(intent);
             } else {
                 ErrorDialog errorDialog = ErrorDialog.getInstance("エラー", "削除に失敗しました。もう一度やり直してください。");
                 errorDialog.show(getFragmentManager(), "dialog");

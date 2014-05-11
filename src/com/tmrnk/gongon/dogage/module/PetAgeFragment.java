@@ -19,7 +19,6 @@ import com.tmrnk.gongon.dogage.model.PetEntity;
 public class PetAgeFragment extends Fragment
 {
     private PetEntity mItem = null;
-    private Integer mPageNum = null;
     private View mView = null;
 
     /**
@@ -36,16 +35,13 @@ public class PetAgeFragment extends Fragment
         // データを取得
         Bundle bundle = getArguments();
         mItem = (PetEntity) bundle.getSerializable("item");
-        mPageNum = bundle.getInt("pageNum", 0);
 
         // レイアウトの指定
         mView = inflater.inflate(R.layout.fragment_pet_age, container, false);
 
-        //1ページ目表示の場合は、フラグメントを読み込んだタイミングでページを表示する
-        if (mPageNum == 0) {
-            PetAgeActivity activity = (PetAgeActivity) getActivity();
-            activity.flickEvent(mPageNum);
-        }
+        //viewPager初回表示の場合は、フラグメントを読み込んだタイミングでページを表示する
+        PetAgeActivity activity = (PetAgeActivity) getActivity();
+        activity.createInitPage();
 
         return mView;
     }

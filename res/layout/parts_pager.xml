@@ -5,5 +5,5 @@
     android:layout_height="wrap_content"
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
-    android:src="@drawable/img_dot_off" />
+    android:src="@drawable/img_page_off" />
 

@@ -272,20 +272,13 @@ public class InputActivity extends AppActivity
                 return;
             }
 
-            //保存
-            PetEntity data = new PetEntity();
-            data.setName(name);
-            data.setBirthday(mBirthday);
-            data.setKind(mKind);
-
-            if (mSavedItem != null) {
-                data.setId(mSavedItem.getId());
-            }
-
-            if (saveDb(data) == true) {
+            //保存とページ遷移
+            if (saveDb(name, mBirthday, mKind) == true) {
                 AndroidUtils.showToastS(getActivity(), "保存しました。");
 
                 Intent intent = new Intent(getActivity(), PetAgeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("pageNum", getActivity().getIntent().getIntExtra("pageNum", 0));
                 startActivity(intent);
                 getActivity().finish();
             } else {
@@ -297,16 +290,27 @@ public class InputActivity extends AppActivity
         /**
          * DBに保存する
          * 
-         * @param PetEntity data
+         * @param String name
+         * @param String birthday
+         * @param String kind
          * @return Boolean ret
          * @access private
          */
-        private Boolean saveDb(PetEntity data)
+        private Boolean saveDb(String name, String birthday, Integer kind)
         {
             Boolean ret = false;
             SQLiteDatabase db = null;
 
             try {
+                PetEntity data = new PetEntity();
+                data.setName(name);
+                data.setBirthday(birthday);
+                data.setKind(kind);
+
+                if (mSavedItem != null) {
+                    data.setId(mSavedItem.getId());
+                }
+
                 AppSQLiteOpenHelper helper = new AppSQLiteOpenHelper(getActivity());
                 db = helper.getWritableDatabase();
 

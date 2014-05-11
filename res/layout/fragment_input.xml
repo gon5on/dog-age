@@ -2,52 +2,95 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="15dp"
-    android:orientation="vertical" >
+    android:background="@drawable/bg"
+    android:orientation="vertical"
+    android:padding="15dp" >
 
-    <TextView
-        android:id="@+id/TextView02"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ワンちゃんのお名前"
-        android:textSize="18sp" />
+        android:gravity="center_vertical" >
+
+        <ImageView
+            android:id="@+id/ImageView01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/img_foot" />
+
+        <TextView
+            android:id="@+id/TextView03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ワンちゃんのお名前"
+            android:textSize="18sp" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/editTextName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" >
+        android:ems="10"
+        android:textSize="20sp" >
 
         <requestFocus />
     </EditText>
 
-    <TextView
-        android:id="@+id/TextView01"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="ワンちゃんのお誕生日"
-        android:textSize="18sp" />
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/img_foot" />
+
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ワンちゃんのお誕生日"
+            android:textSize="18sp" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/editTextBirthday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" />
+        android:ems="10"
+        android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="ワンちゃんの種類"
-        android:textSize="18sp" />
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical" >
+
+        <ImageView
+            android:id="@+id/ImageView02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/img_foot" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ワンちゃんの種類"
+            android:textSize="18sp" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/editTextKind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" />
+        android:ems="10"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/buttonSave"

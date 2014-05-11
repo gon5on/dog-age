@@ -150,7 +150,7 @@ public class PetEntity implements Serializable
     {
         String humanAge = "";
 
-        humanAge = "3歳5ヶ月";     //TODO
+        humanAge = "3歳くらい";     //TODO
 
         return humanAge;
     }

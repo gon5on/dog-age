@@ -1,5 +1,6 @@
 package com.tmrnk.gongon.dogage.dialog;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -19,16 +20,18 @@ public class ConfirmDialog extends DialogFragment
     /**
      * インスタンスを返す
      * 
+     * @String Integer listenerType
      * @String String title
      * @String String msg
      * @return ConfirmDialog
      * @access public
      */
-    public static ConfirmDialog getInstance(String title, String msg)
+    public static ConfirmDialog getInstance(Integer listenerType, String title, String msg)
     {
         ConfirmDialog dialog = new ConfirmDialog();
 
         Bundle bundle = new Bundle();
+        bundle.putInt("listenerType", listenerType);
         bundle.putString("title", title);
         bundle.putString("msg", msg);
         dialog.setArguments(bundle);
@@ -46,8 +49,6 @@ public class ConfirmDialog extends DialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        mCallbackListener = (CallbackListener) getTargetFragment();                 //コールバックリスナーを取り出してセット
-
         //bundleから値を取り出す
         String title = getArguments().getString("title");
         String msg = getArguments().getString("msg");
@@ -78,6 +79,27 @@ public class ConfirmDialog extends DialogFragment
         });
 
         return builder.create();
+    }
+
+    /**
+     * onAttach
+     * 
+     * @param Activity activity
+     * @return void
+     * @access public
+     */
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+
+        Integer listenerType = getArguments().getInt("listenerType");
+
+        if (listenerType == AppDialog.LISTENER_ACTIVITY) {
+            mCallbackListener = (CallbackListener) activity;
+        } else {
+            mCallbackListener = (CallbackListener) getTargetFragment();
+        }
     }
 
     /**
