@@ -32,6 +32,9 @@ public class PetAgeFragment extends Fragment
     {
         super.onCreate(savedInstanceState);
 
+        // fragment再生成抑止
+        setRetainInstance(true);
+
         // データを取得
         Bundle bundle = getArguments();
         mItem = (PetEntity) bundle.getSerializable("item");

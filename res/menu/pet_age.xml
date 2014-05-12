@@ -4,27 +4,27 @@
 
     <item
         android:id="@+id/action_add"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/ic_add"
         android:orderInCategory="1"
         android:showAsAction="always"
         android:title="@string/action_add"/>
     <item
         android:id="@+id/action_edit"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/ic_edit"
         android:orderInCategory="2"
         android:showAsAction="always"
         android:title="@string/action_edit"/>
     <item
         android:id="@+id/action_delete"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/ic_delete"
         android:orderInCategory="3"
         android:showAsAction="always"
         android:title="@string/action_delete"/>
     <item
-        android:id="@+id/action_setting"
-        android:icon="@drawable/ic_launcher"
+        android:id="@+id/action_about"
+        android:icon="@drawable/ic_about"
         android:orderInCategory="4"
         android:showAsAction="always"
-        android:title="@string/action_setting"/>
+        android:title="@string/action_about"/>
 
 </menu>

@@ -54,6 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="犬年齢"
+                android:textColor="@color/textSub"
                 android:textSize="18sp" />
 
             <TextView
@@ -66,6 +67,7 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:text="3歳11ヶ月"
+                android:textColor="@color/textMain"
                 android:textSize="28sp" />
 
             <TextView
@@ -73,6 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="人間年齢"
+                android:textColor="@color/textSub"
                 android:textSize="18sp" />
 
             <TextView
@@ -84,6 +87,7 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:text="35歳くらい"
+                android:textColor="@color/textMain"
                 android:textSize="28sp" />
 
             <TextView
@@ -91,6 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="生まれてから"
+                android:textColor="@color/textSub"
                 android:textSize="18sp" />
 
             <TextView
@@ -103,6 +108,7 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:text="9,545日目"
+                android:textColor="@color/textMain"
                 android:textSize="28sp" />
         </LinearLayout>
     </LinearLayout>

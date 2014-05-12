@@ -93,6 +93,11 @@ public class AboutActivity extends AppActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
+            super.onCreate(savedInstanceState);
+
+            // fragment再生成抑止
+            setRetainInstance(true);
+
             mView = inflater.inflate(R.layout.fragment_about, container, false);
 
             return mView;

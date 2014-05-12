@@ -4,8 +4,9 @@
 
     <item
         android:id="@+id/action_back"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/ic_back"
         android:orderInCategory="1"
         android:showAsAction="always"
         android:title="@string/action_back"/>
-</menu>
+
+</menu>

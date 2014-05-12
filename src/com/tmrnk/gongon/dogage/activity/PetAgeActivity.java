@@ -76,7 +76,7 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.pet_age, menu);
 
         return true;
     }
@@ -111,7 +111,7 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
             confirmDialog.show(getFragmentManager(), "dialog");
         }
         //アプリについて
-        else if (id == R.id.action_setting) {
+        else if (id == R.id.action_about) {
             Intent intent = new Intent(PetAgeActivity.this, AboutActivity.class);
             startActivity(intent);
         }
