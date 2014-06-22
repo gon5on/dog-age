@@ -5,7 +5,7 @@
     tools:context="com.tmrnk.gongon.dogage.activity.MainActivity$PlaceholderFragment" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
@@ -14,26 +14,53 @@
 
         <LinearLayout
             android:id="@+id/linearLayout1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:gravity="center_horizontal"
-            android:orientation="vertical" >
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/bg_frame"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="25dp"
+            android:paddingTop="25dp" >
 
-            <TextView
-                android:id="@+id/textViewName"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="マカロン"
-                android:textSize="28sp" />
+                android:gravity="center_vertical" >
+
+                <ImageView
+                    android:id="@+id/ImageView01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/img_foot" />
+
+                <TextView
+                    android:id="@+id/textViewName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="マカロン"
+                    android:textColor="@color/text"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/img_foot" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textViewKind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="3dp"
                 android:text="トイカッププードル"
+                android:textColor="@color/text"
                 android:textSize="18sp" />
 
             <TextView
@@ -41,6 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2011年3月10日生まれ"
+                android:textColor="@color/text"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -51,10 +79,11 @@
 
             <TextView
                 android:id="@+id/TextView02"
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_label"
                 android:text="犬年齢"
-                android:textColor="@color/textSub"
+                android:textColor="@color/textButton"
                 android:textSize="18sp" />
 
             <TextView
@@ -67,15 +96,16 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:text="3歳11ヶ月"
-                android:textColor="@color/textMain"
+                android:textColor="@color/text"
                 android:textSize="28sp" />
 
             <TextView
                 android:id="@+id/TextView03"
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_label"
                 android:text="人間年齢"
-                android:textColor="@color/textSub"
+                android:textColor="@color/textButton"
                 android:textSize="18sp" />
 
             <TextView
@@ -84,18 +114,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
                 android:text="35歳くらい"
-                android:textColor="@color/textMain"
+                android:textColor="@color/text"
                 android:textSize="28sp" />
 
             <TextView
                 android:id="@+id/TextView01"
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_label"
                 android:text="生まれてから"
-                android:textColor="@color/textSub"
+                android:textColor="@color/textButton"
                 android:textSize="18sp" />
 
             <TextView
@@ -108,7 +139,7 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:text="9,545日目"
-                android:textColor="@color/textMain"
+                android:textColor="@color/text"
                 android:textSize="28sp" />
         </LinearLayout>
     </LinearLayout>

@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.tmrnk.gongon.dogage.activity.PetAgeActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,11 +25,13 @@
         </activity>
         <activity
             android:name="com.tmrnk.gongon.dogage.activity.InputActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.tmrnk.gongon.dogage.activity.AboutActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

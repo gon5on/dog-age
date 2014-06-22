@@ -5,20 +5,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.DatePicker;
 
 import com.tmrnk.gongon.dogage.R;
-import com.tmrnk.gongon.dogage.dialog.ConfirmDialog.CallbackListener;
+import com.tmrnk.gongon.dogage.dialog.DatePickerDialog.CallbackListener;
 
 /**
- * 確認ダイアログ
+ * 日付選択ダイアログ
  * 
  * @access public
  */
-public class ConfirmDialog extends AppDialog<CallbackListener>
+public class DatePickerDialog extends AppDialog<CallbackListener>
 {
-    private CallbackListener mCallbackListener = null;
-
     /**
      * インスタンスを返す
      * 
@@ -27,13 +25,12 @@ public class ConfirmDialog extends AppDialog<CallbackListener>
      * @return ConfirmDialog
      * @access public
      */
-    public static ConfirmDialog getInstance(String title, String msg)
+    public static DatePickerDialog getInstance(String date)
     {
-        ConfirmDialog dialog = new ConfirmDialog();
+        DatePickerDialog dialog = new DatePickerDialog();
 
         Bundle bundle = new Bundle();
-        bundle.putString("title", title);
-        bundle.putString("msg", msg);
+        bundle.putString("date", date);
         dialog.setArguments(bundle);
 
         return dialog;
@@ -50,15 +47,15 @@ public class ConfirmDialog extends AppDialog<CallbackListener>
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
         //ダイアログ生成
-        Dialog dialog = createDefaultDialog(R.layout.dialog_confirm);
+        Dialog dialog = createDefaultDialog(R.layout.dialog_datepicker);
 
-        //タイトルセット
-        TextView textViewTitle = (TextView) dialog.findViewById(R.id.textViewTitle);
-        textViewTitle.setText(getArguments().getString("title"));
+        //日付がわたってきていたらセット
+        final DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.datePicker);
 
-        //テキストセット
-        TextView textViewMsg = (TextView) dialog.findViewById(R.id.textViewMsg);
-        textViewMsg.setText(getArguments().getString("msg"));
+        if (getArguments().getString("date") != null) {
+            String date[] = getArguments().getString("date").split("-");
+            datePicker.updateDate(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]));
+        }
 
         //ボタンにイベントをセット
         Button buttonOk = (Button) dialog.findViewById(R.id.buttonOk);
@@ -66,7 +63,11 @@ public class ConfirmDialog extends AppDialog<CallbackListener>
             @Override
             public void onClick(View v) {
                 if (mCallbackListener != null) {
-                    mCallbackListener.onClickConfirmDialogOk();
+                    Integer year = datePicker.getYear();
+                    Integer month = datePicker.getMonth() + 1;
+                    Integer day = datePicker.getDayOfMonth();
+                    String date = String.format("%d-%02d-%02d", year, month, day);
+                    mCallbackListener.onClickDatePickerDialogOk(date);
                 }
                 dismiss();
             }
@@ -77,7 +78,7 @@ public class ConfirmDialog extends AppDialog<CallbackListener>
             @Override
             public void onClick(View v) {
                 if (mCallbackListener != null) {
-                    mCallbackListener.onClickConfirmDialogCancel();
+                    mCallbackListener.onClickDatePickerDialogCancel();
                 }
                 dismiss();
             }
@@ -93,8 +94,8 @@ public class ConfirmDialog extends AppDialog<CallbackListener>
      */
     public interface CallbackListener
     {
-        public void onClickConfirmDialogOk();
+        public void onClickDatePickerDialogOk(String date);
 
-        public void onClickConfirmDialogCancel();
+        public void onClickDatePickerDialogCancel();
     }
 }

@@ -2,19 +2,19 @@ package com.tmrnk.gongon.dogage.dialog;
 
 import java.util.ArrayList;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.tmrnk.gongon.dogage.R;
+import com.tmrnk.gongon.dogage.dialog.KindSelectDialog.CallbackListener;
 import com.tmrnk.gongon.dogage.model.DogMasterEntity;
 import com.tmrnk.gongon.dogage.module.KindListAdapter;
 
@@ -23,10 +23,8 @@ import com.tmrnk.gongon.dogage.module.KindListAdapter;
  * 
  * @access public
  */
-public class KindSelectDialog extends DialogFragment
+public class KindSelectDialog extends AppDialog<CallbackListener>
 {
-    private CallbackListener mCallbackListener = null;
-
     /**
      * インスタンスを返す
      * 
@@ -55,18 +53,18 @@ public class KindSelectDialog extends DialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        mCallbackListener = (CallbackListener) getTargetFragment();                 //コールバックリスナーを取り出してセット
-
         //犬マスタデータ取得
         final ArrayList<DogMasterEntity> data = (ArrayList<DogMasterEntity>) getArguments().getSerializable("data");
 
         //ダイアログ生成
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("ワンちゃんの種類");
+        Dialog dialog = new Dialog(getActivity());
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
 
         LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = layoutInflater.inflate(R.layout.dialog_kind_list, null);
-        builder.setView(layout);
+        dialog.setContentView(layout);
 
         ListView listViewKind = (ListView) layout.findViewById(R.id.listViewKind);
         listViewKind.setAdapter(new KindListAdapter(getActivity(), R.layout.parts_kind_list, data));
@@ -80,30 +78,7 @@ public class KindSelectDialog extends DialogFragment
             }
         });
 
-        return builder.create();
-    }
-
-    /**
-     * コールバックリスナーを追加
-     * 
-     * @param CallbackListener callbackListener
-     * @return void
-     * @access public
-     */
-    public void setCallbackListener(CallbackListener callbackListener)
-    {
-        setTargetFragment((Fragment) callbackListener, 0);      //コールバックリスナーを一時保存、第2引数は適当
-    }
-
-    /**
-     * コールバックリスナーを削除
-     * 
-     * @return void
-     * @access public
-     */
-    public void removeCallbackListener()
-    {
-        mCallbackListener = null;
+        return dialog;
     }
 
     /**

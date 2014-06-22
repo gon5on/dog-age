@@ -8,6 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
         android:gravity="center_vertical" >
 
         <ImageView
@@ -22,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ワンちゃんのお名前"
-            android:textColor="@color/textSub"
+            android:textColor="@color/text"
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -30,8 +31,9 @@
         android:id="@+id/editTextName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/img_input"
+        android:background="@drawable/bg_input"
         android:ems="10"
+        android:textColor="@color/text"
         android:textSize="20sp" >
 
         <requestFocus />
@@ -40,6 +42,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
         android:layout_marginTop="15dp"
         android:gravity="center_vertical" >
 
@@ -55,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ワンちゃんのお誕生日"
-            android:textColor="@color/textSub"
+            android:textColor="@color/text"
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -63,13 +66,15 @@
         android:id="@+id/editTextBirthday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/img_input"
+        android:background="@drawable/bg_input"
         android:ems="10"
+        android:textColor="@color/text"
         android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
         android:layout_marginTop="15dp"
         android:gravity="center_vertical" >
 
@@ -85,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ワンちゃんの種類"
-            android:textColor="@color/textSub"
+            android:textColor="@color/text"
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -93,16 +98,19 @@
         android:id="@+id/editTextKind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/img_input"
+        android:background="@drawable/bg_input"
         android:ems="10"
+        android:textColor="@color/text"
         android:textSize="20sp" />
 
     <Button
         android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:text="保存" />
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_button"
+        android:text="保存"
+        android:textColor="@color/textButton" />
 
 </LinearLayout>

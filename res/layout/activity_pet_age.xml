@@ -12,7 +12,7 @@
         android:layout_alignParentBottom="true"
         android:gravity="center_vertical|center_horizontal"
         android:paddingBottom="10dp"
-        android:paddingTop="30dp" >
+        android:paddingTop="15dp" >
 
         <TextView
             android:id="@+id/textViewMeter2"

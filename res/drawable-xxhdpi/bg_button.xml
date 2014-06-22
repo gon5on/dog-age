@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 通常時 -->
+    <item android:state_pressed="false"><shape android:shape="rectangle">
+            <solid android:color="@color/bgButtonOff" />
+
+            <corners android:radius="8dp" />
+
+            <padding android:bottom="8dp" android:left="16dp" android:right="16dp" android:top="8dp" />
+        </shape></item>
+
+    <!-- タップ時 -->
+    <item android:state_pressed="true"><shape android:shape="rectangle">
+            <solid android:color="@color/bgButtonOn" />
+
+            <corners android:radius="8dp" />
+
+            <padding android:bottom="8dp" android:left="16dp" android:right="16dp" android:top="8dp" />
+        </shape></item>
+
+</selector>

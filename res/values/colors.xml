@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="textMain">#444444</color>
-    <color name="textSub">#555555</color>
+    <color name="bgActionBar">#595143</color>
+    <color name="bgDialog">#fff1d8</color>
+    <color name="bgInput">#ffffff</color>
+    <color name="bgInputFrameOn">#8FCCA8</color>
+    <color name="bgInputFrameOff">#888888</color>
+    <color name="bgListviewOff">#00ffffff</color>
+    <color name="bgListviewOn">#8FCCA8</color>
+    <color name="bgActionbarItemOff">#00ffffff</color>
+    <color name="bgActionbarItemOn">#968972</color>
+    <color name="bgButtonOff">#8FCCA8</color>
+    <color name="bgButtonOn">#C1D9BA</color>
+    <color name="textButton">#ffffff</color>
+    <color name="text">#595143</color>
 
 </resources>

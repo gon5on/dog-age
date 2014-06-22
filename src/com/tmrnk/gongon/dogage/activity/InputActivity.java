@@ -3,7 +3,6 @@ package com.tmrnk.gongon.dogage.activity;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,13 +14,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.tmrnk.gongon.dogage.R;
 import com.tmrnk.gongon.dogage.common.AndroidUtils;
 import com.tmrnk.gongon.dogage.common.DateUtils;
 import com.tmrnk.gongon.dogage.common.Utils;
+import com.tmrnk.gongon.dogage.dialog.DatePickerDialog;
 import com.tmrnk.gongon.dogage.dialog.ErrorDialog;
 import com.tmrnk.gongon.dogage.dialog.KindSelectDialog;
 import com.tmrnk.gongon.dogage.model.AppSQLiteOpenHelper;
@@ -55,7 +54,12 @@ public class InputActivity extends AppActivity
         PetEntity savedItem = (PetEntity) getIntent().getSerializableExtra("item");
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction().add(R.id.container, new InputFragment(savedItem)).commit();
+            InputFragment fragment = new InputFragment();
+            Bundle args = new Bundle();
+            args.putSerializable("data", savedItem);
+            fragment.setArguments(args);
+
+            getFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
         }
     }
 
@@ -101,28 +105,14 @@ public class InputActivity extends AppActivity
      * 
      * @access public
      */
-    public static class InputFragment extends Fragment implements KindSelectDialog.CallbackListener
+    public static class InputFragment extends Fragment implements KindSelectDialog.CallbackListener, DatePickerDialog.CallbackListener
     {
         private View mView = null;
 
         private PetEntity mSavedItem = null;
 
         private String mBirthday = null;
-        private Integer mYear = null;
-        private Integer mMonth = null;
-        private Integer mDay = null;
         private Integer mKind = null;
-
-        /**
-         * コンストラクタ
-         * 
-         * @param PetEntity item
-         * @access public
-         */
-        public InputFragment(PetEntity item)
-        {
-            mSavedItem = item;
-        }
 
         /**
          * onCreateView
@@ -160,19 +150,16 @@ public class InputActivity extends AppActivity
          */
         public void setItem()
         {
+            mSavedItem = (PetEntity) getArguments().getSerializable("data");
+
             //編集の場合
             if (mSavedItem != null) {
                 mBirthday = mSavedItem.getBirthday();
+                mKind = mSavedItem.getKind();
 
                 String[] birthday = mSavedItem.getBirthday().split("-");
-                mYear = Integer.parseInt(birthday[0]);
-                mMonth = Integer.parseInt(birthday[1]);
-                mDay = Integer.parseInt(birthday[2]);
-
                 EditText editTextBirthday = (EditText) mView.findViewById(R.id.editTextBirthday);
-                editTextBirthday.setText(String.format("%d年%d月%d日", mYear, mMonth, mDay));
-
-                mKind = mSavedItem.getKind();
+                editTextBirthday.setText(String.format("%s年%s月%s日", birthday[0], birthday[1], birthday[2]));
 
                 EditText editTextKind = (EditText) mView.findViewById(R.id.editTextKind);
                 editTextKind.setText(mSavedItem.getKindName());
@@ -182,10 +169,7 @@ public class InputActivity extends AppActivity
             }
             //新規の場合
             else {
-                DateUtils dateUtils = new DateUtils();
-                mYear = Integer.parseInt(dateUtils.format("yyyy"));
-                mMonth = Integer.parseInt(dateUtils.format("MM"));
-                mDay = Integer.parseInt(dateUtils.format("dd"));
+                mBirthday = new DateUtils().format(DateUtils.FMT_DATE);
             }
         }
 
@@ -198,25 +182,14 @@ public class InputActivity extends AppActivity
         public void setClickEvent()
         {
             //誕生日
-            final EditText editTextBirthday = (EditText) mView.findViewById(R.id.editTextBirthday);
+            EditText editTextBirthday = (EditText) mView.findViewById(R.id.editTextBirthday);
             editTextBirthday.setFocusable(false);
-
-            final DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    mYear = year;
-                    mMonth = (monthOfYear + 1);
-                    mDay = dayOfMonth;
-                    mBirthday = String.format("%04d-%02d-%02d", mYear, mMonth, mDay);
-
-                    editTextBirthday.setText(String.format("%d年%d月%d日", mYear, mMonth, mDay));
-                }
-            }, mYear, (mMonth - 1), mDay);
-
             editTextBirthday.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    datePickerDialog.show();
+                    DatePickerDialog datePickerDialog = DatePickerDialog.getInstance(mBirthday);
+                    datePickerDialog.setCallbackListener(InputFragment.this);
+                    datePickerDialog.show(getFragmentManager(), "dialog");
                 }
             });
 
@@ -332,20 +305,6 @@ public class InputActivity extends AppActivity
         }
 
         /**
-         * 種類選択ダイアログでいずれかが選択された
-         * 
-         * @param Integer kind
-         */
-        @Override
-        public void onClickKindSelectDialog(Integer kind, String name)
-        {
-            mKind = kind;
-
-            EditText editTextKind = (EditText) mView.findViewById(R.id.editTextKind);
-            editTextKind.setText(name);
-        }
-
-        /**
          * 種類選択ダイアログ用の犬マスタ一覧を取得
          * 
          * @return ArrayList<DogMasterEntity>
@@ -370,6 +329,50 @@ public class InputActivity extends AppActivity
             }
 
             return data;
+        }
+
+        /**
+         * 種類選択ダイアログでいずれかが選択された
+         * 
+         * @param Integer kind
+         * @return void
+         * @access public
+         */
+        @Override
+        public void onClickKindSelectDialog(Integer kind, String name)
+        {
+            mKind = kind;
+
+            EditText editTextKind = (EditText) mView.findViewById(R.id.editTextKind);
+            editTextKind.setText(name);
+        }
+
+        /**
+         * DatePickerダイアログでOKが押された
+         * 
+         * @param String date
+         * @return void
+         * @access public
+         */
+        @Override
+        public void onClickDatePickerDialogOk(String date)
+        {
+            mBirthday = date;
+
+            String[] birthday = mBirthday.split("-");
+            EditText editTextBirthday = (EditText) mView.findViewById(R.id.editTextBirthday);
+            editTextBirthday.setText(String.format("%s年%s月%s日", birthday[0], birthday[1], birthday[2]));
+        }
+
+        /**
+         * DatePickerダイアログでキャンセルが押された
+         * 
+         * @return void
+         * @access public
+         */
+        @Override
+        public void onClickDatePickerDialogCancel()
+        {
         }
     }
 }

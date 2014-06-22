@@ -1,21 +1,22 @@
 package com.tmrnk.gongon.dogage.dialog;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.tmrnk.gongon.dogage.R;
+import com.tmrnk.gongon.dogage.dialog.ErrorDialog.CallbackListener;
 
 /**
  * エラーダイアログ
  * 
  * @access public
  */
-public class ErrorDialog extends DialogFragment
+public class ErrorDialog extends AppDialog<CallbackListener>
 {
-    private CallbackListener mCallbackListener = null;
-
     /**
      * インスタンスを返す
      * 
@@ -46,21 +47,22 @@ public class ErrorDialog extends DialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        mCallbackListener = (CallbackListener) getTargetFragment();                 //コールバックリスナーを取り出してセット
-
-        //bundleから値を取り出す
-        String title = getArguments().getString("title");
-        String msg = getArguments().getString("msg");
-
         //ダイアログ生成
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(title);
-        builder.setMessage(msg);
+        Dialog dialog = createDefaultDialog(R.layout.dialog_error);
+
+        //タイトルセット
+        TextView textViewTitle = (TextView) dialog.findViewById(R.id.textViewTitle);
+        textViewTitle.setText(getArguments().getString("title"));
+
+        //テキストセット
+        TextView textViewMsg = (TextView) dialog.findViewById(R.id.textViewMsg);
+        textViewMsg.setText(getArguments().getString("msg"));
 
         //ボタンにイベントをセット
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        Button buttonOk = (Button) dialog.findViewById(R.id.buttonOk);
+        buttonOk.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 if (mCallbackListener != null) {
                     mCallbackListener.onClickErrorDialogOk();
                 }
@@ -68,30 +70,7 @@ public class ErrorDialog extends DialogFragment
             }
         });
 
-        return builder.create();
-    }
-
-    /**
-     * コールバックリスナーを追加
-     * 
-     * @param CallbackListener callbackListener
-     * @return void
-     * @access public
-     */
-    public void setCallbackListener(CallbackListener callbackListener)
-    {
-        setTargetFragment((Fragment) callbackListener, 0);      //コールバックリスナーを一時保存、第2引数は適当
-    }
-
-    /**
-     * コールバックリスナーを削除
-     * 
-     * @return void
-     * @access public
-     */
-    public void removeCallbackListener()
-    {
-        mCallbackListener = null;
+        return dialog;
     }
 
     /**

@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 
 import com.tmrnk.gongon.dogage.R;
 import com.tmrnk.gongon.dogage.common.AndroidUtils;
-import com.tmrnk.gongon.dogage.dialog.AppDialog;
 import com.tmrnk.gongon.dogage.dialog.ConfirmDialog;
 import com.tmrnk.gongon.dogage.dialog.ErrorDialog;
 import com.tmrnk.gongon.dogage.model.AppSQLiteOpenHelper;
@@ -107,7 +106,7 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
         }
         //削除
         else if (id == R.id.action_delete) {
-            ConfirmDialog confirmDialog = ConfirmDialog.getInstance(AppDialog.LISTENER_ACTIVITY, "確認", "本当に削除してよろしいですか？");
+            ConfirmDialog confirmDialog = ConfirmDialog.getInstance("確認", "本当に削除してよろしいですか？");
             confirmDialog.show(getFragmentManager(), "dialog");
         }
         //アプリについて

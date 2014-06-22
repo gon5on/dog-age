@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tmrnk.gongon.dogage.R;
@@ -59,8 +60,10 @@ public class KindListAdapter extends ArrayAdapter<DogMasterEntity>
             TextView textViewKind = (TextView) convertView.findViewById(R.id.textViewKind);
             textViewKind.setVisibility(View.GONE);
 
+            LinearLayout LinearLayoutLabel = (LinearLayout) convertView.findViewById(R.id.LinearLayoutLabel);
+            LinearLayoutLabel.setVisibility(View.VISIBLE);
+
             TextView textViewLabel = (TextView) convertView.findViewById(R.id.textViewLabel);
-            textViewLabel.setVisibility(View.VISIBLE);
             textViewLabel.setText(item.getKindName());
 
             isEnabled(position);	//クリックできないように
@@ -71,8 +74,8 @@ public class KindListAdapter extends ArrayAdapter<DogMasterEntity>
             textViewKind.setVisibility(View.VISIBLE);
             textViewKind.setText(item.getKindName());
 
-            TextView textViewLabel = (TextView) convertView.findViewById(R.id.textViewLabel);
-            textViewLabel.setVisibility(View.GONE);
+            LinearLayout LinearLayoutLabel = (LinearLayout) convertView.findViewById(R.id.LinearLayoutLabel);
+            LinearLayoutLabel.setVisibility(View.GONE);
         }
 
         return convertView;
