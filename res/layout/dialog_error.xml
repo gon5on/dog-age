@@ -46,7 +46,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
-        android:background="@drawable/bg_button"
+        android:background="@drawable/btn"
+        android:minHeight="0dp"
         android:text="OK"
         android:textColor="@color/textButton" />
 

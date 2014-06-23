@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.tmrnk.gongon.dogage.R;
 import com.tmrnk.gongon.dogage.common.AndroidUtils;
+import com.tmrnk.gongon.dogage.common.AppLog;
 import com.tmrnk.gongon.dogage.dialog.ConfirmDialog;
 import com.tmrnk.gongon.dogage.dialog.ErrorDialog;
 import com.tmrnk.gongon.dogage.model.AppSQLiteOpenHelper;
@@ -107,6 +109,7 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
         //削除
         else if (id == R.id.action_delete) {
             ConfirmDialog confirmDialog = ConfirmDialog.getInstance("確認", "本当に削除してよろしいですか？");
+            confirmDialog.setCallbackListener(this);
             confirmDialog.show(getFragmentManager(), "dialog");
         }
         //アプリについて
@@ -154,8 +157,7 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
 
         //前画面からページ数がわたってくれば、そのページを表示する（0がくれば最終ページを表示）
         if (getIntent().hasExtra("pageNum")) {
-            Integer pageNum = getIntent().getIntExtra("pageNum", 0);
-            mPageNum = (pageNum != 0) ? pageNum : (mData.size() - 1);
+            mPageNum = getIntent().getIntExtra("pageNum", 0);
 
             viewPager.setCurrentItem(mPageNum);
         }
@@ -202,10 +204,21 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
      */
     private void createPaging()
     {
+        if (mData == null) {
+            return;
+        }
+
         LinearLayout linearLayoutPager = (LinearLayout) findViewById(R.id.linearLayoutPager);
         linearLayoutPager.removeAllViewsInLayout();
 
-        if (mData != null) {
+        //1匹の場合はページングを表示しない
+        if (mData.size() == 1) {
+            linearLayoutPager.setVisibility(View.GONE);
+        }
+        //2匹以上の場合はページングを表示する
+        else {
+            linearLayoutPager.setVisibility(View.VISIBLE);
+
             for (int i = 0; i < mData.size(); i++) {
                 ImageView imageViewPager = (ImageView) getLayoutInflater().inflate(R.layout.parts_pager, null);
                 imageViewPager.setId(i);
@@ -222,24 +235,26 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
      */
     public void flickEvent()
     {
-        // ページング
-        ImageView now = (ImageView) findViewById(mPageNum);
-        now.setImageResource(R.drawable.img_page_on);
-
+        // 1匹以外の場合はページング
         if (mData.size() != 1) {
-            if (mPageNum == 0) {
-                ImageView next = (ImageView) findViewById(mPageNum + 1);
-                next.setImageResource(R.drawable.img_page_off);
-            }
-            else if (mPageNum == adapter.getCount() - 1) {
-                ImageView back = (ImageView) findViewById(mPageNum - 1);
-                back.setImageResource(R.drawable.img_page_off);
-            }
-            else {
-                ImageView next = (ImageView) findViewById(mPageNum + 1);
-                ImageView back = (ImageView) findViewById(mPageNum - 1);
-                next.setImageResource(R.drawable.img_page_off);
-                back.setImageResource(R.drawable.img_page_off);
+            ImageView now = (ImageView) findViewById(mPageNum);
+            now.setImageResource(R.drawable.img_page_on);
+
+            if (mData.size() != 1) {
+                if (mPageNum == 0) {
+                    ImageView next = (ImageView) findViewById(mPageNum + 1);
+                    next.setImageResource(R.drawable.img_page_off);
+                }
+                else if (mPageNum == adapter.getCount() - 1) {
+                    ImageView back = (ImageView) findViewById(mPageNum - 1);
+                    back.setImageResource(R.drawable.img_page_off);
+                }
+                else {
+                    ImageView next = (ImageView) findViewById(mPageNum + 1);
+                    ImageView back = (ImageView) findViewById(mPageNum - 1);
+                    next.setImageResource(R.drawable.img_page_off);
+                    back.setImageResource(R.drawable.img_page_off);
+                }
             }
         }
 
@@ -258,6 +273,8 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
     public void onClickConfirmDialogOk()
     {
         SQLiteDatabase db = null;
+
+        AppLog.d("11111111111111111111111");
 
         try {
             AppSQLiteOpenHelper helper = new AppSQLiteOpenHelper(getApplicationContext());

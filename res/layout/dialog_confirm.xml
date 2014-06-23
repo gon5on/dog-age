@@ -51,8 +51,9 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_button"
-            android:text="Cancel"
+            android:background="@drawable/btn"
+            android:minHeight="0dp"
+            android:text="キャンセル"
             android:textColor="@color/textButton" />
 
         <Button
@@ -61,7 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_button"
+            android:background="@drawable/btn"
+            android:minHeight="0dp"
             android:text="OK"
             android:textColor="@color/textButton" />
     </LinearLayout>

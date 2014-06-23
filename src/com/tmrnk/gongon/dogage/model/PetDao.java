@@ -130,7 +130,7 @@ public class PetDao extends AppDao
         sb.append(String.format("SELECT * FROM %s ", TABLE_NAME));
         sb.append(String.format("LEFT JOIN %s ", DogMasterDao.TABLE_NAME));
         sb.append(String.format("ON %s.%s = %s.%s ", TABLE_NAME, COLUMN_KIND, DogMasterDao.TABLE_NAME, DogMasterDao.COLUMN_ID));
-        sb.append(String.format("ORDER BY %s.%s", TABLE_NAME, COLUMN_ID));
+        sb.append(String.format("ORDER BY %s.%s DESC", TABLE_NAME, COLUMN_ID));
 
         Cursor cursor = db.rawQuery(sb.toString(), null);
 

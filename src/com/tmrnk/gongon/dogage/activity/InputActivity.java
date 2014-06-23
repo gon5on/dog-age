@@ -52,11 +52,13 @@ public class InputActivity extends AppActivity
 
         //編集の場合は値がわたってくる
         PetEntity savedItem = (PetEntity) getIntent().getSerializableExtra("item");
+        Integer pageNum = (Integer) getIntent().getIntExtra("pageNum", 0);
 
         if (savedInstanceState == null) {
             InputFragment fragment = new InputFragment();
             Bundle args = new Bundle();
             args.putSerializable("data", savedItem);
+            args.putInt("pageNum", pageNum);
             fragment.setArguments(args);
 
             getFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
@@ -232,6 +234,7 @@ public class InputActivity extends AppActivity
             try {
                 validate.set();
                 validate.require.check(name, "お名前", null);
+                validate.length.maxCheck(name, "お名前", null, 10);
                 validate.set();
                 validate.require.check(mBirthday, "お誕生日", null);
                 validate.date.check(mBirthday, "お誕生日", null, DateUtils.FMT_DATE);
@@ -256,7 +259,7 @@ public class InputActivity extends AppActivity
 
                 Intent intent = new Intent(getActivity(), PetAgeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("pageNum", getActivity().getIntent().getIntExtra("pageNum", 0));
+                intent.putExtra("pageNum", getArguments().getInt("pageNum", 0));
                 startActivity(intent);
                 getActivity().finish();
             } else {

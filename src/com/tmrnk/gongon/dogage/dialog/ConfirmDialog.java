@@ -17,8 +17,6 @@ import com.tmrnk.gongon.dogage.dialog.ConfirmDialog.CallbackListener;
  */
 public class ConfirmDialog extends AppDialog<CallbackListener>
 {
-    private CallbackListener mCallbackListener = null;
-
     /**
      * インスタンスを返す
      * 

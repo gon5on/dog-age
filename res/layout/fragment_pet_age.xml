@@ -10,7 +10,9 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:gravity="center_horizontal"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:paddingBottom="30dp"
+        android:paddingTop="30dp" >
 
         <LinearLayout
             android:id="@+id/linearLayout1"
@@ -23,6 +25,8 @@
             android:gravity="center_vertical|center_horizontal"
             android:orientation="vertical"
             android:paddingBottom="25dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
             android:paddingTop="25dp" >
 
             <LinearLayout
@@ -39,8 +43,9 @@
 
                 <TextView
                     android:id="@+id/textViewName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="マカロン"
                     android:textColor="@color/text"
                     android:textSize="28sp"

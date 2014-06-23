@@ -109,7 +109,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:background="@drawable/bg_button"
+        android:background="@drawable/btn"
+        android:minHeight="0dp"
         android:text="保存"
         android:textColor="@color/textButton" />
 

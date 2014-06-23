@@ -8,7 +8,7 @@
 
     <!-- タップ時 -->
     <item android:state_pressed="true"><shape android:shape="rectangle">
-            <solid android:color="@color/bgActionbarItemOn" />
+            <gradient android:angle="270" android:endColor="@color/bgActionbarItemOn" android:startColor="@color/bgActionbarItemOff" />
         </shape></item>
 
 </selector>
