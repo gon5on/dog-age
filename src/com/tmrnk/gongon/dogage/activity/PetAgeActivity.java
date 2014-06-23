@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 
 import com.tmrnk.gongon.dogage.R;
 import com.tmrnk.gongon.dogage.common.AndroidUtils;
-import com.tmrnk.gongon.dogage.common.AppLog;
 import com.tmrnk.gongon.dogage.dialog.ConfirmDialog;
 import com.tmrnk.gongon.dogage.dialog.ErrorDialog;
 import com.tmrnk.gongon.dogage.model.AppSQLiteOpenHelper;
@@ -273,8 +272,6 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
     public void onClickConfirmDialogOk()
     {
         SQLiteDatabase db = null;
-
-        AppLog.d("11111111111111111111111");
 
         try {
             AppSQLiteOpenHelper helper = new AppSQLiteOpenHelper(getApplicationContext());
