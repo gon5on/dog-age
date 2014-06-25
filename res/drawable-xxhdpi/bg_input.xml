@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- 通常時 -->
-    <item android:state_pressed="false"><shape android:shape="rectangle">
+    <!-- フォーカス時 -->
+    <item android:state_focused="true"><shape android:shape="rectangle">
             <solid android:color="@color/bgInput" />
 
-            <stroke android:width="2dp" android:color="@color/bgInputFrameOff" />
+            <stroke android:width="2dp" android:color="@color/bgInputFrameOn" />
 
             <corners android:radius="8dp" />
 
@@ -17,6 +17,17 @@
             <solid android:color="@color/bgInput" />
 
             <stroke android:width="2dp" android:color="@color/bgInputFrameOn" />
+
+            <corners android:radius="8dp" />
+
+            <padding android:bottom="8dp" android:left="16dp" android:right="16dp" android:top="8dp" />
+        </shape></item>
+
+    <!-- 通常時 -->
+    <item android:state_pressed="false"><shape android:shape="rectangle">
+            <solid android:color="@color/bgInput" />
+
+            <stroke android:width="2dp" android:color="@color/bgInputFrameOff" />
 
             <corners android:radius="8dp" />
 

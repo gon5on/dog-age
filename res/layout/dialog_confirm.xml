@@ -51,10 +51,10 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@drawable/btn"
-            android:minHeight="0dp"
+            android:background="@drawable/btn2"
             android:text="キャンセル"
-            android:textColor="@color/textButton" />
+            android:textColor="@color/textButton"
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/buttonOk"
@@ -63,9 +63,9 @@
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
             android:background="@drawable/btn"
-            android:minHeight="0dp"
             android:text="OK"
-            android:textColor="@color/textButton" />
+            android:textColor="@color/textButton"
+            android:textSize="16sp" />
     </LinearLayout>
 
 </LinearLayout>

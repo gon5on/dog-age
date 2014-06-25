@@ -10,13 +10,7 @@
     </style>
 
     <style name="MyActionbar" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">@color/bgActionBar</item>
-    </style>
-
-    <!-- うまくいかない -->
-    <style name="MyDialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowBackground">@drawable/bg_dialog</item>
-        <item name="android:textColor">@color/text</item>
+        <item name="android:background">@drawable/bg_actionbar</item>
     </style>
 
 </resources>
