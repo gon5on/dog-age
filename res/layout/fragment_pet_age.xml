@@ -86,9 +86,8 @@
                 android:id="@+id/TextView02"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_label"
                 android:text="犬年齢"
-                android:textColor="@color/textButton"
+                android:textColor="@color/text"
                 android:textSize="18sp" />
 
             <TextView
@@ -108,9 +107,8 @@
                 android:id="@+id/TextView03"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_label"
                 android:text="人間年齢"
-                android:textColor="@color/textButton"
+                android:textColor="@color/text"
                 android:textSize="18sp" />
 
             <TextView
@@ -129,9 +127,8 @@
                 android:id="@+id/TextView01"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_label"
                 android:text="生まれてから"
-                android:textColor="@color/textButton"
+                android:textColor="@color/text"
                 android:textSize="18sp" />
 
             <TextView

@@ -2,9 +2,17 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- タップ時 -->
-    <item android:drawable="@drawable/btn_on" android:state_pressed="true"/>
+    <item android:state_pressed="true"><shape android:shape="rectangle">
+            <corners android:radius="8dip" />
+
+            <gradient android:angle="90" android:centerColor="@color/btn" android:endColor="@color/btn" android:startColor="@color/btn" />
+        </shape></item>
 
     <!-- 通常時 -->
-    <item android:drawable="@drawable/btn_off" android:state_pressed="false"/>
+    <item><shape android:shape="rectangle">
+            <corners android:radius="8dip" />
+
+            <gradient android:angle="90" android:centerColor="@color/btn" android:endColor="@color/btnGrade" android:startColor="@color/btn" />
+        </shape></item>
 
 </selector>

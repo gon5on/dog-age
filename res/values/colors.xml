@@ -10,8 +10,10 @@
     <color name="bgListviewOn">#8FCCA8</color>
     <color name="bgActionbarItemOff">#00ffffff</color>
     <color name="bgActionbarItemOn">#88332219</color>
-    <color name="bgButtonOff">#8FCCA8</color>
-    <color name="bgButtonOn">#C1D9BA</color>
+    <color name="btn">#78593f</color>
+    <color name="btnGrade">#856e59</color>
+    <color name="btn2">#966f4e</color>
+    <color name="btnGrade2">#ab8767</color>
     <color name="textButton">#ffffff</color>
     <color name="text">#595143</color>
 
