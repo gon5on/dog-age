@@ -141,6 +141,9 @@ public class InputActivity extends AppActivity
             //クリックイベントをセットする
             setClickEvent();
 
+            //スクロールビューのオーバースクロールで端の色を変えないように
+            container.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
             return mView;
         }
 
