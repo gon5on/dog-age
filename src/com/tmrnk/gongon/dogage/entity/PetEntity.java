@@ -1,10 +1,12 @@
-package com.tmrnk.gongon.dogage.model;
+package com.tmrnk.gongon.dogage.entity;
 
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import com.tmrnk.gongon.dogage.common.DateUtils;
+import com.tmrnk.gongon.dogage.config.Config;
 
 /**
  * ペットエンティティクラス
@@ -15,13 +17,32 @@ public class PetEntity implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
+    private DogMasterEntity mDogMaster;                         //該当の犬種マスタ
+
     private Integer mId;                                        //ID
     private String mName;                                       //名前
     private String mBirthday;                                   //誕生日
     private Integer mKind;                                      //種類
-    private String mKindName;                                   //種類名
     private String mCreated;                                    //作成日時
     private String mModified;                                   //更新日時
+
+    /**
+     * 該当の犬種マスタを返す
+     * 
+     * @return DogMasterEntity mDogMaster
+     * @access public
+     */
+    public DogMasterEntity getDogMaster()
+    {
+        if (getId() == null || mDogMaster != null) {
+            return mDogMaster;
+        }
+
+        HashMap<Integer, DogMasterEntity> dogMasters = Config.getDogMastersMap();
+        mDogMaster = dogMasters.get(getKind());
+
+        return mDogMaster;
+    }
 
     /**
      * IDをセット
@@ -115,9 +136,9 @@ public class PetEntity implements Serializable
      * ペット年齢を返す
      * 
      * @return String
-     * @access public
+     * @access private
      */
-    public String getPetAge()
+    private Integer[] getPetAge()
     {
         Integer year = 0;
         Integer month = 0;
@@ -127,6 +148,7 @@ public class PetEntity implements Serializable
             birthday.clearHour();
 
             DateUtils today = new DateUtils();
+            today.addDay(1);    //Nヶ月目の日の翌日にならないとNヶ月がカウントアップしないので、Nヶ月目の日にカウントアップするように調整
             today.clearHour();
 
             DateUtils age = new DateUtils(today.get().getTimeInMillis() - birthday.get().getTimeInMillis());
@@ -137,7 +159,20 @@ public class PetEntity implements Serializable
             e.printStackTrace();
         }
 
-        return year + "歳" + month + "ヶ月";
+        return new Integer[] { year, month };
+    }
+
+    /**
+     * ペット年齢を返す
+     * 
+     * @return String
+     * @access public
+     */
+    public String getPetAgeDisp()
+    {
+        Integer[] age = getPetAge();
+
+        return age[0] + "歳" + age[1] + "ヶ月";
     }
 
     /**
@@ -148,11 +183,26 @@ public class PetEntity implements Serializable
      */
     public String getHumanAge()
     {
-        String humanAge = "";
+        Double humanAge = 0.0;
 
-        humanAge = "3歳くらい";     //TODO
+        //犬年齢を取得
+        Integer[] age = getPetAge();
+        Integer year = age[0];
+        Integer month = age[1];
 
-        return humanAge;
+        //2歳まで
+        if (year < Config.AGE_CAL_BORDER || (year == Config.AGE_CAL_BORDER && month == 0)) {
+            humanAge += year * getDogMaster().getOverThreeAge();
+            humanAge += month * (getDogMaster().getOverThreeAge() / 12);
+        }
+        //2歳以上
+        else {
+            humanAge += Config.AGE_CAL_BORDER * getDogMaster().getBeforeTwoAge();
+            humanAge += (year - Config.AGE_CAL_BORDER) * getDogMaster().getOverThreeAge();
+            humanAge += month * (getDogMaster().getOverThreeAge() / 12);
+        }
+
+        return Math.round(humanAge) + "歳くらい";
     }
 
     /**
@@ -206,26 +256,19 @@ public class PetEntity implements Serializable
     }
 
     /**
-     * 種類名をセット
+     * 表示用種類を返す
      * 
-     * @param String value
-     * @return void
+     * @return String
      * @access public
      */
-    public void setKindName(String value)
+    public String getKindDisp()
     {
-        mKindName = value;
-    }
-
-    /**
-     * 種類名を返す
-     * 
-     * @return String mKindName
-     * @access public
-     */
-    public String getKindName()
-    {
-        return mKindName;
+        //種類にその他という文字列が入っていたら、その他フラグを立てる
+        if (getDogMaster().getKind().indexOf("その他") != -1) {
+            return getDogMaster().getKind().replaceAll("その他", "");
+        } else {
+            return getDogMaster().getKind();
+        }
     }
 
     /**

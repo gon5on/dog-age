@@ -1,7 +1,6 @@
 package com.tmrnk.gongon.dogage.activity;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -20,14 +19,13 @@ import com.tmrnk.gongon.dogage.R;
 import com.tmrnk.gongon.dogage.common.AndroidUtils;
 import com.tmrnk.gongon.dogage.common.DateUtils;
 import com.tmrnk.gongon.dogage.common.Utils;
+import com.tmrnk.gongon.dogage.config.Config;
 import com.tmrnk.gongon.dogage.dialog.DatePickerDialog;
 import com.tmrnk.gongon.dogage.dialog.ErrorDialog;
 import com.tmrnk.gongon.dogage.dialog.KindSelectDialog;
+import com.tmrnk.gongon.dogage.entity.PetEntity;
 import com.tmrnk.gongon.dogage.model.AppSQLiteOpenHelper;
-import com.tmrnk.gongon.dogage.model.DogMasterDao;
-import com.tmrnk.gongon.dogage.model.DogMasterEntity;
 import com.tmrnk.gongon.dogage.model.PetDao;
-import com.tmrnk.gongon.dogage.model.PetEntity;
 import com.tmrnk.gongon.dogage.validate.Validate;
 
 /**
@@ -163,18 +161,14 @@ public class InputActivity extends AppActivity
                 mKind = mSavedItem.getKind();
 
                 String[] birthday = mSavedItem.getBirthday().split("-");
-                EditText editTextBirthday = (EditText) mView.findViewById(R.id.editTextBirthday);
-                editTextBirthday.setText(String.format("%s年%s月%s日", birthday[0], birthday[1], birthday[2]));
+                Button buttonBirthday = (Button) mView.findViewById(R.id.buttonBirthday);
+                buttonBirthday.setText(String.format("%s年%s月%s日", birthday[0], birthday[1], birthday[2]));
 
-                EditText editTextKind = (EditText) mView.findViewById(R.id.editTextKind);
-                editTextKind.setText(mSavedItem.getKindName());
+                Button buttonKind = (Button) mView.findViewById(R.id.buttonKind);
+                buttonKind.setText(mSavedItem.getKindDisp());
 
                 EditText editTextName = (EditText) mView.findViewById(R.id.editTextName);
                 editTextName.setText(mSavedItem.getName());
-            }
-            //新規の場合
-            else {
-                mBirthday = new DateUtils().format(DateUtils.FMT_DATE);
             }
         }
 
@@ -187,9 +181,8 @@ public class InputActivity extends AppActivity
         public void setClickEvent()
         {
             //誕生日
-            EditText editTextBirthday = (EditText) mView.findViewById(R.id.editTextBirthday);
-            editTextBirthday.setFocusable(false);
-            editTextBirthday.setOnClickListener(new OnClickListener() {
+            Button buttonBirthday = (Button) mView.findViewById(R.id.buttonBirthday);
+            buttonBirthday.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     DatePickerDialog datePickerDialog = DatePickerDialog.getInstance(mBirthday);
@@ -199,12 +192,11 @@ public class InputActivity extends AppActivity
             });
 
             //種類
-            final KindSelectDialog kindSelectDialog = KindSelectDialog.getInstance(getDogMasterList());
+            final KindSelectDialog kindSelectDialog = KindSelectDialog.getInstance(Config.getDogMastersList());
             kindSelectDialog.setCallbackListener(this);
 
-            EditText editTextKind = (EditText) mView.findViewById(R.id.editTextKind);
-            editTextKind.setFocusable(false);
-            editTextKind.setOnClickListener(new OnClickListener() {
+            Button buttonKind = (Button) mView.findViewById(R.id.buttonKind);
+            buttonKind.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     kindSelectDialog.show(getFragmentManager(), "dialog");
@@ -311,33 +303,6 @@ public class InputActivity extends AppActivity
         }
 
         /**
-         * 種類選択ダイアログ用の犬マスタ一覧を取得
-         * 
-         * @return ArrayList<DogMasterEntity>
-         * @access private
-         */
-        private ArrayList<DogMasterEntity> getDogMasterList()
-        {
-            ArrayList<DogMasterEntity> data = null;
-            SQLiteDatabase db = null;
-
-            try {
-                AppSQLiteOpenHelper helper = new AppSQLiteOpenHelper(getActivity());
-                db = helper.getWritableDatabase();
-
-                DogMasterDao dogMasterDao = new DogMasterDao(getActivity());
-                data = dogMasterDao.findForKindSelectDialog(db);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                db.close();
-            }
-
-            return data;
-        }
-
-        /**
          * 種類選択ダイアログでいずれかが選択された
          * 
          * @param Integer kind
@@ -349,8 +314,8 @@ public class InputActivity extends AppActivity
         {
             mKind = kind;
 
-            EditText editTextKind = (EditText) mView.findViewById(R.id.editTextKind);
-            editTextKind.setText(name);
+            Button buttonKind = (Button) mView.findViewById(R.id.buttonKind);
+            buttonKind.setText(name);
         }
 
         /**
@@ -366,8 +331,8 @@ public class InputActivity extends AppActivity
             mBirthday = date;
 
             String[] birthday = mBirthday.split("-");
-            EditText editTextBirthday = (EditText) mView.findViewById(R.id.editTextBirthday);
-            editTextBirthday.setText(String.format("%s年%s月%s日", birthday[0], birthday[1], birthday[2]));
+            Button buttonBirthday = (Button) mView.findViewById(R.id.buttonBirthday);
+            buttonBirthday.setText(String.format("%s年%s月%s日", birthday[0], birthday[1], birthday[2]));
         }
 
         /**

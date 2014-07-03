@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_input"
         android:ems="10"
+        android:inputType="text"
         android:textColor="@color/text"
         android:textSize="20sp" >
 
@@ -62,12 +63,13 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/editTextBirthday"
+    <Button
+        android:id="@+id/buttonBirthday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_input"
-        android:ems="10"
+        android:gravity="left"
+        android:minHeight="0dp"
         android:textColor="@color/text"
         android:textSize="20sp" />
 
@@ -94,12 +96,13 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/editTextKind"
+    <Button
+        android:id="@+id/buttonKind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_input"
-        android:ems="10"
+        android:gravity="left"
+        android:minHeight="0dp"
         android:textColor="@color/text"
         android:textSize="20sp" />
 

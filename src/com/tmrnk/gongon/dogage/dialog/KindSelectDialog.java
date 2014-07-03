@@ -15,7 +15,7 @@ import android.widget.ListView;
 
 import com.tmrnk.gongon.dogage.R;
 import com.tmrnk.gongon.dogage.dialog.KindSelectDialog.CallbackListener;
-import com.tmrnk.gongon.dogage.model.DogMasterEntity;
+import com.tmrnk.gongon.dogage.entity.DogMasterEntity;
 import com.tmrnk.gongon.dogage.module.KindListAdapter;
 
 /**
@@ -72,11 +72,14 @@ public class KindSelectDialog extends AppDialog<CallbackListener>
         listViewKind.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> items, View view, int position, long id) {
                 if (mCallbackListener != null) {
-                    mCallbackListener.onClickKindSelectDialog(data.get(position).getId(), data.get(position).getKindName());
+                    mCallbackListener.onClickKindSelectDialog(data.get(position).getId(), data.get(position).getKind());
                 }
                 dismiss();
             }
         });
+
+        //スクロールビューのオーバースクロールで端の色を変えないように
+        listViewKind.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
         return dialog;
     }

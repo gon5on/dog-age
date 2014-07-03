@@ -44,11 +44,6 @@ public class AppSQLiteOpenHelper extends SQLiteOpenHelper
 
             //テーブル作成
             db.execSQL(PetDao.CREATE_TABLE_SQL);
-            db.execSQL(DogMasterDao.CREATE_TABLE_SQL);
-
-            //初期データ投入
-            DogMasterDao dogMasterDao = new DogMasterDao(mContext);
-            dogMasterDao.insertInit(db);
 
             db.setTransactionSuccessful();
 

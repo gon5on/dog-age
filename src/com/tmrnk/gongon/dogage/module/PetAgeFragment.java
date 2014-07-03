@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.tmrnk.gongon.dogage.R;
 import com.tmrnk.gongon.dogage.activity.PetAgeActivity;
-import com.tmrnk.gongon.dogage.model.PetEntity;
+import com.tmrnk.gongon.dogage.entity.PetEntity;
 
 /**
  * ペット年齢フラグメント
@@ -61,13 +61,13 @@ public class PetAgeFragment extends Fragment
         textViewName.setText(mItem.getName());
 
         TextView textViewKind = (TextView) mView.findViewById(R.id.textViewKind);
-        textViewKind.setText(mItem.getKindName());
+        textViewKind.setText(mItem.getKindDisp());
 
         TextView textViewBirthday = (TextView) mView.findViewById(R.id.textViewBirthday);
         textViewBirthday.setText(mItem.getDispBirthday());
 
         TextView textViewPetAge = (TextView) mView.findViewById(R.id.textViewPetAge);
-        textViewPetAge.setText(mItem.getPetAge());
+        textViewPetAge.setText(mItem.getPetAgeDisp());
 
         TextView textViewHumanAge = (TextView) mView.findViewById(R.id.textViewHumanAge);
         textViewHumanAge.setText(mItem.getHumanAge());

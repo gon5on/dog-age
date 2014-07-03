@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 
 import com.tmrnk.gongon.dogage.R;
+import com.tmrnk.gongon.dogage.common.DateUtils;
 import com.tmrnk.gongon.dogage.dialog.DatePickerDialog.CallbackListener;
 
 /**
@@ -28,6 +29,11 @@ public class DatePickerDialog extends AppDialog<CallbackListener>
     public static DatePickerDialog getInstance(String date)
     {
         DatePickerDialog dialog = new DatePickerDialog();
+
+        //日付が空で渡ってきたときは、今日の日付を入れておく
+        if (date == null) {
+            date = new DateUtils().format(DateUtils.FMT_DATE);
+        }
 
         Bundle bundle = new Bundle();
         bundle.putString("date", date);

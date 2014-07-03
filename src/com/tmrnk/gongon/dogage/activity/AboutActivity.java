@@ -1,14 +1,23 @@
 package com.tmrnk.gongon.dogage.activity;
 
+import java.util.ArrayList;
+
 import android.app.Fragment;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.tmrnk.gongon.dogage.R;
+import com.tmrnk.gongon.dogage.common.AndroidUtils;
+import com.tmrnk.gongon.dogage.config.Config;
+import com.tmrnk.gongon.dogage.entity.DogMasterEntity;
 
 /**
  * アプリについてアクテビティ
@@ -100,7 +109,84 @@ public class AboutActivity extends AppActivity
 
             mView = inflater.inflate(R.layout.fragment_about, container, false);
 
+            //表組作成
+            createDogMasterTable();
+
+            //スクロールビューのオーバースクロールで端の色を変えないように
+            container.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
             return mView;
+        }
+
+        /**
+         * 表組作成
+         * 
+         * @return void
+         * @access private
+         */
+        private void createDogMasterTable()
+        {
+            String[] label = new String[] { Config.LABEL_SMALL, Config.LABEL_MEDIUM, Config.LABEL_LARGE };
+            Double[] age = new Double[] { Config.BEFORE_TWO_AGE_SMALL, Config.BEFORE_TWO_AGE_MEDIUM, Config.BEFORE_TWO_AGE_LAEGE };
+
+            TableLayout tableLayout = (TableLayout) mView.findViewById(R.id.tableLayout);
+
+            ArrayList<DogMasterEntity> data = Config.getDogMastersList();
+
+            TableRow.LayoutParams rowLayout = new TableRow.LayoutParams();
+            rowLayout.span = 2;
+
+            for (int i = -3; i < data.size(); i++) {
+                if (i == 0) {
+                    TableRow tableRow = new TableRow(getActivity());
+                    tableLayout.addView(tableRow);
+
+                    TextView textViewLabel = new TextView(getActivity());
+                    textViewLabel.setTextSize(15);
+                    textViewLabel.setTextColor(getResources().getColor(R.color.text));
+                    textViewLabel.setText("●2歳以上");
+                    textViewLabel.setPadding(0, AndroidUtils.dpToPixel(getActivity(), 10.0), 0, 0);
+                    tableRow.addView(textViewLabel);
+                }
+
+                TableRow tableRow = new TableRow(getActivity());
+                tableLayout.addView(tableRow);
+
+                TextView textViewKind = new TextView(getActivity());
+                textViewKind.setTextSize(12);
+                textViewKind.setBackgroundResource(R.drawable.bg_table_cell);
+                textViewKind.setTextColor(getResources().getColor(R.color.text));
+
+                if (i < 0) {
+                    textViewKind.setText(label[i + 3]);
+                    tableRow.addView(textViewKind);
+                }
+                else if (data.get(i).getLabelFlag() == 1) {
+                    textViewKind.setText(data.get(i).getKind());
+                    textViewKind.setBackgroundResource(R.drawable.bg_table_cell_label);
+                    textViewKind.setTextColor(getResources().getColor(R.color.textHighlight));
+                    tableRow.addView(textViewKind, rowLayout);
+                } else {
+                    textViewKind.setText(data.get(i).getKind());
+                    tableRow.addView(textViewKind);
+                }
+
+                if (i < 0 || data.get(i).getLabelFlag() == 0) {
+                    TextView textViewAge = new TextView(getActivity());
+                    textViewAge.setTextSize(12);
+                    textViewAge.setTextColor(getResources().getColor(R.color.text));
+                    textViewAge.setBackgroundResource(R.drawable.bg_table_cell);
+                    textViewAge.setGravity(Gravity.RIGHT);
+
+                    if (i < 0) {
+                        textViewAge.setText(String.valueOf(age[i + 3]) + "歳/年");
+                    } else {
+                        textViewAge.setText(String.valueOf(data.get(i).getOverThreeAge()) + "歳/年");
+                    }
+
+                    tableRow.addView(textViewAge);
+                }
+            }
         }
     }
 }

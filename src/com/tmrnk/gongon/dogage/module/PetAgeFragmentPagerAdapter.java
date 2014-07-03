@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.tmrnk.gongon.dogage.model.PetEntity;
+import com.tmrnk.gongon.dogage.entity.PetEntity;
 
 /**
  * ページアダプタ―

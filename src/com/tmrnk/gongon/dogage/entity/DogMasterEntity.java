@@ -1,6 +1,8 @@
-package com.tmrnk.gongon.dogage.model;
+package com.tmrnk.gongon.dogage.entity;
 
 import java.io.Serializable;
+
+import com.tmrnk.gongon.dogage.config.Config;
 
 /**
  * 犬マスタエンティティクラス
@@ -12,9 +14,9 @@ public class DogMasterEntity implements Serializable
     private static final long serialVersionUID = 1L;
 
     private Integer mId;                                        //ID
-    private String mKindName;                                   //種類名
+    private String mKind;                                       //種類名
     private Integer mCategory;                                  //カテゴリ
-    private Integer mOtherFlag;                                 //その他フラグ
+    private Double mOverThreeAge;                               //3歳以上、1年で取る歳
     private Integer mLabelFlag = 0;                             //ラベルフラグ(種類選択ダイアログでしか使わない)
     private String mCreated;                                    //作成日時
     private String mModified;                                   //更新日時
@@ -49,20 +51,61 @@ public class DogMasterEntity implements Serializable
      * @return void
      * @access public
      */
-    public void setKindName(String value)
+    public void setKind(String value)
     {
-        mKindName = value;
+        mKind = value;
     }
 
     /**
      * 種類を返す
      * 
-     * @return String mKindName
+     * @return String mKind
      * @access public
      */
-    public String getKindName()
+    public String getKind()
     {
-        return mKindName;
+        return mKind;
+    }
+
+    /**
+     * 2歳以上1年間で取る年齢を返す
+     * 
+     * @return Double
+     * @access public
+     */
+    public Double getBeforeTwoAge()
+    {
+        if (getCategory() == Config.CATEGORY_SMALL) {
+            return Config.BEFORE_TWO_AGE_SMALL;
+        }
+        else if (getCategory() == Config.CATEGORY_MEDIUM) {
+            return Config.BEFORE_TWO_AGE_MEDIUM;
+        } else {
+            return Config.BEFORE_TWO_AGE_LAEGE;
+        }
+    }
+
+    /**
+     * 2歳以上1年間で取る年齢をセット
+     * 
+     * @param String value
+     * @return void
+     * @access public
+     */
+    public void setOverThreeAge(Double value)
+    {
+        mOverThreeAge = value;
+    }
+
+    /**
+     * 2歳以上1年間で取る年齢を返す
+     * 
+     * @return String mOverThreeAge
+     * @access public
+     */
+    public Double getOverThreeAge()
+    {
+        return mOverThreeAge;
     }
 
     /**
@@ -89,18 +132,6 @@ public class DogMasterEntity implements Serializable
     }
 
     /**
-     * その他フラグをセット
-     * 
-     * @param Integer value
-     * @return void
-     * @access public
-     */
-    public void setOtherFlag(Integer value)
-    {
-        mOtherFlag = value;
-    }
-
-    /**
      * その他フラグを返す
      * 
      * @return Integer mOtherFlag
@@ -108,7 +139,12 @@ public class DogMasterEntity implements Serializable
      */
     public Integer getOtherFlag()
     {
-        return mOtherFlag;
+        //種類にその他という文字列が入っていたら、その他フラグを立てる
+        if (getKind().indexOf("その他") != -1) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     /**

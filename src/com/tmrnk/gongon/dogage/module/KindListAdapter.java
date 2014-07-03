@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tmrnk.gongon.dogage.R;
-import com.tmrnk.gongon.dogage.model.DogMasterEntity;
+import com.tmrnk.gongon.dogage.entity.DogMasterEntity;
 
 /**
  * 種類一覧アダプター
@@ -64,7 +64,7 @@ public class KindListAdapter extends ArrayAdapter<DogMasterEntity>
             LinearLayoutLabel.setVisibility(View.VISIBLE);
 
             TextView textViewLabel = (TextView) convertView.findViewById(R.id.textViewLabel);
-            textViewLabel.setText(item.getKindName());
+            textViewLabel.setText(item.getKind());
 
             isEnabled(position);	//クリックできないように
         }
@@ -72,7 +72,7 @@ public class KindListAdapter extends ArrayAdapter<DogMasterEntity>
         else {
             TextView textViewKind = (TextView) convertView.findViewById(R.id.textViewKind);
             textViewKind.setVisibility(View.VISIBLE);
-            textViewKind.setText(item.getKindName());
+            textViewKind.setText(item.getKind());
 
             LinearLayout LinearLayoutLabel = (LinearLayout) convertView.findViewById(R.id.LinearLayoutLabel);
             LinearLayoutLabel.setVisibility(View.GONE);

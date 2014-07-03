@@ -16,9 +16,9 @@ import com.tmrnk.gongon.dogage.R;
 import com.tmrnk.gongon.dogage.common.AndroidUtils;
 import com.tmrnk.gongon.dogage.dialog.ConfirmDialog;
 import com.tmrnk.gongon.dogage.dialog.ErrorDialog;
+import com.tmrnk.gongon.dogage.entity.PetEntity;
 import com.tmrnk.gongon.dogage.model.AppSQLiteOpenHelper;
 import com.tmrnk.gongon.dogage.model.PetDao;
-import com.tmrnk.gongon.dogage.model.PetEntity;
 import com.tmrnk.gongon.dogage.module.PetAgeFragment;
 import com.tmrnk.gongon.dogage.module.PetAgeFragmentPagerAdapter;
 

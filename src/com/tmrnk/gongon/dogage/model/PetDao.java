@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.tmrnk.gongon.dogage.common.DateUtils;
+import com.tmrnk.gongon.dogage.entity.PetEntity;
 
 /**
  * ペットテーブルへのデータアクセスオブジェクト
@@ -128,9 +129,7 @@ public class PetDao extends AppDao
 
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("SELECT * FROM %s ", TABLE_NAME));
-        sb.append(String.format("LEFT JOIN %s ", DogMasterDao.TABLE_NAME));
-        sb.append(String.format("ON %s.%s = %s.%s ", TABLE_NAME, COLUMN_KIND, DogMasterDao.TABLE_NAME, DogMasterDao.COLUMN_ID));
-        sb.append(String.format("ORDER BY %s.%s DESC", TABLE_NAME, COLUMN_ID));
+        sb.append(String.format("ORDER BY %s DESC", COLUMN_ID));
 
         Cursor cursor = db.rawQuery(sb.toString(), null);
 
@@ -141,7 +140,6 @@ public class PetDao extends AppDao
                 values.setName(getString(cursor, COLUMN_NAME));
                 values.setBirthday(getString(cursor, COLUMN_BIRTHDAY));
                 values.setKind(getInteger(cursor, COLUMN_KIND));
-                values.setKindName(getString(cursor, DogMasterDao.COLUMN_KIND_NAME));
                 values.setCreated(getString(cursor, COLUMN_CREATED));
                 values.setModified(getString(cursor, COLUMN_MODIFIED));
                 data.add(values);
