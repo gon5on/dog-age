@@ -21,10 +21,12 @@
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/sample"
+            android:background="@drawable/sample2"
             android:gravity="center_vertical|center_horizontal"
             android:orientation="vertical"
             android:paddingBottom="25dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:paddingTop="25dp" >
 
             <TextView
@@ -63,10 +65,19 @@
             android:background="@drawable/sample"
             android:padding="10dp" >
 
+            <ImageView
+                android:id="@+id/imageViewIcon1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/img_foot" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/imageViewIcon1"
                 android:text="犬年齢"
                 android:textColor="@color/text"
                 android:textSize="18sp" />
@@ -92,10 +103,19 @@
             android:background="@drawable/sample"
             android:padding="10dp" >
 
+            <ImageView
+                android:id="@+id/imageViewIcon2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/img_foot" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/imageViewIcon2"
                 android:text="人間年齢"
                 android:textColor="@color/text"
                 android:textSize="18sp" />
@@ -120,11 +140,20 @@
             android:background="@drawable/sample"
             android:padding="10dp" >
 
+            <ImageView
+                android:id="@+id/imageViewIcon3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/img_foot" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="生まれてから"
+                android:layout_toRightOf="@id/imageViewIcon3"
+                android:text="生まれて"
                 android:textColor="@color/text"
                 android:textSize="18sp" />
 
