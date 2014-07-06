@@ -10,9 +10,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingBottom="30dp"
-        android:paddingTop="30dp" >
+        android:orientation="vertical" >
 
         <LinearLayout
             android:id="@+id/linearLayout1"
@@ -21,7 +19,7 @@
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/sample2"
+            android:background="@drawable/img_frame_above2"
             android:gravity="center_vertical|center_horizontal"
             android:orientation="vertical"
             android:paddingBottom="25dp"
@@ -57,12 +55,13 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:id="@+id/relativeLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/sample"
+            android:background="@drawable/img_frame_under2"
             android:padding="10dp" >
 
             <ImageView
@@ -94,13 +93,14 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/sample"
+            android:background="@drawable/img_frame_under2"
             android:padding="10dp" >
 
             <ImageView
@@ -132,12 +132,13 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/relativeLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/sample"
+            android:background="@drawable/img_frame_under2"
             android:padding="10dp" >
 
             <ImageView

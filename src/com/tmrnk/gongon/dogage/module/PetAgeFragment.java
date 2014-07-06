@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tmrnk.gongon.dogage.R;
@@ -18,7 +20,12 @@ import com.tmrnk.gongon.dogage.entity.PetEntity;
  */
 public class PetAgeFragment extends Fragment
 {
+    private static final Integer[] BG_ABOVE = new Integer[] { R.drawable.img_frame_above1, R.drawable.img_frame_above2, R.drawable.img_frame_above3 };
+    private static final Integer[] BG_UNDER = new Integer[] { R.drawable.img_frame_under1, R.drawable.img_frame_under2, R.drawable.img_frame_under3 };
+    private static final Integer BG_CNT = 3;
+
     private PetEntity mItem = null;
+    private Integer mPageNum = 0;
     private View mView = null;
 
     /**
@@ -38,6 +45,7 @@ public class PetAgeFragment extends Fragment
         // データを取得
         Bundle bundle = getArguments();
         mItem = (PetEntity) bundle.getSerializable("item");
+        mPageNum = bundle.getInt("pageNum");
 
         // レイアウトの指定
         mView = inflater.inflate(R.layout.fragment_pet_age, container, false);
@@ -74,5 +82,18 @@ public class PetAgeFragment extends Fragment
 
         TextView textViewDays = (TextView) mView.findViewById(R.id.textViewDays);
         textViewDays.setText(mItem.getDaysFromBorn());
+
+        LinearLayout linearLayout1 = (LinearLayout) mView.findViewById(R.id.linearLayout1);
+        linearLayout1.setBackgroundResource(BG_ABOVE[mPageNum % BG_CNT]);
+
+        RelativeLayout relativeLayout1 = (RelativeLayout) mView.findViewById(R.id.relativeLayout1);
+        relativeLayout1.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
+
+        RelativeLayout relativeLayout2 = (RelativeLayout) mView.findViewById(R.id.relativeLayout2);
+        relativeLayout2.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
+
+        RelativeLayout relativeLayout3 = (RelativeLayout) mView.findViewById(R.id.relativeLayout3);
+        relativeLayout3.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
+
     }
 }
