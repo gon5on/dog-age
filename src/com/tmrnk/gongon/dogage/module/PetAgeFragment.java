@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tmrnk.gongon.dogage.R;
-import com.tmrnk.gongon.dogage.activity.PetAgeActivity;
 import com.tmrnk.gongon.dogage.entity.PetEntity;
 
 /**
@@ -50,9 +49,8 @@ public class PetAgeFragment extends Fragment
         // レイアウトの指定
         mView = inflater.inflate(R.layout.fragment_pet_age, container, false);
 
-        //viewPager初回表示の場合は、フラグメントを読み込んだタイミングでページを表示する
-        PetAgeActivity activity = (PetAgeActivity) getActivity();
-        activity.createInitPage();
+        // 画面表示
+        setDispItem();
 
         return mView;
     }
@@ -61,9 +59,9 @@ public class PetAgeFragment extends Fragment
      * 画面表示
      * 
      * @return void
-     * @access public
+     * @access private
      */
-    public void setDispItem()
+    private void setDispItem()
     {
         TextView textViewName = (TextView) mView.findViewById(R.id.textViewName);
         textViewName.setText(mItem.getName());

@@ -19,7 +19,7 @@
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/img_frame_above2"
+            android:background="@drawable/img_frame_above1"
             android:gravity="center_vertical|center_horizontal"
             android:orientation="vertical"
             android:paddingBottom="25dp"
@@ -31,7 +31,7 @@
                 android:id="@+id/textViewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="マカロン"
+                android:text=""
                 android:textColor="@color/text"
                 android:textSize="28sp"
                 android:textStyle="bold" />
@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="トイカッププードル"
+                android:text=""
                 android:textColor="@color/text"
                 android:textSize="18sp" />
 
@@ -49,7 +49,7 @@
                 android:id="@+id/textViewBirthday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2011年3月10日生まれ"
+                android:text=""
                 android:textColor="@color/text"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -61,7 +61,7 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/img_frame_under2"
+            android:background="@drawable/img_frame_under1"
             android:padding="10dp" >
 
             <ImageView
@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="3歳11ヶ月"
+                android:text=""
                 android:textColor="@color/text"
                 android:textSize="28sp" />
         </RelativeLayout>
@@ -100,7 +100,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/img_frame_under2"
+            android:background="@drawable/img_frame_under1"
             android:padding="10dp" >
 
             <ImageView
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="35歳くらい"
+                android:text=""
                 android:textColor="@color/text"
                 android:textSize="28sp" />
         </RelativeLayout>
@@ -138,7 +138,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/img_frame_under2"
+            android:background="@drawable/img_frame_under1"
             android:padding="10dp" >
 
             <ImageView
@@ -164,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="9,545日目"
+                android:text=""
                 android:textColor="@color/text"
                 android:textSize="28sp" />
         </RelativeLayout>

@@ -19,7 +19,6 @@ import com.tmrnk.gongon.dogage.dialog.ErrorDialog;
 import com.tmrnk.gongon.dogage.entity.PetEntity;
 import com.tmrnk.gongon.dogage.model.AppSQLiteOpenHelper;
 import com.tmrnk.gongon.dogage.model.PetDao;
-import com.tmrnk.gongon.dogage.module.PetAgeFragment;
 import com.tmrnk.gongon.dogage.module.PetAgeFragmentPagerAdapter;
 
 /**
@@ -33,8 +32,6 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
     private PetAgeFragmentPagerAdapter adapter = null;      // ページアダプター
     private ArrayList<PetEntity> mData = null;              // ペット情報一覧
     private Integer mPageNum = 0;                           // 現在表示中のページ数
-
-    private Integer mInitFlag = 1;                          //viewPager初回表示フラグ
 
     /**
      * onCreate
@@ -121,21 +118,6 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
     }
 
     /**
-     * viewPager初回表示の場合は、ページを生成する
-     * フラグメントから呼ばれる
-     * 
-     * @return void
-     * @access public
-     */
-    public void createInitPage()
-    {
-        if (mInitFlag == 1) {
-            mInitFlag = 0;
-            flickEvent();
-        }
-    }
-
-    /**
      * ページャ作成
      * 
      * @return void
@@ -143,7 +125,7 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
      */
     private void createViewPager()
     {
-        // ページングの○を動的にページ分生成
+        // ページングを動的に生成
         createPaging();
 
         // ページアダプタ生成
@@ -154,10 +136,9 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
 
-        //前画面からページ数がわたってくれば、そのページを表示する（0がくれば最終ページを表示）
+        //前画面からページ数がわたってくれば、そのページを表示する
         if (getIntent().hasExtra("pageNum")) {
             mPageNum = getIntent().getIntExtra("pageNum", 0);
-
             viewPager.setCurrentItem(mPageNum);
         }
 
@@ -234,32 +215,30 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
      */
     public void flickEvent()
     {
-        // 1匹以外の場合はページング
-        if (mData.size() != 1) {
-            ImageView now = (ImageView) findViewById(mPageNum);
-            now.setImageResource(R.drawable.img_page_on);
-
-            if (mData.size() != 1) {
-                if (mPageNum == 0) {
-                    ImageView next = (ImageView) findViewById(mPageNum + 1);
-                    next.setImageResource(R.drawable.img_page_off);
-                }
-                else if (mPageNum == adapter.getCount() - 1) {
-                    ImageView back = (ImageView) findViewById(mPageNum - 1);
-                    back.setImageResource(R.drawable.img_page_off);
-                }
-                else {
-                    ImageView next = (ImageView) findViewById(mPageNum + 1);
-                    ImageView back = (ImageView) findViewById(mPageNum - 1);
-                    next.setImageResource(R.drawable.img_page_off);
-                    back.setImageResource(R.drawable.img_page_off);
-                }
-            }
+        // 1匹の場合はページング非表示
+        if (mData.size() == 1) {
+            return;
         }
 
-        // フラグメント内の処理
-        PetAgeFragment fragment = (PetAgeFragment) adapter.instantiateItem(viewPager, mPageNum);
-        fragment.setDispItem();
+        ImageView now = (ImageView) findViewById(mPageNum);
+        now.setImageResource(R.drawable.img_page_on);
+
+        if (mData.size() != 1) {
+            if (mPageNum == 0) {
+                ImageView next = (ImageView) findViewById(mPageNum + 1);
+                next.setImageResource(R.drawable.img_page_off);
+            }
+            else if (mPageNum == adapter.getCount() - 1) {
+                ImageView back = (ImageView) findViewById(mPageNum - 1);
+                back.setImageResource(R.drawable.img_page_off);
+            }
+            else {
+                ImageView next = (ImageView) findViewById(mPageNum + 1);
+                ImageView back = (ImageView) findViewById(mPageNum - 1);
+                next.setImageResource(R.drawable.img_page_off);
+                back.setImageResource(R.drawable.img_page_off);
+            }
+        }
     }
 
     /**
