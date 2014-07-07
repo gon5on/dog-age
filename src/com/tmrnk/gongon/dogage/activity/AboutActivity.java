@@ -164,7 +164,7 @@ public class AboutActivity extends AppActivity
                 else if (data.get(i).getLabelFlag() == 1) {
                     textViewKind.setText(data.get(i).getKind());
                     textViewKind.setBackgroundResource(R.drawable.bg_table_cell_label);
-                    textViewKind.setTextColor(getResources().getColor(R.color.textHighlight));
+                    textViewKind.setTextColor(getResources().getColor(R.color.text_highlight));
                     tableRow.addView(textViewKind, rowLayout);
                 } else {
                     textViewKind.setText(data.get(i).getKind());

@@ -50,7 +50,7 @@
             android:layout_weight="1"
             android:background="@drawable/btn2"
             android:text="キャンセル"
-            android:textColor="@color/textButton"
+            android:textColor="@color/text_button"
             android:textSize="16sp" />
 
         <Button
@@ -61,7 +61,7 @@
             android:layout_weight="1"
             android:background="@drawable/btn"
             android:text="OK"
-            android:textColor="@color/textButton"
+            android:textColor="@color/text_button"
             android:textSize="16sp" />
     </LinearLayout>
 

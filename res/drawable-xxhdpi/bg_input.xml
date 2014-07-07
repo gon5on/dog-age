@@ -3,9 +3,9 @@
 
     <!-- フォーカス時 -->
     <item android:state_focused="true"><shape android:shape="rectangle">
-            <solid android:color="@color/bgInput" />
+            <solid android:color="@color/bg_input" />
 
-            <stroke android:width="2dp" android:color="@color/bgInputFrameOn" />
+            <stroke android:width="2dp" android:color="@color/bg_input_frame_on" />
 
             <corners android:radius="8dp" />
 
@@ -14,9 +14,9 @@
 
     <!-- タップ時 -->
     <item android:state_pressed="true"><shape android:shape="rectangle">
-            <solid android:color="@color/bgInput" />
+            <solid android:color="@color/bg_input" />
 
-            <stroke android:width="2dp" android:color="@color/bgInputFrameOn" />
+            <stroke android:width="2dp" android:color="@color/bg_input_frame_on" />
 
             <corners android:radius="8dp" />
 
@@ -25,9 +25,9 @@
 
     <!-- 通常時 -->
     <item android:state_pressed="false"><shape android:shape="rectangle">
-            <solid android:color="@color/bgInput" />
+            <solid android:color="@color/bg_input" />
 
-            <stroke android:width="2dp" android:color="@color/bgInputFrameOff" />
+            <stroke android:width="2dp" android:color="@color/bg_input_frame_off" />
 
             <corners android:radius="8dp" />
 

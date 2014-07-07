@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">DogAge</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">いくつだワン？</string>
     <string name="action_add">追加</string>
     <string name="action_edit">編集</string>
     <string name="action_delete">削除</string>

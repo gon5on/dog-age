@@ -2,11 +2,11 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle" >
 
-    <solid android:color="@color/bgTableCellLabel" />
+    <solid android:color="@color/bg_table_cell_label" />
 
     <stroke
         android:width="0.5dp"
-        android:color="@color/bgTableCellFrame" />
+        android:color="@color/bg_table_cell_frame" />
 
     <padding
         android:bottom="3dp"

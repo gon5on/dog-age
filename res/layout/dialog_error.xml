@@ -48,7 +48,7 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/btn"
         android:text="OK"
-        android:textColor="@color/textButton"
+        android:textColor="@color/text_button"
         android:textSize="16sp" />
 
 </LinearLayout>
