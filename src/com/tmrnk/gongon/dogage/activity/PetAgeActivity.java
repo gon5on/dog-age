@@ -47,6 +47,11 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
         setContentView(R.layout.activity_pet_age);
 
         if (savedInstanceState == null) {
+            //ページ数が渡ってきたら取得する
+            if (getIntent().hasExtra("pageNum")) {
+                mPageNum = getIntent().getIntExtra("pageNum", 0);
+            }
+
             //ペット情報一覧を取得
             getPetList();
 
@@ -135,12 +140,7 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
         // ページアダプタをセット
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
-
-        //前画面からページ数がわたってくれば、そのページを表示する
-        if (getIntent().hasExtra("pageNum")) {
-            mPageNum = getIntent().getIntExtra("pageNum", 0);
-            viewPager.setCurrentItem(mPageNum);
-        }
+        viewPager.setCurrentItem(mPageNum);
 
         // ページフリック遷移のイベントを受け取る
         viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -203,6 +203,11 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
                 ImageView imageViewPager = (ImageView) getLayoutInflater().inflate(R.layout.parts_pager, null);
                 imageViewPager.setId(i);
                 linearLayoutPager.addView(imageViewPager);
+
+                //表示ページはONにしておく
+                if (i == mPageNum) {
+                    imageViewPager.setImageResource(R.drawable.img_page_on);
+                }
             }
         }
     }
@@ -223,21 +228,19 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
         ImageView now = (ImageView) findViewById(mPageNum);
         now.setImageResource(R.drawable.img_page_on);
 
-        if (mData.size() != 1) {
-            if (mPageNum == 0) {
-                ImageView next = (ImageView) findViewById(mPageNum + 1);
-                next.setImageResource(R.drawable.img_page_off);
-            }
-            else if (mPageNum == adapter.getCount() - 1) {
-                ImageView back = (ImageView) findViewById(mPageNum - 1);
-                back.setImageResource(R.drawable.img_page_off);
-            }
-            else {
-                ImageView next = (ImageView) findViewById(mPageNum + 1);
-                ImageView back = (ImageView) findViewById(mPageNum - 1);
-                next.setImageResource(R.drawable.img_page_off);
-                back.setImageResource(R.drawable.img_page_off);
-            }
+        if (mPageNum == 0) {
+            ImageView next = (ImageView) findViewById(mPageNum + 1);
+            next.setImageResource(R.drawable.img_page_off);
+        }
+        else if (mPageNum == adapter.getCount() - 1) {
+            ImageView back = (ImageView) findViewById(mPageNum - 1);
+            back.setImageResource(R.drawable.img_page_off);
+        }
+        else {
+            ImageView next = (ImageView) findViewById(mPageNum + 1);
+            ImageView back = (ImageView) findViewById(mPageNum - 1);
+            next.setImageResource(R.drawable.img_page_off);
+            back.setImageResource(R.drawable.img_page_off);
         }
     }
 
