@@ -1,7 +1,5 @@
 package com.tmrnk.gongon.dogage.activity;
 
-import java.text.ParseException;
-
 import android.app.Fragment;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -27,6 +25,9 @@ import com.tmrnk.gongon.dogage.entity.PetEntity;
 import com.tmrnk.gongon.dogage.model.AppSQLiteOpenHelper;
 import com.tmrnk.gongon.dogage.model.PetDao;
 import com.tmrnk.gongon.dogage.validate.Validate;
+import com.tmrnk.gongon.dogage.validate.ValidateDate;
+import com.tmrnk.gongon.dogage.validate.ValidateLength;
+import com.tmrnk.gongon.dogage.validate.ValidateRequire;
 
 /**
  * 入力画面アクテビティ
@@ -225,25 +226,19 @@ public class InputActivity extends AppActivity
             String name = editTextName.getText().toString();
 
             //バリデーション
-            Validate validate = new Validate();
-            try {
-                validate.set();
-                validate.require.check(name, "お名前", null);
-                validate.length.maxCheck(name, "お名前", null, 10);
-                validate.set();
-                validate.require.check(mBirthday, "お誕生日", null);
-                validate.date.check(mBirthday, "お誕生日", null, DateUtils.FMT_DATE);
-                validate.date.isPastAllowToday(mBirthday, "お誕生日", null);
-                validate.set();
-                validate.require.check(mKind, "種類", null);
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            Validate v = new Validate();
+            ValidateRequire.check(v, name, "お名前");
+            ValidateLength.maxCheck(v, name, "お名前", 10);
+            ValidateRequire.check(v, mBirthday, "お誕生日");
+            ValidateDate.check(v, mBirthday, "お誕生日", DateUtils.FMT_DATE);
+            ValidateDate.isPastAllowToday(v, mBirthday, "お誕生日");
+            ValidateRequire.check(v, mKind, "種類");
 
             //エラーあり
-            if (validate.getResult() == false) {
-                ErrorDialog errorDialog = ErrorDialog.getInstance("エラー", Utils.implode(validate.getErrorMsg(), "\n"));
+            if (v.getResult() == false) {
+                String errorMsg = Utils.implode(v.getErrorMsgList(), "\n");
+
+                ErrorDialog errorDialog = ErrorDialog.getInstance("エラー", errorMsg);
                 errorDialog.show(getFragmentManager(), "dialog");
                 return;
             }
