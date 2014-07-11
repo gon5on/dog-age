@@ -74,7 +74,7 @@ public class InputActivity extends AppActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        //初回起動以外だったラ、アクションバーに戻るボタンをセット
+        //初回起動以外だったら、アクションバーに戻るボタンをセット
         if (getIntent().getIntExtra("initFlag", 0) == 0) {
             getMenuInflater().inflate(R.menu.input, menu);
         }

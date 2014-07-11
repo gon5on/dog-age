@@ -22,8 +22,8 @@ public class ValidateType
     public static final String MATCH_NUMBER = "^[0-9]+$";
     public static final String MATCH_ALPHABET = "^[a-zA-Z]+$";
     public static final String MATCH_ALPHANUMERIC = "^[a-zA-Z0-9]+$";
-    public static final String MATCH_HIRAGANA = "^[ぁ-ゞー～]+$";
-    public static final String MATCH_KATAKANA = "^[ァ-ヶー～]+$";
+    public static final String MATCH_HIRAGANA = "^[ぁ-ゞー～ 　]+$";
+    public static final String MATCH_KATAKANA = "^[ァ-ヶー～ 　]+$";
 
     public static final String MATCH_EMAIL = "([a-zA-Z0-9][a-zA-Z0-9_.+\\-]*)@(([a-zA-Z0-9][a-zA-Z0-9_\\-]+\\.)+[a-zA-Z]{2,6})";
     public static final String MATCH_URL = "^(https?|ftp)(:\\/\\/[-_.!~*\\'()a-zA-Z0-9;\\/?:\\@&=+\\$,%#]+)$";
