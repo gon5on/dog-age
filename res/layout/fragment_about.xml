@@ -56,8 +56,37 @@
                 android:autoLink="web"
                 android:text="http://www.bbc.com/news/magazine-22458083"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/text" />
+                android:textColor="@color/text"
+                android:textSize="12sp" />
         </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp"
+        android:paddingTop="20dp"
+        android:scaleType="fitXY"
+        android:src="@android:drawable/divider_horizontal_textfield" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_cc" />
+
+        <TextView
+            android:id="@+id/textViewCC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Edit and delete icons on ActionBar by PixelKit"
+            android:textColor="@color/text" />
     </LinearLayout>
 
 </LinearLayout>

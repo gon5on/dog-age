@@ -1,9 +1,12 @@
 package com.tmrnk.gongon.dogage.activity;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +29,9 @@ import com.tmrnk.gongon.dogage.entity.DogMasterEntity;
  */
 public class AboutActivity extends AppActivity
 {
+    private static final String PATTERN = "PixelKit";
+    private static final String URL = "http://pixelkit.com/";
+
     /**
      * onCreate
      * 
@@ -112,10 +118,34 @@ public class AboutActivity extends AppActivity
             //表組作成
             createDogMasterTable();
 
+            //ライセンスにリンクを貼る
+            linkLisence();
+
             //スクロールビューのオーバースクロールで端の色を変えないように
             container.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
             return mView;
+        }
+
+        /**
+         * ライセンスにリンクを貼る
+         * 
+         * @return void
+         * @access private
+         */
+        private void linkLisence()
+        {
+            TextView textViewCC = (TextView) mView.findViewById(R.id.textViewCC);
+
+            Pattern pattern = Pattern.compile(PATTERN);
+            Linkify.TransformFilter filter = new Linkify.TransformFilter() {
+                @Override
+                public String transformUrl(Matcher match, String url) {
+                    return URL;
+                }
+            };
+
+            Linkify.addLinks(textViewCC, pattern, URL, null, filter);
         }
 
         /**
