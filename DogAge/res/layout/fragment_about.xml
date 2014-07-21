@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:text="&quot;いくつだワン？&quot;は、ワンちゃんの年齢・人間に換算した年齢・生まれてからの日数がわかるアプリです。"
+        android:text="&quot;いくつだワン？&quot;は、ワンちゃんの年齢・人間に換算した年齢・生まれてからの日数がわかるシンプルなアプリです。"
         android:textColor="@color/text"
         android:textSize="15sp" />
 
