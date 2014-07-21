@@ -598,5 +598,23 @@
         <item>ぷーりー</item>
         <item>2</item>
     </string-array>
+    <string-array name="dog99">
+        <item>99</item>
+        <item>雑種（小型犬）</item>
+        <item>ざっしゅあああ</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="dog100">
+        <item>100</item>
+        <item>雑種（中型犬）</item>
+        <item>ざっしゅいいい</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="dog101">
+        <item>101</item>
+        <item>雑種（大型犬）</item>
+        <item>ざっしゅううう</item>
+        <item>3</item>
+    </string-array>
 
 </resources>

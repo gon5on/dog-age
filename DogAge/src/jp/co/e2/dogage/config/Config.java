@@ -38,7 +38,7 @@ public class Config
     }*/
 
     //犬種数
-    public static final Integer KIND_NUM = 98;
+    public static final Integer KIND_NUM = 101;
 
     //カテゴリ
     public static final Integer CATEGORY_SMALL = 1;                             //小型犬
