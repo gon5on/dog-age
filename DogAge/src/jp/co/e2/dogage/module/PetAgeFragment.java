@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -92,5 +93,13 @@ public class PetAgeFragment extends Fragment
         RelativeLayout relativeLayout3 = (RelativeLayout) mView.findViewById(R.id.relativeLayout3);
         relativeLayout3.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
 
+        ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+
+        if (mItem.getPhotoFlg() == 1) {
+            imageViewPhoto.setImageBitmap(mItem.getPhotoBitmap(getActivity()));
+            imageViewPhoto.setVisibility(View.VISIBLE);
+        } else {
+            imageViewPhoto.setVisibility(View.GONE);
+        }
     }
 }

@@ -1,15 +1,18 @@
 package jp.co.e2.dogage.activity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.common.AndroidUtils;
 import jp.co.e2.dogage.common.DateUtils;
+import jp.co.e2.dogage.common.ImgUtils;
 import jp.co.e2.dogage.common.Utils;
 import jp.co.e2.dogage.config.Config;
 import jp.co.e2.dogage.dialog.DatePickerDialog;
 import jp.co.e2.dogage.dialog.ErrorDialog;
 import jp.co.e2.dogage.dialog.KindSelectDialog;
+import jp.co.e2.dogage.dialog.PhotoSelectDialog;
 import jp.co.e2.dogage.entity.DogMasterEntity;
 import jp.co.e2.dogage.entity.PetEntity;
 import jp.co.e2.dogage.model.AppSQLiteOpenHelper;
@@ -21,7 +24,10 @@ import jp.co.e2.dogage.validate.ValidateRequire;
 import android.app.Fragment;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +35,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 /**
  * 入力画面アクテビティ
@@ -96,7 +103,8 @@ public class InputActivity extends AppActivity
      * 
      * @access public
      */
-    public static class InputFragment extends Fragment implements KindSelectDialog.CallbackListener, DatePickerDialog.CallbackListener
+    public static class InputFragment extends Fragment
+            implements KindSelectDialog.CallbackListener, DatePickerDialog.CallbackListener, PhotoSelectDialog.CallbackListener
     {
         private View mView = null;
 
@@ -104,6 +112,8 @@ public class InputActivity extends AppActivity
 
         private String mBirthday = null;
         private Integer mKind = null;
+        private Integer mPhotoFlg = 0;
+        private Uri mPhotoUri = null;
 
         /**
          * onCreateView
@@ -137,6 +147,47 @@ public class InputActivity extends AppActivity
         }
 
         /**
+         * ギャラリー・カメラから取得した画像を表示
+         * 
+         * @param int requestCode
+         * @param int resultCode
+         * @param Intent data
+         * @return void
+         * @access protected
+         */
+        public void onActivityResult(int requestCode, int resultCode, Intent data)
+        {
+            //ギャラリー
+            if (requestCode == Config.INTENT_GALLERY && resultCode == RESULT_OK) {
+                mPhotoFlg = 1;
+                mPhotoUri = data.getData();
+
+                //選択された画像をリサイズ
+                ImgUtils ImgUtils = new ImgUtils(getActivity(), mPhotoUri);
+                Bitmap resizeIimg = ImgUtils.getResizeImg(Config.HEIGHT, Config.WEIGHT);
+
+                //画像を表示
+                ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+                imageViewPhoto.setImageBitmap(resizeIimg);
+            }
+            //カメラ
+            if (requestCode == Config.INTENT_GALLERY && resultCode == RESULT_OK) {
+                mPhotoFlg = 1;
+                mPhotoUri = data.getData();
+
+                //選択された画像をリサイズ
+                ImgUtils ImgUtils = new ImgUtils(getActivity(), mPhotoUri);
+                Bitmap resizeIimg = ImgUtils.getResizeImg(Config.HEIGHT, Config.WEIGHT);
+
+                //画像を表示
+                ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+                imageViewPhoto.setImageBitmap(resizeIimg);
+            }
+
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+
+        /**
          * 値を画面にセットする
          * 
          * @return void
@@ -160,6 +211,11 @@ public class InputActivity extends AppActivity
 
                 EditText editTextName = (EditText) mView.findViewById(R.id.editTextName);
                 editTextName.setText(mSavedItem.getName());
+
+                if (mSavedItem.getPhotoFlg() == 1) {
+                    ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+                    imageViewPhoto.setImageBitmap(mSavedItem.getPhotoBitmap(getActivity()));
+                }
             }
         }
 
@@ -192,6 +248,17 @@ public class InputActivity extends AppActivity
                 @Override
                 public void onClick(View v) {
                     kindSelectDialog.show(getFragmentManager(), "dialog");
+                }
+            });
+
+            //写真
+            ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+            imageViewPhoto.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PhotoSelectDialog photoSelectDialog = PhotoSelectDialog.getInstance(mSavedItem.getId());
+                    photoSelectDialog.setCallbackListener(InputFragment.this);
+                    photoSelectDialog.show(getFragmentManager(), "dialog");
                 }
             });
 
@@ -235,7 +302,7 @@ public class InputActivity extends AppActivity
             }
 
             //保存とページ遷移
-            if (saveDb(name, mBirthday, mKind) == true) {
+            if (saveDb(name, mBirthday, mKind, mPhotoFlg, mPhotoUri) == true) {
                 AndroidUtils.showToastS(getActivity(), "保存しました。");
 
                 Intent intent = new Intent(getActivity(), PetAgeActivity.class);
@@ -255,10 +322,12 @@ public class InputActivity extends AppActivity
          * @param String name
          * @param String birthday
          * @param String kind
+         * @param String photoFlg
+         * @param Uri photoUri
          * @return Boolean ret
          * @access private
          */
-        private Boolean saveDb(String name, String birthday, Integer kind)
+        private Boolean saveDb(String name, String birthday, Integer kind, Integer photoFlg, Uri photoUri)
         {
             Boolean ret = false;
             SQLiteDatabase db = null;
@@ -268,6 +337,8 @@ public class InputActivity extends AppActivity
                 data.setName(name);
                 data.setBirthday(birthday);
                 data.setKind(kind);
+                data.setPhotoFlg(photoFlg);
+                data.setPhotoUri(photoUri);
 
                 if (mSavedItem != null) {
                     data.setId(mSavedItem.getId());
@@ -330,6 +401,56 @@ public class InputActivity extends AppActivity
         @Override
         public void onClickDatePickerDialogCancel()
         {
+        }
+
+        /**
+         * 写真選択ダイアログでカメラ起動が押された
+         * 
+         * @return void
+         * @access public
+         */
+        @Override
+        public void onClickPhotoSelectDialogCamera()
+        {
+            try {
+                Intent intent = new Intent();
+                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Config.getImgTmpDirPath(getActivity()));
+                startActivityForResult(intent, Config.INTENT_CAMERA);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        /**
+         * 写真選択ダイアログでギャラリーが押された
+         * 
+         * @return void
+         * @access public
+         */
+        @Override
+        public void onClickPhotoSelectDialogGallery()
+        {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            startActivityForResult(intent, Config.INTENT_GALLERY);
+        }
+
+        /**
+         * 写真選択ダイアログで削除が押された
+         * 
+         * @return void
+         * @access public
+         */
+        @Override
+        public void onClickPhotoSelectDialogDelPhoto()
+        {
+            mPhotoFlg = 0;
+
+            ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+            imageViewPhoto.setImageResource(R.drawable.b6402de8);
         }
     }
 }

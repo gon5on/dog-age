@@ -16,32 +16,47 @@
             android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/img_frame_above1"
             android:gravity="center_vertical|center_horizontal"
             android:orientation="vertical"
-            android:paddingBottom="25dp"
+            android:paddingBottom="15dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:paddingTop="25dp" >
+            android:paddingTop="15dp" >
 
-            <TextView
-                android:id="@+id/textViewName"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@color/text"
-                android:textSize="28sp"
-                android:textStyle="bold" />
+                android:layout_marginBottom="5dp"
+                android:gravity="center_vertical" >
+
+                <ImageView
+                    android:id="@+id/imageViewPhoto"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/b6402de8" />
+
+                <TextView
+                    android:id="@+id/textViewName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="モモコ"
+                    android:textColor="@color/text"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textViewKind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text=""
+                android:text="ミニチュアダックスフンド"
                 android:textColor="@color/text"
                 android:textSize="18sp" />
 
@@ -49,7 +64,7 @@
                 android:id="@+id/textViewBirthday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
+                android:text="2014年12月22日"
                 android:textColor="@color/text"
                 android:textSize="18sp" />
         </LinearLayout>

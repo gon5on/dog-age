@@ -6,8 +6,11 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import jp.co.e2.dogage.common.DateUtils;
+import jp.co.e2.dogage.common.ImgUtils;
 import jp.co.e2.dogage.config.Config;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 
 /**
  * ペットエンティティクラス
@@ -24,6 +27,8 @@ public class PetEntity implements Serializable
     private String mName;                                       //名前
     private String mBirthday;                                   //誕生日
     private Integer mKind;                                      //種類
+    private Integer mPhotoFlg;                                  //写真フラグ
+    private Uri mPhotoUri;                                      //写真URI
     private String mCreated;                                    //作成日時
     private String mModified;                                   //更新日時
 
@@ -277,6 +282,69 @@ public class PetEntity implements Serializable
         } else {
             return getDogMaster(context).getKind();
         }
+    }
+
+    /**
+     * 写真フラグをセット
+     * 
+     * @param Integer value
+     * @return void
+     * @access public
+     */
+    public void setPhotoFlg(Integer value)
+    {
+        mPhotoFlg = value;
+    }
+
+    /**
+     * 写真フラグを返す
+     * 
+     * @return Integer mPhotoFlg
+     * @access public
+     */
+    public Integer getPhotoFlg()
+    {
+        return mPhotoFlg;
+    }
+
+    /**
+     * 写真URIをセットする
+     * 
+     * @param Uri value
+     * @return void
+     * @access public
+     */
+    public void setPhotoUri(Uri value)
+    {
+        mPhotoUri = value;
+    }
+
+    /**
+     * 写真URIを返す
+     * 
+     * @return Uri mPhotoUri
+     * @access public
+     */
+    public Uri getPhotoUri()
+    {
+        return mPhotoUri;
+    }
+
+    /**
+     * 写真ビットマップを返す
+     * 
+     * @param Context context
+     * @return Bitmap
+     * @access public
+     */
+    public Bitmap getPhotoBitmap(Context context)
+    {
+        String path = Config.getImgDirPath(context) + "/" + Config.getImgFileName(getId());
+
+        ImgUtils imgUtils = new ImgUtils(path);
+        Bitmap img = imgUtils.getResizeImg(Config.WEIGHT, Config.HEIGHT);
+
+        return img;
     }
 
     /**

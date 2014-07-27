@@ -1,10 +1,13 @@
 package jp.co.e2.dogage.config;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
 import jp.co.e2.dogage.R;
+import jp.co.e2.dogage.common.MediaUtils;
 import jp.co.e2.dogage.entity.DogMasterEntity;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -63,6 +66,17 @@ public class Config
     //犬種マスタ
     public static HashMap<Integer, DogMasterEntity> mDogMasterMap;
     public static ArrayList<DogMasterEntity> mDogMasterList;
+
+    //画像tmpフォルダ名
+    public static String TMP_DIR_NAME = "tmp";
+
+    //リサイズ画像サイズ
+    public static Integer HEIGHT = 800;
+    public static Integer WEIGHT = 800;
+
+    //インテント判別
+    public static final Integer INTENT_CAMERA = 1;                              //カメラ起動
+    public static final Integer INTENT_GALLERY = 2;                             //ギャラリー起動
 
     /**
      * 犬種マスタを配列で返す
@@ -179,5 +193,70 @@ public class Config
 
             return before.getInitialLine().compareTo(after.getInitialLine());
         }
+    }
+
+    /**
+     * 画像保存パスを返す
+     * 
+     * @param Context context
+     * @return String
+     */
+    public static String getImgDirPath(Context context)
+    {
+        String path = null;
+
+        //外部ストレージが使用可能
+        if (MediaUtils.IsExternalStorageAvailableAndWriteable() == true) {
+            path = context.getExternalFilesDir(null).toString();
+        }
+        //外部ストレージは使用不可
+        else {
+            path = context.getFilesDir().toString();
+        }
+
+        return path;
+    }
+
+    /**
+     * 画像保存tmpパスを返す
+     * 
+     * @param Context context
+     * @return String
+     * @throws IOException
+     */
+    public static String getImgTmpDirPath(Context context) throws IOException
+    {
+        String path = null;
+
+        //外部ストレージが使用可能
+        if (MediaUtils.IsExternalStorageAvailableAndWriteable() == true) {
+            path = context.getExternalFilesDir(TMP_DIR_NAME).toString();
+        }
+        //外部ストレージは使用不可
+        else {
+            path = context.getFilesDir().toString() + "/" + TMP_DIR_NAME;
+
+            //フォルダが存在しなければ作成して、メディアとして認識されないようにnomediaファイルを生成しておく
+            if (new File(path).exists() == false) {
+                (new File(path)).mkdir();
+
+                File noMedia = new File(path + "/.nomedia");
+                noMedia.createNewFile();
+            }
+        }
+
+        return path;
+    }
+
+    /**
+     * 画像ファイル名を生成
+     * 
+     * @param Integer id
+     * @return String
+     * @access public
+     */
+    public static String getImgFileName(Integer id)
+    {
+        return "dog_" + id + ".jpg";
     }
 }

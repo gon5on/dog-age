@@ -3,6 +3,9 @@ package jp.co.e2.dogage.model;
 import java.util.ArrayList;
 
 import jp.co.e2.dogage.common.DateUtils;
+import jp.co.e2.dogage.common.ImgUtils;
+import jp.co.e2.dogage.common.MediaUtils;
+import jp.co.e2.dogage.config.Config;
 import jp.co.e2.dogage.entity.PetEntity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -24,6 +27,7 @@ public class PetDao extends AppDao
     public static final String COLUMN_NAME = "pets_name";
     public static final String COLUMN_BIRTHDAY = "pets_birthday";
     public static final String COLUMN_KIND = "pets_kind";
+    public static final String COLUMN_PHOTO_FLG = "pets_photo_flg";
     public static final String COLUMN_CREATED = "pets_created";
     public static final String COLUMN_MODIFIED = "pets_modified";
 
@@ -37,6 +41,10 @@ public class PetDao extends AppDao
                     COLUMN_CREATED + "          TEXT                NOT NULL," +
                     COLUMN_MODIFIED + "         TEXT                NOT NULL" +
                     ")";
+
+    //ALTER TABLE文
+    public static final String ALTER_TABLE_SQL = "ALTER TABLE " + TABLE_NAME +
+            " ADD " + COLUMN_PHOTO_FLG + "INTEGER NOT NULL DEFAULT 0";
 
     private Context mContext;                                           //コンテキスト
 
@@ -63,18 +71,31 @@ public class PetDao extends AppDao
     {
         long ret;
 
+        Integer savedId;
+
         ContentValues cv = new ContentValues();
         put(cv, COLUMN_NAME, data.getName());
         put(cv, COLUMN_BIRTHDAY, data.getBirthday());
         put(cv, COLUMN_KIND, data.getKind());
+        put(cv, COLUMN_PHOTO_FLG, data.getPhotoFlg());
         put(cv, COLUMN_MODIFIED, new DateUtils().format(DateUtils.FMT_DATETIME));
 
         if (data.getId() == null) {
             put(cv, COLUMN_CREATED, new DateUtils().format(DateUtils.FMT_DATETIME));
             ret = db.insert(TABLE_NAME, "", cv);
+            savedId = (int) ret;
         } else {
             String[] param = new String[] { String.valueOf(data.getId()) };
             ret = db.update(TABLE_NAME, cv, COLUMN_ID + "=?", param);
+            savedId = data.getId();
+        }
+
+        //画像保存
+        if (data.getPhotoFlg() == 1) {
+            ImgUtils imgUtils = new ImgUtils(mContext, data.getPhotoUri());
+            imgUtils.saveOrgImgJpg(Config.getImgDirPath(mContext), Config.getImgFileName(savedId));
+        } else {
+            MediaUtils.deleteDirFile(Config.getImgDirPath(mContext) + "/" + Config.getImgFileName(savedId));
         }
 
         return (ret != -1) ? true : false;
@@ -106,6 +127,7 @@ public class PetDao extends AppDao
                 data.setName(getString(cursor, COLUMN_NAME));
                 data.setBirthday(getString(cursor, COLUMN_BIRTHDAY));
                 data.setKind(getInteger(cursor, COLUMN_KIND));
+                data.setPhotoFlg(getInteger(cursor, COLUMN_PHOTO_FLG));
                 data.setCreated(getString(cursor, COLUMN_CREATED));
                 data.setModified(getString(cursor, COLUMN_MODIFIED));
             } while (cursor.moveToNext());
@@ -139,6 +161,7 @@ public class PetDao extends AppDao
                 values.setName(getString(cursor, COLUMN_NAME));
                 values.setBirthday(getString(cursor, COLUMN_BIRTHDAY));
                 values.setKind(getInteger(cursor, COLUMN_KIND));
+                values.setPhotoFlg(getInteger(cursor, COLUMN_PHOTO_FLG));
                 values.setCreated(getString(cursor, COLUMN_CREATED));
                 values.setModified(getString(cursor, COLUMN_MODIFIED));
                 data.add(values);

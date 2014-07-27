@@ -11,8 +11,11 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class AppSQLiteOpenHelper extends SQLiteOpenHelper
 {
+    public static final Integer VERSION1 = 1;
+    public static final Integer VERSION2 = 2;
+
     public static final String DB_NAME = "database.db";             //データベース名
-    public static final int DB_VERSION = 1;                         //データベースバージョン
+    public static final int DB_VERSION = VERSION2;                  //データベースバージョン
 
     private Context mContext;                                       //コンテキスト
 
@@ -64,6 +67,9 @@ public class AppSQLiteOpenHelper extends SQLiteOpenHelper
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-        //upgrade時に使用
+        //ペットテーブルに写真カラムを追加
+        if (oldVersion == VERSION1 && newVersion == VERSION2) {
+            db.execSQL(PetDao.ALTER_TABLE_SQL);
+        }
     }
 }
