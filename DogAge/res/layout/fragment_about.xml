@@ -209,7 +209,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="人間換算した年齢は、犬種によって差があります。あくまでも目安とお考えください。"
+            android:text="人間換に算した年齢は、犬種によって差があります。あくまでも目安とお考えください。"
             android:textColor="@color/text"
             android:textSize="15sp" />
     </LinearLayout>

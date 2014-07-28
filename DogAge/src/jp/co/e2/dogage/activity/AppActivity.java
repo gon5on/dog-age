@@ -27,9 +27,6 @@ public class AppActivity extends FragmentActivity
         getActionBar().setDisplayShowHomeEnabled(false);
 
         if (savedInstanceState == null) {
-            //デバッグ
-            //Debug.setUncaughtExHandler(getApplicationContext());
-            //Debug.showReportDialog(getApplicationContext(), getFragmentManager());
         }
     }
 }
