@@ -113,7 +113,34 @@ public class ImgUtils
      */
     public Bitmap getCircleBitmap() throws IOException
     {
-        Bitmap bitmap = getBitmap();
+        return getCircleBitmap(getBitmap());
+    }
+
+    /**
+     * 丸にくりぬいてリサイズしたビットマップ画像を返す
+     * 
+     * @param Integer height 高さピクセル
+     * @param Integer width 幅ピクセル
+     * @return Bitmap
+     * @throws IOException
+     * @access public
+     */
+    public Bitmap getResizeCircleBitmap(Integer height, Integer width) throws IOException
+    {
+        return getCircleBitmap(getResizeBitmap(height, width));
+    }
+
+    /**
+     * 丸にくりぬいたビットマップ画像を返す
+     * 
+     * @param Integer height 高さピクセル
+     * @param Integer width 幅ピクセル
+     * @return Bitmap
+     * @throws IOException
+     * @access private
+     */
+    private Bitmap getCircleBitmap(Bitmap bitmap) throws IOException
+    {
         Integer height = bitmap.getHeight();
         Integer width = bitmap.getWidth();
 
@@ -143,7 +170,35 @@ public class ImgUtils
      */
     public Bitmap getKadomaruBitmap(Integer radius) throws IOException
     {
-        Bitmap bitmap = getBitmap();
+        return getKadomaruBitmap(getBitmap(), radius);
+    }
+
+    /**
+     * 角丸にくりぬいてリサイズしたビットマップ画像を返す
+     * 
+     * @param Integer height 高さピクセル
+     * @param Integer width 幅ピクセル
+     * @param Integer radius 角丸にしたいピクセル数
+     * @return Bitmap
+     * @throws IOException
+     * @access public
+     */
+    public Bitmap getResizeKadomaruBitmap(Integer height, Integer width, Integer radius) throws IOException
+    {
+        return getKadomaruBitmap(getResizeBitmap(height, width), radius);
+    }
+
+    /**
+     * 角丸にくりぬいたビットマップ画像を返す
+     * 
+     * @param Integer radius 角丸にしたいピクセル数
+     * @return Bitmap bitmap
+     * @return Bitmap
+     * @throws IOException
+     * @access private
+     */
+    private Bitmap getKadomaruBitmap(Bitmap bitmap, Integer radius) throws IOException
+    {
         Integer height = bitmap.getHeight();
         Integer width = bitmap.getWidth();
 
@@ -167,11 +222,11 @@ public class ImgUtils
      * リサイズしたビットマップ画像を返す
      * 
      * @param Integer height 高さピクセル
-     * @param Integer weight 幅ピクセル
+     * @param Integer width 幅ピクセル
      * @return Bitmap
      * @access public
      */
-    public Bitmap getResizeBitmap(Integer height, Integer weight)
+    public Bitmap getResizeBitmap(Integer height, Integer width)
     {
         //画像ファイル自体は読み込まずに、高さなどのプロパティのみを取得する
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -179,7 +234,7 @@ public class ImgUtils
         BitmapFactory.decodeFile(mPath, options);
 
         //縮小比率を取得する
-        options.inSampleSize = calceScale(options, height, weight);
+        options.inSampleSize = calceScale(options, height, width);
 
         //リサイズしたビットマップを作成
         options.inJustDecodeBounds = false;

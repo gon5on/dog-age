@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- タップ時 -->
+    <item android:state_pressed="true"><shape android:shape="oval">
+            <stroke android:width="2dp" android:color="@color/text_button" />
+
+            <gradient android:angle="90" android:centerColor="@color/btn2" android:endColor="@color/btn2" android:startColor="@color/btn2" />
+        </shape></item>
+
+    <!-- 通常時 -->
+    <item><shape android:shape="oval">
+            <stroke android:width="2dp" android:color="@color/text_button" />
+
+            <gradient android:angle="90" android:centerColor="@color/btn2" android:endColor="@color/btn_grade2" android:startColor="@color/btn2" />
+        </shape></item>
+
+</selector>
