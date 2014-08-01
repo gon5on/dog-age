@@ -7,7 +7,7 @@ import jp.co.e2.dogage.common.AndroidUtils;
 import jp.co.e2.dogage.dialog.ConfirmDialog;
 import jp.co.e2.dogage.dialog.ErrorDialog;
 import jp.co.e2.dogage.entity.PetEntity;
-import jp.co.e2.dogage.model.AppSQLiteOpenHelper;
+import jp.co.e2.dogage.model.BaseSQLiteOpenHelper;
 import jp.co.e2.dogage.model.PetDao;
 import jp.co.e2.dogage.module.PetAgeFragmentPagerAdapter;
 import android.content.Intent;
@@ -25,7 +25,7 @@ import android.widget.LinearLayout;
  * 
  * @access public
  */
-public class PetAgeActivity extends AppActivity implements ConfirmDialog.CallbackListener
+public class PetAgeActivity extends BaseActivity implements ConfirmDialog.CallbackListener
 {
     private ViewPager viewPager = null;                     // ViewPager
     private PetAgeFragmentPagerAdapter adapter = null;      // ページアダプター
@@ -162,7 +162,7 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
         SQLiteDatabase db = null;
 
         try {
-            AppSQLiteOpenHelper helper = new AppSQLiteOpenHelper(getApplicationContext());
+            BaseSQLiteOpenHelper helper = new BaseSQLiteOpenHelper(getApplicationContext());
             db = helper.getWritableDatabase();
 
             PetDao petDao = new PetDao(getApplicationContext());
@@ -255,7 +255,7 @@ public class PetAgeActivity extends AppActivity implements ConfirmDialog.Callbac
         SQLiteDatabase db = null;
 
         try {
-            AppSQLiteOpenHelper helper = new AppSQLiteOpenHelper(getApplicationContext());
+            BaseSQLiteOpenHelper helper = new BaseSQLiteOpenHelper(getApplicationContext());
             db = helper.getWritableDatabase();
 
             PetDao petDao = new PetDao(getApplicationContext());

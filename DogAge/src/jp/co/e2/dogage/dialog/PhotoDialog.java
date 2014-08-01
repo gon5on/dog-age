@@ -1,36 +1,35 @@
 package jp.co.e2.dogage.dialog;
 
 import jp.co.e2.dogage.R;
-import jp.co.e2.dogage.dialog.ErrorDialog.CallbackListener;
+import jp.co.e2.dogage.dialog.PhotoDialog.CallbackListener;
 import android.app.Dialog;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 /**
- * エラーダイアログ
+ * 画像表示ダイアログ
  * 
  * @access public
  */
-public class ErrorDialog extends BaseDialog<CallbackListener>
+public class PhotoDialog extends BaseDialog<CallbackListener>
 {
     /**
      * インスタンスを返す
      * 
-     * @String String title
-     * @String String msg
+     * @String Bitmap bitmap
      * @return SampleDialog
      * @access public
      */
-    public static ErrorDialog getInstance(String title, String msg)
+    public static PhotoDialog getInstance(Bitmap bitmap)
     {
-        ErrorDialog dialog = new ErrorDialog();
+        PhotoDialog dialog = new PhotoDialog();
 
         Bundle bundle = new Bundle();
-        bundle.putString("title", title);
-        bundle.putString("msg", msg);
+        bundle.putParcelable("bitmap", bitmap);
         dialog.setArguments(bundle);
 
         return dialog;
@@ -47,23 +46,19 @@ public class ErrorDialog extends BaseDialog<CallbackListener>
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
         //ダイアログ生成
-        Dialog dialog = createDefaultDialog(R.layout.dialog_error);
+        Dialog dialog = createDefaultDialog(R.layout.dialog_photo);
 
-        //タイトルセット
-        TextView textViewTitle = (TextView) dialog.findViewById(R.id.textViewTitle);
-        textViewTitle.setText(getArguments().getString("title"));
-
-        //テキストセット
-        TextView textViewMsg = (TextView) dialog.findViewById(R.id.textViewMsg);
-        textViewMsg.setText(getArguments().getString("msg"));
+        //画像セット
+        ImageView imageViewPhoto = (ImageView) dialog.findViewById(R.id.imageViewPhoto);
+        imageViewPhoto.setImageBitmap((Bitmap) getArguments().getParcelable("bitmap"));
 
         //ボタンにイベントをセット
-        Button buttonOk = (Button) dialog.findViewById(R.id.buttonOk);
-        buttonOk.setOnClickListener(new OnClickListener() {
+        Button buttonClose = (Button) dialog.findViewById(R.id.buttonClose);
+        buttonClose.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mCallbackListener != null) {
-                    mCallbackListener.onClickErrorDialogOk();
+                    mCallbackListener.onClickPhotoDialogClose();
                 }
                 dismiss();
             }
@@ -79,6 +74,6 @@ public class ErrorDialog extends BaseDialog<CallbackListener>
      */
     public interface CallbackListener
     {
-        public void onClickErrorDialogOk();
+        public void onClickPhotoDialogClose();
     }
 }

@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * 
  * @access public
  */
-public class AppSQLiteOpenHelper extends SQLiteOpenHelper
+public class BaseSQLiteOpenHelper extends SQLiteOpenHelper
 {
     public static final Integer VERSION1 = 1;
     public static final Integer VERSION2 = 2;
@@ -17,19 +17,14 @@ public class AppSQLiteOpenHelper extends SQLiteOpenHelper
     public static final String DB_NAME = "database.db";             //データベース名
     public static final int DB_VERSION = VERSION2;                  //データベースバージョン
 
-    private Context mContext;                                       //コンテキスト
-
     /**
      * コンストラクタ
      * 
-     * @param Context context コンテキスト
      * @access public
      */
-    public AppSQLiteOpenHelper(Context context)
+    public BaseSQLiteOpenHelper(Context context)
     {
         super(context, DB_NAME, null, DB_VERSION);
-
-        mContext = context;
     }
 
     /**

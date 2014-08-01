@@ -18,7 +18,7 @@ import android.widget.TextView;
  * 
  * @access public
  */
-public class AboutActivity extends AppActivity
+public class AboutActivity extends BaseActivity
 {
     private static final String PATTERN = "PixelKit";
     private static final String URL = "http://pixelkit.com/";
@@ -88,10 +88,10 @@ public class AboutActivity extends AppActivity
         {
             super.onCreate(savedInstanceState);
 
+            mView = inflater.inflate(R.layout.fragment_about, container, false);
+
             // fragment再生成抑止
             setRetainInstance(true);
-
-            mView = inflater.inflate(R.layout.fragment_about, container, false);
 
             //ライセンスにリンクを貼る
             linkLisence();

@@ -15,7 +15,7 @@ import android.widget.LinearLayout.LayoutParams;
  * 
  * @access public
  */
-public abstract class AppDialog<Interface> extends DialogFragment
+public abstract class BaseDialog<Interface> extends DialogFragment
 {
     public static final Integer LISTENER_ACTIVITY = 1;
     public static final Integer LISTENER_FRAGMENT = 2;
@@ -55,10 +55,10 @@ public abstract class AppDialog<Interface> extends DialogFragment
 
         Integer listenerType = getArguments().getInt("listenerType");
 
-        if (listenerType == AppDialog.LISTENER_ACTIVITY) {
+        if (listenerType == BaseDialog.LISTENER_ACTIVITY) {
             mCallbackListener = (Interface) activity;
         }
-        else if (listenerType == AppDialog.LISTENER_FRAGMENT) {
+        else if (listenerType == BaseDialog.LISTENER_FRAGMENT) {
             mCallbackListener = (Interface) getTargetFragment();
         }
     }
@@ -78,10 +78,10 @@ public abstract class AppDialog<Interface> extends DialogFragment
         Integer listenerType;
 
         if (listener instanceof Activity) {
-            listenerType = AppDialog.LISTENER_ACTIVITY;
+            listenerType = BaseDialog.LISTENER_ACTIVITY;
         }
         else if (listener instanceof Fragment) {
-            listenerType = AppDialog.LISTENER_FRAGMENT;
+            listenerType = BaseDialog.LISTENER_FRAGMENT;
             setTargetFragment((Fragment) listener, 0);
         }
         else {

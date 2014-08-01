@@ -3,13 +3,13 @@ package jp.co.e2.dogage.common;
 import android.util.Log;
 
 /**
- * ログのラッパークラス
+ * ログのヘルパークラス
  * 
  * 出力するしないをフラグで切り替え可能
  * 
  * @access public
  */
-public class AppLog
+public class LogHelper
 {
     private static final String TAG = "####";
     private static final Integer DISP_FLG = 1;      //このフラグでログを出力するかどうかを決められる、リリース時は0にすること

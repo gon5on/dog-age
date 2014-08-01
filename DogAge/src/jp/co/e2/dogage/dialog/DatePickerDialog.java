@@ -15,7 +15,7 @@ import android.widget.DatePicker;
  * 
  * @access public
  */
-public class DatePickerDialog extends AppDialog<CallbackListener>
+public class DatePickerDialog extends BaseDialog<CallbackListener>
 {
     /**
      * インスタンスを返す

@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentActivity;
  * 
  * @access public
  */
-public class AppActivity extends FragmentActivity
+public class BaseActivity extends FragmentActivity
 {
     /**
      * onCreate

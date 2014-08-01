@@ -1,5 +1,6 @@
 package jp.co.e2.dogage.entity;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -331,18 +332,37 @@ public class PetEntity implements Serializable
     }
 
     /**
-     * 写真ビットマップを返す
+     * 写真丸ビットマップを返す
      * 
      * @param Context context
      * @return Bitmap
+     * @throws IOException
      * @access public
      */
-    public Bitmap getPhotoBitmap(Context context)
+    public Bitmap getPhotoCircleBitmap(Context context) throws IOException
     {
         String path = Config.getImgDirPath(context) + "/" + Config.getImgFileName(getId());
 
         ImgUtils imgUtils = new ImgUtils(path);
-        Bitmap img = imgUtils.getResizeImg(Config.WEIGHT, Config.HEIGHT);
+        Bitmap img = imgUtils.getCircleBitmap();
+
+        return img;
+    }
+
+    /**
+     * 写真角丸ビットマップを返す
+     * 
+     * @param Context context
+     * @return Bitmap
+     * @throws IOException
+     * @access public
+     */
+    public Bitmap getPhotoKadomaruBitmap(Context context) throws IOException
+    {
+        String path = Config.getImgDirPath(context) + "/" + Config.getImgFileName(getId());
+
+        ImgUtils imgUtils = new ImgUtils(path);
+        Bitmap img = imgUtils.getKadomaruBitmap(Config.getKadomaruPixcel(context));
 
         return img;
     }

@@ -27,7 +27,7 @@ public class ValidateDate
     /**
      * 正しい日付かどうかチェック
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String format フォーマット
@@ -35,7 +35,7 @@ public class ValidateDate
      * @return void
      * @access public
      */
-    public static void check(Validate validate, String value, String name, String format, String msgFull)
+    public static void check(ValidateHelper validate, String value, String name, String format, String msgFull)
     {
         if (validate.getResult(name) == false) {
             return;
@@ -81,14 +81,14 @@ public class ValidateDate
     /**
      * 正しい日付かどうかチェック
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String format フォーマット
      * @return void
      * @access public
      */
-    public static void check(Validate validate, String value, String name, String format)
+    public static void check(ValidateHelper validate, String value, String name, String format)
     {
         check(validate, value, name, format, null);
     }
@@ -98,7 +98,7 @@ public class ValidateDate
      * 
      * ※今日を指定されたらエラー
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String format フォーマット
@@ -106,7 +106,7 @@ public class ValidateDate
      * @return void
      * @access private
      */
-    public static void isFuture(Validate validate, String value, String name, String format, String msgFull)
+    public static void isFuture(ValidateHelper validate, String value, String name, String format, String msgFull)
     {
         if (validate.getResult(name) == false) {
             return;
@@ -129,13 +129,13 @@ public class ValidateDate
      * 
      * ※今日を指定されたらエラー
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @return void
      * @access private
      */
-    public static void isFuture(Validate validate, String value, String name)
+    public static void isFuture(ValidateHelper validate, String value, String name)
     {
         isFuture(validate, value, name, DateUtils.FMT_DATE, null);
     }
@@ -145,7 +145,7 @@ public class ValidateDate
      * 
      * ※今日を指定されてもエラーにしない
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String format フォーマット
@@ -153,7 +153,7 @@ public class ValidateDate
      * @return void
      * @access public
      */
-    public static void isFutureAllowToday(Validate validate, String value, String name, String format, String msgFull)
+    public static void isFutureAllowToday(ValidateHelper validate, String value, String name, String format, String msgFull)
     {
         if (validate.getResult(name) == false) {
             return;
@@ -176,13 +176,13 @@ public class ValidateDate
      * 
      * ※今日を指定されてもエラーにしない
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public static void isFutureAllowToday(Validate validate, String value, String name)
+    public static void isFutureAllowToday(ValidateHelper validate, String value, String name)
     {
         isFutureAllowToday(validate, value, name, DateUtils.FMT_DATE, null);
     }
@@ -192,7 +192,7 @@ public class ValidateDate
      * 
      * ※今日を指定されたらエラー
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String format フォーマット
@@ -200,7 +200,7 @@ public class ValidateDate
      * @return void
      * @access public
      */
-    public static void isPast(Validate validate, String value, String name, String format, String msgFull)
+    public static void isPast(ValidateHelper validate, String value, String name, String format, String msgFull)
     {
         if (validate.getResult(name) == false) {
             return;
@@ -223,13 +223,13 @@ public class ValidateDate
      * 
      * ※今日を指定されたらエラー
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public static void isPast(Validate validate, String value, String name)
+    public static void isPast(ValidateHelper validate, String value, String name)
     {
         isPast(validate, value, name, DateUtils.FMT_DATE, null);
     }
@@ -239,7 +239,7 @@ public class ValidateDate
      * 
      * ※今日を指定されてもエラーではない
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String format フォーマット
@@ -247,7 +247,7 @@ public class ValidateDate
      * @return void
      * @access public
      */
-    public static void isPastAllowToday(Validate validate, String value, String name, String format, String msgFull)
+    public static void isPastAllowToday(ValidateHelper validate, String value, String name, String format, String msgFull)
     {
         if (validate.getResult(name) == false) {
             return;
@@ -270,13 +270,13 @@ public class ValidateDate
      * 
      * ※今日を指定されてもエラーではない
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public static void isPastAllowToday(Validate validate, String value, String name)
+    public static void isPastAllowToday(ValidateHelper validate, String value, String name)
     {
         isPastAllowToday(validate, value, name, DateUtils.FMT_DATE, null);
     }
@@ -284,7 +284,7 @@ public class ValidateDate
     /**
      * 今日と指定日を比べる
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @return Integer compareTo()の結果
      * @access private

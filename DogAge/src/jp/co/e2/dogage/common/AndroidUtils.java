@@ -149,6 +149,21 @@ public class AndroidUtils
      * dp→pixelに変換
      * 
      * @param Context context
+     * @param Integer value
+     * @return Integer pixel
+     * @access public
+     */
+    public static Integer dpToPixel(Context context, Integer value)
+    {
+        double doubleValue = value;
+
+        return dpToPixel(context, doubleValue);
+    }
+
+    /**
+     * dp→pixelに変換
+     * 
+     * @param Context context
      * @param Double value
      * @return Integer pixel
      * @access public

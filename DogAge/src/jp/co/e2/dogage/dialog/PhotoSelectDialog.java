@@ -13,7 +13,7 @@ import android.widget.Button;
  * 
  * @access public
  */
-public class PhotoSelectDialog extends AppDialog<CallbackListener>
+public class PhotoSelectDialog extends BaseDialog<CallbackListener>
 {
     /**
      * インスタンスを返す

@@ -17,7 +17,7 @@ import android.database.sqlite.SQLiteDatabase;
  * 
  * @access public
  */
-public class PetDao extends AppDao
+public class PetDao extends BaseDao
 {
     // テーブル名
     public static final String TABLE_NAME = "pets";
@@ -35,11 +35,12 @@ public class PetDao extends AppDao
     public static final String CREATE_TABLE_SQL =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN_ID + "               INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    COLUMN_NAME + "             TEXT                NOT NULL," +
-                    COLUMN_BIRTHDAY + "         TEXT                NOT NULL," +
-                    COLUMN_KIND + "             INTEGER             NOT NULL," +
-                    COLUMN_CREATED + "          TEXT                NOT NULL," +
-                    COLUMN_MODIFIED + "         TEXT                NOT NULL" +
+                    COLUMN_NAME + "             TEXT        NOT NULL," +
+                    COLUMN_BIRTHDAY + "         TEXT        NOT NULL," +
+                    COLUMN_KIND + "             INTEGER     NOT NULL," +
+                    COLUMN_PHOTO_FLG + "        INTEGER     NOT NULL        default 0," +
+                    COLUMN_CREATED + "          TEXT        NOT NULL," +
+                    COLUMN_MODIFIED + "         TEXT        NOT NULL" +
                     ")";
 
     //ALTER TABLE文
@@ -92,8 +93,10 @@ public class PetDao extends AppDao
 
         //画像保存
         if (data.getPhotoFlg() == 1) {
-            ImgUtils imgUtils = new ImgUtils(mContext, data.getPhotoUri());
-            imgUtils.saveOrgImgJpg(Config.getImgDirPath(mContext), Config.getImgFileName(savedId));
+            if (data.getPhotoUri() != null) {
+                ImgUtils imgUtils = new ImgUtils(mContext, data.getPhotoUri());
+                imgUtils.saveOrgJpg(Config.getImgDirPath(mContext), Config.getImgFileName(savedId));
+            }
         } else {
             MediaUtils.deleteDirFile(Config.getImgDirPath(mContext) + "/" + Config.getImgFileName(savedId));
         }

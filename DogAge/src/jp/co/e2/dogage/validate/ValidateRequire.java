@@ -16,14 +16,14 @@ public class ValidateRequire
     /**
      * String型必須チェック
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String msgFull エラーメッセージ全文
      * @return void
      * @access public
      */
-    public static void check(Validate validate, String value, String name, String msgFull)
+    public static void check(ValidateHelper validate, String value, String name, String msgFull)
     {
         if (validate.getResult(value) == false) {
             return;
@@ -36,13 +36,13 @@ public class ValidateRequire
     /**
      * String型必須チェック
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public static void check(Validate validate, String value, String name)
+    public static void check(ValidateHelper validate, String value, String name)
     {
         check(validate, value, name, null);
     }
@@ -50,14 +50,14 @@ public class ValidateRequire
     /**
      * Int型必須チェック
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Int value 値
      * @param String name 変数名
      * @param String msg_full エラーメッセージ全文
      * @return void
      * @access public
      */
-    public static void check(Validate validate, Integer value, String name, String msgFull)
+    public static void check(ValidateHelper validate, Integer value, String name, String msgFull)
     {
         if (validate.getResult(name) == false) {
             return;
@@ -70,13 +70,13 @@ public class ValidateRequire
     /**
      * Int型必須チェック
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Int value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public static void check(Validate validate, Integer value, String name)
+    public static void check(ValidateHelper validate, Integer value, String name)
     {
         check(validate, value, name, null);
     }
@@ -84,14 +84,14 @@ public class ValidateRequire
     /**
      * Double型必須チェック
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Double value 値
      * @param String name 変数名
      * @param String msg_full エラーメッセージ全文
      * @return void
      * @access public
      */
-    public static void check(Validate validate, Double value, String name, String msgFull)
+    public static void check(ValidateHelper validate, Double value, String name, String msgFull)
     {
         if (validate.getResult(name) == false) {
             return;
@@ -104,13 +104,13 @@ public class ValidateRequire
     /**
      * Double型必須チェック
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Double value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public static void check(Validate validate, Double value, String name)
+    public static void check(ValidateHelper validate, Double value, String name)
     {
         check(validate, value, name, null);
     }
@@ -118,14 +118,14 @@ public class ValidateRequire
     /**
      * Float型必須チェック
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Float value 値
      * @param String name 変数名
      * @param String msgFull エラーメッセージ全文
      * @return void
      * @access public
      */
-    public static void check(Validate validate, Float value, String name, String msgFull)
+    public static void check(ValidateHelper validate, Float value, String name, String msgFull)
     {
         if (validate.getResult(name) == false) {
             return;
@@ -138,13 +138,13 @@ public class ValidateRequire
     /**
      * Float型必須チェック
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Float value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public static void check(Validate validate, Float value, String name)
+    public static void check(ValidateHelper validate, Float value, String name)
     {
         check(validate, value, name, null);
     }
@@ -152,14 +152,14 @@ public class ValidateRequire
     /**
      * セレクトボックス必須チェック
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param boolean[] value 値
      * @param String name 変数名
      * @param String msgFull エラーメッセージ全文
      * @return void
      * @access public
      */
-    public static void check(Validate validate, boolean[] value, String name, String msgFull)
+    public static void check(ValidateHelper validate, boolean[] value, String name, String msgFull)
     {
         if (validate.getResult(name) == false) {
             return;
@@ -186,13 +186,13 @@ public class ValidateRequire
     /**
      * セレクトボックス必須チェック
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param boolean[] value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public static void check(Validate validate, boolean[] value, String name)
+    public static void check(ValidateHelper validate, boolean[] value, String name)
     {
         check(validate, value, name, null);
     }
@@ -200,13 +200,13 @@ public class ValidateRequire
     /**
      * エラーメッセージセット
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String name 変数名
      * @param String msgFull エラーメッセージ全文
      * @return void
      * @access private
      */
-    private static void setErrorMsg(Validate validate, String name, String msgFull)
+    private static void setErrorMsg(ValidateHelper validate, String name, String msgFull)
     {
         if (msgFull != null) {
             validate.error(name, msgFull);

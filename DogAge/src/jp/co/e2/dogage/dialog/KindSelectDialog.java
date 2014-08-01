@@ -22,7 +22,7 @@ import android.widget.ListView;
  * 
  * @access public
  */
-public class KindSelectDialog extends AppDialog<CallbackListener>
+public class KindSelectDialog extends BaseDialog<CallbackListener>
 {
     /**
      * インスタンスを返す

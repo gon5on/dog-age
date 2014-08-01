@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import jp.co.e2.dogage.R;
+import jp.co.e2.dogage.common.AndroidUtils;
 import jp.co.e2.dogage.common.MediaUtils;
 import jp.co.e2.dogage.entity.DogMasterEntity;
 import android.annotation.SuppressLint;
@@ -71,12 +72,19 @@ public class Config
     public static String TMP_DIR_NAME = "tmp";
 
     //リサイズ画像サイズ
-    public static Integer HEIGHT = 800;
-    public static Integer WEIGHT = 800;
+    public static Integer HEIGHT = 1000;
+    public static Integer WIDTH = 1000;
+
+    //角丸画像の角丸にするdp
+    public static Integer KADOMARU_DP = 20;
+
+    //画像トリミング用インテント
+    public static final String INTENT_TRIMMING = "com.android.camera.action.CROP";
 
     //インテント判別
-    public static final Integer INTENT_CAMERA = 1;                              //カメラ起動
-    public static final Integer INTENT_GALLERY = 2;                             //ギャラリー起動
+    public static final Integer INTENT_CODE_CAMERA = 1;                         //カメラ起動
+    public static final Integer INTENT_CODE_GALLERY = 2;                        //ギャラリー起動
+    public static final Integer INTENT_CODE_TRIMMING = 3;                       //画像トリミング
 
     /**
      * 犬種マスタを配列で返す
@@ -203,7 +211,7 @@ public class Config
      */
     public static String getImgDirPath(Context context)
     {
-        String path = null;
+        String path = "";
 
         //外部ストレージが使用可能
         if (MediaUtils.IsExternalStorageAvailableAndWriteable() == true) {
@@ -226,7 +234,7 @@ public class Config
      */
     public static String getImgTmpDirPath(Context context) throws IOException
     {
-        String path = null;
+        String path = "";
 
         //外部ストレージが使用可能
         if (MediaUtils.IsExternalStorageAvailableAndWriteable() == true) {
@@ -249,6 +257,18 @@ public class Config
     }
 
     /**
+     * 画像保存tmpファイル名を返す
+     * 
+     * @param Context context
+     * @return String
+     * @throws IOException
+     */
+    public static String getImgTmpFilePath(Context context) throws IOException
+    {
+        return getImgTmpDirPath(context) + "/" + "tmp.jpg";
+    }
+
+    /**
      * 画像ファイル名を生成
      * 
      * @param Integer id
@@ -258,5 +278,17 @@ public class Config
     public static String getImgFileName(Integer id)
     {
         return "dog_" + id + ".jpg";
+    }
+
+    /**
+     * 角丸にするピクセル数を取得
+     * 
+     * @param Context context
+     * @return Integer
+     * @access public
+     */
+    public static Integer getKadomaruPixcel(Context context)
+    {
+        return AndroidUtils.dpToPixel(context, KADOMARU_DP);
     }
 }

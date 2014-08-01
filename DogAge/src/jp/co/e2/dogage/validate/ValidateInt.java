@@ -17,14 +17,14 @@ public class ValidateInt
     /**
      * 整数チェック（String）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String msg_full エラーメッセージ全文
      * @return void
      * @access public
      */
-    public static void check(Validate validate, String value, String name, String msgFull)
+    public static void check(ValidateHelper validate, String value, String name, String msgFull)
     {
         if (validate.getResult() == false) {
             return;
@@ -45,13 +45,13 @@ public class ValidateInt
     /**
      * 整数チェック（String）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public static void check(Validate validate, String value, String name)
+    public static void check(ValidateHelper validate, String value, String name)
     {
         check(validate, value, name, null);
     }
@@ -59,14 +59,14 @@ public class ValidateInt
     /**
      * 整数チェック（Int）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Int value 値
      * @param String name 変数名
      * @param String msgFull エラーメッセージ全文
      * @return void
      * @access public
      */
-    public static void check(Validate validate, Integer value, String name, String msgFull)
+    public static void check(ValidateHelper validate, Integer value, String name, String msgFull)
     {
         check(validate, String.valueOf(value), name, msgFull);
     }
@@ -74,13 +74,13 @@ public class ValidateInt
     /**
      * 整数チェック（Int）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Int value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public static void check(Validate validate, Integer value, String name)
+    public static void check(ValidateHelper validate, Integer value, String name)
     {
         check(validate, String.valueOf(value), name, null);
     }

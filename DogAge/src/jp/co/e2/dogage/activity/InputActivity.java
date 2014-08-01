@@ -1,5 +1,6 @@
 package jp.co.e2.dogage.activity;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -15,10 +16,10 @@ import jp.co.e2.dogage.dialog.KindSelectDialog;
 import jp.co.e2.dogage.dialog.PhotoSelectDialog;
 import jp.co.e2.dogage.entity.DogMasterEntity;
 import jp.co.e2.dogage.entity.PetEntity;
-import jp.co.e2.dogage.model.AppSQLiteOpenHelper;
+import jp.co.e2.dogage.model.BaseSQLiteOpenHelper;
 import jp.co.e2.dogage.model.PetDao;
-import jp.co.e2.dogage.validate.Validate;
 import jp.co.e2.dogage.validate.ValidateDate;
+import jp.co.e2.dogage.validate.ValidateHelper;
 import jp.co.e2.dogage.validate.ValidateLength;
 import jp.co.e2.dogage.validate.ValidateRequire;
 import android.app.Fragment;
@@ -42,7 +43,7 @@ import android.widget.ImageView;
  * 
  * @access public
  */
-public class InputActivity extends AppActivity
+public class InputActivity extends BaseActivity
 {
     /**
      * onCreate
@@ -129,10 +130,10 @@ public class InputActivity extends AppActivity
         {
             super.onCreate(savedInstanceState);
 
+            mView = inflater.inflate(R.layout.fragment_input, container, false);
+
             // fragment再生成抑止
             setRetainInstance(true);
-
-            mView = inflater.inflate(R.layout.fragment_input, container, false);
 
             //値を画面にセットする
             setItem();
@@ -147,7 +148,7 @@ public class InputActivity extends AppActivity
         }
 
         /**
-         * ギャラリー・カメラから取得した画像を表示
+         * onActivityResult
          * 
          * @param int requestCode
          * @param int resultCode
@@ -155,36 +156,83 @@ public class InputActivity extends AppActivity
          * @return void
          * @access protected
          */
+        @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data)
         {
-            //ギャラリー
-            if (requestCode == Config.INTENT_GALLERY && resultCode == RESULT_OK) {
-                mPhotoFlg = 1;
-                mPhotoUri = data.getData();
-
-                //選択された画像をリサイズ
-                ImgUtils ImgUtils = new ImgUtils(getActivity(), mPhotoUri);
-                Bitmap resizeIimg = ImgUtils.getResizeImg(Config.HEIGHT, Config.WEIGHT);
-
-                //画像を表示
-                ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
-                imageViewPhoto.setImageBitmap(resizeIimg);
-            }
-            //カメラ
-            if (requestCode == Config.INTENT_GALLERY && resultCode == RESULT_OK) {
-                mPhotoFlg = 1;
-                mPhotoUri = data.getData();
-
-                //選択された画像をリサイズ
-                ImgUtils ImgUtils = new ImgUtils(getActivity(), mPhotoUri);
-                Bitmap resizeIimg = ImgUtils.getResizeImg(Config.HEIGHT, Config.WEIGHT);
-
-                //画像を表示
-                ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
-                imageViewPhoto.setImageBitmap(resizeIimg);
-            }
-
             super.onActivityResult(requestCode, resultCode, data);
+
+            //カメラ
+            if (resultCode == RESULT_OK && requestCode == Config.INTENT_CODE_CAMERA) {
+                fromCameraGalleryIntent(data);
+            }
+            //ギャラリ
+            else if (resultCode == RESULT_OK && requestCode == Config.INTENT_CODE_GALLERY) {
+                fromCameraGalleryIntent(data);
+            }
+            //トリミング
+            else if (resultCode == RESULT_OK && requestCode == Config.INTENT_CODE_TRIMMING) {
+                fromTrimmingIntent(data);
+            }
+        }
+
+        /**
+         * カメラ・ギャラリーインテントからの戻り処理
+         * 
+         * @param Intent data
+         * @return void
+         * @access private
+         */
+        private void fromCameraGalleryIntent(Intent data)
+        {
+            try {
+                mPhotoFlg = 1;
+
+                //画像保存先のURIを取得
+                Uri uri = Uri.fromFile(new File(Config.getImgTmpFilePath(getActivity())));
+
+                //トリミングインテントを投げる
+                Intent intent = new Intent();
+                intent.setAction(Config.INTENT_TRIMMING);
+                intent.setData(data.getData());
+                intent.putExtra("outputX", Config.HEIGHT);
+                intent.putExtra("outputY", Config.WIDTH);
+                intent.putExtra("aspectX", 1);
+                intent.putExtra("aspectY", 1);
+                intent.putExtra("scale", true);
+                intent.putExtra("return-data", false);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                startActivityForResult(intent, Config.INTENT_CODE_TRIMMING);
+
+                AndroidUtils.showToastL(getActivity(), "ワンちゃんの顔が中心になるようにトリミングしてください。");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        /**
+         * トリミングインテントからの戻り処理
+         * 
+         * @param Intent data
+         * @return void
+         * @access private
+         */
+        private void fromTrimmingIntent(Intent data)
+        {
+            try {
+                mPhotoUri = data.getData();
+
+                //トリミング後保存した画像を取得
+                ImgUtils ImgUtils = new ImgUtils(getActivity(), mPhotoUri);
+                Bitmap bitmap = ImgUtils.getKadomaruBitmap(Config.getKadomaruPixcel(getActivity()));
+
+                //画像を表示
+                ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+                imageViewPhoto.setImageBitmap(bitmap);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         /**
@@ -197,25 +245,39 @@ public class InputActivity extends AppActivity
         {
             mSavedItem = (PetEntity) getArguments().getSerializable("data");
 
-            //編集の場合
-            if (mSavedItem != null) {
-                mBirthday = mSavedItem.getBirthday();
-                mKind = mSavedItem.getKind();
+            try {
+                //編集の場合
+                if (mSavedItem != null) {
+                    mBirthday = mSavedItem.getBirthday();
+                    mKind = mSavedItem.getKind();
+                    mPhotoFlg = mSavedItem.getPhotoFlg();
 
-                String[] birthday = mSavedItem.getBirthday().split("-");
-                Button buttonBirthday = (Button) mView.findViewById(R.id.buttonBirthday);
-                buttonBirthday.setText(String.format("%s年%s月%s日", birthday[0], birthday[1], birthday[2]));
+                    String[] birthday = mSavedItem.getBirthday().split("-");
+                    Button buttonBirthday = (Button) mView.findViewById(R.id.buttonBirthday);
+                    buttonBirthday.setText(String.format("%s年%s月%s日", birthday[0], birthday[1], birthday[2]));
 
-                Button buttonKind = (Button) mView.findViewById(R.id.buttonKind);
-                buttonKind.setText(mSavedItem.getKindDisp(getActivity().getApplicationContext()));
+                    Button buttonKind = (Button) mView.findViewById(R.id.buttonKind);
+                    buttonKind.setText(mSavedItem.getKindDisp(getActivity().getApplicationContext()));
 
-                EditText editTextName = (EditText) mView.findViewById(R.id.editTextName);
-                editTextName.setText(mSavedItem.getName());
+                    EditText editTextName = (EditText) mView.findViewById(R.id.editTextName);
+                    editTextName.setText(mSavedItem.getName());
 
-                if (mSavedItem.getPhotoFlg() == 1) {
-                    ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
-                    imageViewPhoto.setImageBitmap(mSavedItem.getPhotoBitmap(getActivity()));
+                    if (mSavedItem.getPhotoFlg() == 1) {
+                        ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+                        imageViewPhoto.setImageBitmap(mSavedItem.getPhotoKadomaruBitmap(getActivity()));
+                    }
                 }
+
+                //画像がない場合、NO PHOTOを角丸の画像にする
+                if (mSavedItem == null || mSavedItem.getPhotoFlg() == 0) {
+                    ImgUtils ImgUtils = new ImgUtils(getActivity(), R.drawable.img_no_photo);
+                    Bitmap bitmap = ImgUtils.getKadomaruBitmap(Config.getKadomaruPixcel(getActivity()));
+
+                    ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+                    imageViewPhoto.setImageBitmap(bitmap);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 
@@ -239,7 +301,7 @@ public class InputActivity extends AppActivity
             });
 
             //種類
-            ArrayList<DogMasterEntity> dogMasters = Config.getDogMastersList(getActivity().getApplicationContext());
+            ArrayList<DogMasterEntity> dogMasters = Config.getDogMastersList(getActivity());
             final KindSelectDialog kindSelectDialog = KindSelectDialog.getInstance(dogMasters);
             kindSelectDialog.setCallbackListener(this);
 
@@ -256,7 +318,7 @@ public class InputActivity extends AppActivity
             imageViewPhoto.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PhotoSelectDialog photoSelectDialog = PhotoSelectDialog.getInstance(mSavedItem.getId());
+                    PhotoSelectDialog photoSelectDialog = PhotoSelectDialog.getInstance(mPhotoFlg);
                     photoSelectDialog.setCallbackListener(InputFragment.this);
                     photoSelectDialog.show(getFragmentManager(), "dialog");
                 }
@@ -284,7 +346,7 @@ public class InputActivity extends AppActivity
             String name = editTextName.getText().toString();
 
             //バリデーション
-            Validate v = new Validate();
+            ValidateHelper v = new ValidateHelper();
             ValidateRequire.check(v, name, "お名前");
             ValidateLength.maxCheck(v, name, "お名前", 10);
             ValidateRequire.check(v, mBirthday, "お誕生日");
@@ -344,7 +406,7 @@ public class InputActivity extends AppActivity
                     data.setId(mSavedItem.getId());
                 }
 
-                AppSQLiteOpenHelper helper = new AppSQLiteOpenHelper(getActivity());
+                BaseSQLiteOpenHelper helper = new BaseSQLiteOpenHelper(getActivity());
                 db = helper.getWritableDatabase();
 
                 PetDao petDao = new PetDao(getActivity());
@@ -417,7 +479,7 @@ public class InputActivity extends AppActivity
                 intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
                 intent.addCategory(Intent.CATEGORY_DEFAULT);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Config.getImgTmpDirPath(getActivity()));
-                startActivityForResult(intent, Config.INTENT_CAMERA);
+                startActivityForResult(intent, Config.INTENT_CODE_CAMERA);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -435,7 +497,7 @@ public class InputActivity extends AppActivity
         {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
-            startActivityForResult(intent, Config.INTENT_GALLERY);
+            startActivityForResult(intent, Config.INTENT_CODE_GALLERY);
         }
 
         /**
@@ -447,10 +509,19 @@ public class InputActivity extends AppActivity
         @Override
         public void onClickPhotoSelectDialogDelPhoto()
         {
-            mPhotoFlg = 0;
+            try {
+                mPhotoFlg = 0;
 
-            ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
-            imageViewPhoto.setImageResource(R.drawable.b6402de8);
+                //NO PHOTOを角丸の画像にする
+                ImgUtils ImgUtils = new ImgUtils(getActivity(), R.drawable.img_no_photo);
+                Bitmap bitmap = ImgUtils.getKadomaruBitmap(Config.getKadomaruPixcel(getActivity()));
+
+                ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+                imageViewPhoto.setImageBitmap(bitmap);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

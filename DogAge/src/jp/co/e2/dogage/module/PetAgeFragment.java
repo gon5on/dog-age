@@ -1,11 +1,16 @@
 package jp.co.e2.dogage.module;
 
+import java.io.IOException;
+
 import jp.co.e2.dogage.R;
+import jp.co.e2.dogage.dialog.PhotoDialog;
 import jp.co.e2.dogage.entity.PetEntity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +43,8 @@ public class PetAgeFragment extends Fragment
     {
         super.onCreate(savedInstanceState);
 
+        mView = inflater.inflate(R.layout.fragment_pet_age, container, false);
+
         // fragment再生成抑止
         setRetainInstance(true);
 
@@ -45,9 +52,6 @@ public class PetAgeFragment extends Fragment
         Bundle bundle = getArguments();
         mItem = (PetEntity) bundle.getSerializable("item");
         mPageNum = bundle.getInt("pageNum");
-
-        // レイアウトの指定
-        mView = inflater.inflate(R.layout.fragment_pet_age, container, false);
 
         // 画面表示
         setDispItem();
@@ -63,43 +67,58 @@ public class PetAgeFragment extends Fragment
      */
     private void setDispItem()
     {
-        TextView textViewName = (TextView) mView.findViewById(R.id.textViewName);
-        textViewName.setText(mItem.getName());
+        try {
+            TextView textViewName = (TextView) mView.findViewById(R.id.textViewName);
+            textViewName.setText(mItem.getName());
 
-        TextView textViewKind = (TextView) mView.findViewById(R.id.textViewKind);
-        textViewKind.setText(mItem.getKindDisp(getActivity().getApplicationContext()));
+            TextView textViewKind = (TextView) mView.findViewById(R.id.textViewKind);
+            textViewKind.setText(mItem.getKindDisp(getActivity().getApplicationContext()));
 
-        TextView textViewBirthday = (TextView) mView.findViewById(R.id.textViewBirthday);
-        textViewBirthday.setText(mItem.getDispBirthday());
+            TextView textViewBirthday = (TextView) mView.findViewById(R.id.textViewBirthday);
+            textViewBirthday.setText(mItem.getDispBirthday());
 
-        TextView textViewPetAge = (TextView) mView.findViewById(R.id.textViewPetAge);
-        textViewPetAge.setText(mItem.getPetAgeDisp());
+            TextView textViewPetAge = (TextView) mView.findViewById(R.id.textViewPetAge);
+            textViewPetAge.setText(mItem.getPetAgeDisp());
 
-        TextView textViewHumanAge = (TextView) mView.findViewById(R.id.textViewHumanAge);
-        textViewHumanAge.setText(mItem.getHumanAge(getActivity().getApplicationContext()));
+            TextView textViewHumanAge = (TextView) mView.findViewById(R.id.textViewHumanAge);
+            textViewHumanAge.setText(mItem.getHumanAge(getActivity().getApplicationContext()));
 
-        TextView textViewDays = (TextView) mView.findViewById(R.id.textViewDays);
-        textViewDays.setText(mItem.getDaysFromBorn());
+            TextView textViewDays = (TextView) mView.findViewById(R.id.textViewDays);
+            textViewDays.setText(mItem.getDaysFromBorn());
 
-        LinearLayout linearLayout1 = (LinearLayout) mView.findViewById(R.id.linearLayout1);
-        linearLayout1.setBackgroundResource(BG_ABOVE[mPageNum % BG_CNT]);
+            LinearLayout linearLayout1 = (LinearLayout) mView.findViewById(R.id.linearLayout1);
+            linearLayout1.setBackgroundResource(BG_ABOVE[mPageNum % BG_CNT]);
 
-        RelativeLayout relativeLayout1 = (RelativeLayout) mView.findViewById(R.id.relativeLayout1);
-        relativeLayout1.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
+            RelativeLayout relativeLayout1 = (RelativeLayout) mView.findViewById(R.id.relativeLayout1);
+            relativeLayout1.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
 
-        RelativeLayout relativeLayout2 = (RelativeLayout) mView.findViewById(R.id.relativeLayout2);
-        relativeLayout2.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
+            RelativeLayout relativeLayout2 = (RelativeLayout) mView.findViewById(R.id.relativeLayout2);
+            relativeLayout2.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
 
-        RelativeLayout relativeLayout3 = (RelativeLayout) mView.findViewById(R.id.relativeLayout3);
-        relativeLayout3.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
+            RelativeLayout relativeLayout3 = (RelativeLayout) mView.findViewById(R.id.relativeLayout3);
+            relativeLayout3.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
 
-        ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+            ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
 
-        if (mItem.getPhotoFlg() == 1) {
-            imageViewPhoto.setImageBitmap(mItem.getPhotoBitmap(getActivity()));
-            imageViewPhoto.setVisibility(View.VISIBLE);
-        } else {
-            imageViewPhoto.setVisibility(View.GONE);
+            if (mItem.getPhotoFlg() == 1) {
+                Bitmap circleBitmap = mItem.getPhotoCircleBitmap(getActivity());
+                final Bitmap kadomaruBitmap = mItem.getPhotoKadomaruBitmap(getActivity());
+
+                imageViewPhoto.setImageBitmap(circleBitmap);
+                imageViewPhoto.setVisibility(View.VISIBLE);
+
+                imageViewPhoto.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        PhotoDialog photoDialog = PhotoDialog.getInstance(kadomaruBitmap);
+                        photoDialog.show(getActivity().getFragmentManager(), "dialog");
+                    }
+                });
+            } else {
+                imageViewPhoto.setVisibility(View.GONE);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

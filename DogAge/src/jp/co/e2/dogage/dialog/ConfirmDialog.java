@@ -14,7 +14,7 @@ import android.widget.TextView;
  * 
  * @access public
  */
-public class ConfirmDialog extends AppDialog<CallbackListener>
+public class ConfirmDialog extends BaseDialog<CallbackListener>
 {
     /**
      * インスタンスを返す

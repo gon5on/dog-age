@@ -22,7 +22,7 @@ import java.util.HashMap;
  * 
  * @access public
  */
-public class Validate
+public class ValidateHelper
 {
     private static Boolean mResult = true;                  //バリデート結果
     private static HashMap<String, String> mErrorMsg;       //エラーメッセージ
@@ -32,7 +32,7 @@ public class Validate
      * 
      * @access public
      */
-    public Validate()
+    public ValidateHelper()
     {
         mResult = true;
         mErrorMsg = new HashMap<String, String>();

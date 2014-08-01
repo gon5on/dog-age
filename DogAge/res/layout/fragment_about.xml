@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:text="ワンちゃんの人間に換算した年齢は、以下のように計算しています。\n一般的に、小型犬のほうが成長が早く、老化が遅いと言われています。"
+        android:text="人間に換算した年齢は、以下のように計算しています。\n一般的に、小型犬のほうが成長が早く、老化が遅いと言われています。"
         android:textColor="@color/text"
         android:textSize="15sp" />
 

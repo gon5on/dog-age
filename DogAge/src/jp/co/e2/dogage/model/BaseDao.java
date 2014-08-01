@@ -8,7 +8,7 @@ import android.database.Cursor;
  * 
  * @access public
  */
-public class AppDao
+public class BaseDao
 {
     /**
      * NULLかどうかを判定して、ContentValuesに値を入れる

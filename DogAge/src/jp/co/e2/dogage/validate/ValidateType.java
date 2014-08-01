@@ -31,14 +31,14 @@ public class ValidateType
     /**
      * すべて半角数字かどうか
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String msgFull エラーメッセージ全文
      * @return void
      * @access public
      */
-    public void isHalfWeightNumeric(Validate validate, String value, String name, String msgFull)
+    public void isHalfWeightNumeric(ValidateHelper validate, String value, String name, String msgFull)
     {
         match(validate, value, name, msgFull, MATCH_NUMBER, ERROR_MSG_HALF_WEIGHT_NUMERIC);
     }
@@ -46,13 +46,13 @@ public class ValidateType
     /**
      * すべて半角数字かどうか
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public void isHalfWeightNumeric(Validate validate, String value, String name)
+    public void isHalfWeightNumeric(ValidateHelper validate, String value, String name)
     {
         match(validate, value, name, null, MATCH_NUMBER, ERROR_MSG_HALF_WEIGHT_NUMERIC);
     }
@@ -60,14 +60,14 @@ public class ValidateType
     /**
      * すべて半角英字かどうか
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String msgFull エラーメッセージ全文
      * @return void
      * @access public
      */
-    public void isHalfWeightAlphabet(Validate validate, String value, String name, String msgFull)
+    public void isHalfWeightAlphabet(ValidateHelper validate, String value, String name, String msgFull)
     {
         match(validate, value, name, msgFull, MATCH_ALPHABET, ERROR_MSG_HALF_WEIGHT_ALPHABET);
     }
@@ -75,13 +75,13 @@ public class ValidateType
     /**
      * すべて半角英字かどうか
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public void isHalfWeightAlphabet(Validate validate, String value, String name)
+    public void isHalfWeightAlphabet(ValidateHelper validate, String value, String name)
     {
         match(validate, value, name, null, MATCH_ALPHABET, ERROR_MSG_HALF_WEIGHT_ALPHABET);
     }
@@ -89,14 +89,14 @@ public class ValidateType
     /**
      * すべて半角英数字かどうか
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String msgFull エラーメッセージ全文
      * @return void
      * @access public
      */
-    public void isHalfWeightAlphanumeric(Validate validate, String value, String name, String msgFull)
+    public void isHalfWeightAlphanumeric(ValidateHelper validate, String value, String name, String msgFull)
     {
         match(validate, value, name, msgFull, MATCH_ALPHANUMERIC, ERROR_MSG_HALF_WEIGHT_ALPHANUMERIC);
     }
@@ -104,13 +104,13 @@ public class ValidateType
     /**
      * すべて半角英数字かどうか
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public void isHalfWeightAlphanumeric(Validate validate, String value, String name)
+    public void isHalfWeightAlphanumeric(ValidateHelper validate, String value, String name)
     {
         match(validate, value, name, null, MATCH_ALPHANUMERIC, ERROR_MSG_HALF_WEIGHT_ALPHANUMERIC);
     }
@@ -118,14 +118,14 @@ public class ValidateType
     /**
      * すべてひらがなかどうか
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String msgFull エラーメッセージ全文
      * @return void
      * @access public
      */
-    public void isHiragana(Validate validate, String value, String name, String msgFull)
+    public void isHiragana(ValidateHelper validate, String value, String name, String msgFull)
     {
         match(validate, value, name, msgFull, MATCH_HIRAGANA, ERROR_MSG_HIRAGANA);
     }
@@ -133,13 +133,13 @@ public class ValidateType
     /**
      * すべてひらがなかどうか
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public void isHiragana(Validate validate, String value, String name)
+    public void isHiragana(ValidateHelper validate, String value, String name)
     {
         match(validate, value, name, null, MATCH_HIRAGANA, ERROR_MSG_HIRAGANA);
     }
@@ -147,14 +147,14 @@ public class ValidateType
     /**
      * すべてカタカナかどうか
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String msgFull エラーメッセージ全文
      * @return void
      * @access public
      */
-    public void isKatakana(Validate validate, String value, String name, String msgFull)
+    public void isKatakana(ValidateHelper validate, String value, String name, String msgFull)
     {
         match(validate, value, name, msgFull, MATCH_KATAKANA, ERROR_MSG_KATAKANA);
     }
@@ -162,13 +162,13 @@ public class ValidateType
     /**
      * すべてカタカナかどうか
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public void isKatakana(Validate validate, String value, String name)
+    public void isKatakana(ValidateHelper validate, String value, String name)
     {
         match(validate, value, name, null, MATCH_KATAKANA, ERROR_MSG_KATAKANA);
     }
@@ -176,14 +176,14 @@ public class ValidateType
     /**
      * メールの形式かどうか
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String msgFull エラーメッセージ全文
      * @return void
      * @access public
      */
-    public void isEmail(Validate validate, String value, String name, String msgFull)
+    public void isEmail(ValidateHelper validate, String value, String name, String msgFull)
     {
         match(validate, value, name, msgFull, MATCH_EMAIL, ERROR_MSG_EMAIL);
     }
@@ -191,13 +191,13 @@ public class ValidateType
     /**
      * メールの形式かどうか
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public void isEmail(Validate validate, String value, String name)
+    public void isEmail(ValidateHelper validate, String value, String name)
     {
         match(validate, value, name, null, MATCH_EMAIL, ERROR_MSG_EMAIL);
     }
@@ -205,14 +205,14 @@ public class ValidateType
     /**
      * URLの形式かどうか
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String msgFull エラーメッセージ全文
      * @return void
      * @access public
      */
-    public void isUrl(Validate validate, String value, String name, String msgFull)
+    public void isUrl(ValidateHelper validate, String value, String name, String msgFull)
     {
         match(validate, value, name, msgFull, MATCH_URL, ERROR_MSG_URL);
     }
@@ -220,13 +220,13 @@ public class ValidateType
     /**
      * URLの形式かどうか
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @return void
      * @access public
      */
-    public void isUrl(Validate validate, String value, String name)
+    public void isUrl(ValidateHelper validate, String value, String name)
     {
         match(validate, value, name, null, MATCH_URL, ERROR_MSG_URL);
     }
@@ -234,7 +234,7 @@ public class ValidateType
     /**
      * マッチするかどうか
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String msgFull エラーメッセージ全文
@@ -243,7 +243,7 @@ public class ValidateType
      * @return void
      * @access private
      */
-    private void match(Validate validate, String value, String name, String msgFull, String pattern, String msg)
+    private void match(ValidateHelper validate, String value, String name, String msgFull, String pattern, String msg)
     {
         if (validate.getResult() == false) {
             return;

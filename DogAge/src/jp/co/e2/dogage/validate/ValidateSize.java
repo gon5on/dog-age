@@ -17,7 +17,7 @@ public class ValidateSize
     /**
      * MAXチェック（値→String、MAX→Int）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String limit MAX文字数
@@ -25,7 +25,7 @@ public class ValidateSize
      * @return void
      * @access public
      */
-    public static void maxCheck(Validate validate, String value, String name, Integer limit, String msgFull)
+    public static void maxCheck(ValidateHelper validate, String value, String name, Integer limit, String msgFull)
     {
         maxCheck(validate, Double.valueOf(value), name, Double.valueOf(limit), msgFull);
     }
@@ -33,14 +33,14 @@ public class ValidateSize
     /**
      * MAXチェック（値→String、MAX→Int）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String limit MAX文字数
      * @return void
      * @access public
      */
-    public static void maxCheck(Validate validate, String value, String name, Integer limit)
+    public static void maxCheck(ValidateHelper validate, String value, String name, Integer limit)
     {
         maxCheck(validate, Double.valueOf(value), name, Double.valueOf(limit), null);
     }
@@ -48,7 +48,7 @@ public class ValidateSize
     /**
      * MAXチェック（値→String、MAX→Float）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param Float limit MAX文字数
@@ -56,7 +56,7 @@ public class ValidateSize
      * @return void
      * @access public
      */
-    public static void maxCheck(Validate validate, String value, String name, Float limit, String msgFull)
+    public static void maxCheck(ValidateHelper validate, String value, String name, Float limit, String msgFull)
     {
         maxCheck(validate, Double.valueOf(value), name, Double.valueOf(limit), msgFull);
     }
@@ -64,14 +64,14 @@ public class ValidateSize
     /**
      * MAXチェック（値→String、MAX→Float）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param Float limit MAX文字数
      * @return void
      * @access public
      */
-    public static void maxCheck(Validate validate, String value, String name, Float limit)
+    public static void maxCheck(ValidateHelper validate, String value, String name, Float limit)
     {
         maxCheck(validate, Double.valueOf(value), name, Double.valueOf(limit), null);
     }
@@ -79,7 +79,7 @@ public class ValidateSize
     /**
      * MAXチェック（値→String、MAX→Double）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param Double limit MAX文字数
@@ -87,7 +87,7 @@ public class ValidateSize
      * @return void
      * @access public
      */
-    public static void maxCheck(Validate validate, String value, String name, Double limit, String msgFull)
+    public static void maxCheck(ValidateHelper validate, String value, String name, Double limit, String msgFull)
     {
         maxCheck(validate, Double.valueOf(value), name, Double.valueOf(limit), msgFull);
     }
@@ -95,14 +95,14 @@ public class ValidateSize
     /**
      * MAXチェック（値→String、MAX→Double）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param Double limit MAX文字数
      * @return void
      * @access public
      */
-    public static void maxCheck(Validate validate, String value, String name, Double limit)
+    public static void maxCheck(ValidateHelper validate, String value, String name, Double limit)
     {
         maxCheck(validate, Double.valueOf(value), name, Double.valueOf(limit), null);
     }
@@ -110,13 +110,13 @@ public class ValidateSize
     /**
      * MAXチェック（値→Double、MAX→Double）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Double value 値
      * @param Double limit MAX文字数
      * @return boolen バリデート結果
      * @access private
      */
-    private static void maxCheck(Validate validate, Double value, String name, Double limit, String msgFull)
+    private static void maxCheck(ValidateHelper validate, Double value, String name, Double limit, String msgFull)
     {
         if (validate.getResult() == false) {
             return;
@@ -133,7 +133,7 @@ public class ValidateSize
     /**
      * MINチェック（値→String、MIN→Int）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String limit MIN文字数
@@ -141,7 +141,7 @@ public class ValidateSize
      * @return void
      * @access public
      */
-    public static void minCheck(Validate validate, String value, String name, Integer limit, String msgFull)
+    public static void minCheck(ValidateHelper validate, String value, String name, Integer limit, String msgFull)
     {
         minCheck(validate, Double.valueOf(value), name, Double.valueOf(limit), msgFull);
     }
@@ -149,14 +149,14 @@ public class ValidateSize
     /**
      * MINチェック（値→String、MIN→Int）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param String limit MIN文字数
      * @return void
      * @access public
      */
-    public static void minCheck(Validate validate, String value, String name, Integer limit)
+    public static void minCheck(ValidateHelper validate, String value, String name, Integer limit)
     {
         minCheck(validate, Double.valueOf(value), name, Double.valueOf(limit), null);
     }
@@ -164,7 +164,7 @@ public class ValidateSize
     /**
      * MINチェック（値→String、MIN→Float）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param Float limit MIN文字数
@@ -172,7 +172,7 @@ public class ValidateSize
      * @return void
      * @access public
      */
-    public static void minCheck(Validate validate, String value, String name, Float limit, String msgFull)
+    public static void minCheck(ValidateHelper validate, String value, String name, Float limit, String msgFull)
     {
         minCheck(validate, Double.valueOf(value), name, Double.valueOf(limit), msgFull);
     }
@@ -180,14 +180,14 @@ public class ValidateSize
     /**
      * MINチェック（値→String、MIN→Float）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param Float limit MIN文字数
      * @return void
      * @access public
      */
-    public static void minCheck(Validate validate, String value, String name, Float limit)
+    public static void minCheck(ValidateHelper validate, String value, String name, Float limit)
     {
         minCheck(validate, Double.valueOf(value), name, Double.valueOf(limit), null);
     }
@@ -195,7 +195,7 @@ public class ValidateSize
     /**
      * MINチェック（値→String、MIN→Double）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param Double limit MIN文字数
@@ -203,7 +203,7 @@ public class ValidateSize
      * @return void
      * @access public
      */
-    public static void minCheck(Validate validate, String value, String name, Double limit, String msgFull)
+    public static void minCheck(ValidateHelper validate, String value, String name, Double limit, String msgFull)
     {
         minCheck(validate, Double.valueOf(value), name, Double.valueOf(limit), msgFull);
     }
@@ -211,14 +211,14 @@ public class ValidateSize
     /**
      * MINチェック（値→String、MIN→Double）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param Double limit MIN文字数
      * @return void
      * @access public
      */
-    public static void minCheck(Validate validate, String value, String name, Double limit)
+    public static void minCheck(ValidateHelper validate, String value, String name, Double limit)
     {
         minCheck(validate, Double.valueOf(value), name, Double.valueOf(limit), null);
     }
@@ -226,13 +226,13 @@ public class ValidateSize
     /**
      * MINチェック（値→Double、MIN→Double）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Double value 値
      * @param Double limit MIN文字数
      * @return boolen バリデート結果
      * @access private
      */
-    private static void minCheck(Validate validate, Double value, String name, Double limit, String msgFull)
+    private static void minCheck(ValidateHelper validate, Double value, String name, Double limit, String msgFull)
     {
         if (validate.getResult() == false) {
             return;
@@ -249,14 +249,14 @@ public class ValidateSize
     /**
      * MAXエラーメッセージセット
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String name 変数名
      * @param String msgFull エラーメッセージ全文
      * @param String limit 何文字
      * @return void
      * @access private
      */
-    private static void setErrorMsgMax(Validate validate, String name, String msgFull, String limit)
+    private static void setErrorMsgMax(ValidateHelper validate, String name, String msgFull, String limit)
     {
         if (msgFull != null) {
             validate.error(name, msgFull);
@@ -268,14 +268,14 @@ public class ValidateSize
     /**
      * MINエラーメッセージセット
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String name 変数名
      * @param String msgFull エラーメッセージ全文
      * @param String limit 何文字
      * @return void
      * @access private
      */
-    private static void setErrorMsgMin(Validate validate, String name, String msgFull, String limit)
+    private static void setErrorMsgMin(ValidateHelper validate, String name, String msgFull, String limit)
     {
         if (msgFull != null) {
             validate.error(name, msgFull);

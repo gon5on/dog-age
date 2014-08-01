@@ -6,9 +6,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.net.Uri;
 
 /**
@@ -19,6 +28,7 @@ import android.net.Uri;
 public class ImgUtils
 {
     private static String mPath;                       //画像ファイルパス
+    private static Bitmap mBitmap;                     //bitmap画像
 
     /**
      * コンストラクタ
@@ -29,7 +39,10 @@ public class ImgUtils
      */
     public ImgUtils(Context context, Uri uri)
     {
-        mPath = MediaUtils.getPathFromUri(context, uri);        //URIをファイルパスに変換
+        //URIをファイルパスに変換
+        mPath = MediaUtils.getPathFromUri(context, uri);
+
+        LogHelper.d(mPath);
     }
 
     /**
@@ -41,6 +54,32 @@ public class ImgUtils
     public ImgUtils(String path)
     {
         mPath = path;
+
+        LogHelper.d(mPath);
+    }
+
+    /**
+     * コンストラクタ
+     * 
+     * @param Contxt context
+     * @param Integer resId リソースID
+     * @access public
+     */
+    public ImgUtils(Context context, Integer resId)
+    {
+        Resources resources = context.getResources();
+        mBitmap = BitmapFactory.decodeResource(resources, resId);
+    }
+
+    /**
+     * コンストラクタ
+     * 
+     * @param Bitmap bitmap ビットマップ
+     * @access public
+     */
+    public ImgUtils(Bitmap bitmap)
+    {
+        mBitmap = bitmap;
     }
 
     /**
@@ -50,8 +89,12 @@ public class ImgUtils
      * @throws IOException
      * @access public
      */
-    public Bitmap getOriginImg() throws IOException
+    public Bitmap getBitmap() throws IOException
     {
+        if (mBitmap != null) {
+            return mBitmap;
+        }
+
         Bitmap originBitmap = null;
 
         FileInputStream in = new FileInputStream(mPath);
@@ -62,6 +105,65 @@ public class ImgUtils
     }
 
     /**
+     * 丸にくりぬいたビットマップ画像を返す
+     * 
+     * @return Bitmap
+     * @throws IOException
+     * @access public
+     */
+    public Bitmap getCircleBitmap() throws IOException
+    {
+        Bitmap bitmap = getBitmap();
+        Integer height = bitmap.getHeight();
+        Integer width = bitmap.getWidth();
+
+        Bitmap circleBitmap = Bitmap.createBitmap(height, width, Bitmap.Config.ARGB_8888);
+
+        BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setShader(shader);
+
+        int circleCenter = circleBitmap.getWidth() / 2;
+
+        Canvas canvas = new Canvas(circleBitmap);
+        canvas.drawCircle(circleCenter, circleCenter, circleCenter, paint);
+
+        return circleBitmap;
+    }
+
+    /**
+     * 角丸にくりぬいたビットマップ画像を返す
+     * 
+     * @param Integer radius 角丸にしたいピクセル数
+     * @return Bitmap
+     * @throws IOException
+     * @access public
+     */
+    public Bitmap getKadomaruBitmap(Integer radius) throws IOException
+    {
+        Bitmap bitmap = getBitmap();
+        Integer height = bitmap.getHeight();
+        Integer width = bitmap.getWidth();
+
+        Bitmap clipArea = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Bitmap kadomaruBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+        Canvas c = new Canvas(clipArea);
+        c.drawRoundRect(new RectF(0, 0, width, height), radius, radius, new Paint(Paint.ANTI_ALIAS_FLAG));
+
+        Canvas canvas = new Canvas(kadomaruBitmap);
+        Paint paint = new Paint();
+        canvas.drawBitmap(clipArea, 0, 0, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, new Rect(0, 0, width, height), new Rect(0, 0, width, height), paint);
+
+        return kadomaruBitmap;
+    }
+
+    /**
      * リサイズしたビットマップ画像を返す
      * 
      * @param Integer height 高さピクセル
@@ -69,7 +171,7 @@ public class ImgUtils
      * @return Bitmap
      * @access public
      */
-    public Bitmap getResizeImg(Integer height, Integer weight)
+    public Bitmap getResizeBitmap(Integer height, Integer weight)
     {
         //画像ファイル自体は読み込まずに、高さなどのプロパティのみを取得する
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -77,7 +179,7 @@ public class ImgUtils
         BitmapFactory.decodeFile(mPath, options);
 
         //縮小比率を取得する
-        options.inSampleSize = calceInSampleSize(options, height, weight);
+        options.inSampleSize = calceScale(options, height, weight);
 
         //リサイズしたビットマップを作成
         options.inJustDecodeBounds = false;
@@ -95,21 +197,21 @@ public class ImgUtils
      * @return Integer inSampleSize 縮小比率
      * @access private
      */
-    private static int calceInSampleSize(BitmapFactory.Options options, Integer reHeight, Integer reWidth)
+    private static int calceScale(BitmapFactory.Options options, Integer reHeight, Integer reWidth)
     {
         Integer oriHeight = options.outHeight;
         Integer oriWidth = options.outWidth;
-        Integer inSampleSize = 1;
+        Integer scale = 1;
 
         if (oriHeight > reHeight || oriWidth > reWidth) {
             if (oriWidth > oriWidth) {
-                inSampleSize = Math.round((float) oriHeight / (float) reHeight);
+                scale = Math.round((float) oriHeight / (float) reHeight);
             } else {
-                inSampleSize = Math.round((float) oriWidth / (float) reWidth);
+                scale = Math.round((float) oriWidth / (float) reWidth);
             }
         }
 
-        return inSampleSize;
+        return scale;
     }
 
     /**
@@ -123,13 +225,13 @@ public class ImgUtils
      * @throws IOException
      * @access public
      */
-    public Boolean saveResizeImg(String dirPath, String name, Integer height, Integer weight) throws IOException
+    public Boolean saveResizeJpg(String dirPath, String name, Integer height, Integer weight) throws IOException
     {
         //画像読み込み
-        Bitmap img = getResizeImg(height, weight);
+        Bitmap img = getResizeBitmap(height, weight);
 
         //画像保存
-        return saveImgJpg(dirPath, name, img);
+        return saveJpg(dirPath, name, img);
     }
 
     /**
@@ -141,13 +243,13 @@ public class ImgUtils
      * @throws IOException
      * @access public
      */
-    public Boolean saveOrgImgJpg(String dirPath, String name) throws IOException
+    public Boolean saveOrgJpg(String dirPath, String name) throws IOException
     {
         //画像読み込み
-        Bitmap img = getOriginImg();
+        Bitmap img = getBitmap();
 
         //画像保存
-        return saveImgJpg(dirPath, name, img);
+        return saveJpg(dirPath, name, img);
     }
 
     /**
@@ -160,7 +262,7 @@ public class ImgUtils
      * @throws IOException
      * @access private
      */
-    private Boolean saveImgJpg(String dirPath, String name, Bitmap img) throws IOException
+    private Boolean saveJpg(String dirPath, String name, Bitmap img) throws IOException
     {
         //保存先のフォルダ存在確認
         File dir = new File(dirPath);

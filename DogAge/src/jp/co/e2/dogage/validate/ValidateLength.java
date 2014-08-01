@@ -17,7 +17,7 @@ public class ValidateLength
     /**
      * 文字長MAXチェック（String）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param Integer length 文字長
@@ -25,7 +25,7 @@ public class ValidateLength
      * @return void
      * @access public
      */
-    public static void maxCheck(Validate validate, String value, String name, Integer length, String msgFull)
+    public static void maxCheck(ValidateHelper validate, String value, String name, Integer length, String msgFull)
     {
         if (validate.getResult(name) == false) {
             return;
@@ -46,14 +46,14 @@ public class ValidateLength
     /**
      * 文字長MAXチェック（String）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param Integer length 文字長
      * @return void
      * @access public
      */
-    public static void maxCheck(Validate validate, String value, String name, Integer length)
+    public static void maxCheck(ValidateHelper validate, String value, String name, Integer length)
     {
         maxCheck(validate, value, name, length, null);
     }
@@ -61,7 +61,7 @@ public class ValidateLength
     /**
      * 文字長MAXチェック（Int）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Int value 値
      * @param String name 変数名
      * @param Integer length 最長文字長
@@ -69,7 +69,7 @@ public class ValidateLength
      * @return void
      * @access public
      */
-    public static void maxCheck(Validate validate, Integer value, String name, Integer length, String msgFull)
+    public static void maxCheck(ValidateHelper validate, Integer value, String name, Integer length, String msgFull)
     {
         maxCheck(validate, String.valueOf(value), name, length, msgFull);
     }
@@ -77,14 +77,14 @@ public class ValidateLength
     /**
      * 文字長MAXチェック（Int）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Int value 値
      * @param String name 変数名
      * @param Integer length 最長文字長
      * @return void
      * @access public
      */
-    public static void maxCheck(Validate validate, Integer value, String name, Integer length)
+    public static void maxCheck(ValidateHelper validate, Integer value, String name, Integer length)
     {
         maxCheck(validate, String.valueOf(value), name, length, null);
     }
@@ -92,7 +92,7 @@ public class ValidateLength
     /**
      * 文字長MAXチェック（Double）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Double value 値
      * @param String name 変数名
      * @param Integer length 最長文字長
@@ -100,7 +100,7 @@ public class ValidateLength
      * @return void
      * @access public
      */
-    public static void maxCheck(Validate validate, Double value, String name, Integer length, String msgFull)
+    public static void maxCheck(ValidateHelper validate, Double value, String name, Integer length, String msgFull)
     {
         maxCheck(validate, String.valueOf(value), name, length, msgFull);
     }
@@ -108,14 +108,14 @@ public class ValidateLength
     /**
      * 文字長MAXチェック（float）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Double value 値
      * @param String name 変数名
      * @param Integer length 最長文字長
      * @return void
      * @access public
      */
-    public static void maxCheck(Validate validate, float value, String name, Integer length)
+    public static void maxCheck(ValidateHelper validate, float value, String name, Integer length)
     {
         maxCheck(validate, String.valueOf(value), name, length, null);
     }
@@ -123,7 +123,7 @@ public class ValidateLength
     /**
      * 文字長MINチェック（String）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param Integer length 最短文字長
@@ -131,7 +131,7 @@ public class ValidateLength
      * @return void
      * @access public
      */
-    public static void minCheck(Validate validate, String value, String name, Integer length, String msgFull)
+    public static void minCheck(ValidateHelper validate, String value, String name, Integer length, String msgFull)
     {
         if (validate.getResult(name) == false) {
             return;
@@ -152,14 +152,14 @@ public class ValidateLength
     /**
      * 文字長MINチェック（String）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param String value 値
      * @param String name 変数名
      * @param Integer length 最短文字長
      * @return void
      * @access public
      */
-    public static void minCheck(Validate validate, String value, String name, Integer length)
+    public static void minCheck(ValidateHelper validate, String value, String name, Integer length)
     {
         minCheck(validate, String.valueOf(value), name, length, null);
     }
@@ -167,7 +167,7 @@ public class ValidateLength
     /**
      * 文字長MINチェック（Int）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Int value 値
      * @param String name 変数名
      * @param Integer length 最短文字長
@@ -175,7 +175,7 @@ public class ValidateLength
      * @return void
      * @access public
      */
-    public static void minCheck(Validate validate, Integer value, String name, Integer length, String msgFull)
+    public static void minCheck(ValidateHelper validate, Integer value, String name, Integer length, String msgFull)
     {
         minCheck(validate, String.valueOf(value), name, length, msgFull);
     }
@@ -183,7 +183,7 @@ public class ValidateLength
     /**
      * 文字長MINチェック（Int）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Int value 値
      * @param String name 変数名
      * @param Integer length 最短文字長
@@ -191,7 +191,7 @@ public class ValidateLength
      * @return void
      * @access public
      */
-    public static void minCheck(Validate validate, Integer value, String name, Integer length)
+    public static void minCheck(ValidateHelper validate, Integer value, String name, Integer length)
     {
         minCheck(validate, String.valueOf(value), name, length, null);
     }
@@ -199,7 +199,7 @@ public class ValidateLength
     /**
      * 文字長MINチェック（Double）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Double value 値
      * @param String name 変数名
      * @param Integer length 最短文字長
@@ -207,7 +207,7 @@ public class ValidateLength
      * @return void
      * @access public
      */
-    public static void minCheck(Validate validate, Double value, String name, Integer length, String msgFull)
+    public static void minCheck(ValidateHelper validate, Double value, String name, Integer length, String msgFull)
     {
         minCheck(validate, String.valueOf(value), name, length, msgFull);
     }
@@ -215,14 +215,14 @@ public class ValidateLength
     /**
      * 文字長MINチェック（Double）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Double value 値
      * @param String name 変数名
      * @param Integer length 最短文字長
      * @return void
      * @access public
      */
-    public static void minCheck(Validate validate, Double value, String name, Integer length)
+    public static void minCheck(ValidateHelper validate, Double value, String name, Integer length)
     {
         minCheck(validate, String.valueOf(value), name, length, null);
     }
@@ -230,7 +230,7 @@ public class ValidateLength
     /**
      * 文字長MINチェック（Float）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Float value 値
      * @param String name 変数名
      * @param Integer length 最短文字長
@@ -238,7 +238,7 @@ public class ValidateLength
      * @return void
      * @access public
      */
-    public static void minCheck(Validate validate, Float value, String name, Integer length, String msgFull)
+    public static void minCheck(ValidateHelper validate, Float value, String name, Integer length, String msgFull)
     {
         minCheck(validate, String.valueOf(value), name, length, msgFull);
     }
@@ -246,7 +246,7 @@ public class ValidateLength
     /**
      * 文字長MINチェック（Float）
      * 
-     * @param Validate validate バリデートクラス
+     * @param ValidateHelper validate バリデートクラス
      * @param Float value 値
      * @param String name 変数名
      * @param Integer length 最短文字長
@@ -254,7 +254,7 @@ public class ValidateLength
      * @return void
      * @access public
      */
-    public static void minCheck(Validate validate, Float value, String name, Integer length)
+    public static void minCheck(ValidateHelper validate, Float value, String name, Integer length)
     {
         minCheck(validate, String.valueOf(value), name, length, null);
     }
