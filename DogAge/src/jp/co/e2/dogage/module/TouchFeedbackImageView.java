@@ -1,6 +1,8 @@
 package jp.co.e2.dogage.module;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.LightingColorFilter;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,7 +17,7 @@ import android.widget.ImageView;
 public class TouchFeedbackImageView extends ImageView implements OnTouchListener
 {
     /**
-     * プログラムから動的に生成する場合に使われるコンテキスト
+     * コンテキスト
      * 
      * @param Context context
      * @access public
@@ -28,7 +30,7 @@ public class TouchFeedbackImageView extends ImageView implements OnTouchListener
     }
 
     /**
-     * レイアウトファイルから生成する場合に使われるコンテキスト
+     * コンテキスト
      * 
      * @param Context context
      * @param AttributeSet attrs 指定した属性値
@@ -42,7 +44,7 @@ public class TouchFeedbackImageView extends ImageView implements OnTouchListener
     }
 
     /**
-     * どこから呼ばれるか不明なコンテキスト
+     * コンテキスト
      * 
      * @param Context context
      * @param AttributeSet attrs
@@ -71,14 +73,15 @@ public class TouchFeedbackImageView extends ImageView implements OnTouchListener
             case MotionEvent.ACTION_DOWN:
                 shadeOn(v);
                 break;
-            case MotionEvent.ACTION_MOVE:
+            case MotionEvent.ACTION_CANCEL:
+                shadeOff(v);
                 break;
             case MotionEvent.ACTION_UP:
                 shadeOff(v);
                 break;
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -89,7 +92,7 @@ public class TouchFeedbackImageView extends ImageView implements OnTouchListener
      */
     public void shadeOn(View v)
     {
-
+        ((ImageView) v).setColorFilter(new LightingColorFilter(Color.LTGRAY, 0));
     }
 
     /**
@@ -100,6 +103,6 @@ public class TouchFeedbackImageView extends ImageView implements OnTouchListener
      */
     public void shadeOff(View v)
     {
-
+        ((ImageView) v).clearColorFilter();
     }
 }

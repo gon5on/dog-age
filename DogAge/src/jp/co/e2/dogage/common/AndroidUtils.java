@@ -1,7 +1,6 @@
 package jp.co.e2.dogage.common;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -120,29 +119,6 @@ public class AndroidUtils
     public static Uri getMargetUri(Context context)
     {
         return Uri.parse("market://details?id=" + context.getPackageName());
-    }
-
-    /**
-     * マニフェストファイルからデバッグモードかどうかを取得する
-     * 
-     * @param context
-     * @return public
-     */
-    public static boolean isDebuggable(Context context)
-    {
-        PackageManager manager = context.getPackageManager();
-        ApplicationInfo appInfo = null;
-
-        try {
-            appInfo = manager.getApplicationInfo(context.getPackageName(), 0);
-        } catch (NameNotFoundException e) {
-            return false;
-        }
-
-        if ((appInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) == ApplicationInfo.FLAG_DEBUGGABLE) {
-            return true;
-        }
-        return false;
     }
 
     /**
