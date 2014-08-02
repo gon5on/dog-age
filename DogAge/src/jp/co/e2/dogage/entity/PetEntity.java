@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import jp.co.e2.dogage.common.AndroidUtils;
 import jp.co.e2.dogage.common.DateUtils;
 import jp.co.e2.dogage.common.ImgUtils;
 import jp.co.e2.dogage.config.Config;
@@ -332,39 +333,69 @@ public class PetEntity implements Serializable
     }
 
     /**
-     * 写真丸ビットマップを返す
+     * 拡大写真用ビットマップを返す
      * 
      * @param Context context
      * @return Bitmap
      * @throws IOException
      * @access public
      */
-    public Bitmap getPhotoCircleBitmap(Context context) throws IOException
+    public Bitmap getPhotoBig(Context context) throws IOException
     {
         String path = Config.getImgDirPath(context) + "/" + Config.getImgFileName(getId());
 
-        ImgUtils imgUtils = new ImgUtils(path);
-        Bitmap img = imgUtils.getCircleBitmap();
+        Integer size = AndroidUtils.dpToPixel(context, Config.PHOTO_BIG_DP);
 
-        return img;
+        ImgUtils imgUtils = new ImgUtils(path);
+        Bitmap bitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(context));
+
+        imgUtils = null;
+
+        return bitmap;
     }
 
     /**
-     * 写真角丸ビットマップを返す
+     * サムネイル用ビットマップを返す
      * 
      * @param Context context
      * @return Bitmap
      * @throws IOException
      * @access public
      */
-    public Bitmap getPhotoKadomaruBitmap(Context context) throws IOException
+    public Bitmap getPhotoThumb(Context context) throws IOException
     {
         String path = Config.getImgDirPath(context) + "/" + Config.getImgFileName(getId());
 
-        ImgUtils imgUtils = new ImgUtils(path);
-        Bitmap img = imgUtils.getKadomaruBitmap(Config.getKadomaruPixcel(context));
+        Integer size = AndroidUtils.dpToPixel(context, Config.PHOTO_THUMB_DP);
 
-        return img;
+        ImgUtils imgUtils = new ImgUtils(path);
+        Bitmap bitmap = imgUtils.getResizeCircleBitmap(size, size);
+
+        imgUtils = null;
+
+        return bitmap;
+    }
+
+    /**
+     * 入力画面用ビットマップを返す
+     * 
+     * @param Context context
+     * @return Bitmap
+     * @throws IOException
+     * @access public
+     */
+    public Bitmap getPhotoInput(Context context) throws IOException
+    {
+        String path = Config.getImgDirPath(context) + "/" + Config.getImgFileName(getId());
+
+        Integer size = AndroidUtils.dpToPixel(context, Config.PHOTO_INPUT_DP);
+
+        ImgUtils imgUtils = new ImgUtils(path);
+        Bitmap bitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(context));
+
+        imgUtils = null;
+
+        return bitmap;
     }
 
     /**

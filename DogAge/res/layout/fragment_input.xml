@@ -123,11 +123,11 @@
 
     <jp.co.e2.dogage.module.TouchFeedbackImageView
         android:id="@+id/imageViewPhoto"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:scaleType="fitXY"
-        android:src="@drawable/img_no_photo" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_actionbar" />
 
     <Button
         android:id="@+id/buttonSave"

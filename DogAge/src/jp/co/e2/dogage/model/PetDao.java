@@ -96,6 +96,7 @@ public class PetDao extends BaseDao
             if (data.getPhotoUri() != null) {
                 ImgUtils imgUtils = new ImgUtils(mContext, data.getPhotoUri());
                 imgUtils.saveOrgJpg(Config.getImgDirPath(mContext), Config.getImgFileName(savedId));
+                imgUtils = null;
             }
         } else {
             MediaUtils.deleteDirFile(Config.getImgDirPath(mContext) + "/" + Config.getImgFileName(savedId));

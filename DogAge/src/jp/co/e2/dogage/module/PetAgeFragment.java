@@ -101,16 +101,16 @@ public class PetAgeFragment extends Fragment
             ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
 
             if (mItem.getPhotoFlg() == 1) {
-                Bitmap circleBitmap = mItem.getPhotoCircleBitmap(getActivity());
-                final Bitmap kadomaruBitmap = mItem.getPhotoKadomaruBitmap(getActivity());
+                Bitmap thumbBitmap = mItem.getPhotoThumb(getActivity());
+                final Bitmap bigBitmap = mItem.getPhotoBig(getActivity());
 
-                imageViewPhoto.setImageBitmap(circleBitmap);
+                imageViewPhoto.setImageBitmap(thumbBitmap);
                 imageViewPhoto.setVisibility(View.VISIBLE);
 
                 imageViewPhoto.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        PhotoDialog photoDialog = PhotoDialog.getInstance(kadomaruBitmap);
+                        PhotoDialog photoDialog = PhotoDialog.getInstance(bigBitmap);
                         photoDialog.show(getActivity().getFragmentManager(), "dialog");
                     }
                 });

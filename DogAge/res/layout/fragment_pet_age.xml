@@ -33,12 +33,12 @@
                 android:layout_marginBottom="5dp"
                 android:gravity="center_vertical" >
 
-            <jp.co.e2.dogage.module.TouchFeedbackImageView
+                <jp.co.e2.dogage.module.TouchFeedbackImageView
                     android:id="@+id/imageViewPhoto"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:src="@drawable/img_no_photo" />
+                    android:src="@drawable/img_foot" />
 
                 <TextView
                     android:id="@+id/textViewName"

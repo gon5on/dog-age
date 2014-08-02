@@ -223,8 +223,10 @@ public class InputActivity extends BaseActivity
                 mPhotoUri = data.getData();
 
                 //トリミング後保存した画像を取得
-                ImgUtils ImgUtils = new ImgUtils(getActivity(), mPhotoUri);
-                Bitmap bitmap = ImgUtils.getKadomaruBitmap(Config.getKadomaruPixcel(getActivity()));
+                ImgUtils imgUtils = new ImgUtils(getActivity(), mPhotoUri);
+                Bitmap bitmap = imgUtils.getKadomaruBitmap(Config.getKadomaruPixcel(getActivity()));
+
+                imgUtils = null;
 
                 //画像を表示
                 ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
@@ -264,18 +266,38 @@ public class InputActivity extends BaseActivity
 
                     if (mSavedItem.getPhotoFlg() == 1) {
                         ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
-                        imageViewPhoto.setImageBitmap(mSavedItem.getPhotoKadomaruBitmap(getActivity()));
+                        imageViewPhoto.setImageBitmap(mSavedItem.getPhotoInput(getActivity()));
                     }
                 }
 
                 //画像がない場合、NO PHOTOを角丸の画像にする
                 if (mSavedItem == null || mSavedItem.getPhotoFlg() == 0) {
-                    ImgUtils ImgUtils = new ImgUtils(getActivity(), R.drawable.img_no_photo);
-                    Bitmap bitmap = ImgUtils.getKadomaruBitmap(Config.getKadomaruPixcel(getActivity()));
-
-                    ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
-                    imageViewPhoto.setImageBitmap(bitmap);
+                    setNoPhoto();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        /**
+         * NO PHOTOをセットする
+         * 
+         * @return void
+         * @access private
+         */
+        private void setNoPhoto()
+        {
+            try {
+                Integer size = AndroidUtils.dpToPixel(getActivity(), Config.PHOTO_INPUT_DP);
+
+                ImgUtils imgUtils = new ImgUtils(getActivity(), R.drawable.img_no_photo);
+                Bitmap bitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(getActivity()));
+
+                imgUtils = null;
+
+                ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+                imageViewPhoto.setImageBitmap(bitmap);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -509,19 +531,10 @@ public class InputActivity extends BaseActivity
         @Override
         public void onClickPhotoSelectDialogDelPhoto()
         {
-            try {
-                mPhotoFlg = 0;
+            mPhotoFlg = 0;
 
-                //NO PHOTOを角丸の画像にする
-                ImgUtils ImgUtils = new ImgUtils(getActivity(), R.drawable.img_no_photo);
-                Bitmap bitmap = ImgUtils.getKadomaruBitmap(Config.getKadomaruPixcel(getActivity()));
-
-                ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
-                imageViewPhoto.setImageBitmap(bitmap);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            //NO PHOTOをセットする
+            setNoPhoto();
         }
     }
 }

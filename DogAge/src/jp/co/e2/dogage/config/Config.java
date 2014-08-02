@@ -75,8 +75,11 @@ public class Config
     public static Integer HEIGHT = 1000;
     public static Integer WIDTH = 1000;
 
-    //角丸画像の角丸にするdp
-    public static Integer KADOMARU_DP = 20;
+    //画像dp
+    public static Integer KADOMARU_DP = 20;             //角丸画像の角丸サイズ
+    public static Integer PHOTO_INPUT_DP = 150;         //入力画面の写真
+    public static Integer PHOTO_THUMB_DP = 80;          //サムネイル写真
+    public static Integer PHOTO_BIG_DP = 300;           //拡大写真
 
     //画像トリミング用インテント
     public static final String INTENT_TRIMMING = "com.android.camera.action.CROP";

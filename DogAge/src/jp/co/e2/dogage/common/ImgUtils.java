@@ -95,13 +95,13 @@ public class ImgUtils
             return mBitmap;
         }
 
-        Bitmap originBitmap = null;
+        Bitmap bitmap = null;
 
         FileInputStream in = new FileInputStream(mPath);
-        originBitmap = BitmapFactory.decodeStream(in);
+        bitmap = BitmapFactory.decodeStream(in);
         in.close();
 
-        return originBitmap;
+        return bitmap;
     }
 
     /**
@@ -170,6 +170,8 @@ public class ImgUtils
      */
     public Bitmap getKadomaruBitmap(Integer radius) throws IOException
     {
+        LogHelper.d("getKadomaruBitmap");
+
         return getKadomaruBitmap(getBitmap(), radius);
     }
 
@@ -185,6 +187,8 @@ public class ImgUtils
      */
     public Bitmap getResizeKadomaruBitmap(Integer height, Integer width, Integer radius) throws IOException
     {
+        LogHelper.d("getResizeKadomaruBitmap");
+
         return getKadomaruBitmap(getResizeBitmap(height, width), radius);
     }
 
@@ -195,10 +199,12 @@ public class ImgUtils
      * @return Bitmap bitmap
      * @return Bitmap
      * @throws IOException
-     * @access private
+     * @access public
      */
-    private Bitmap getKadomaruBitmap(Bitmap bitmap, Integer radius) throws IOException
+    public Bitmap getKadomaruBitmap(Bitmap bitmap, Integer radius) throws IOException
     {
+        LogHelper.d("private getKadomaruBitmap");
+
         Integer height = bitmap.getHeight();
         Integer width = bitmap.getWidth();
 
