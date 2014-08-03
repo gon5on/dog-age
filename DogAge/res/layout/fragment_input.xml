@@ -127,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:scaleType="centerCrop"
-        android:src="@drawable/bg_actionbar" />
+        android:src="@drawable/img_no_photo" />
 
     <Button
         android:id="@+id/buttonSave"

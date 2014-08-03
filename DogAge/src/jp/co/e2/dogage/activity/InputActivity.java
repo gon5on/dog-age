@@ -185,8 +185,6 @@ public class InputActivity extends BaseActivity
         private void fromCameraGalleryIntent(Intent data)
         {
             try {
-                mPhotoFlg = 1;
-
                 //画像保存先のURIを取得
                 Uri uri = Uri.fromFile(new File(Config.getImgTmpFilePath(getActivity())));
 
@@ -194,8 +192,6 @@ public class InputActivity extends BaseActivity
                 Intent intent = new Intent();
                 intent.setAction(Config.INTENT_TRIMMING);
                 intent.setData(data.getData());
-                intent.putExtra("outputX", Config.HEIGHT);
-                intent.putExtra("outputY", Config.WIDTH);
                 intent.putExtra("aspectX", 1);
                 intent.putExtra("aspectY", 1);
                 intent.putExtra("scale", true);
@@ -220,11 +216,13 @@ public class InputActivity extends BaseActivity
         private void fromTrimmingIntent(Intent data)
         {
             try {
+                mPhotoFlg = 1;
                 mPhotoUri = data.getData();
 
                 //トリミング後保存した画像を取得
                 ImgUtils imgUtils = new ImgUtils(getActivity(), mPhotoUri);
-                Bitmap bitmap = imgUtils.getKadomaruBitmap(Config.getKadomaruPixcel(getActivity()));
+                Integer size = AndroidUtils.dpToPixel(getActivity(), Config.PHOTO_INPUT_DP);
+                Bitmap bitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(getActivity()));
 
                 imgUtils = null;
 
@@ -288,10 +286,8 @@ public class InputActivity extends BaseActivity
         private void setNoPhoto()
         {
             try {
-                Integer size = AndroidUtils.dpToPixel(getActivity(), Config.PHOTO_INPUT_DP);
-
                 ImgUtils imgUtils = new ImgUtils(getActivity(), R.drawable.img_no_photo);
-                Bitmap bitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(getActivity()));
+                Bitmap bitmap = imgUtils.getKadomaruBitmap(Config.getKadomaruPixcel(getActivity()));
 
                 imgUtils = null;
 
@@ -431,12 +427,18 @@ public class InputActivity extends BaseActivity
                 BaseSQLiteOpenHelper helper = new BaseSQLiteOpenHelper(getActivity());
                 db = helper.getWritableDatabase();
 
+                db.beginTransaction();
+
                 PetDao petDao = new PetDao(getActivity());
                 ret = petDao.save(db, data);
 
+                if (ret == true) {
+                    db.setTransactionSuccessful();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
+                db.endTransaction();
                 db.close();
             }
 

@@ -71,10 +71,6 @@ public class Config
     //画像tmpフォルダ名
     public static String TMP_DIR_NAME = "tmp";
 
-    //リサイズ画像サイズ
-    public static Integer HEIGHT = 1000;
-    public static Integer WIDTH = 1000;
-
     //画像dp
     public static Integer KADOMARU_DP = 20;             //角丸画像の角丸サイズ
     public static Integer PHOTO_INPUT_DP = 150;         //入力画面の写真

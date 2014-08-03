@@ -12,6 +12,7 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -41,8 +42,6 @@ public class ImgUtils
     {
         //URIをファイルパスに変換
         mPath = MediaUtils.getPathFromUri(context, uri);
-
-        LogHelper.d(mPath);
     }
 
     /**
@@ -54,8 +53,6 @@ public class ImgUtils
     public ImgUtils(String path)
     {
         mPath = path;
-
-        LogHelper.d(mPath);
     }
 
     /**
@@ -170,8 +167,6 @@ public class ImgUtils
      */
     public Bitmap getKadomaruBitmap(Integer radius) throws IOException
     {
-        LogHelper.d("getKadomaruBitmap");
-
         return getKadomaruBitmap(getBitmap(), radius);
     }
 
@@ -187,8 +182,6 @@ public class ImgUtils
      */
     public Bitmap getResizeKadomaruBitmap(Integer height, Integer width, Integer radius) throws IOException
     {
-        LogHelper.d("getResizeKadomaruBitmap");
-
         return getKadomaruBitmap(getResizeBitmap(height, width), radius);
     }
 
@@ -203,8 +196,6 @@ public class ImgUtils
      */
     public Bitmap getKadomaruBitmap(Bitmap bitmap, Integer radius) throws IOException
     {
-        LogHelper.d("private getKadomaruBitmap");
-
         Integer height = bitmap.getHeight();
         Integer width = bitmap.getWidth();
 
@@ -234,6 +225,35 @@ public class ImgUtils
      */
     public Bitmap getResizeBitmap(Integer height, Integer width)
     {
+        //一旦、リサイズしたいサイズに一番近い2のべき乗で読み込む
+        Bitmap bitmap = getPreResizeBitmap(height, width);
+
+        //縮尺を計算
+        Float scale = Math.min((float) width / bitmap.getWidth(), (float) height / bitmap.getHeight());
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale, scale);
+
+        //指定サイズでbitmapを作り直す
+        Bitmap resizeBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+        return resizeBitmap;
+    }
+
+    /**
+     * リサイズしたいサイズに一番近い2のべき乗で読み込んだビットマップ画像を返す
+     * 
+     * @param Integer height 高さピクセル
+     * @param Integer width 幅ピクセル
+     * @return Bitmap
+     * @access private
+     */
+    private Bitmap getPreResizeBitmap(Integer height, Integer width)
+    {
+        //画像がすでに読み込んである場合は、それを返す
+        if (mBitmap != null) {
+            return mBitmap;
+        }
+
         //画像ファイル自体は読み込まずに、高さなどのプロパティのみを取得する
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;

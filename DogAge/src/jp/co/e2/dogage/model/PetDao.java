@@ -3,7 +3,6 @@ package jp.co.e2.dogage.model;
 import java.util.ArrayList;
 
 import jp.co.e2.dogage.common.DateUtils;
-import jp.co.e2.dogage.common.ImgUtils;
 import jp.co.e2.dogage.common.MediaUtils;
 import jp.co.e2.dogage.config.Config;
 import jp.co.e2.dogage.entity.PetEntity;
@@ -94,9 +93,9 @@ public class PetDao extends BaseDao
         //画像保存
         if (data.getPhotoFlg() == 1) {
             if (data.getPhotoUri() != null) {
-                ImgUtils imgUtils = new ImgUtils(mContext, data.getPhotoUri());
-                imgUtils.saveOrgJpg(Config.getImgDirPath(mContext), Config.getImgFileName(savedId));
-                imgUtils = null;
+                String tmpPath = MediaUtils.getPathFromUri(mContext, data.getPhotoUri());
+                String savePath = Config.getImgDirPath(mContext) + "/" + Config.getImgFileName(savedId);
+                MediaUtils.copyFile(tmpPath, savePath);
             }
         } else {
             MediaUtils.deleteDirFile(Config.getImgDirPath(mContext) + "/" + Config.getImgFileName(savedId));

@@ -1,6 +1,10 @@
 package jp.co.e2.dogage.common;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 
 import android.content.Context;
 import android.content.Intent;
@@ -115,5 +119,33 @@ public class MediaUtils
     public static void deleteDirFile(String path)
     {
         deleteDirFile(new File(path));
+    }
+
+    /**
+     * ファイルのコピー
+     * 
+     * @param String inputPath コピー元のファイルパス
+     * @param String outputPath コピー先のファイルパス
+     * @return void
+     * @throws IOException
+     * @access public
+     */
+    public static void copyFile(String inputPath, String outputPath) throws IOException
+    {
+        File inputFile = new File(inputPath);
+        File outputFile = new File(outputPath);
+
+        FileInputStream inputFileStream = new FileInputStream(inputFile);
+        FileOutputStream outputFileStream = new FileOutputStream(outputFile);
+
+        FileChannel inputChannel = inputFileStream.getChannel();
+        FileChannel outputChannel = outputFileStream.getChannel();
+
+        inputChannel.transferTo(0, inputChannel.size(), outputChannel);
+
+        inputFileStream.close();
+        outputFileStream.close();
+        inputChannel.close();
+        outputChannel.close();
     }
 }
