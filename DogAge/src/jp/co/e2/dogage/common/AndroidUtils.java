@@ -5,7 +5,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
-import android.os.Build;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 /**
@@ -88,28 +89,6 @@ public class AndroidUtils
     }
 
     /**
-     * OSバージョンを取得する
-     * 
-     * @return String OSバージョン
-     * @access public
-     */
-    public static String getOsVer()
-    {
-        return Build.VERSION.RELEASE;
-    }
-
-    /**
-     * モデル番号を取得する
-     * 
-     * @return String
-     * @access public
-     */
-    public static String getModel()
-    {
-        return Build.MODEL;
-    }
-
-    /**
      * アプリのマーケットURIを取得する
      * 
      * @param Context context コンテキスト
@@ -149,5 +128,39 @@ public class AndroidUtils
         float density = context.getResources().getDisplayMetrics().density;
 
         return (int) (value * density + 0.5f);
+    }
+
+    /**
+     * ウィンドウの横幅を返す
+     * 
+     * @param Context context
+     * @return Integer pixel
+     * @access public
+     */
+    public static Integer getScreenWidth(Context context)
+    {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+
+        return metrics.widthPixels;
+    }
+
+    /**
+     * ウィンドウの縦幅を返す
+     * 
+     * @param Context context
+     * @return Integer pixel
+     * @access public
+     */
+    public static Integer getScreenHeight(Context context)
+    {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+
+        return metrics.heightPixels;
     }
 }

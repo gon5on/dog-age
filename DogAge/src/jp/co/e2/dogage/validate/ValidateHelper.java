@@ -24,8 +24,8 @@ import java.util.HashMap;
  */
 public class ValidateHelper
 {
-    private static Boolean mResult = true;                  //バリデート結果
-    private static HashMap<String, String> mErrorMsg;       //エラーメッセージ
+    private Boolean mResult = true;                  //バリデート結果
+    private HashMap<String, String> mErrorMsg;       //エラーメッセージ
 
     /**
      * コンストラクタ

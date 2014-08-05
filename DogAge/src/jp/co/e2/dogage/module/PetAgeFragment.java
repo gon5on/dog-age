@@ -26,7 +26,7 @@ public class PetAgeFragment extends Fragment
 {
     private static final Integer[] BG_ABOVE = new Integer[] { R.drawable.img_frame_above1, R.drawable.img_frame_above2, R.drawable.img_frame_above3 };
     private static final Integer[] BG_UNDER = new Integer[] { R.drawable.img_frame_under1, R.drawable.img_frame_under2, R.drawable.img_frame_under3 };
-    private static final Integer BG_CNT = 3;
+    private static final Integer BG_CNT = BG_ABOVE.length;
 
     private PetEntity mItem = null;
     private Integer mPageNum = 0;

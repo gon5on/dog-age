@@ -28,8 +28,8 @@ import android.net.Uri;
  */
 public class ImgUtils
 {
-    private static String mPath;                       //画像ファイルパス
-    private static Bitmap mBitmap;                     //bitmap画像
+    private String mPath = null;                       //画像ファイルパス
+    private Bitmap mBitmap = null;                     //bitmap画像
 
     /**
      * コンストラクタ
@@ -77,28 +77,6 @@ public class ImgUtils
     public ImgUtils(Bitmap bitmap)
     {
         mBitmap = bitmap;
-    }
-
-    /**
-     * オリジナルのビットマップ画像を返す
-     * 
-     * @return Bitmap
-     * @throws IOException
-     * @access public
-     */
-    public Bitmap getBitmap() throws IOException
-    {
-        if (mBitmap != null) {
-            return mBitmap;
-        }
-
-        Bitmap bitmap = null;
-
-        FileInputStream in = new FileInputStream(mPath);
-        bitmap = BitmapFactory.decodeStream(in);
-        in.close();
-
-        return bitmap;
     }
 
     /**
@@ -192,9 +170,9 @@ public class ImgUtils
      * @return Bitmap bitmap
      * @return Bitmap
      * @throws IOException
-     * @access public
+     * @access private
      */
-    public Bitmap getKadomaruBitmap(Bitmap bitmap, Integer radius) throws IOException
+    private Bitmap getKadomaruBitmap(Bitmap bitmap, Integer radius) throws IOException
     {
         Integer height = bitmap.getHeight();
         Integer width = bitmap.getWidth();
@@ -216,16 +194,44 @@ public class ImgUtils
     }
 
     /**
+     * ビットマップ画像を返す
+     * 
+     * @return Bitmap
+     * @throws IOException
+     * @access public
+     */
+    public Bitmap getBitmap() throws IOException
+    {
+        if (mBitmap != null) {
+            return mBitmap;
+        }
+
+        //ファイルが存在しない
+        if (new File(mPath).exists() == false) {
+            throw new IOException("ファイルが存在しません");
+        }
+
+        Bitmap bitmap = null;
+
+        FileInputStream in = new FileInputStream(mPath);
+        bitmap = BitmapFactory.decodeStream(in);
+        in.close();
+
+        return bitmap;
+    }
+
+    /**
      * リサイズしたビットマップ画像を返す
      * 
      * @param Integer height 高さピクセル
      * @param Integer width 幅ピクセル
      * @return Bitmap
+     * @throws IOException
      * @access public
      */
-    public Bitmap getResizeBitmap(Integer height, Integer width)
+    public Bitmap getResizeBitmap(Integer height, Integer width) throws IOException
     {
-        //一旦、リサイズしたいサイズに一番近い2のべき乗で読み込む
+        //一旦、リサイズしたいサイズに一番近い2のべき乗のサイズでbitmapを読み込む
         Bitmap bitmap = getPreResizeBitmap(height, width);
 
         //縮尺を計算
@@ -241,17 +247,24 @@ public class ImgUtils
 
     /**
      * リサイズしたいサイズに一番近い2のべき乗で読み込んだビットマップ画像を返す
+     * （out of memory対策）
      * 
      * @param Integer height 高さピクセル
      * @param Integer width 幅ピクセル
      * @return Bitmap
+     * @throws IOException
      * @access private
      */
-    private Bitmap getPreResizeBitmap(Integer height, Integer width)
+    private Bitmap getPreResizeBitmap(Integer height, Integer width) throws IOException
     {
         //画像がすでに読み込んである場合は、それを返す
         if (mBitmap != null) {
             return mBitmap;
+        }
+
+        //ファイルが存在しない
+        if (new File(mPath).exists() == false) {
+            throw new IOException("ファイルが存在しません");
         }
 
         //画像ファイル自体は読み込まずに、高さなどのプロパティのみを取得する
@@ -278,7 +291,7 @@ public class ImgUtils
      * @return Integer inSampleSize 縮小比率
      * @access private
      */
-    private static int calceScale(BitmapFactory.Options options, Integer reHeight, Integer reWidth)
+    private int calceScale(BitmapFactory.Options options, Integer reHeight, Integer reWidth)
     {
         Integer oriHeight = options.outHeight;
         Integer oriWidth = options.outWidth;
@@ -296,54 +309,54 @@ public class ImgUtils
     }
 
     /**
+     * 画像をjpgで保存する
+     * 
+     * @param String dirPath 保存先パス
+     * @param String filename 保存画像名
+     * @return boolean 成功/失敗
+     * @throws IOException
+     * @access public
+     */
+    public Boolean saveJpg(String dirPath, String filename) throws IOException
+    {
+        //画像読み込み
+        Bitmap img = getBitmap();
+
+        //画像保存
+        return saveJpg(dirPath, filename, img);
+    }
+
+    /**
      * リサイズして画像をjpgで保存する
      * 
      * @param String dirPath 保存先パス
-     * @param String name 保存画像名
+     * @param String filename 保存画像名
      * @param Integer height 高さピクセル
      * @param Integer weight 幅ピクセル
      * @return boolean 成功/失敗
      * @throws IOException
      * @access public
      */
-    public Boolean saveResizeJpg(String dirPath, String name, Integer height, Integer weight) throws IOException
+    public Boolean saveResizeJpg(String dirPath, String filename, Integer height, Integer weight) throws IOException
     {
         //画像読み込み
         Bitmap img = getResizeBitmap(height, weight);
 
         //画像保存
-        return saveJpg(dirPath, name, img);
-    }
-
-    /**
-     * オリジナル画像をjpgで保存する
-     * 
-     * @param String dirPath 保存先パス
-     * @param String name 保存画像名
-     * @return boolean 成功/失敗
-     * @throws IOException
-     * @access public
-     */
-    public Boolean saveOrgJpg(String dirPath, String name) throws IOException
-    {
-        //画像読み込み
-        Bitmap img = getBitmap();
-
-        //画像保存
-        return saveJpg(dirPath, name, img);
+        return saveJpg(dirPath, filename, img);
     }
 
     /**
      * 実際の保存処理
      * 
      * @param String dir_path 保存先パス
-     * @param String name 保存画像名
+     * @param String filename 保存画像名
      * @param Bitmap img ビットマップ画像
      * @return boolean 成功/失敗
      * @throws IOException
      * @access private
      */
-    private Boolean saveJpg(String dirPath, String name, Bitmap img) throws IOException
+    private Boolean saveJpg(String dirPath, String filename, Bitmap img) throws IOException
     {
         //保存先のフォルダ存在確認
         File dir = new File(dirPath);
@@ -352,7 +365,7 @@ public class ImgUtils
         }
 
         //jpgで保存
-        String filePath = dir.getAbsolutePath() + "/" + name;
+        String filePath = dir.getAbsolutePath() + "/" + filename;
         FileOutputStream out = new FileOutputStream(filePath, false);
         img.compress(CompressFormat.JPEG, 100, out);
         out.flush();
