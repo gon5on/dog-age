@@ -231,7 +231,7 @@ public class Config
      * @return String
      * @throws IOException
      */
-    public static String getImgTmpDirPath(Context context) throws IOException
+    public static String getImgTmpDirPath(Context context)
     {
         String path = "";
 
@@ -246,9 +246,6 @@ public class Config
             //フォルダが存在しなければ作成して、メディアとして認識されないようにnomediaファイルを生成しておく
             if (new File(path).exists() == false) {
                 (new File(path)).mkdir();
-
-                File noMedia = new File(path + "/.nomedia");
-                noMedia.createNewFile();
             }
         }
 
@@ -262,7 +259,7 @@ public class Config
      * @return String
      * @throws IOException
      */
-    public static String getImgTmpFilePath(Context context) throws IOException
+    public static String getImgTmpFilePath(Context context)
     {
         return getImgTmpDirPath(context) + "/" + "tmp.jpg";
     }

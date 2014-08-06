@@ -23,6 +23,7 @@ import jp.co.e2.dogage.validate.ValidateHelper;
 import jp.co.e2.dogage.validate.ValidateLength;
 import jp.co.e2.dogage.validate.ValidateRequire;
 import android.app.Fragment;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -186,7 +187,7 @@ public class InputActivity extends BaseActivity
         {
             try {
                 //画像保存先のURIを取得
-                Uri uri = Uri.fromFile(new File(Config.getImgTmpFilePath(getActivity())));
+                mPhotoUri = Uri.fromFile(new File(Config.getImgTmpFilePath(getActivity())));
 
                 //トリミングインテントを投げる
                 Intent intent = new Intent();
@@ -196,12 +197,15 @@ public class InputActivity extends BaseActivity
                 intent.putExtra("aspectY", 1);
                 intent.putExtra("scale", true);
                 intent.putExtra("return-data", false);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri);
                 startActivityForResult(intent, Config.INTENT_CODE_TRIMMING);
 
                 AndroidUtils.showToastL(getActivity(), "ワンちゃんの顔が中心になるようにトリミングしてください。");
-
-            } catch (IOException e) {
+            }
+            //トリミングインテントに反応するアクテビティがなくてエラー
+            catch (ActivityNotFoundException e) {
+                ErrorDialog errorDialog = ErrorDialog.getInstance("エラー", "トリミング可能なアプリがインストールされていません。\nもしくは、先程選択した写真が読み込めません、別の写真を選択してください。");
+                errorDialog.show(getFragmentManager(), "dialog");
                 e.printStackTrace();
             }
         }
@@ -217,7 +221,6 @@ public class InputActivity extends BaseActivity
         {
             try {
                 mPhotoFlg = 1;
-                mPhotoUri = data.getData();
 
                 //トリミング後保存した画像を取得
                 ImgUtils imgUtils = new ImgUtils(getActivity(), mPhotoUri);
@@ -436,6 +439,7 @@ public class InputActivity extends BaseActivity
                     db.setTransactionSuccessful();
                 }
             } catch (Exception e) {
+                ret = false;
                 e.printStackTrace();
             } finally {
                 db.endTransaction();
@@ -504,8 +508,11 @@ public class InputActivity extends BaseActivity
                 intent.addCategory(Intent.CATEGORY_DEFAULT);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Config.getImgTmpDirPath(getActivity()));
                 startActivityForResult(intent, Config.INTENT_CODE_CAMERA);
-
-            } catch (IOException e) {
+            }
+            //カメラアプリなくてエラー
+            catch (ActivityNotFoundException e) {
+                ErrorDialog errorDialog = ErrorDialog.getInstance("エラー", "カメラアプリがインストールされていません。");
+                errorDialog.show(getFragmentManager(), "dialog");
                 e.printStackTrace();
             }
         }
@@ -519,9 +526,18 @@ public class InputActivity extends BaseActivity
         @Override
         public void onClickPhotoSelectDialogGallery()
         {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
-            startActivityForResult(intent, Config.INTENT_CODE_GALLERY);
+            try {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, Config.INTENT_CODE_GALLERY);
+            }
+            //トリミングインテントに反応するアクテビティがなくてエラー
+            catch (ActivityNotFoundException e) {
+                ErrorDialog errorDialog = ErrorDialog.getInstance("エラー", "ギャラリーアプリがインストールされていません。");
+                errorDialog.show(getFragmentManager(), "dialog");
+                e.printStackTrace();
+            }
         }
 
         /**
