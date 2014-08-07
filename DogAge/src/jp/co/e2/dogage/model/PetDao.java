@@ -2,7 +2,7 @@ package jp.co.e2.dogage.model;
 
 import java.util.ArrayList;
 
-import jp.co.e2.dogage.common.DateUtils;
+import jp.co.e2.dogage.common.DateHelper;
 import jp.co.e2.dogage.common.MediaUtils;
 import jp.co.e2.dogage.config.Config;
 import jp.co.e2.dogage.entity.PetEntity;
@@ -78,10 +78,10 @@ public class PetDao extends BaseDao
         put(cv, COLUMN_BIRTHDAY, data.getBirthday());
         put(cv, COLUMN_KIND, data.getKind());
         put(cv, COLUMN_PHOTO_FLG, data.getPhotoFlg());
-        put(cv, COLUMN_MODIFIED, new DateUtils().format(DateUtils.FMT_DATETIME));
+        put(cv, COLUMN_MODIFIED, new DateHelper().format(DateHelper.FMT_DATETIME));
 
         if (data.getId() == null) {
-            put(cv, COLUMN_CREATED, new DateUtils().format(DateUtils.FMT_DATETIME));
+            put(cv, COLUMN_CREATED, new DateHelper().format(DateHelper.FMT_DATETIME));
             ret = db.insert(TABLE_NAME, "", cv);
             savedId = (int) ret;
         } else {

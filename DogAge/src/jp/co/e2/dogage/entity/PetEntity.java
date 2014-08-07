@@ -7,8 +7,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import jp.co.e2.dogage.common.AndroidUtils;
-import jp.co.e2.dogage.common.DateUtils;
-import jp.co.e2.dogage.common.ImgUtils;
+import jp.co.e2.dogage.common.DateHelper;
+import jp.co.e2.dogage.common.ImgHelper;
 import jp.co.e2.dogage.config.Config;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -133,7 +133,7 @@ public class PetEntity implements Serializable
         String birthdayDisp = "";
 
         try {
-            birthdayDisp = new DateUtils(mBirthday, DateUtils.FMT_DATE).format(DateUtils.FMT_DATE_JP) + "生まれ";
+            birthdayDisp = new DateHelper(mBirthday, DateHelper.FMT_DATE).format(DateHelper.FMT_DATE_JP) + "生まれ";
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -153,14 +153,14 @@ public class PetEntity implements Serializable
         Integer month = 0;
 
         try {
-            DateUtils birthday = new DateUtils(mBirthday, DateUtils.FMT_DATE);
+            DateHelper birthday = new DateHelper(mBirthday, DateHelper.FMT_DATE);
             birthday.clearHour();
 
-            DateUtils today = new DateUtils();
+            DateHelper today = new DateHelper();
             today.addDay(1);    //Nヶ月目の日の翌日にならないとNヶ月がカウントアップしないので、Nヶ月目の日にカウントアップするように調整
             today.clearHour();
 
-            DateUtils age = new DateUtils(today.get().getTimeInMillis() - birthday.get().getTimeInMillis());
+            DateHelper age = new DateHelper(today.get().getTimeInMillis() - birthday.get().getTimeInMillis());
             year = age.get().get(Calendar.YEAR) - 1970;
             month = age.get().get(Calendar.MONTH);
 
@@ -230,10 +230,10 @@ public class PetEntity implements Serializable
         Integer days = 0;
 
         try {
-            DateUtils birthday = new DateUtils(mBirthday, DateUtils.FMT_DATE);
+            DateHelper birthday = new DateHelper(mBirthday, DateHelper.FMT_DATE);
             birthday.clearHour();
 
-            DateUtils today = new DateUtils();
+            DateHelper today = new DateHelper();
             today.clearHour();
 
             long diff = today.get().getTimeInMillis() - birthday.get().getTimeInMillis();
@@ -346,7 +346,7 @@ public class PetEntity implements Serializable
 
         Integer size = AndroidUtils.dpToPixel(context, Config.PHOTO_BIG_DP);
 
-        ImgUtils imgUtils = new ImgUtils(path);
+        ImgHelper imgUtils = new ImgHelper(path);
         Bitmap bitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(context));
 
         imgUtils = null;
@@ -368,7 +368,7 @@ public class PetEntity implements Serializable
 
         Integer size = AndroidUtils.dpToPixel(context, Config.PHOTO_THUMB_DP);
 
-        ImgUtils imgUtils = new ImgUtils(path);
+        ImgHelper imgUtils = new ImgHelper(path);
         Bitmap bitmap = imgUtils.getResizeCircleBitmap(size, size);
 
         imgUtils = null;
@@ -390,7 +390,7 @@ public class PetEntity implements Serializable
 
         Integer size = AndroidUtils.dpToPixel(context, Config.PHOTO_INPUT_DP);
 
-        ImgUtils imgUtils = new ImgUtils(path);
+        ImgHelper imgUtils = new ImgHelper(path);
         Bitmap bitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(context));
 
         imgUtils = null;

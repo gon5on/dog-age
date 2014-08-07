@@ -9,7 +9,7 @@ import android.util.Log;
  * 
  * @access public
  */
-public class LogHelper
+public class LogUtils
 {
     private static final String TAG = "####";
     private static final Integer DISP_FLG = 1;      //このフラグでログを出力するかどうかを決められる、リリース時は0にすること

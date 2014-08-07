@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.common.AndroidUtils;
-import jp.co.e2.dogage.common.DateUtils;
-import jp.co.e2.dogage.common.ImgUtils;
+import jp.co.e2.dogage.common.DateHelper;
+import jp.co.e2.dogage.common.ImgHelper;
 import jp.co.e2.dogage.common.Utils;
 import jp.co.e2.dogage.config.Config;
 import jp.co.e2.dogage.dialog.DatePickerDialog;
@@ -223,7 +223,7 @@ public class InputActivity extends BaseActivity
                 mPhotoFlg = 1;
 
                 //トリミング後保存した画像を取得
-                ImgUtils imgUtils = new ImgUtils(getActivity(), mPhotoUri);
+                ImgHelper imgUtils = new ImgHelper(getActivity(), mPhotoUri);
                 Integer size = AndroidUtils.dpToPixel(getActivity(), Config.PHOTO_INPUT_DP);
                 Bitmap bitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(getActivity()));
 
@@ -289,7 +289,7 @@ public class InputActivity extends BaseActivity
         private void setNoPhoto()
         {
             try {
-                ImgUtils imgUtils = new ImgUtils(getActivity(), R.drawable.img_no_photo);
+                ImgHelper imgUtils = new ImgHelper(getActivity(), R.drawable.img_no_photo);
                 Bitmap bitmap = imgUtils.getKadomaruBitmap(Config.getKadomaruPixcel(getActivity()));
 
                 imgUtils = null;
@@ -371,7 +371,7 @@ public class InputActivity extends BaseActivity
             ValidateRequire.check(v, name, "お名前");
             ValidateLength.maxCheck(v, name, "お名前", 10);
             ValidateRequire.check(v, mBirthday, "お誕生日");
-            ValidateDate.check(v, mBirthday, "お誕生日", DateUtils.FMT_DATE);
+            ValidateDate.check(v, mBirthday, "お誕生日", DateHelper.FMT_DATE);
             ValidateDate.isPastAllowToday(v, mBirthday, "お誕生日");
             ValidateRequire.check(v, mKind, "種類");
 

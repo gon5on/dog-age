@@ -1,7 +1,7 @@
 package jp.co.e2.dogage.dialog;
 
 import jp.co.e2.dogage.R;
-import jp.co.e2.dogage.common.DateUtils;
+import jp.co.e2.dogage.common.DateHelper;
 import jp.co.e2.dogage.dialog.DatePickerDialog.CallbackListener;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -31,7 +31,7 @@ public class DatePickerDialog extends BaseDialog<CallbackListener>
 
         //日付が空で渡ってきたときは、今日の日付を入れておく
         if (date == null) {
-            date = new DateUtils().format(DateUtils.FMT_DATE);
+            date = new DateHelper().format(DateHelper.FMT_DATE);
         }
 
         Bundle bundle = new Bundle();

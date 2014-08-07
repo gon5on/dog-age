@@ -26,7 +26,7 @@ import android.net.Uri;
  * 
  * @access public
  */
-public class ImgUtils
+public class ImgHelper
 {
     private String mPath = null;                       //画像ファイルパス
     private Bitmap mBitmap = null;                     //bitmap画像
@@ -38,7 +38,7 @@ public class ImgUtils
      * @param Uri uri 画像のURI
      * @access public
      */
-    public ImgUtils(Context context, Uri uri)
+    public ImgHelper(Context context, Uri uri)
     {
         //URIをファイルパスに変換
         mPath = MediaUtils.getPathFromUri(context, uri);
@@ -50,7 +50,7 @@ public class ImgUtils
      * @param String path 画像のパス
      * @access public
      */
-    public ImgUtils(String path)
+    public ImgHelper(String path)
     {
         mPath = path;
     }
@@ -62,7 +62,7 @@ public class ImgUtils
      * @param Integer resId リソースID
      * @access public
      */
-    public ImgUtils(Context context, Integer resId)
+    public ImgHelper(Context context, Integer resId)
     {
         Resources resources = context.getResources();
         mBitmap = BitmapFactory.decodeResource(resources, resId);
@@ -74,7 +74,7 @@ public class ImgUtils
      * @param Bitmap bitmap ビットマップ
      * @access public
      */
-    public ImgUtils(Bitmap bitmap)
+    public ImgHelper(Bitmap bitmap)
     {
         mBitmap = bitmap;
     }

@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import jp.co.e2.dogage.common.DateUtils;
+import jp.co.e2.dogage.common.DateHelper;
 
 /**
  * 日付系バリデーションクラス
@@ -50,7 +50,7 @@ public class ValidateDate
             sdf.setLenient(false);
             Date tmp = sdf.parse(value);
 
-            SimpleDateFormat sdf2 = new SimpleDateFormat(DateUtils.FMT_DATE_NO_UNIT);
+            SimpleDateFormat sdf2 = new SimpleDateFormat(DateHelper.FMT_DATE_NO_UNIT);
             Integer date = Integer.parseInt(sdf2.format(tmp.getTime()));
 
             //指定された日付が過去未来数百年間に収まっているか
@@ -137,7 +137,7 @@ public class ValidateDate
      */
     public static void isFuture(ValidateHelper validate, String value, String name)
     {
-        isFuture(validate, value, name, DateUtils.FMT_DATE, null);
+        isFuture(validate, value, name, DateHelper.FMT_DATE, null);
     }
 
     /**
@@ -184,7 +184,7 @@ public class ValidateDate
      */
     public static void isFutureAllowToday(ValidateHelper validate, String value, String name)
     {
-        isFutureAllowToday(validate, value, name, DateUtils.FMT_DATE, null);
+        isFutureAllowToday(validate, value, name, DateHelper.FMT_DATE, null);
     }
 
     /**
@@ -231,7 +231,7 @@ public class ValidateDate
      */
     public static void isPast(ValidateHelper validate, String value, String name)
     {
-        isPast(validate, value, name, DateUtils.FMT_DATE, null);
+        isPast(validate, value, name, DateHelper.FMT_DATE, null);
     }
 
     /**
@@ -278,7 +278,7 @@ public class ValidateDate
      */
     public static void isPastAllowToday(ValidateHelper validate, String value, String name)
     {
-        isPastAllowToday(validate, value, name, DateUtils.FMT_DATE, null);
+        isPastAllowToday(validate, value, name, DateHelper.FMT_DATE, null);
     }
 
     /**
@@ -295,12 +295,12 @@ public class ValidateDate
 
         try {
             //今日のミリ秒を取得
-            DateUtils dateUtils = new DateUtils();
+            DateHelper dateUtils = new DateHelper();
             dateUtils.clearHour();
             Long boader = dateUtils.get().getTimeInMillis();
 
             //指定日のミリ秒を取得
-            Long date = new DateUtils(value, format).get().getTimeInMillis();
+            Long date = new DateHelper(value, format).get().getTimeInMillis();
 
             //比較
             ret = boader.compareTo(date);
