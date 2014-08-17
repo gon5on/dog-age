@@ -27,6 +27,7 @@ public class PetDao extends BaseDao
     public static final String COLUMN_BIRTHDAY = "pets_birthday";
     public static final String COLUMN_KIND = "pets_kind";
     public static final String COLUMN_PHOTO_FLG = "pets_photo_flg";
+    public static final String COLUMN_ARCHIVE_DATE = "pets_archive_date";
     public static final String COLUMN_CREATED = "pets_created";
     public static final String COLUMN_MODIFIED = "pets_modified";
 
@@ -38,6 +39,7 @@ public class PetDao extends BaseDao
                     COLUMN_BIRTHDAY + "         TEXT        NOT NULL," +
                     COLUMN_KIND + "             INTEGER     NOT NULL," +
                     COLUMN_PHOTO_FLG + "        INTEGER     NOT NULL        default 0," +
+                    COLUMN_ARCHIVE_DATE + "     TEXT," +
                     COLUMN_CREATED + "          TEXT        NOT NULL," +
                     COLUMN_MODIFIED + "         TEXT        NOT NULL" +
                     ")";
@@ -45,6 +47,8 @@ public class PetDao extends BaseDao
     //ALTER TABLE文
     public static final String ALTER_TABLE_SQL = "ALTER TABLE " + TABLE_NAME +
             " ADD " + COLUMN_PHOTO_FLG + "INTEGER NOT NULL DEFAULT 0";
+
+    public static final String ALTER_TABLE_SQL2 = "ALTER TABLE " + TABLE_NAME + " ADD " + COLUMN_ARCHIVE_DATE + "TEXT";
 
     private Context mContext;                                           //コンテキスト
 
@@ -78,6 +82,7 @@ public class PetDao extends BaseDao
         put(cv, COLUMN_BIRTHDAY, data.getBirthday());
         put(cv, COLUMN_KIND, data.getKind());
         put(cv, COLUMN_PHOTO_FLG, data.getPhotoFlg());
+        put(cv, COLUMN_ARCHIVE_DATE, data.getArchiveDate());
         put(cv, COLUMN_MODIFIED, new DateHelper().format(DateHelper.FMT_DATETIME));
 
         if (data.getId() == null) {
@@ -131,6 +136,7 @@ public class PetDao extends BaseDao
                 data.setBirthday(getString(cursor, COLUMN_BIRTHDAY));
                 data.setKind(getInteger(cursor, COLUMN_KIND));
                 data.setPhotoFlg(getInteger(cursor, COLUMN_PHOTO_FLG));
+                data.setArchiveDate(getString(cursor, COLUMN_ARCHIVE_DATE));
                 data.setCreated(getString(cursor, COLUMN_CREATED));
                 data.setModified(getString(cursor, COLUMN_MODIFIED));
             } while (cursor.moveToNext());
@@ -165,6 +171,7 @@ public class PetDao extends BaseDao
                 values.setBirthday(getString(cursor, COLUMN_BIRTHDAY));
                 values.setKind(getInteger(cursor, COLUMN_KIND));
                 values.setPhotoFlg(getInteger(cursor, COLUMN_PHOTO_FLG));
+                values.setArchiveDate(getString(cursor, COLUMN_ARCHIVE_DATE));
                 values.setCreated(getString(cursor, COLUMN_CREATED));
                 values.setModified(getString(cursor, COLUMN_MODIFIED));
                 data.add(values);

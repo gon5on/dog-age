@@ -65,6 +65,7 @@ public class BaseSQLiteOpenHelper extends SQLiteOpenHelper
         //ペットテーブルに写真カラムを追加
         if (oldVersion == VERSION1 && newVersion == VERSION2) {
             db.execSQL(PetDao.ALTER_TABLE_SQL);
+            db.execSQL(PetDao.ALTER_TABLE_SQL2);
         }
     }
 }

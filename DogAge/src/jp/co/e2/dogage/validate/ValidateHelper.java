@@ -50,7 +50,9 @@ public class ValidateHelper
     {
         mResult = false;
 
-        mErrorMsg.put(name, msg);
+        if (getResult(name) == true) {
+            mErrorMsg.put(name, msg);
+        }
     }
 
     /**

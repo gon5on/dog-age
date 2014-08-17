@@ -63,7 +63,15 @@
                 android:id="@+id/textViewBirthday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2014年12月22日"
+                android:text="2014年12月22日生まれ"
+                android:textColor="@color/text"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewArchive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2014年3月22日永眠"
                 android:textColor="@color/text"
                 android:textSize="18sp" />
         </LinearLayout>

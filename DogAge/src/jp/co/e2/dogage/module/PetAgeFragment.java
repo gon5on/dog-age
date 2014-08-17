@@ -98,6 +98,15 @@ public class PetAgeFragment extends Fragment
             RelativeLayout relativeLayout3 = (RelativeLayout) mView.findViewById(R.id.relativeLayout3);
             relativeLayout3.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
 
+            TextView textViewArchive = (TextView) mView.findViewById(R.id.textViewArchive);
+
+            if (mItem.getArchiveDate() != null) {
+                textViewArchive.setVisibility(View.VISIBLE);
+                textViewArchive.setText(mItem.getDispArchiveDate());
+            } else {
+                textViewArchive.setVisibility(View.GONE);
+            }
+
             ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
 
             if (mItem.getPhotoFlg() == 1) {

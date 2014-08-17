@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 /**
  * 日付選択ダイアログ
@@ -17,15 +18,18 @@ import android.widget.DatePicker;
  */
 public class DatePickerDialog extends BaseDialog<CallbackListener>
 {
+    private Integer mFlg = 0;               //呼び出し元判別用フラグ
+
     /**
      * インスタンスを返す
      * 
+     * @String Integer flg
+     * @String String date
      * @String String title
-     * @String String msg
      * @return ConfirmDialog
      * @access public
      */
-    public static DatePickerDialog getInstance(String date)
+    public static DatePickerDialog getInstance(Integer flg, String date, String title)
     {
         DatePickerDialog dialog = new DatePickerDialog();
 
@@ -35,7 +39,9 @@ public class DatePickerDialog extends BaseDialog<CallbackListener>
         }
 
         Bundle bundle = new Bundle();
+        bundle.putInt("flg", flg);
         bundle.putString("date", date);
+        bundle.putString("title", title);
         dialog.setArguments(bundle);
 
         return dialog;
@@ -51,12 +57,17 @@ public class DatePickerDialog extends BaseDialog<CallbackListener>
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
+        mFlg = getArguments().getInt("flg");
+
         //ダイアログ生成
         Dialog dialog = createDefaultDialog(R.layout.dialog_datepicker);
 
+        //タイトルセット
+        TextView textViewTitle = (TextView) dialog.findViewById(R.id.textViewTitle);
+        textViewTitle.setText(getArguments().getString("title"));
+
         //日付がわたってきていたらセット
         final DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.datePicker);
-
         if (getArguments().getString("date") != null) {
             String date[] = getArguments().getString("date").split("-");
             datePicker.updateDate(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]));
@@ -72,7 +83,7 @@ public class DatePickerDialog extends BaseDialog<CallbackListener>
                     Integer month = datePicker.getMonth() + 1;
                     Integer day = datePicker.getDayOfMonth();
                     String date = String.format("%d-%02d-%02d", year, month, day);
-                    mCallbackListener.onClickDatePickerDialogOk(date);
+                    mCallbackListener.onClickDatePickerDialogOk(mFlg, date);
                 }
                 dismiss();
             }
@@ -83,7 +94,7 @@ public class DatePickerDialog extends BaseDialog<CallbackListener>
             @Override
             public void onClick(View v) {
                 if (mCallbackListener != null) {
-                    mCallbackListener.onClickDatePickerDialogCancel();
+                    mCallbackListener.onClickDatePickerDialogCancel(mFlg);
                 }
                 dismiss();
             }
@@ -99,8 +110,8 @@ public class DatePickerDialog extends BaseDialog<CallbackListener>
      */
     public interface CallbackListener
     {
-        public void onClickDatePickerDialogOk(String date);
+        public void onClickDatePickerDialogOk(Integer flg, String date);
 
-        public void onClickDatePickerDialogCancel();
+        public void onClickDatePickerDialogCancel(Integer flg);
     }
 }

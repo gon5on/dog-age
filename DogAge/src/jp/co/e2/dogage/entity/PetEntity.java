@@ -31,6 +31,7 @@ public class PetEntity implements Serializable
     private Integer mKind;                                      //種類
     private Integer mPhotoFlg;                                  //写真フラグ
     private Uri mPhotoUri;                                      //写真URI
+    private String mArchiveDate;                                //アーカイブ日付
     private String mCreated;                                    //作成日時
     private String mModified;                                   //更新日時
 
@@ -156,7 +157,12 @@ public class PetEntity implements Serializable
             DateHelper birthday = new DateHelper(mBirthday, DateHelper.FMT_DATE);
             birthday.clearHour();
 
-            DateHelper today = new DateHelper();
+            DateHelper today = null;
+            if (mArchiveDate != null) {
+                today = new DateHelper(mArchiveDate, DateHelper.FMT_DATE);
+            } else {
+                today = new DateHelper();
+            }
             today.addDay(1);    //Nヶ月目の日の翌日にならないとNヶ月がカウントアップしないので、Nヶ月目の日にカウントアップするように調整
             today.clearHour();
 
@@ -233,7 +239,12 @@ public class PetEntity implements Serializable
             DateHelper birthday = new DateHelper(mBirthday, DateHelper.FMT_DATE);
             birthday.clearHour();
 
-            DateHelper today = new DateHelper();
+            DateHelper today = null;
+            if (mArchiveDate != null) {
+                today = new DateHelper(mArchiveDate, DateHelper.FMT_DATE);
+            } else {
+                today = new DateHelper();
+            }
             today.clearHour();
 
             long diff = today.get().getTimeInMillis() - birthday.get().getTimeInMillis();
@@ -396,6 +407,48 @@ public class PetEntity implements Serializable
         imgUtils = null;
 
         return bitmap;
+    }
+
+    /**
+     * アーカイブ日付をセット
+     * 
+     * @param String value
+     * @return void
+     * @access public
+     */
+    public void setArchiveDate(String value)
+    {
+        mArchiveDate = value;
+    }
+
+    /**
+     * アーカイブ日付を返す
+     * 
+     * @return String mArchiveDate
+     * @access public
+     */
+    public String getArchiveDate()
+    {
+        return mArchiveDate;
+    }
+
+    /**
+     * 表示用アーカイブ日付を返す
+     * 
+     * @return String
+     * @access public
+     */
+    public String getDispArchiveDate()
+    {
+        String archiveDateDisp = "";
+
+        try {
+            archiveDateDisp = new DateHelper(mArchiveDate, DateHelper.FMT_DATE).format(DateHelper.FMT_DATE_JP) + "永眠";
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return archiveDateDisp;
     }
 
     /**

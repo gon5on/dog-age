@@ -129,11 +129,52 @@
         android:scaleType="centerCrop"
         android:src="@drawable/img_no_photo" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/img_foot" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ワンちゃんをアーカイブ"
+            android:textColor="@color/text"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/buttonArchive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_archive"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:text="" />
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/checkBoxArchive"
+        style="@style/MyCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" アーカイブする"
+        android:textColor="@color/text"
+        android:textSize="20sp" />
+
     <Button
         android:id="@+id/buttonSave"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/btn"
         android:text="保存"
