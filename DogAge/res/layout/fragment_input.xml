@@ -126,48 +126,83 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="15dp"
         android:scaleType="centerCrop"
         android:src="@drawable/img_no_photo" />
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/frameLayoutArchive"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="15dp"
-        android:gravity="center_vertical" >
+        android:layout_height="wrap_content" >
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayoutArchive"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/img_foot" />
+            android:orientation="vertical" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ワンちゃんをアーカイブ"
-            android:textColor="@color/text"
-            android:textSize="18sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:gravity="center_vertical" >
 
-        <Button
-            android:id="@+id/buttonArchive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/ic_archive"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:text="" />
-    </LinearLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/img_foot" />
 
-    <CheckBox
-        android:id="@+id/checkBoxArchive"
-        style="@style/MyCheckbox"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ワンちゃんが亡くなった日"
+                    android:textColor="@color/text"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical" >
+
+                <Button
+                    android:id="@+id/buttonArchive"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_input"
+                    android:gravity="left"
+                    android:minHeight="0dp"
+                    android:textColor="@color/text"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/buttonClear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/ic_clear"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:textColor="@color/text"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/buttonOpen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" アーカイブする"
-        android:textColor="@color/text"
-        android:textSize="20sp" />
+        android:layout_gravity="right"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/btn_open"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:text="▼その他の項目を開く"
+        android:textColor="@drawable/color_btn_clear"
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/buttonSave"

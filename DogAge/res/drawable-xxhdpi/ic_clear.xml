@@ -2,9 +2,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- タップ時 -->
-    <item android:drawable="@drawable/ic_archive_on" android:state_pressed="true"/>
+    <item android:drawable="@drawable/ic_clear_on" android:state_pressed="true"/>
 
     <!-- 通常時 -->
-    <item android:drawable="@drawable/ic_archive_off"/>
+    <item android:drawable="@drawable/ic_clear_off"/>
 
 </selector>

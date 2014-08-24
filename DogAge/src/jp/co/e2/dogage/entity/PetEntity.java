@@ -254,7 +254,9 @@ public class PetEntity implements Serializable
             e.printStackTrace();
         }
 
-        return String.format("%1$,3d日目", days);
+        String unit = (getArchiveDate() != null) ? "日" : "日目";
+
+        return String.format("%1$,3d", days) + unit;
     }
 
     /**

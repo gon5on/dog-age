@@ -11,7 +11,6 @@ import jp.co.e2.dogage.common.DateHelper;
 import jp.co.e2.dogage.common.ImgHelper;
 import jp.co.e2.dogage.common.Utils;
 import jp.co.e2.dogage.config.Config;
-import jp.co.e2.dogage.dialog.ArchiveDialog;
 import jp.co.e2.dogage.dialog.DatePickerDialog;
 import jp.co.e2.dogage.dialog.ErrorDialog;
 import jp.co.e2.dogage.dialog.KindSelectDialog;
@@ -24,6 +23,7 @@ import jp.co.e2.dogage.validate.ValidateDate;
 import jp.co.e2.dogage.validate.ValidateHelper;
 import jp.co.e2.dogage.validate.ValidateLength;
 import jp.co.e2.dogage.validate.ValidateRequire;
+import android.animation.LayoutTransition;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -38,9 +38,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 /**
  * 入力画面アクテビティ
@@ -117,13 +118,12 @@ public class InputActivity extends BaseActivity
         private View mView = null;
 
         private PetEntity mSavedItem = null;
-
         private String mBirthday = null;
         private Integer mKind = null;
         private Integer mPhotoFlg = 0;
         private Uri mPhotoUri = null;
-        private Boolean mArchiveFlg = false;
         private String mArchiveDate = null;
+        private Boolean mArchiveOpenFlg = false;
 
         /**
          * onCreateView
@@ -264,9 +264,7 @@ public class InputActivity extends BaseActivity
                     mPhotoFlg = mSavedItem.getPhotoFlg();
                     mArchiveDate = mSavedItem.getArchiveDate();
 
-                    String[] birthday = mSavedItem.getBirthday().split("-");
-                    Button buttonBirthday = (Button) mView.findViewById(R.id.buttonBirthday);
-                    buttonBirthday.setText(String.format("%s年%s月%s日", birthday[0], birthday[1], birthday[2]));
+                    setDateToButton(R.id.buttonBirthday, mSavedItem.getBirthday());
 
                     Button buttonKind = (Button) mView.findViewById(R.id.buttonKind);
                     buttonKind.setText(mSavedItem.getKindDisp(getActivity().getApplicationContext()));
@@ -274,14 +272,9 @@ public class InputActivity extends BaseActivity
                     EditText editTextName = (EditText) mView.findViewById(R.id.editTextName);
                     editTextName.setText(mSavedItem.getName());
 
-                    CheckBox checkBoxArchive = (CheckBox) mView.findViewById(R.id.checkBoxArchive);
                     if (mSavedItem.getArchiveDate() != null) {
-                        mArchiveDate = mSavedItem.getArchiveDate();
-                        mArchiveFlg = true;
-
-                        String[] archiveDate = mSavedItem.getArchiveDate().split("-");
-                        checkBoxArchive.setText(" アーカイブする (" + String.format("%s/%s/%s", archiveDate[0], archiveDate[1], archiveDate[2]) + ")");
-                        checkBoxArchive.setChecked(true);
+                        setDateToButton(R.id.buttonArchive, mSavedItem.getArchiveDate());
+                        setOpenButton();
                     }
 
                     if (mSavedItem.getPhotoFlg() == 1) {
@@ -293,6 +286,14 @@ public class InputActivity extends BaseActivity
                 //画像がない場合、NO PHOTOを角丸の画像にする
                 if (mSavedItem == null || mSavedItem.getPhotoFlg() == 0) {
                     setNoPhoto();
+                }
+
+                //アーカイブ関連を制御する
+                if (mSavedItem == null || mSavedItem.getArchiveDate() == null) {
+                    mArchiveOpenFlg = true;
+
+                    setClearButton(false);
+                    setOpenButton();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -318,6 +319,78 @@ public class InputActivity extends BaseActivity
 
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+
+        /**
+         * ボタン上に日付を表示する
+         * 
+         * @param Integer resId リソースID
+         * @param String date 日付
+         * @return void
+         * @access private
+         */
+        private void setDateToButton(Integer resId, String date)
+        {
+            String[] dateArray = date.split("-");
+
+            Button button = (Button) mView.findViewById(resId);
+            button.setText(String.format("%s年%s月%s日", dateArray[0], dateArray[1], dateArray[2]));
+        }
+
+        /**
+         * クリアボタン表示非表示etc処理
+         * 
+         * @param Boolean flg
+         * @return void
+         * @access private
+         */
+        private void setClearButton(Boolean flg)
+        {
+            if (flg) {
+                Button buttonClear = (Button) mView.findViewById(R.id.buttonClear);
+                buttonClear.setVisibility(View.VISIBLE);
+            } else {
+                mArchiveDate = null;
+
+                Button buttonClear = (Button) mView.findViewById(R.id.buttonClear);
+                buttonClear.setVisibility(View.GONE);
+
+                Button buttonArchive = (Button) mView.findViewById(R.id.buttonArchive);
+                buttonArchive.setText(null);
+            }
+        }
+
+        /**
+         * その他を開くボタン表示非表示etc処理
+         * 
+         * @param Boolean flg
+         * @return void
+         * @access private
+         */
+        private void setOpenButton()
+        {
+            if (mArchiveOpenFlg == false) {
+                mArchiveOpenFlg = true;
+
+                FrameLayout frameLayoutArchive = (FrameLayout) mView.findViewById(R.id.frameLayoutArchive);
+                frameLayoutArchive.setLayoutTransition(new LayoutTransition());
+
+                LinearLayout linearLayoutArchiveChild = (LinearLayout) mView.findViewById(R.id.linearLayoutArchive);
+                linearLayoutArchiveChild.setVisibility(View.VISIBLE);
+                Button buttonOpen = (Button) mView.findViewById(R.id.buttonOpen);
+                buttonOpen.setText("▲その他の項目を閉じる");
+            } else {
+                mArchiveOpenFlg = false;
+
+                FrameLayout frameLayoutArchive = (FrameLayout) mView.findViewById(R.id.frameLayoutArchive);
+                frameLayoutArchive.setLayoutTransition(new LayoutTransition());
+
+                LinearLayout linearLayoutArchiveChild = (LinearLayout) mView.findViewById(R.id.linearLayoutArchive);
+                linearLayoutArchiveChild.setVisibility(View.GONE);
+
+                Button buttonOpen = (Button) mView.findViewById(R.id.buttonOpen);
+                buttonOpen.setText("▼その他の項目を開く");
             }
         }
 
@@ -364,33 +437,32 @@ public class InputActivity extends BaseActivity
                 }
             });
 
-            //アーカイブ
-            final CheckBox checkBoxArchive = (CheckBox) mView.findViewById(R.id.checkBoxArchive);
-            checkBoxArchive.setOnClickListener(new OnClickListener() {
+            //開くボタン
+            Button buttonOpen = (Button) mView.findViewById(R.id.buttonOpen);
+            buttonOpen.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mArchiveFlg == false) {
-                        DatePickerDialog datePickerDialog = DatePickerDialog.getInstance(DIALOG_ARCHIVE_FLG, mArchiveDate, "アーカイブ日付");
-                        datePickerDialog.setCallbackListener(InputFragment.this);
-                        datePickerDialog.show(getFragmentManager(), "dialog");
-
-                        //アーカイブ日付を選択し終わって始めてチェックを入れたいので、チェックをはずしておく
-                        checkBoxArchive.setChecked(false);
-                    } else {
-                        checkBoxArchive.setText(" アーカイブする");
-                        mArchiveFlg = false;
-                    }
+                    setOpenButton();
                 }
             });
 
-            //アーカイブとは？
-            final ArchiveDialog archiveDialog = ArchiveDialog.getInstance();
-
+            //アーカイブ
             Button buttonArchive = (Button) mView.findViewById(R.id.buttonArchive);
             buttonArchive.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    archiveDialog.show(getFragmentManager(), "dialog");
+                    DatePickerDialog datePickerDialog = DatePickerDialog.getInstance(DIALOG_ARCHIVE_FLG, mArchiveDate, "亡くなった日");
+                    datePickerDialog.setCallbackListener(InputFragment.this);
+                    datePickerDialog.show(getFragmentManager(), "dialog");
+                }
+            });
+
+            //クリアボタン
+            Button buttonClear = (Button) mView.findViewById(R.id.buttonClear);
+            buttonClear.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setClearButton(false);
                 }
             });
 
@@ -412,28 +484,8 @@ public class InputActivity extends BaseActivity
          */
         private void save()
         {
-            EditText editTextName = (EditText) mView.findViewById(R.id.editTextName);
-            String name = editTextName.getText().toString();
-
             //バリデーション
-            ValidateHelper v = new ValidateHelper();
-            ValidateRequire.check(v, name, "お名前");
-            ValidateLength.maxCheck(v, name, "お名前", 10);
-            ValidateRequire.check(v, mBirthday, "お誕生日");
-            ValidateDate.check(v, mBirthday, "お誕生日", DateHelper.FMT_DATE);
-            ValidateDate.isPastAllowToday(v, mBirthday, "お誕生日");
-            ValidateRequire.check(v, mKind, "種類");
-
-            if (mArchiveFlg == true) {
-                ValidateRequire.check(v, mArchiveDate, "アーカイブの日付");
-                ValidateDate.check(v, mArchiveDate, "アーカイブの日付", DateHelper.FMT_DATE);
-                ValidateDate.isPastAllowToday(v, mBirthday, "アーカイブの日付");
-
-                //独自バリデーション
-                if (customValidate(mArchiveDate, mBirthday) == false) {
-                    v.error("アーカイブ日付", "アーカイブ日付はお誕生日より過去は指定できません。");
-                }
-            }
+            ValidateHelper v = validate();
 
             //エラーあり
             if (v.getResult() == false) {
@@ -445,7 +497,7 @@ public class InputActivity extends BaseActivity
             }
 
             //保存とページ遷移
-            if (saveDb(name) == true) {
+            if (saveDb() == true) {
                 AndroidUtils.showToastS(getActivity(), "保存しました。");
 
                 Intent intent = new Intent(getActivity(), PetAgeActivity.class);
@@ -457,6 +509,41 @@ public class InputActivity extends BaseActivity
                 ErrorDialog errorDialog = ErrorDialog.getInstance("エラー", "保存に失敗しました。\nもう一度やり直してください。");
                 errorDialog.show(getFragmentManager(), "dialog");
             }
+        }
+
+        /**
+         * アーカイブ日付は誕生日より未来かどうか
+         * 
+         * @param String birthday
+         * @param String archiveDate
+         * @return boolean
+         * @access private
+         */
+        private ValidateHelper validate()
+        {
+            EditText editTextName = (EditText) mView.findViewById(R.id.editTextName);
+            String name = editTextName.getText().toString();
+
+            //バリデーション
+            ValidateHelper v = new ValidateHelper();
+            ValidateRequire.check(v, name, "お名前");
+            ValidateLength.maxCheck(v, name, "お名前", 10);
+
+            ValidateRequire.check(v, mBirthday, "お誕生日");
+            ValidateDate.check(v, mBirthday, "お誕生日", DateHelper.FMT_DATE);
+            ValidateDate.isPastAllowToday(v, mBirthday, "お誕生日");
+
+            ValidateRequire.check(v, mKind, "種類");
+
+            ValidateDate.check(v, mArchiveDate, "亡くなった日", DateHelper.FMT_DATE);
+            ValidateDate.isPastAllowToday(v, mArchiveDate, "亡くなった日");
+
+            //独自バリデーション
+            if (customValidate(mArchiveDate, mBirthday) == false) {
+                v.error("亡くなった日", "亡くなった日はお誕生日より過去は指定できません。");
+            }
+
+            return v;
         }
 
         /**
@@ -491,26 +578,25 @@ public class InputActivity extends BaseActivity
         /**
          * DBに保存する
          * 
-         * @param String name
          * @return Boolean ret
          * @access private
          */
-        private Boolean saveDb(String name)
+        private Boolean saveDb()
         {
             Boolean ret = false;
             SQLiteDatabase db = null;
 
             try {
+                EditText editTextName = (EditText) mView.findViewById(R.id.editTextName);
+                String name = editTextName.getText().toString();
+
                 PetEntity data = new PetEntity();
                 data.setName(name);
                 data.setBirthday(mBirthday);
                 data.setKind(mKind);
                 data.setPhotoFlg(mPhotoFlg);
                 data.setPhotoUri(mPhotoUri);
-
-                if (mArchiveFlg) {
-                    data.setArchiveDate(mArchiveDate);
-                }
+                data.setArchiveDate(mArchiveDate);
 
                 if (mSavedItem != null) {
                     data.setId(mSavedItem.getId());
@@ -568,18 +654,15 @@ public class InputActivity extends BaseActivity
             if (flg == DIALOG_BIRTHDAY_FLG) {
                 mBirthday = date;
 
-                String[] birthday = mBirthday.split("-");
-                Button buttonBirthday = (Button) mView.findViewById(R.id.buttonBirthday);
-                buttonBirthday.setText(String.format("%s年%s月%s日", birthday[0], birthday[1], birthday[2]));
+                setDateToButton(R.id.buttonBirthday, mBirthday);
             }
             else if (flg == DIALOG_ARCHIVE_FLG) {
                 mArchiveDate = date;
-                mArchiveFlg = true;
 
-                String[] archiveDate = mArchiveDate.split("-");
-                CheckBox checkBoxArchive = (CheckBox) mView.findViewById(R.id.checkBoxArchive);
-                checkBoxArchive.setText(" アーカイブする (" + String.format("%s/%s/%s", archiveDate[0], archiveDate[1], archiveDate[2]) + ")");
-                checkBoxArchive.setChecked(mArchiveFlg);
+                setDateToButton(R.id.buttonArchive, mArchiveDate);
+
+                Button buttonClear = (Button) mView.findViewById(R.id.buttonClear);
+                buttonClear.setVisibility(View.VISIBLE);
             }
         }
 
