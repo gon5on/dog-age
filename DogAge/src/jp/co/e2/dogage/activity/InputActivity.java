@@ -23,7 +23,9 @@ import jp.co.e2.dogage.validate.ValidateDate;
 import jp.co.e2.dogage.validate.ValidateHelper;
 import jp.co.e2.dogage.validate.ValidateLength;
 import jp.co.e2.dogage.validate.ValidateRequire;
-import android.animation.LayoutTransition;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -39,7 +41,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -370,27 +371,32 @@ public class InputActivity extends BaseActivity
          */
         private void setOpenButton()
         {
+            final LinearLayout linearLayoutArchive = (LinearLayout) mView.findViewById(R.id.linearLayoutArchive);
+            final Button buttonOpen = (Button) mView.findViewById(R.id.buttonOpen);
+
             if (mArchiveOpenFlg == false) {
                 mArchiveOpenFlg = true;
 
-                FrameLayout frameLayoutArchive = (FrameLayout) mView.findViewById(R.id.frameLayoutArchive);
-                frameLayoutArchive.setLayoutTransition(new LayoutTransition());
+                linearLayoutArchive.setVisibility(View.VISIBLE);
 
-                LinearLayout linearLayoutArchiveChild = (LinearLayout) mView.findViewById(R.id.linearLayoutArchive);
-                linearLayoutArchiveChild.setVisibility(View.VISIBLE);
-                Button buttonOpen = (Button) mView.findViewById(R.id.buttonOpen);
+                ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(linearLayoutArchive, "alpha", 0f, 1f);
+                objectAnimator.setDuration(500);
+                objectAnimator.start();
+
                 buttonOpen.setText("▲その他の項目を閉じる");
             } else {
                 mArchiveOpenFlg = false;
 
-                FrameLayout frameLayoutArchive = (FrameLayout) mView.findViewById(R.id.frameLayoutArchive);
-                frameLayoutArchive.setLayoutTransition(new LayoutTransition());
-
-                LinearLayout linearLayoutArchiveChild = (LinearLayout) mView.findViewById(R.id.linearLayoutArchive);
-                linearLayoutArchiveChild.setVisibility(View.GONE);
-
-                Button buttonOpen = (Button) mView.findViewById(R.id.buttonOpen);
-                buttonOpen.setText("▼その他の項目を開く");
+                ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(linearLayoutArchive, "alpha", 1f, 0f);
+                objectAnimator.setDuration(300);
+                objectAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        linearLayoutArchive.setVisibility(View.GONE);
+                        buttonOpen.setText("▼その他の項目を開く");
+                    }
+                });
+                objectAnimator.start();
             }
         }
 

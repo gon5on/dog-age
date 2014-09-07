@@ -130,66 +130,61 @@
         android:scaleType="centerCrop"
         android:src="@drawable/img_no_photo" />
 
-    <FrameLayout
-        android:id="@+id/frameLayoutArchive"
+    <LinearLayout
+        android:id="@+id/linearLayoutArchive"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:orientation="vertical" >
 
         <LinearLayout
-            android:id="@+id/linearLayoutArchive"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_marginBottom="3dp"
+            android:gravity="center_vertical" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:gravity="center_vertical" >
+                android:layout_marginRight="5dp"
+                android:src="@drawable/img_foot" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/img_foot" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ワンちゃんが亡くなった日"
-                    android:textColor="@color/text"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical" >
-
-                <Button
-                    android:id="@+id/buttonArchive"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_input"
-                    android:gravity="left"
-                    android:minHeight="0dp"
-                    android:textColor="@color/text"
-                    android:textSize="20sp" />
-
-                <Button
-                    android:id="@+id/buttonClear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/ic_clear"
-                    android:minHeight="0dp"
-                    android:minWidth="0dp"
-                    android:textColor="@color/text"
-                    android:textSize="20sp" />
-            </LinearLayout>
+                android:text="ワンちゃんが亡くなった日"
+                android:textColor="@color/text"
+                android:textSize="18sp" />
         </LinearLayout>
-    </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical" >
+
+            <Button
+                android:id="@+id/buttonArchive"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_input"
+                android:gravity="left"
+                android:minHeight="0dp"
+                android:textColor="@color/text"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/buttonClear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/ic_clear"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:textColor="@color/text"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>
 
     <Button
         android:id="@+id/buttonOpen"
