@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">いくつだワン？</string>
+    <string name="action_add">追加</string>
+    <string name="action_edit">編集</string>
+    <string name="action_delete">削除</string>
+    <string name="action_about">アプリについて</string>
+    <string name="action_back">戻る</string>
+
+    <string name="confirm">確認</string>
+    <string name="cancel">キャンセル</string>
+    <string name="ok">OK</string>
+    <string name="save">保存</string>
+    <string name="dog_age">犬年齢</string>
+    <string name="human_age">人間年齢</string>
+    <string name="born_from">生まれて</string>
+    <string name="start_camera">カメラを起動する</string>
+    <string name="start_library">ギャラリーから選ぶ</string>
+    <string name="delete_photo">写真を削除する</string>
+    <string name="dog_photo">ワンちゃんの写真</string>
+    <string name="dog_name">ワンちゃんのお名前</string>
+    <string name="dog_birthday">ワンちゃんのお誕生日</string>
+    <string name="dog_kind">ワンちゃんの種類</string>
+    <string name="dog_die_date">ワンちゃんが亡くなった日</string>
+    <string name="open_other">▼その他の項目を開く</string>
+    <string name="close_other">▲その他の項目を閉じる</string>
+    <string name="notice_mark">※</string>
+    <string name="close_mark">×</string>
+    <string name="url">http://www.e-2.co.jp/</string>
+    <string name="produced_by">Produced By E2</string>
+    <string name="cc_pixel_kit">Edit and delete icons on ActionBar by PixelKit</string>
+    <string name="before_del">本当に削除してよろしいですか？</string>
+    <string name="about_app">"いくつだワン？"は、ワンちゃんの年齢・人間に換算した年齢・生まれてからの日数がわかるシンプルなアプリです。\n\n人間に換算した年齢は、以下のように計算しています。\n一般的に、小型犬のほうが成長が早く、老化が遅いと言われています。</string>
+    <string name="about_app_notice">人間に換算した年齢は、犬種によって差があります。あくまでも目安とお考えください。</string>
+    <string name="dog_small">小型犬</string>
+    <string name="dog_normal">中型犬</string>
+    <string name="dog_large">大型犬</string>
+    <string name="until_one_year">1年目まで</string>
+    <string name="until_two_year">2年目まで</string>
+    <string name="over_two_year">2年目以降</string>
+    <string name="small_until_one_year_dog_age">16歳/年</string>
+    <string name="small_until_two_year_dog_age">8歳/年</string>
+    <string name="small_over_two_year_dog_age">4歳/年</string>
+    <string name="normal_until_one_year_dog_age">16歳/年</string>
+    <string name="normal_until_two_year_dog_age">6歳/年</string>
+    <string name="normal_over_two_year_dog_age">5歳/年</string>
+    <string name="large_until_one_year_dog_age">12歳/年</string>
+    <string name="large_until_two_year_dog_age">6歳/年</string>
+    <string name="large_over_two_year_dog_age">7歳/年</string>
+
+    <string-array name="initial_label_list">
+        <item>あ行</item>
+        <item>か行</item>
+        <item>さ行</item>
+        <item>た行</item>
+        <item>な行</item>
+        <item>は行</item>
+        <item>ま行</item>
+        <item>や行</item>
+        <item>ら行</item>
+        <item>わ行</item>
+    </string-array>
+
+</resources>

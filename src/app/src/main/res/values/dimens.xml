@@ -1,0 +1,25 @@
+<resources>
+
+    <dimen name="margin_default_container">16dp</dimen>
+    <dimen name="margin_default_icon">4dp</dimen>
+    <dimen name="margin_default_horizontal_button">4dp</dimen>
+    <dimen name="margin_default_between_view">8dp</dimen>
+    <dimen name="margin_between_big_view">16dp</dimen>
+    <dimen name="margin_between_small_view">4dp</dimen>
+    <dimen name="margin_pet_age_block">20dp</dimen>
+
+    <dimen name="font_size_default_title">18sp</dimen>
+    <dimen name="font_size_default_text">18sp</dimen>
+    <dimen name="font_size_default_edit_text">20sp</dimen>
+    <dimen name="font_size_default_button">16sp</dimen>
+    <dimen name="font_size_close_button">22sp</dimen>
+    <dimen name="font_size_list_item">16sp</dimen>
+    <dimen name="font_size_pet_age">28sp</dimen>
+    <dimen name="font_size_about">15sp</dimen>
+
+    <dimen name="width_zero">0dp</dimen>
+    <dimen name="width_button">200dp</dimen>
+    <dimen name="width_close_button">40dp</dimen>
+    <dimen name="width_logo">60dp</dimen>
+
+</resources>

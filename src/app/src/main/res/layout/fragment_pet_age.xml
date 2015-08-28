@@ -1,0 +1,177 @@
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="jp.co.e2.dogage.activity.MainActivity$PlaceholderFragment" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_default_between_view"
+            android:layout_marginLeft="@dimen/margin_pet_age_block"
+            android:layout_marginRight="@dimen/margin_pet_age_block"
+            android:background="@drawable/img_frame_above1"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/margin_between_big_view"
+            android:paddingLeft="@dimen/margin_pet_age_block"
+            android:paddingRight="@dimen/margin_pet_age_block"
+            android:paddingTop="@dimen/margin_between_big_view" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_between_small_view"
+                android:gravity="center_vertical" >
+
+                <jp.co.e2.dogage.module.TouchFeedbackImageView
+                    android:id="@+id/imageViewPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margin_default_between_view"
+                    android:src="@drawable/img_foot" />
+
+                <TextView
+                    android:id="@+id/textViewName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/font_size_pet_age"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewKind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_between_small_view"
+                android:text=""
+                android:textColor="@color/text"
+                android:textSize="@dimen/font_size_default_text" />
+
+            <TextView
+                android:id="@+id/textViewBirthday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/text"
+                android:textSize="@dimen/font_size_default_text" />
+
+            <TextView
+                android:id="@+id/textViewArchive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/text"
+                android:textSize="@dimen/font_size_default_text" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_between_small_view"
+            android:layout_marginLeft="@dimen/margin_pet_age_block"
+            android:layout_marginRight="@dimen/margin_pet_age_block"
+            android:background="@drawable/img_frame_under1"
+            android:padding="@dimen/margin_default_between_view" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/dog_age"
+                android:textColor="@color/text"
+                android:drawableLeft="@drawable/img_foot"
+                android:drawablePadding="@dimen/margin_default_icon"
+                android:textSize="@dimen/font_size_default_text"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/textViewPetAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text=""
+                android:textColor="@color/text"
+                android:textSize="@dimen/font_size_pet_age" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_between_small_view"
+            android:layout_marginLeft="@dimen/margin_pet_age_block"
+            android:layout_marginRight="@dimen/margin_pet_age_block"
+            android:layout_marginTop="@dimen/margin_between_small_view"
+            android:background="@drawable/img_frame_under1"
+            android:padding="@dimen/margin_default_between_view" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/human_age"
+                android:textColor="@color/text"
+                android:drawableLeft="@drawable/img_foot"
+                android:drawablePadding="@dimen/margin_default_icon"
+                android:textSize="@dimen/font_size_default_text"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/textViewHumanAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text=""
+                android:textColor="@color/text"
+                android:textSize="@dimen/font_size_pet_age" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_pet_age_block"
+            android:layout_marginRight="@dimen/margin_pet_age_block"
+            android:layout_marginTop="@dimen/margin_between_small_view"
+            android:background="@drawable/img_frame_under1"
+            android:padding="@dimen/margin_default_between_view" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/born_from"
+                android:textColor="@color/text"
+                android:drawableLeft="@drawable/img_foot"
+                android:drawablePadding="@dimen/margin_default_icon"
+                android:textSize="@dimen/font_size_default_text"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/textViewDays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text=""
+                android:textColor="@color/text"
+                android:textSize="@dimen/font_size_pet_age" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

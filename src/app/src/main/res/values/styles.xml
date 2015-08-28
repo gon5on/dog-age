@@ -1,0 +1,12 @@
+<resources>
+
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarItemBackground">@drawable/bg_actionbar_item</item>
+        <item name="android:actionBarStyle">@style/MyActionbar</item>
+    </style>
+
+    <style name="MyActionbar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@drawable/bg_actionbar</item>
+    </style>
+
+</resources>
