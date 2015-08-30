@@ -12,17 +12,14 @@ import android.widget.TextView;
 
 /**
  * 確認ダイアログ
- *
- * @access public
  */
 public class ConfirmDialog extends BaseDialog<CallbackListener> {
     /**
      * インスタンスを返す
      *
-     * @return ConfirmDialog
-     * @String String title
-     * @String String msg
-     * @access public
+     * @param title タイトル
+     * @param msg 本文
+     * @return dialog ConfirmDialog
      */
     public static ConfirmDialog getInstance(String title, String msg) {
         ConfirmDialog dialog = new ConfirmDialog();
@@ -36,11 +33,7 @@ public class ConfirmDialog extends BaseDialog<CallbackListener> {
     }
 
     /**
-     * onCreateDialog
-     *
-     * @param savedInstanceState
-     * @return Dialog
-     * @access public
+     * ${inheritDoc}
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -83,12 +76,16 @@ public class ConfirmDialog extends BaseDialog<CallbackListener> {
 
     /**
      * コールバックリスナー
-     *
-     * @access public
      */
     public interface CallbackListener {
-        public void onClickConfirmDialogOk();
+        /**
+         * 確認ダイアログでOKが押された
+         */
+        void onClickConfirmDialogOk();
 
-        public void onClickConfirmDialogCancel();
+        /**
+         * 確認ダイアログでキャンセルが押された
+         */
+        void onClickConfirmDialogCancel();
     }
 }

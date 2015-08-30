@@ -2,12 +2,6 @@ package jp.co.e2.dogage.validate;
 
 /**
  * 文字長バリデーションクラス
- *
- * validate … バリデートクラス
- * value … バリデート対象の値
- * name … 値の名前（誕生日、性別とか）
- * length … 文字長
- * msgFull … デフォルトではないエラーメッセージを使用したい場合に指定
  */
 public class ValidateLength {
     public static final String ERROR_MSG_LENGTH_MIN = "%sは%s文字以上で入力してください。";

@@ -18,18 +18,16 @@ public class PetAgeFragmentPagerAdapter extends FragmentPagerAdapter {
     /**
      * コンストラクタ
      *
-     * @param fm
+     * @param fm FragmentManager
      */
     public PetAgeFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
 
-        mList = new ArrayList<PetEntity>();
+        mList = new ArrayList<>();
     }
 
     /**
-     * getItem
-     *
-     * @param position
+     * ${inheritDoc}
      */
     @Override
     public Fragment getItem(int position) {
@@ -49,9 +47,7 @@ public class PetAgeFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
     /**
-     * ページ数を取得
-     *
-     * @return int
+     * ${inheritDoc}
      */
     @Override
     public int getCount() {
@@ -61,7 +57,7 @@ public class PetAgeFragmentPagerAdapter extends FragmentPagerAdapter {
     /**
      * ページを追加
      *
-     * @param item
+     * @param item ペットデータ
      */
     public void add(PetEntity item) {
         mList.add(item);
@@ -70,7 +66,7 @@ public class PetAgeFragmentPagerAdapter extends FragmentPagerAdapter {
     /**
      * ページを一気に追加
      *
-     * @param list
+     * @param list ペットデータリスト
      */
     public void addAll(ArrayList<PetEntity> list) {
         mList.addAll(list);

@@ -13,16 +13,13 @@ import android.widget.ImageView;
 
 /**
  * 画像表示ダイアログ
- *
- * @access public
  */
 public class PhotoDialog extends BaseDialog<CallbackListener> {
     /**
      * インスタンスを返す
      *
-     * @param bitmap
+     * @param bitmap ビットマップ
      * @return SampleDialog
-     * @access public
      */
     public static PhotoDialog getInstance(Bitmap bitmap) {
         PhotoDialog dialog = new PhotoDialog();
@@ -35,11 +32,7 @@ public class PhotoDialog extends BaseDialog<CallbackListener> {
     }
 
     /**
-     * onCreateDialog
-     *
-     * @param savedInstanceState
-     * @return Dialog
-     * @access public
+     * ${inheritDoc}
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -67,10 +60,11 @@ public class PhotoDialog extends BaseDialog<CallbackListener> {
 
     /**
      * コールバックリスナー
-     *
-     * @access public
      */
     public interface CallbackListener {
-        public void onClickPhotoDialogClose();
+        /**
+         * 写真表示ダイアログで閉じるが押された
+         */
+        void onClickPhotoDialogClose();
     }
 }

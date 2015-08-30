@@ -2,12 +2,6 @@ package jp.co.e2.dogage.validate;
 
 /**
  * 最大・最小系バリデーションクラス
- *
- * validate … バリデートクラス
- * value … バリデート対象の値
- * name … 値の名前（誕生日、性別とか）
- * limit … MAX・MIN値
- * msgFull … デフォルトではないエラーメッセージを使用したい場合に指定
  */
 public class ValidateSize {
     public static final String ERROR_MSG_SIZE_MIN = "%sは%s以上で入力してください。";

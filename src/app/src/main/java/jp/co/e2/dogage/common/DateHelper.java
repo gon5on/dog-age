@@ -33,7 +33,7 @@ public class DateHelper {
     /**
      * コンストラクタ
      *
-     * @param cal
+     * @param cal カレンダークラス
      */
     public DateHelper(Calendar cal) {
         mCal = cal;
@@ -42,7 +42,7 @@ public class DateHelper {
     /**
      * コンストラクタ
      *
-     * @param time
+     * @param time ミリ秒
      */
     public DateHelper(Long time) {
         mCal = Calendar.getInstance();
@@ -53,7 +53,7 @@ public class DateHelper {
     /**
      * コンストラクタ
      *
-     * @param date
+     * @param date Dateクラス
      */
     public DateHelper(Date date) {
         mCal = Calendar.getInstance();
@@ -64,8 +64,8 @@ public class DateHelper {
     /**
      * コンストラクタ
      *
-     * @param strDate
-     * @param format
+     * @param strDate 日付文字列
+     * @param format 日付文字列の形式
      * @throws ParseException
      */
     public DateHelper(String strDate, String format) throws ParseException {
@@ -156,7 +156,7 @@ public class DateHelper {
      * @param add 何秒後
      */
     public void addSec(Integer add) {
-        add(0, 0, 0, 0, add, 0);
+        add(0, 0, 0, 0, 0, add);
     }
 
     /**
@@ -184,8 +184,8 @@ public class DateHelper {
     /**
      * フォーマットした日時を返す
      *
-     * @param format
-     * @return String
+     * @param format フォーマット
+     * @return String フォーマットした日付文字列
      */
     public String format(String format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
@@ -196,7 +196,7 @@ public class DateHelper {
     /**
      * 今日までの年齢を計算する
      *
-     * @return int
+     * @return int 年齢
      */
     public int getAge() {
         int today = Integer.parseInt(new DateHelper().format(FMT_DATE_NO_UNIT));

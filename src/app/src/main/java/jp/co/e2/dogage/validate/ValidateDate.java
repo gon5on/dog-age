@@ -3,17 +3,10 @@ package jp.co.e2.dogage.validate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import jp.co.e2.dogage.common.DateHelper;
 
 /**
  * 日付系バリデーションクラス
- *
- * validate … バリデートクラス
- * value … バリデート対象の値
- * name … 値の名前（誕生日、性別とか）
- * format … フォーマット
- * msgFull … デフォルトではないエラーメッセージを使用したい場合に指定
  */
 public class ValidateDate {
     public static final String ERROR_MSG_FORMAT = "%sは正しい形式ではありません。";
@@ -221,7 +214,7 @@ public class ValidateDate {
      * @param msgFull  エラーメッセージ全文
      */
     public static void isPastAllowToday(ValidateHelper validate, String value, String name, String format, String msgFull) {
-        if (!validate.getResult(name)) {
+        if (!validate.getResult(name) ) {
             return;
         }
         if (value == null || value.length() == 0) {
@@ -264,13 +257,13 @@ public class ValidateDate {
             //今日のミリ秒を取得
             DateHelper dateUtils = new DateHelper();
             dateUtils.clearHour();
-            Long boader = dateUtils.get().getTimeInMillis();
+            Long border = dateUtils.get().getTimeInMillis();
 
             //指定日のミリ秒を取得
             Long date = new DateHelper(value, format).get().getTimeInMillis();
 
             //比較
-            ret = boader.compareTo(date);
+            ret = border.compareTo(date);
 
         } catch (ParseException e) {
             e.printStackTrace();

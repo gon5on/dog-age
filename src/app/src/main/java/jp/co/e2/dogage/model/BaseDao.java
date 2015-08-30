@@ -5,18 +5,15 @@ import android.database.Cursor;
 
 /**
  * Daoの基底クラス
- *
- * @access public
  */
 public class BaseDao {
     /**
      * NULLかどうかを判定して、ContentValuesに値を入れる
      *
-     * @param cv
-     * @param key
-     * @param value
+     * @param cv ContentValues
+     * @param key カラム名
+     * @param value 値
      * @return ContentValues cv
-     * @access public
      */
     public ContentValues put(ContentValues cv, String key, String value) {
         if (value != null) {
@@ -31,11 +28,10 @@ public class BaseDao {
     /**
      * NULLかどうかを判定して、ContentValuesに値を入れる
      *
-     * @param cv
-     * @param key
-     * @param value
+     * @param cv ContentValues
+     * @param key カラム名
+     * @param value 値
      * @return ContentValues cv
-     * @access public
      */
     public ContentValues put(ContentValues cv, String key, Integer value) {
         if (value != null) {
@@ -50,11 +46,10 @@ public class BaseDao {
     /**
      * NULLかどうかを判定して、ContentValuesに値を入れる
      *
-     * @param cv
-     * @param key
-     * @param value
+     * @param cv ContentValues
+     * @param key カラム名
+     * @param value 値
      * @return ContentValues cv
-     * @access public
      */
     public ContentValues put(ContentValues cv, String key, Double value) {
         if (value != null) {
@@ -69,11 +64,10 @@ public class BaseDao {
     /**
      * NULLかどうかを判定して、ContentValuesに値を入れる
      *
-     * @param cv
-     * @param key
-     * @param value
+     * @param cv ContentValues
+     * @param key カラム名
+     * @param value 値
      * @return ContentValues cv
-     * @access public
      */
     public ContentValues put(ContentValues cv, String key, Float value) {
         if (value != null) {
@@ -88,11 +82,10 @@ public class BaseDao {
     /**
      * NULLかどうかを判定して、ContentValuesに値を入れる
      *
-     * @param cv
-     * @param key
-     * @param value
+     * @param cv ContentValues
+     * @param key カラム名
+     * @param value 値
      * @return ContentValues cv
-     * @access public
      */
     public ContentValues put(ContentValues cv, String key, Long value) {
         if (value != null) {
@@ -107,11 +100,10 @@ public class BaseDao {
     /**
      * NULLかどうかを判定して、ContentValuesに値を入れる
      *
-     * @param cv
-     * @param key
-     * @param value
+     * @param cv ContentValues
+     * @param key カラム名
+     * @param value 値
      * @return ContentValues cv
-     * @access public
      */
     public ContentValues put(ContentValues cv, String key, Boolean value) {
         if (value != null) {
@@ -126,10 +118,9 @@ public class BaseDao {
     /**
      * NULLかどうかを判定して、Cursorから値を取得する
      *
-     * @param cursor
-     * @param key
+     * @param cursor Cursor
+     * @param key カラム名
      * @return Integer value
-     * @access public
      */
     public Integer getInteger(Cursor cursor, String key) {
         Integer value = null;
@@ -146,10 +137,9 @@ public class BaseDao {
     /**
      * NULLかどうかを判定して、Cursorから値を取得する
      *
-     * @param cursor
-     * @param key
+     * @param cursor Cursor
+     * @param key カラム名
      * @return String value
-     * @access public
      */
     public String getString(Cursor cursor, String key) {
         String value = null;
@@ -166,10 +156,9 @@ public class BaseDao {
     /**
      * NULLかどうかを判定して、Cursorから値を取得する
      *
-     * @param cursor
-     * @param key
+     * @param cursor Cursor
+     * @param key カラム名
      * @return Double value
-     * @access public
      */
     public Double getDouble(Cursor cursor, String key) {
         Double value = null;
@@ -186,10 +175,9 @@ public class BaseDao {
     /**
      * NULLかどうかを判定して、Cursorから値を取得する
      *
-     * @param cursor
-     * @param key
+     * @param cursor Cursor
+     * @param key カラム名
      * @return Float value
-     * @access public
      */
     public Float getFloat(Cursor cursor, String key) {
         Float value = null;
@@ -206,10 +194,9 @@ public class BaseDao {
     /**
      * NULLかどうかを判定して、Cursorから値を取得する
      *
-     * @param cursor
-     * @param key
+     * @param cursor Cursor
+     * @param key カラム名
      * @return Long value
-     * @access public
      */
     public Long getLong(Cursor cursor, String key) {
         Long value = null;
@@ -226,10 +213,9 @@ public class BaseDao {
     /**
      * NULLかどうかを判定して、Cursorから値を取得する
      *
-     * @param cursor
-     * @param key
+     * @param cursor Cursor
+     * @param key カラム名
      * @return Boolean value
-     * @access public
      */
     public Boolean getBoolean(Cursor cursor, String key) {
         Boolean value = null;

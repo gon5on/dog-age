@@ -11,16 +11,13 @@ import android.widget.Button;
 
 /**
  * 写真選択ダイアログ
- *
- * @access public
  */
 public class PhotoSelectDialog extends BaseDialog<CallbackListener> {
     /**
      * インスタンスを返す
      *
-     * @param photoFlg
-     * @return PhotoSelectDialog
-     * @access public
+     * @param photoFlg 写真フラグ
+     * @return dialog PhotoSelectDialog
      */
     public static PhotoSelectDialog getInstance(Integer photoFlg) {
         PhotoSelectDialog dialog = new PhotoSelectDialog();
@@ -33,11 +30,7 @@ public class PhotoSelectDialog extends BaseDialog<CallbackListener> {
     }
 
     /**
-     * onCreateDialog
-     *
-     * @param savedInstanceState
-     * @return Dialog
-     * @access public
+     * ${inheritDoc}
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -86,14 +79,21 @@ public class PhotoSelectDialog extends BaseDialog<CallbackListener> {
 
     /**
      * コールバックリスナー
-     *
-     * @access public
      */
     public interface CallbackListener {
-        public void onClickPhotoSelectDialogCamera();
+        /**
+         * 写真選択ダイアログでカメラが選択された
+         */
+        void onClickPhotoSelectDialogCamera();
 
-        public void onClickPhotoSelectDialogGallery();
+        /**
+         * 写真選択ダイアログでギャラリーが選択された
+         */
+        void onClickPhotoSelectDialogGallery();
 
-        public void onClickPhotoSelectDialogDelPhoto();
+        /**
+         * 写真選択ダイアログで写真削除が選択された
+         */
+        void onClickPhotoSelectDialogDelPhoto();
     }
 }

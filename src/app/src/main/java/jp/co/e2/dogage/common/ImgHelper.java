@@ -2,6 +2,7 @@ package jp.co.e2.dogage.common;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -23,8 +24,6 @@ import android.net.Uri;
 
 /**
  * 画像処理に関してのものをまとめたクラス
- *
- * @access public
  */
 public class ImgHelper {
     private String mPath = null;                       //画像ファイルパス
@@ -37,10 +36,16 @@ public class ImgHelper {
      * @param uri     画像のURI
      */
     public ImgHelper(Context context, Uri uri) throws Exception {
-        mPath = null;
+        if (uri == null) {
+            throw new NullPointerException("uri null");
+        }
 
         //URIをファイルパスに変換
         mPath = MediaUtils.getPathFromUri(context, uri);
+
+        if (mPath == null) {
+            throw new NullPointerException("path null");
+        }
     }
 
     /**
@@ -49,18 +54,26 @@ public class ImgHelper {
      * @param path 画像のパス
      */
     public ImgHelper(String path) {
+        if (path == null) {
+            throw new NullPointerException("path null");
+        }
+
         mPath = path;
     }
 
     /**
      * コンストラクタ
      *
-     * @param context
+     * @param context コンテキスト
      * @param resId   リソースID
      */
     public ImgHelper(Context context, Integer resId) {
         Resources resources = context.getResources();
         mBitmap = BitmapFactory.decodeResource(resources, resId);
+
+        if (mBitmap == null) {
+            throw new NullPointerException("could not get bitmap from resource id");
+        }
     }
 
     /**
@@ -69,6 +82,10 @@ public class ImgHelper {
      * @param bitmap ビットマップ
      */
     public ImgHelper(Bitmap bitmap) {
+        if (bitmap == null) {
+            throw new NullPointerException("bitmap null");
+        }
+
         mBitmap = bitmap;
     }
 
@@ -97,7 +114,7 @@ public class ImgHelper {
     /**
      * 丸にくりぬいたビットマップ画像を返す
      *
-     * @param bitmap
+     * @param bitmap ビットマップ
      * @return Bitmap
      * @throws IOException
      */
@@ -185,7 +202,7 @@ public class ImgHelper {
 
         //ファイルが存在しない
         if (!new File(mPath).exists()) {
-            throw new IOException("ファイルが存在しません");
+            throw new FileNotFoundException("file not found");
         }
 
         Bitmap bitmap = null;
@@ -196,7 +213,7 @@ public class ImgHelper {
 
         //画像が読み込めていなければ例外を返す
         if (bitmap == null) {
-            throw new IOException("画像を読み込めません。");
+            throw new IOException("picture can't be read");
         }
 
         return bitmap;
@@ -224,7 +241,7 @@ public class ImgHelper {
 
         //画像が読み込めていなければ例外を返す
         if (resizeBitmap == null) {
-            throw new IOException("画像を読み込めません。");
+            throw new IOException("picture can't be read");
         }
 
         return resizeBitmap;
@@ -247,7 +264,7 @@ public class ImgHelper {
 
         //ファイルが存在しない
         if (!new File(mPath).exists()) {
-            throw new IOException("ファイルが存在しません");
+            throw new FileNotFoundException("file not found");
         }
 
         //画像ファイル自体は読み込まずに、高さなどのプロパティのみを取得する
@@ -256,7 +273,7 @@ public class ImgHelper {
         BitmapFactory.decodeFile(mPath, options);
 
         //縮小比率を取得する
-        options.inSampleSize = calceScale(options, height, width);
+        options.inSampleSize = calcScale(options, height, width);
 
         //リサイズしたビットマップを作成
         options.inJustDecodeBounds = false;
@@ -264,7 +281,7 @@ public class ImgHelper {
 
         //画像が読み込めていなければ例外を返す
         if (resizeBitmap == null) {
-            throw new IOException("画像を読み込めません。");
+            throw new IOException("picture can't be read");
         }
 
         return resizeBitmap;
@@ -278,13 +295,13 @@ public class ImgHelper {
      * @param reWidth  リサイズ後の幅
      * @return Integer inSampleSize 縮小比率
      */
-    private int calceScale(BitmapFactory.Options options, Integer reHeight, Integer reWidth) {
+    private int calcScale(BitmapFactory.Options options, Integer reHeight, Integer reWidth) {
         Integer oriHeight = options.outHeight;
         Integer oriWidth = options.outWidth;
         Integer scale = 1;
 
         if (oriHeight > reHeight || oriWidth > reWidth) {
-            if (oriWidth > oriWidth) {
+            if (oriHeight > oriWidth) {
                 scale = Math.round((float) oriHeight / (float) reHeight);
             } else {
                 scale = Math.round((float) oriWidth / (float) reWidth);
@@ -341,7 +358,9 @@ public class ImgHelper {
         //保存先のフォルダ存在確認
         File dir = new File(dirPath);
         if (!dir.exists()) {
-            dir.mkdir();
+            if(!dir.mkdir()) {
+                throw new IOException("failed in making of a directory");
+            }
         }
 
         //jpgで保存

@@ -16,7 +16,7 @@ public class TouchFeedbackImageView extends ImageView implements OnTouchListener
     /**
      * コンテキスト
      *
-     * @param context
+     * @param context コンテキスト
      */
     public TouchFeedbackImageView(Context context) {
         super(context);
@@ -27,8 +27,8 @@ public class TouchFeedbackImageView extends ImageView implements OnTouchListener
     /**
      * コンテキスト
      *
-     * @param context
-     * @param attrs 指定した属性値
+     * @param context コンテキスト
+     * @param attrs   指定した属性値
      */
     public TouchFeedbackImageView(Context context, AttributeSet attrs) {
         super(context, attrs, 0);
@@ -39,9 +39,9 @@ public class TouchFeedbackImageView extends ImageView implements OnTouchListener
     /**
      * コンテキスト
      *
-     * @param context
-     * @param attrs
-     * @param defStyle
+     * @param context コンテキスト
+     * @param attrs 指定した属性値
+     * @param defStyle スタイルのリソースID
      */
     public TouchFeedbackImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -50,11 +50,7 @@ public class TouchFeedbackImageView extends ImageView implements OnTouchListener
     }
 
     /**
-     * タッチイベント
-     *
-     * @param v
-     * @param event
-     * @return boolean
+     * ${inheritDoc}
      */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -76,7 +72,7 @@ public class TouchFeedbackImageView extends ImageView implements OnTouchListener
     /**
      * 影を付ける
      *
-     * @param v
+     * @param v View
      */
     public void shadeOn(View v) {
         ((ImageView) v).setColorFilter(new LightingColorFilter(Color.LTGRAY, 0));
@@ -85,7 +81,7 @@ public class TouchFeedbackImageView extends ImageView implements OnTouchListener
     /**
      * 影を外す
      *
-     * @param v
+     * @param v View
      */
     public void shadeOff(View v) {
         ((ImageView) v).clearColorFilter();

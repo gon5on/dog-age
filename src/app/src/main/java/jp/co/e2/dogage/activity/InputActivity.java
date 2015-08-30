@@ -177,7 +177,7 @@ public class InputActivity extends BaseActivity {
             try {
                 //元画像（カメラで写真を撮った場合はdataが空なので、事前に保持していたURIを採用する）
                 Uri inputData;
-                if (data.getData() != null) {
+                if (data != null && data.getData() != null) {
                     inputData = data.getData();
                 } else {
                     inputData = mPhotoUri;
@@ -197,11 +197,15 @@ public class InputActivity extends BaseActivity {
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri);
                 startActivityForResult(intent, Config.INTENT_CODE_TRIMMING);
 
-                AndroidUtils.showToastL(getActivity(), "ワンちゃんの顔が中心になるようにトリミングしてください。");
+                String msg = getResources().getString(R.string.lets_trimming_photo);
+                AndroidUtils.showToastL(getActivity(), msg);
             }
             //トリミングインテントに反応するアクテビティがなくてエラー
             catch (ActivityNotFoundException e) {
-                ErrorDialog errorDialog = ErrorDialog.getInstance("エラー", "トリミング可能なアプリがインストールされていません。\nもしくは、先程選択した写真が読み込めません、別の写真を選択してください。");
+                String title = getResources().getString(R.string.error);
+                String msg = getResources().getString(R.string.no_trimming_app);
+
+                ErrorDialog errorDialog = ErrorDialog.getInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
                 e.printStackTrace();
             }
@@ -226,7 +230,10 @@ public class InputActivity extends BaseActivity {
                 imageViewPhoto.setImageBitmap(bitmap);
 
             } catch (Exception e) {
-                ErrorDialog errorDialog = ErrorDialog.getInstance("エラー", "トリミングに失敗しました。");
+                String title = getResources().getString(R.string.error);
+                String msg = getResources().getString(R.string.trimming_fail);
+
+                ErrorDialog errorDialog = ErrorDialog.getInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
                 e.printStackTrace();
             }
@@ -309,8 +316,10 @@ public class InputActivity extends BaseActivity {
         private void setDateToButton(Integer resId, String date) {
             String[] dateArray = date.split("-");
 
+            String dateFormat = getResources().getString(R.string.date_format);
+
             Button button = (Button) mView.findViewById(resId);
-            button.setText(String.format("%s年%s月%s日", dateArray[0], dateArray[1], dateArray[2]));
+            button.setText(String.format(dateFormat, dateArray[0], dateArray[1], dateArray[2]));
         }
 
         /**
@@ -349,7 +358,7 @@ public class InputActivity extends BaseActivity {
                 objectAnimator.setDuration(500);
                 objectAnimator.start();
 
-                buttonOpen.setText("▲その他の項目を閉じる");
+                buttonOpen.setText(getResources().getString(R.string.close_other));
             } else {
                 mArchiveOpenFlg = false;
 
@@ -359,7 +368,7 @@ public class InputActivity extends BaseActivity {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         linearLayoutArchive.setVisibility(View.GONE);
-                        buttonOpen.setText("▼その他の項目を開く");
+                        buttonOpen.setText(getResources().getString(R.string.open_other));
                     }
                 });
                 objectAnimator.start();
@@ -375,7 +384,9 @@ public class InputActivity extends BaseActivity {
             buttonBirthday.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DatePickerDialog datePickerDialog = DatePickerDialog.getInstance(DIALOG_BIRTHDAY_FLG, mBirthday, "お誕生日");
+                    String title = getResources().getString(R.string.dog_birthday);
+
+                    DatePickerDialog datePickerDialog = DatePickerDialog.getInstance(DIALOG_BIRTHDAY_FLG, mBirthday, title);
                     datePickerDialog.setCallbackListener(InputFragment.this);
                     datePickerDialog.show(getFragmentManager(), "dialog");
                 }
@@ -419,7 +430,9 @@ public class InputActivity extends BaseActivity {
             buttonArchive.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DatePickerDialog datePickerDialog = DatePickerDialog.getInstance(DIALOG_ARCHIVE_FLG, mArchiveDate, "亡くなった日");
+                    String title = getResources().getString(R.string.dog_die_date);
+
+                    DatePickerDialog datePickerDialog = DatePickerDialog.getInstance(DIALOG_ARCHIVE_FLG, mArchiveDate, title);
                     datePickerDialog.setCallbackListener(InputFragment.this);
                     datePickerDialog.show(getFragmentManager(), "dialog");
                 }
@@ -455,14 +468,16 @@ public class InputActivity extends BaseActivity {
             if (!v.getResult()) {
                 String errorMsg = Utils.implode(v.getErrorMsgList(), "\n");
 
-                ErrorDialog errorDialog = ErrorDialog.getInstance("エラー", errorMsg);
+                String title = getResources().getString(R.string.error);
+                ErrorDialog errorDialog = ErrorDialog.getInstance(title, errorMsg);
                 errorDialog.show(getFragmentManager(), "dialog");
                 return;
             }
 
             //保存とページ遷移
             if (saveDb()) {
-                AndroidUtils.showToastS(getActivity(), "保存しました。");
+                String msg = getResources().getString(R.string.save_success);
+                AndroidUtils.showToastS(getActivity(), msg);
 
                 Intent intent = new Intent(getActivity(), PetAgeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -470,7 +485,10 @@ public class InputActivity extends BaseActivity {
                 startActivity(intent);
                 getActivity().finish();
             } else {
-                ErrorDialog errorDialog = ErrorDialog.getInstance("エラー", "保存に失敗しました。\nもう一度やり直してください。");
+                String title = getResources().getString(R.string.error);
+                String msg = getResources().getString(R.string.save_fail);
+
+                ErrorDialog errorDialog = ErrorDialog.getInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
             }
         }
@@ -486,21 +504,26 @@ public class InputActivity extends BaseActivity {
 
             //バリデーション
             ValidateHelper v = new ValidateHelper();
-            ValidateRequire.check(v, name, "お名前");
-            ValidateLength.maxCheck(v, name, "お名前", 10);
 
-            ValidateRequire.check(v, mBirthday, "お誕生日");
-            ValidateDate.check(v, mBirthday, "お誕生日", DateHelper.FMT_DATE);
-            ValidateDate.isPastAllowToday(v, mBirthday, "お誕生日");
+            String keyName = getResources().getString(R.string.dog_name);
+            ValidateRequire.check(v, name, keyName);
+            ValidateLength.maxCheck(v, name, keyName, 10);
 
-            ValidateRequire.check(v, mKind, "種類");
+            String keyBirthday = getResources().getString(R.string.dog_birthday);
+            ValidateRequire.check(v, mBirthday, keyBirthday);
+            ValidateDate.check(v, mBirthday, keyBirthday, DateHelper.FMT_DATE);
+            ValidateDate.isPastAllowToday(v, mBirthday, keyBirthday);
 
-            ValidateDate.check(v, mArchiveDate, "亡くなった日", DateHelper.FMT_DATE);
-            ValidateDate.isPastAllowToday(v, mArchiveDate, "亡くなった日");
+            String keyKind = getResources().getString(R.string.dog_kind);
+            ValidateRequire.check(v, mKind, keyKind);
+
+            String keyDieDate = getResources().getString(R.string.dog_birthday);
+            ValidateDate.check(v, mArchiveDate, keyDieDate, DateHelper.FMT_DATE);
+            ValidateDate.isPastAllowToday(v, mArchiveDate, keyDieDate);
 
             //独自バリデーション
             if (!customValidate(mArchiveDate, mBirthday)) {
-                v.error("亡くなった日", "亡くなった日はお誕生日より過去は指定できません。");
+                v.error(keyDieDate, getResources().getString(R.string.validate_error_archive_date));
             }
 
             return v;
@@ -638,7 +661,10 @@ public class InputActivity extends BaseActivity {
             }
             //カメラアプリなくてエラー
             catch (ActivityNotFoundException e) {
-                ErrorDialog errorDialog = ErrorDialog.getInstance("エラー", "カメラアプリがインストールされていません。");
+                String title = getResources().getString(R.string.error);
+                String msg = getResources().getString(R.string.no_camera_app);
+
+                ErrorDialog errorDialog = ErrorDialog.getInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
                 e.printStackTrace();
             }
@@ -657,7 +683,10 @@ public class InputActivity extends BaseActivity {
             }
             //トリミングインテントに反応するアクテビティがなくてエラー
             catch (ActivityNotFoundException e) {
-                ErrorDialog errorDialog = ErrorDialog.getInstance("エラー", "ギャラリーアプリがインストールされていません。");
+                String title = getResources().getString(R.string.error);
+                String msg = getResources().getString(R.string.no_gallery_app);
+
+                ErrorDialog errorDialog = ErrorDialog.getInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
                 e.printStackTrace();
             }

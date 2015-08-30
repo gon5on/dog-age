@@ -8,18 +8,15 @@ import android.preference.PreferenceManager;
  * プリファレンスについて便利なものをまとめたクラス
  *
  * newしなくても使える
- *
- * @access public
  */
 public class PreferenceUtils {
     /**
      * プリファレンスからInt型の値を取得
      *
-     * @param context
+     * @param context コンテキスト
      * @param name    名前
      * @param defo    デフォルト値
      * @return Integer
-     * @access public
      */
     public static Integer get(Context context, String name, Integer defo) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -29,11 +26,10 @@ public class PreferenceUtils {
     /**
      * プリファレンスからString型の値を取得
      *
-     * @param context
+     * @param context コンテキスト
      * @param name    名前
      * @param defo    デフォルト値
      * @return String
-     * @access public
      */
     public static String get(Context context, String name, String defo) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -43,11 +39,10 @@ public class PreferenceUtils {
     /**
      * プリファレンスからFloat型の値を取得
      *
-     * @param context
+     * @param context コンテキスト
      * @param name    名前
      * @param defo    デフォルト値
      * @return Long
-     * @access public
      */
     public static Float get(Context context, String name, Float defo) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -57,11 +52,10 @@ public class PreferenceUtils {
     /**
      * プリファレンスからLong型の値を取得
      *
-     * @param context
+     * @param context コンテキスト
      * @param name    名前
      * @param defo    デフォルト値
      * @return Long
-     * @access public
      */
     public static Long get(Context context, String name, Long defo) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -71,11 +65,10 @@ public class PreferenceUtils {
     /**
      * プリファレンスからBoolean型の値を取得
      *
-     * @param context
+     * @param context コンテキスト
      * @param name    名前
      * @param defo    デフォルト値
      * @return Boolean
-     * @access public
      */
     public static Boolean get(Context context, String name, boolean defo) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -85,11 +78,9 @@ public class PreferenceUtils {
     /**
      * プリファレンスにInt型の値を保存
      *
-     * @param context
+     * @param context コンテキスト
      * @param name    名前
      * @param value   保存する値
-     * @return void
-     * @access public
      */
     public static void save(Context context, String name, Integer value) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -99,11 +90,9 @@ public class PreferenceUtils {
     /**
      * プリファレンスにString型の値を保存
      *
-     * @param context
+     * @param context コンテキスト
      * @param name    名前
      * @param value   保存する値
-     * @return void
-     * @access public
      */
     public static void save(Context context, String name, String value) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -113,11 +102,9 @@ public class PreferenceUtils {
     /**
      * プリファレンスにFloat型の値を保存
      *
-     * @param context
+     * @param context コンテキスト
      * @param name    名前
      * @param value   保存する値
-     * @return void
-     * @access public
      */
     public static void save(Context context, String name, Float value) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -127,11 +114,9 @@ public class PreferenceUtils {
     /**
      * プリファレンスにLong型の値を保存
      *
-     * @param context
+     * @param context コンテキスト
      * @param name    名前
      * @param value   保存する値
-     * @return void
-     * @access public
      */
     public static void save(Context context, String name, Long value) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -141,11 +126,9 @@ public class PreferenceUtils {
     /**
      * プリファレンスにBoolean型の値を保存
      *
-     * @param context
+     * @param context コンテキスト
      * @param name    名前
      * @param value   保存する値
-     * @return void
-     * @access public
      */
     public static void save(Context context, String name, Boolean value) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -155,10 +138,8 @@ public class PreferenceUtils {
     /**
      * プリファレンスの値を消す
      *
-     * @param context
+     * @param context コンテキスト
      * @param name    名前
-     * @return void
-     * @access public
      */
     public static void delete(Context context, String name) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -168,9 +149,7 @@ public class PreferenceUtils {
     /**
      * プリファレンスの値を全て消す
      *
-     * @param context
-     * @return void
-     * @access public
+     * @param context コンテキスト
      */
     public static void deleteAll(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);

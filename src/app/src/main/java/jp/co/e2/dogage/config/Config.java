@@ -17,8 +17,6 @@ import android.content.res.Resources;
 
 /**
  * 設定ファイル
- *
- * @access public
  */
 public class Config {
     /*
@@ -41,8 +39,11 @@ public class Config {
         }
     }*/
 
+    //ログ出力フラグ
+    public static final boolean LOG_FLG = true;
+
     //犬種数
-    public static final int KIND_NUM = 101;
+    public static final int KIND_NUM = 197;
 
     //カテゴリ
     public static final int CATEGORY_SMALL = 1;                                 //小型犬
@@ -89,12 +90,11 @@ public class Config {
      * 犬種マスタを配列で返す
      *
      * @return ArrayList<DogMasterEntity>
-     * @access private
      */
     @SuppressLint("UseSparseArrays")
     public static HashMap<Integer, DogMasterEntity> getDogMastersMap(Context context) {
         if (mDogMasterMap == null) {
-            mDogMasterMap = new HashMap<Integer, DogMasterEntity>();
+            mDogMasterMap = new HashMap<>();
 
             Resources res = context.getResources();
 
@@ -114,14 +114,13 @@ public class Config {
      * 犬種マスタをリストで返す
      *
      * @return ArrayList<DogMasterEntity>
-     * @access private
      */
     @SuppressWarnings("unchecked")
     public static ArrayList<DogMasterEntity> getDogMastersList(Context context) {
         if (mDogMasterList == null) {
-            mDogMasterList = new ArrayList<DogMasterEntity>();
+            mDogMasterList = new ArrayList<>();
 
-            String[] inicialLabelList = context.getResources().getStringArray(R.array.initial_label_list);
+            String[] initialLabelList = context.getResources().getStringArray(R.array.initial_label_list);
 
             //犬種マスタを取得してソート
             HashMap<Integer, DogMasterEntity> tmp2 = Config.getDogMastersMap(context);
@@ -133,7 +132,7 @@ public class Config {
                 //頭文字行のラベルを追加
                 if (i == 0 || !tmp.get(i).getInitialLine().equals(tmp.get(i - 1).getInitialLine())) {
                     DogMasterEntity values = new DogMasterEntity();
-                    values.setKind(inicialLabelList[tmp.get(i).getInitialLine()]);
+                    values.setKind(initialLabelList[tmp.get(i).getInitialLine()]);
                     mDogMasterList.add(values);
                 }
 
@@ -148,9 +147,8 @@ public class Config {
     /**
      * 犬マスタエンティティにデータをセットする
      *
-     * @param array
-     * @return void
-     * @access private
+     * @param array 犬マスタ配列
+     * @return data 犬マスタエンティティ
      */
     private static DogMasterEntity setDogMasterEntity(String[] array) {
         DogMasterEntity data = new DogMasterEntity();
@@ -165,9 +163,6 @@ public class Config {
 
     /**
      * DogMasterEntityのArrayListを種類順に並べる
-     *
-     * @return void
-     * @access private
      */
     @SuppressWarnings("rawtypes")
     private static class DogMasterKindComparator implements java.util.Comparator {
@@ -181,9 +176,6 @@ public class Config {
 
     /**
      * DogMasterEntityのArrayListをあかさたな順に並べる
-     *
-     * @return void
-     * @access private
      */
     @SuppressWarnings("rawtypes")
     private static class DogMasterInitialLineComparator implements java.util.Comparator {
@@ -198,7 +190,7 @@ public class Config {
     /**
      * 画像保存パスを返す
      *
-     * @param context
+     * @param context コンテキスト
      * @return String
      */
     public static String getImgDirPath(Context context) {
@@ -219,12 +211,11 @@ public class Config {
     /**
      * 画像保存tmpパスを返す
      *
-     * @param context
+     * @param context コンテキスト
      * @return String
-     * @throws IOException
      */
     public static String getImgTmpDirPath(Context context) {
-        String path = "";
+        String path;
 
         //外部ストレージが使用可能
         if (MediaUtils.IsExternalStorageAvailableAndWriteable()) {
@@ -247,9 +238,8 @@ public class Config {
     /**
      * 画像保存tmpファイル名を返す
      *
-     * @param context
+     * @param context コンテキスト
      * @return String
-     * @throws IOException
      */
     public static String getImgTmpFilePath(Context context) {
         return getImgTmpDirPath(context) + "/" + "tmp.jpg";
@@ -258,9 +248,8 @@ public class Config {
     /**
      * 画像ファイル名を生成
      *
-     * @param id
+     * @param id ID
      * @return String
-     * @access public
      */
     public static String getImgFileName(Integer id) {
         return "dog_" + id + ".jpg";
@@ -269,9 +258,8 @@ public class Config {
     /**
      * 角丸にするピクセル数を取得
      *
-     * @param context
+     * @param context コンテキスト
      * @return Integer
-     * @access public
      */
     public static Integer getKadomaruPixcel(Context context) {
         return AndroidUtils.dpToPixel(context, KADOMARU_DP);

@@ -11,6 +11,7 @@
     <string name="confirm">確認</string>
     <string name="cancel">キャンセル</string>
     <string name="ok">OK</string>
+    <string name="error">エラー</string>
     <string name="save">保存</string>
     <string name="dog_age">犬年齢</string>
     <string name="human_age">人間年齢</string>
@@ -48,6 +49,24 @@
     <string name="large_until_one_year_dog_age">12歳/年</string>
     <string name="large_until_two_year_dog_age">6歳/年</string>
     <string name="large_over_two_year_dog_age">7歳/年</string>
+    <string name="lets_trimming_photo">ワンちゃんの顔が中心になるようにトリミングしてください。</string>
+    <string name="no_trimming_app">トリミング可能なアプリがインストールされていません。\nもしくは、先程選択した写真が読み込めません、別の写真を選択してください。</string>
+    <string name="trimming_fail">トリミングに失敗しました。</string>
+    <string name="save_success">保存しました。</string>
+    <string name="save_fail">保存に失敗しました。\nもう一度やり直してください。</string>
+    <string name="validate_error_archive_date">亡くなった日はお誕生日より過去は指定できません。</string>
+    <string name="no_camera_app">カメラアプリがインストールされていません。</string>
+    <string name="no_gallery_app">ギャラリーアプリがインストールされていません。</string>
+    <string name="delete_success">削除しました。</string>
+    <string name="delete_fail">削除に失敗しました。もう一度やり直してください。</string>
+    <string name="date_format" formatted="false">%s年%s月%s日</string>
+    <string name="born">生まれ</string>
+    <string name="age_format" formatted="false">%d歳%dヶ月</string>
+    <string name="age_about">歳くらい</string>
+    <string name="death">永眠</string>
+    <string name="day">日</string>
+    <string name="day_count">日目</string>
+    <string name="other">その他</string>
 
     <string-array name="initial_label_list">
         <item>あ行</item>

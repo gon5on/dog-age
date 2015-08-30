@@ -2,15 +2,9 @@ package jp.co.e2.dogage.validate;
 
 /**
  * 少数バリデーションクラス
- *
- * validate … バリデートクラス
- * value … バリデート対象の値
- * name … 値の名前（誕生日、性別とか）
- * msgFull … デフォルトではないエラーメッセージを使用したい場合に指定
- * point … 小数点第何位を指定したい場合に指定、指定しない場合はnull
  */
 public class ValidateDecimal {
-    public static final String ERROR_MSG_DOUBLE = "%sは少数で入力してください。";
+    public static final String ERROR_MSG_DOUBLE = "%sは小数で入力してください。";
     public static final String ERROR_MSG_DOUBLE_POINT = "%sは小数点第%s位までで入力してください。";
 
     public static final String MATCH_DOUBLE = "^([0-9]\\d*|0)(\\.\\d+)?$";

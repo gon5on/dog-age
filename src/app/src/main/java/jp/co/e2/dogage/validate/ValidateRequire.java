@@ -2,11 +2,6 @@ package jp.co.e2.dogage.validate;
 
 /**
  * 必須バリデーションクラス
- *
- * validate … バリデートクラス
- * value … バリデート対象の値
- * name … 値の名前（誕生日、性別とか）
- * msgFull … デフォルトではないエラーメッセージを使用したい場合に指定
  */
 public class ValidateRequire {
     public static final String ERROR_MSG_REQUIRE = "%sを入力してください。";
@@ -141,8 +136,8 @@ public class ValidateRequire {
 
         Boolean flg = false;
 
-        for (int i = 0; i < value.length; i++) {
-            if (value[i]) {
+        for (boolean tmp : value) {
+            if (tmp) {
                 flg = true;
                 break;
             }
@@ -152,7 +147,7 @@ public class ValidateRequire {
             if (msgFull != null) {
                 validate.error(name, msgFull);
             } else {
-                validate.error(name, String.format(ERROR_MSG_REQUIRE, name));
+                validate.error(name, String.format(ERROR_MSG_REQUIRE_SELECT, name));
             }
         }
     }

@@ -19,17 +19,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 /**
- * エラーダイアログ
- *
- * @access public
+ * 種類選択ダイアログ
  */
 public class KindSelectDialog extends BaseDialog<CallbackListener> {
     /**
      * インスタンスを返す
      *
      * @return kindSelectDialog
-     * @String
-     * @access public
      */
     public static KindSelectDialog getInstance(ArrayList<DogMasterEntity> data) {
         KindSelectDialog dialog = new KindSelectDialog();
@@ -42,11 +38,7 @@ public class KindSelectDialog extends BaseDialog<CallbackListener> {
     }
 
     /**
-     * onCreateDialog
-     *
-     * @param savedInstanceState
-     * @return Dialog
-     * @access public
+     * ${inheritDoc}
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -83,10 +75,14 @@ public class KindSelectDialog extends BaseDialog<CallbackListener> {
 
     /**
      * コールバックリスナー
-     *
-     * @access public
      */
     public interface CallbackListener {
-        public void onClickKindSelectDialog(Integer kind, String name);
+        /**
+         * 種類選択ダイアログで何かしら選択された
+         *
+         * @param kind 種類ID
+         * @param name 名称
+         */
+        void onClickKindSelectDialog(Integer kind, String name);
     }
 }

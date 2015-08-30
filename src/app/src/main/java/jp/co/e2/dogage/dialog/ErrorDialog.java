@@ -12,17 +12,14 @@ import android.widget.TextView;
 
 /**
  * エラーダイアログ
- *
- * @access public
  */
 public class ErrorDialog extends BaseDialog<CallbackListener> {
     /**
      * インスタンスを返す
      *
      * @return SampleDialog
-     * @param title
-     * @param msg
-     * @access public
+     * @param title タイトル
+     * @param msg 本文
      */
     public static ErrorDialog getInstance(String title, String msg) {
         ErrorDialog dialog = new ErrorDialog();
@@ -36,11 +33,7 @@ public class ErrorDialog extends BaseDialog<CallbackListener> {
     }
 
     /**
-     * onCreateDialog
-     *
-     * @param savedInstanceState
-     * @return Dialog
-     * @access public
+     * ${inheritDoc}
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -72,10 +65,11 @@ public class ErrorDialog extends BaseDialog<CallbackListener> {
 
     /**
      * コールバックリスナー
-     *
-     * @access public
      */
     public interface CallbackListener {
-        public void onClickErrorDialogOk();
+        /**
+         * エラーダイアログでOKが押された
+         */
+        void onClickErrorDialogOk();
     }
 }

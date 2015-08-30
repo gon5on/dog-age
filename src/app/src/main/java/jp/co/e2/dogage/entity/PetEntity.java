@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.common.AndroidUtils;
 import jp.co.e2.dogage.common.DateHelper;
 import jp.co.e2.dogage.common.ImgHelper;
@@ -107,13 +108,15 @@ public class PetEntity implements Serializable {
     /**
      * 表示用誕生日を返す
      *
+     * @param context コンテキスト
      * @return String
      */
-    public String getDispBirthday() {
+    public String getDispBirthday(Context context) {
         String birthdayDisp = "";
 
         try {
-            birthdayDisp = new DateHelper(mBirthday, DateHelper.FMT_DATE).format(DateHelper.FMT_DATE_JP) + "生まれ";
+            String unit = context.getResources().getString(R.string.born);
+            birthdayDisp = new DateHelper(mBirthday, DateHelper.FMT_DATE).format(DateHelper.FMT_DATE_JP) + unit;
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -134,7 +137,7 @@ public class PetEntity implements Serializable {
             DateHelper birthday = new DateHelper(mBirthday, DateHelper.FMT_DATE);
             birthday.clearHour();
 
-            DateHelper today = null;
+            DateHelper today;
             if (mArchiveDate != null) {
                 today = new DateHelper(mArchiveDate, DateHelper.FMT_DATE);
             } else {
@@ -157,17 +160,21 @@ public class PetEntity implements Serializable {
     /**
      * ペット年齢を返す
      *
+     * @param context コンテキスト
      * @return String
      */
-    public String getPetAgeDisp() {
+    public String getPetAgeDisp(Context context) {
         Integer[] age = getPetAge();
 
-        return age[0] + "歳" + age[1] + "ヶ月";
+        String ageFormat = context.getResources().getString(R.string.age_format);
+
+        return String.format(ageFormat, age[0], age[1]);
     }
 
     /**
      * 人間年齢を返す
      *
+     * @param context コンテキスト
      * @return String
      */
     public String getHumanAge(Context context) {
@@ -195,22 +202,23 @@ public class PetEntity implements Serializable {
             humanAge += month * getDogMaster(context).getAgeOfMonthOverTwoYear();
         }
 
-        return Math.round(humanAge) + "歳くらい";
+        return Math.round(humanAge) + context.getResources().getString(R.string.age_about);
     }
 
     /**
      * 生まれたからの日数を返す
      *
+     * @param context コンテキスト
      * @return String
      */
-    public String getDaysFromBorn() {
+    public String getDaysFromBorn(Context context) {
         Integer days = 0;
 
         try {
             DateHelper birthday = new DateHelper(mBirthday, DateHelper.FMT_DATE);
             birthday.clearHour();
 
-            DateHelper today = null;
+            DateHelper today;
             if (mArchiveDate != null) {
                 today = new DateHelper(mArchiveDate, DateHelper.FMT_DATE);
             } else {
@@ -225,7 +233,7 @@ public class PetEntity implements Serializable {
             e.printStackTrace();
         }
 
-        String unit = (getArchiveDate() != null) ? "日" : "日目";
+        String unit = context.getResources().getString((getArchiveDate() != null) ? R.string.day : R.string.day_count);
 
         return String.format("%1$,3d", days) + unit;
     }
@@ -255,9 +263,11 @@ public class PetEntity implements Serializable {
      * @return String
      */
     public String getKindDisp(Context context) {
-        //種類にその他という文字列が入っていたら、その他フラグを立てる
-        if (getDogMaster(context).getKind().indexOf("その他") != -1) {
-            return getDogMaster(context).getKind().replaceAll("その他", "");
+        String other = context.getResources().getString(R.string.other);
+
+        //種類にその他という文字列が入っていたら、その他という文字列を取り除く
+        if (getDogMaster(context).getKind().contains(other)) {
+            return getDogMaster(context).getKind().replaceAll(other, "");
         } else {
             return getDogMaster(context).getKind();
         }
@@ -380,13 +390,15 @@ public class PetEntity implements Serializable {
     /**
      * 表示用アーカイブ日付を返す
      *
+     * @param context コンテキスト
      * @return String
      */
-    public String getDispArchiveDate() {
+    public String getDispArchiveDate(Context context) {
         String archiveDateDisp = "";
 
         try {
-            archiveDateDisp = new DateHelper(mArchiveDate, DateHelper.FMT_DATE).format(DateHelper.FMT_DATE_JP) + "永眠";
+            String unit = context.getResources().getString(R.string.death);
+            archiveDateDisp = new DateHelper(mArchiveDate, DateHelper.FMT_DATE).format(DateHelper.FMT_DATE_JP) + unit;
         } catch (ParseException e) {
             e.printStackTrace();
         }

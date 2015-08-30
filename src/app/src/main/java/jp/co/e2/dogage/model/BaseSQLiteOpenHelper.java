@@ -6,8 +6,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * SQLiteOpenHelperのラッパークラス
- *
- * @access public
  */
 public class BaseSQLiteOpenHelper extends SQLiteOpenHelper {
     public static final Integer VERSION1 = 1;
@@ -19,7 +17,7 @@ public class BaseSQLiteOpenHelper extends SQLiteOpenHelper {
     /**
      * コンストラクタ
      *
-     * @access public
+     * @param context Context
      */
     public BaseSQLiteOpenHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -28,9 +26,7 @@ public class BaseSQLiteOpenHelper extends SQLiteOpenHelper {
     /**
      * onCreate
      *
-     * @param db
-     * @return void
-     * @access public
+     * @param db SQLiteDatabase
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -50,11 +46,9 @@ public class BaseSQLiteOpenHelper extends SQLiteOpenHelper {
     /**
      * onUpgrade
      *
-     * @param db
+     * @param db SQLiteDatabase
      * @param oldVersion 前のバージョン
      * @param newVersion 新しいバージョン
-     * @return void
-     * @access public
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

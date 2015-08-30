@@ -218,15 +218,14 @@ public class ValidateType {
 
         char[] chars = value.toCharArray();
 
-        for (int i = 0; i < chars.length; i++) {
-            char c = chars[i];
-
+        for (char c : chars) {
             //半角
             if ((c <= '\u007e') ||                      // 英数字
                     (c == '\u00a5') ||                  // \記号
                     (c == '\u203e') ||                  // ~記号
                     (c >= '\uff61' && c <= '\uff9f')    // 半角カナ
                     ) {
+                //何もしない
             }
             //全角
             else {

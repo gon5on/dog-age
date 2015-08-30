@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -22,9 +21,9 @@ public class KindListAdapter extends ArrayAdapter<DogMasterEntity> {
     /**
      * コンストラクタ
      *
-     * @param context
-     * @param layoutId
-     * @param objects
+     * @param context コンテキスト
+     * @param layoutId レイアウトのリソースID
+     * @param objects 犬マスタデータ
      */
     public KindListAdapter(Context context, int layoutId, List<DogMasterEntity> objects) {
         super(context, 0, objects);
@@ -35,12 +34,7 @@ public class KindListAdapter extends ArrayAdapter<DogMasterEntity> {
     }
 
     /**
-     * getView
-     *
-     * @param position 位置
-     * @param convertView
-     * @param parent
-     * @return View convertView
+     * ${inheritDoc}
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -74,10 +68,7 @@ public class KindListAdapter extends ArrayAdapter<DogMasterEntity> {
     }
 
     /**
-     * 行のクリックを無効にするかどうか
-     *
-     * @param position 位置
-     * @return boolean
+     * ${inheritDoc}
      */
     @Override
     public boolean isEnabled(int position) {

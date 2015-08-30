@@ -14,8 +14,6 @@ import android.widget.TextView;
 
 /**
  * 日付選択ダイアログ
- *
- * @access public
  */
 public class DatePickerDialog extends BaseDialog<CallbackListener> {
     private Integer mFlg = 0;               //呼び出し元判別用フラグ
@@ -23,11 +21,10 @@ public class DatePickerDialog extends BaseDialog<CallbackListener> {
     /**
      * インスタンスを返す
      *
-     * @return ConfirmDialog
-     * @String Integer flg
-     * @String String date
-     * @String String title
-     * @access public
+     * @param flg 呼び出し元判別用フラグ
+     * @param date 日付
+     * @param title タイトル
+     * @return dialog DatePickerDialog
      */
     public static DatePickerDialog getInstance(Integer flg, String date, String title) {
         DatePickerDialog dialog = new DatePickerDialog();
@@ -47,11 +44,7 @@ public class DatePickerDialog extends BaseDialog<CallbackListener> {
     }
 
     /**
-     * onCreateDialog
-     *
-     * @param savedInstanceState
-     * @return Dialog
-     * @access public
+     * ${inheritDoc}
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -103,12 +96,21 @@ public class DatePickerDialog extends BaseDialog<CallbackListener> {
 
     /**
      * コールバックリスナー
-     *
-     * @access public
      */
     public interface CallbackListener {
-        public void onClickDatePickerDialogOk(Integer flg, String date);
+        /**
+         * 日付選択ダイアログでOKが押された
+         *
+         * @param flg 呼び出し元判別フラグ
+         * @param date 日付
+         */
+        void onClickDatePickerDialogOk(Integer flg, String date);
 
-        public void onClickDatePickerDialogCancel(Integer flg);
+        /**
+         * 日付選択ダイアログでキャンセルが押された
+         *
+         * @param flg 呼び出し元判別フラグ
+         */
+        void onClickDatePickerDialogCancel(Integer flg);
     }
 }

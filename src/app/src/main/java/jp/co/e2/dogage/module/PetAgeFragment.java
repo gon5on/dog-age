@@ -67,16 +67,16 @@ public class PetAgeFragment extends Fragment {
             textViewKind.setText(mItem.getKindDisp(getActivity().getApplicationContext()));
 
             TextView textViewBirthday = (TextView) mView.findViewById(R.id.textViewBirthday);
-            textViewBirthday.setText(mItem.getDispBirthday());
+            textViewBirthday.setText(mItem.getDispBirthday(getActivity()));
 
             TextView textViewPetAge = (TextView) mView.findViewById(R.id.textViewPetAge);
-            textViewPetAge.setText(mItem.getPetAgeDisp());
+            textViewPetAge.setText(mItem.getPetAgeDisp(getActivity()));
 
             TextView textViewHumanAge = (TextView) mView.findViewById(R.id.textViewHumanAge);
             textViewHumanAge.setText(mItem.getHumanAge(getActivity().getApplicationContext()));
 
             TextView textViewDays = (TextView) mView.findViewById(R.id.textViewDays);
-            textViewDays.setText(mItem.getDaysFromBorn());
+            textViewDays.setText(mItem.getDaysFromBorn(getActivity()));
 
             LinearLayout linearLayout1 = (LinearLayout) mView.findViewById(R.id.linearLayout1);
             linearLayout1.setBackgroundResource(BG_ABOVE[mPageNum % BG_CNT]);
@@ -94,7 +94,7 @@ public class PetAgeFragment extends Fragment {
 
             if (mItem.getArchiveDate() != null) {
                 textViewArchive.setVisibility(View.VISIBLE);
-                textViewArchive.setText(mItem.getDispArchiveDate());
+                textViewArchive.setText(mItem.getDispArchiveDate(getActivity()));
             } else {
                 textViewArchive.setVisibility(View.GONE);
             }

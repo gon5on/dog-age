@@ -15,8 +15,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 /**
  * ペットテーブルへのデータアクセスオブジェクト
- *
- * @access public
  */
 public class PetDao extends BaseDao {
     // テーブル名
@@ -56,7 +54,6 @@ public class PetDao extends BaseDao {
      * コンストラクタ
      *
      * @param context コンテキスト
-     * @access public
      */
     public PetDao(Context context) {
         mContext = context;
@@ -65,10 +62,9 @@ public class PetDao extends BaseDao {
     /**
      * インサート・アップデート
      *
-     * @param db
-     * @param data
-     * @return void
-     * @access public
+     * @param db SQLiteDatabase
+     * @param data データ
+     * @return boolean 結果
      */
     public boolean save(SQLiteDatabase db, PetEntity data) throws Exception {
         long ret;
@@ -113,10 +109,9 @@ public class PetDao extends BaseDao {
     /**
      * IDからデータを取得する
      *
-     * @param db
-     * @param id
+     * @param db SQLiteDatabase
+     * @param id ID
      * @return PetEntity values
-     * @access public
      */
     public PetEntity findById(SQLiteDatabase db, Integer id) {
         PetEntity data = new PetEntity();
@@ -149,12 +144,11 @@ public class PetDao extends BaseDao {
     /**
      * 全件データを取得する
      *
-     * @param db
+     * @param db SQLiteDatabase
      * @return ArrayList<PetEntity> data
-     * @access public
      */
     public ArrayList<PetEntity> findAll(SQLiteDatabase db) {
-        ArrayList<PetEntity> data = new ArrayList<PetEntity>();
+        ArrayList<PetEntity> data = new ArrayList<>();
 
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("SELECT * FROM %s ", TABLE_NAME));
@@ -185,8 +179,9 @@ public class PetDao extends BaseDao {
     /**
      * レコード削除
      *
+     * @param db SQLiteDatabase
+     * @param id ID
      * @return boolean
-     * @access public
      */
     public Boolean deleteById(SQLiteDatabase db, Integer id) {
         String[] param = new String[]{String.valueOf(id)};

@@ -90,7 +90,10 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
         }
         //削除
         else if (id == R.id.action_delete) {
-            ConfirmDialog confirmDialog = ConfirmDialog.getInstance("確認", "本当に削除してよろしいですか？");
+            String title = getResources().getString(R.string.confirm);
+            String msg = getResources().getString(R.string.before_del);
+
+            ConfirmDialog confirmDialog = ConfirmDialog.getInstance(title, msg);
             confirmDialog.setCallbackListener(this);
             confirmDialog.show(getFragmentManager(), "dialog");
         }
@@ -210,7 +213,7 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
     }
 
     /**
-     * 削除確認ダイアログでOKが押された
+     * ${inheritDoc}
      */
     @Override
     public void onClickConfirmDialogOk() {
@@ -223,14 +226,18 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
             PetDao petDao = new PetDao(getApplicationContext());
 
             if (petDao.deleteById(db, mData.get(mPageNum).getId())) {
-                AndroidUtils.showToastS(getApplicationContext(), "削除しました。");
+                String msg = getResources().getString(R.string.delete_success);
+                AndroidUtils.showToastS(getApplicationContext(), msg);
 
                 Intent intent = new Intent(this, PetAgeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("pageNum", (mPageNum != 0) ? (mPageNum - 1) : 0);
                 startActivity(intent);
             } else {
-                ErrorDialog errorDialog = ErrorDialog.getInstance("エラー", "削除に失敗しました。もう一度やり直してください。");
+                String title = getResources().getString(R.string.error);
+                String msg = getResources().getString(R.string.delete_fail);
+
+                ErrorDialog errorDialog = ErrorDialog.getInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
             }
         } catch (Exception e) {
@@ -243,7 +250,7 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
     }
 
     /**
-     * 削除確認ダイアログでキャンセルが押された
+     * ${inheritDoc}
      */
     @Override
     public void onClickConfirmDialogCancel() {

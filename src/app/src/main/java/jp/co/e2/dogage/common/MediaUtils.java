@@ -7,15 +7,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.BaseColumns;
-import android.provider.MediaStore;
 import android.webkit.MimeTypeMap;
 
 /**
@@ -26,14 +22,14 @@ public class MediaUtils {
      * URIからファイルパスを取得する
      *
      * @param context コンテキスト
-     * @param uri     URI
+     * @param uri URI
      * @return String path ファイルパス
      */
     public static String getPathFromUri(Context context, Uri uri) {
         String path = null;
 
         if (uri != null) {
-            if (uri.getScheme().equals("content")) {
+            if ("content".equals(uri.getScheme())) {
                 String[] param = {android.provider.MediaStore.Images.ImageColumns.DATA};
                 Cursor cursor = context.getContentResolver().query(uri, param, null, null, null);
                 cursor.moveToFirst();
@@ -45,47 +41,6 @@ public class MediaUtils {
         }
 
         return path;
-    }
-
-    /**
-     * URIからファイルパスを取得する
-     *
-     * @param context コンテキスト
-     * @param uri     URI
-     * @return String path ファイルパス
-     */
-    public static Uri getUriFromPath(Context context, String path) {
-        Uri uri = null;
-
-        try {
-            ContentResolver cr = context.getContentResolver();
-            Cursor cursor = cr.query(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    new String[] { BaseColumns._ID },
-                    MediaStore.Images.ImageColumns.DATA + " LIKE ?",
-                    new String[] { path },
-                    null
-            );
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(BaseColumns._ID);
-            long id = cursor.getLong(idx);
-            cursor.close();
-
-            uri = Uri.parse(MediaStore.Images.Media.EXTERNAL_CONTENT_URI + "/" + id);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-
-            ContentValues values = new ContentValues();
-            ContentResolver contentResolver = context.getContentResolver();
-            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-            values.put(MediaStore.Images.Media.DATA, path);
-            contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-            getUriFromPath(context, path);
-        }
-
-        return uri;
     }
 
     /**
@@ -113,7 +68,7 @@ public class MediaUtils {
     /**
      * メディアスキャンを実行
      *
-     * android4.4からこの方法が使えなくなったので使わないこと！
+     * 4.4から使用できないので、使わないこと！
      *
      * @param context コンテキスト
      */
@@ -136,17 +91,17 @@ public class MediaUtils {
 
         if (file.isFile()) {
             if (!file.delete()) {
-                throw new IOException("ファイルの削除に失敗しました");
+                throw new IOException("failed to delete the file");
             }
         }
 
         if (file.isDirectory()) {
             File[] files = file.listFiles();
-            for (File tmp: files){
+            for (File tmp : files) {
                 deleteDirFile(tmp);
             }
             if (!file.delete()) {
-                throw new IOException("ファイルの削除に失敗しました");
+                throw new IOException("failed to delete the file");
             }
         }
     }
@@ -166,11 +121,11 @@ public class MediaUtils {
      * @param path ファイルパス
      * @return String
      */
-    public static String geFileName(String path) {
+    public static String geFileName(String path) throws FileNotFoundException {
         File file = new File(path);
 
         if (!file.exists()) {
-            return null;
+            throw new FileNotFoundException("File not found");
         }
 
         return file.getName();
@@ -182,7 +137,7 @@ public class MediaUtils {
      * @param path ファイルパス
      * @return String
      */
-    public static String getFileExt(String path) {
+    public static String getFileExt(String path) throws FileNotFoundException {
         String name = geFileName(path);
 
         if (name == null) {
@@ -203,7 +158,7 @@ public class MediaUtils {
      * @param path ファイルパス
      * @return String
      */
-    public static String getMimeType(String path) {
+    public static String getMimeType(String path) throws FileNotFoundException {
         String ext = getFileExt(path);
 
         if (ext == null) {
@@ -224,7 +179,7 @@ public class MediaUtils {
         File file = new File(path);
 
         if (!file.exists()) {
-            throw new FileNotFoundException();
+            throw new FileNotFoundException("file not found");
         }
 
         return file;

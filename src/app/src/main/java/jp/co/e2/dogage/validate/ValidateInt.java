@@ -2,11 +2,6 @@ package jp.co.e2.dogage.validate;
 
 /**
  * 整数バリデーションクラス
- *
- * validate … バリデートクラス
- * value … バリデート対象の値
- * name … 値の名前（誕生日、性別とか）
- * msgFull … デフォルトではないエラーメッセージを使用したい場合に指定
  */
 public class ValidateInt {
     public static final String ERROR_MSG_INT = "%sは整数で入力してください。";

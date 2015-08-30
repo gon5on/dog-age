@@ -12,8 +12,6 @@ import android.content.Context;
  * 便利なものまとめたクラス
  *
  * newしなくても使える
- *
- * @access public
  */
 public class Utils {
     /**
@@ -21,19 +19,18 @@ public class Utils {
      *
      * @param list      文字列配列
      * @param delimiter デリミタ
-     * @return String 連結文字列
-     * @access public
+     * @return String   連結文字列
      */
     public static String implode(ArrayList<String> list, String delimiter) {
         StringBuilder sb = new StringBuilder();
 
         if (list != null && list.size() != 0) {
-            for (int i = 0; i < list.size(); i++) {
+            for (String value : list) {
                 if (sb.length() != 0) {
                     sb.append(delimiter);
                 }
 
-                sb.append(list.get(i));
+                sb.append(value);
             }
         }
 
@@ -46,18 +43,17 @@ public class Utils {
      * @param list      文字列配列
      * @param delimiter デリミタ
      * @return String 連結文字列
-     * @access public
      */
     public static String implode(String[] list, String delimiter) {
         StringBuilder sb = new StringBuilder();
 
         if (list != null && list.length != 0) {
-            for (int i = 0; i < list.length; i++) {
+            for (String value : list) {
                 if (sb.length() != 0) {
                     sb.append(delimiter);
                 }
 
-                sb.append(list[i]);
+                sb.append(value);
             }
         }
 
@@ -70,18 +66,17 @@ public class Utils {
      * @param list      文字列配列
      * @param delimiter デリミタ
      * @return String 連結文字列
-     * @access public
      */
     public static String implode(Integer[] list, String delimiter) {
         StringBuilder sb = new StringBuilder();
 
         if (list != null && list.length != 0) {
-            for (int i = 0; i < list.length; i++) {
+            for (Integer value : list) {
                 if (sb.length() != 0) {
                     sb.append(delimiter);
                 }
 
-                sb.append(list[i]);
+                sb.append(value);
             }
         }
 
@@ -91,9 +86,8 @@ public class Utils {
     /**
      * オブジェクトをString型に変換する
      *
-     * @param value
+     * @param value オブジェクト
      * @return String
-     * @access public
      */
     public static String objToString(Object value) {
         if (value == null) {
@@ -105,9 +99,8 @@ public class Utils {
     /**
      * オブジェクトをInteger型に変換する
      *
-     * @param value
+     * @param value オブジェクト
      * @return Integer
-     * @access public
      */
     public static Integer objToInteger(Object value) {
         if (value == null) {
@@ -119,9 +112,8 @@ public class Utils {
     /**
      * オブジェクトをDouble型に変換する
      *
-     * @param value
-     * @return Integer
-     * @access public
+     * @param value オブジェクト
+     * @return Double
      */
     public static Double objToDouble(Object value) {
         if (value == null) {
@@ -133,9 +125,8 @@ public class Utils {
     /**
      * オブジェクトをFloat型に変換する
      *
-     * @param value
-     * @return Integer
-     * @access public
+     * @param value オブジェクト
+     * @return Float
      */
     public static Float objToFloat(Object value) {
         if (value == null) {
@@ -147,9 +138,8 @@ public class Utils {
     /**
      * オブジェクトをLong型に変換する
      *
-     * @param value
-     * @return Integer
-     * @access public
+     * @param value オブジェクト
+     * @return Long
      */
     public static Long objToLong(Object value) {
         if (value == null) {
@@ -161,11 +151,10 @@ public class Utils {
     /**
      * ファイルからテキストを読みだす
      *
-     * @param context
+     * @param context コンテキスト
      * @param resId   ファイルのリソースID
      * @return Integer
      * @throws IOException
-     * @access public
      */
     public static String readTextFile(Context context, Integer resId) throws IOException {
         InputStream is = null;
@@ -194,7 +183,6 @@ public class Utils {
      * ひらがなをカタカナに変換
      *
      * @return String
-     * @access public
      */
     public static String hiragana2katakana(String s) {
         StringBuffer buf = new StringBuffer();

@@ -5,9 +5,13 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
+import android.os.Build;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Android独自の便利なものまとめたクラス
@@ -15,6 +19,8 @@ import android.widget.Toast;
  * newしなくても使える
  */
 public class AndroidUtils {
+    private static final AtomicInteger mNextGeneratedId = new AtomicInteger(1);
+
     /**
      * トースト表示（短い）
      *
@@ -88,8 +94,8 @@ public class AndroidUtils {
     /**
      * dp→pixelに変換
      *
-     * @param context
-     * @param value
+     * @param context コンテキスト
+     * @param value dp
      * @return Integer pixel
      */
     public static Integer dpToPixel(Context context, Integer value) {
@@ -101,8 +107,8 @@ public class AndroidUtils {
     /**
      * dp→pixelに変換
      *
-     * @param context
-     * @param value
+     * @param context コンテキスト
+     * @param value dp
      * @return Integer pixel
      */
     public static Integer dpToPixel(Context context, Double value) {
@@ -114,8 +120,8 @@ public class AndroidUtils {
     /**
      * ウィンドウの横幅を返す
      *
-     * @param context
-     * @return Integer pixel
+     * @param context コンテキスト
+     * @return Integer ウインドウ横幅
      */
     public static Integer getScreenWidth(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -129,8 +135,8 @@ public class AndroidUtils {
     /**
      * ウィンドウの縦幅を返す
      *
-     * @param context
-     * @return Integer pixel
+     * @param context コンテキスト
+     * @return Integer ウインドウ縦幅
      */
     public static Integer getScreenHeight(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -139,5 +145,25 @@ public class AndroidUtils {
         wm.getDefaultDisplay().getMetrics(metrics);
 
         return metrics.heightPixels;
+    }
+
+    /**
+     * 被らないリソースIDを生成する
+     *
+     * @return int リソースID
+     */
+    public static int generateViewId() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            for (;;) {
+                final int result = mNextGeneratedId.get();
+                int newValue = result + 1;
+                if (newValue > 0x00FFFFFF) newValue = 1;        // Roll over to 1, not 0.
+                if (mNextGeneratedId.compareAndSet(result, newValue)) {
+                    return result;
+                }
+            }
+        } else {
+            return View.generateViewId();
+        }
     }
 }
