@@ -85,7 +85,7 @@
     <string-array name="dog13">
         <item>13</item>
         <item>ウェルシュ・コーギー</item>
-        <item>うぇるっしゅこーぎー</item>
+        <item>うぇるしゅこーぎー</item>
         <item>1</item>
     </string-array>
     <string-array name="dog14">
@@ -753,7 +753,7 @@
         <item>124</item>
         <item>シャー・ペイ</item>
         <item>しゃーぺい</item>
-        <item></item>
+        <item>2</item>
     </string-array>
     <string-array name="dog125">
         <item>125</item>
@@ -849,13 +849,13 @@
         <item>140</item>
         <item>ハリア</item>
         <item>はりあ</item>
-        <item></item>
+        <item>3</item>
     </string-array>
     <string-array name="dog141">
         <item>141</item>
         <item>ビアデッド・コリー</item>
         <item>ぴあでっどこりー</item>
-        <item></item>
+        <item>3</item>
     </string-array>
     <string-array name="dog142">
         <item>142</item>
@@ -867,7 +867,7 @@
         <item>143</item>
         <item>ファラオ・ハウンド</item>
         <item>ふぁらおはうんど</item>
-        <item></item>
+        <item>3</item>
     </string-array>
     <string-array name="dog144">
         <item>144</item>
@@ -945,7 +945,7 @@
         <item>156</item>
         <item>北海道犬</item>
         <item>ほっかいどうけん</item>
-        <item></item>
+        <item>3</item>
     </string-array>
     <string-array name="dog157">
         <item>157</item>
@@ -957,7 +957,7 @@
         <item>158</item>
         <item>ポルトガル・ウォーター・ドック</item>
         <item>ぽるとがるうぉーたーどっく</item>
-        <item></item>
+        <item>2</item>
     </string-array>
     <string-array name="dog159">
         <item>159</item>
@@ -981,7 +981,7 @@
         <item>162</item>
         <item>ワイヤーヘアード・ポインティング・グリフォン</item>
         <item>わいやーへあーどぽいんてぃんぐぐりふぉん</item>
-        <item></item>
+        <item>3</item>
     </string-array>
     <string-array name="dog163">
         <item>163</item>
@@ -999,13 +999,13 @@
         <item>165</item>
         <item>カナーン・ドッグ</item>
         <item>かなーんどっぐ</item>
-        <item></item>
+        <item>2</item>
     </string-array>
     <string-array name="dog166">
         <item>166</item>
         <item>紀州犬</item>
         <item>きしゅうけん</item>
-        <item></item>
+        <item>2</item>
     </string-array>
     <string-array name="dog167">
         <item>167</item>
@@ -1083,115 +1083,115 @@
         <item>179</item>
         <item>タイ・リッジバック・ドッグ</item>
         <item>たいりっじばっくどっぐ</item>
-        <item></item>
+        <item>2</item>
     </string-array>
     <string-array name="dog180">
         <item>180</item>
         <item>チェサピーク・ベイ・レトリーバー</item>
         <item>ちぇさびーくべいれとりーばー</item>
-        <item></item>
+        <item>3</item>
     </string-array>
     <string-array name="dog181">
         <item>181</item>
         <item>ドゴ・アルヘンティーノ</item>
         <item>どごあるへんてぃーの</item>
-        <item></item>
+        <item>3</item>
     </string-array>
     <string-array name="dog182">
         <item>182</item>
         <item>土佐犬</item>
         <item>とさけん</item>
-        <item></item>
+        <item>3</item>
     </string-array>
     <string-array name="dog183">
         <item>183</item>
         <item>ドレーファー</item>
         <item>どれーふぁー</item>
-        <item></item>
+        <item>2</item>
     </string-array>
     <string-array name="dog184">
         <item>184</item>
         <item>ノバ・スコシア・ダック・トーリング・レトリーバー</item>
         <item>のばすこしあだっくとーりんぐれとりーばー</item>
-        <item></item>
+        <item>2</item>
     </string-array>
     <string-array name="dog185">
         <item>185</item>
         <item>パーソン・ラッセル・テリア</item>
         <item>ぱーそんらっせるてりあ</item>
-        <item></item>
+        <item>1</item>
     </string-array>
     <string-array name="dog186">
         <item>186</item>
         <item>バセー・アルティジャン・ノルマン</item>
         <item>ばせーあるてぃじゃんのるまん</item>
-        <item></item>
+        <item>2</item>
     </string-array>
     <string-array name="dog187">
         <item>187</item>
         <item>ハバニーズ</item>
         <item>はばにーず</item>
-        <item></item>
+        <item>1</item>
     </string-array>
     <string-array name="dog188">
         <item>188</item>
         <item>スパニッシュ・マスティフ</item>
         <item>すぱにっしゅますてぃふ</item>
-        <item></item>
+        <item>3</item>
     </string-array>
     <string-array name="dog189">
         <item>189</item>
         <item>ピレニアン・シープ・ドッグ</item>
         <item>ぴれにあんしーぷどっぐ</item>
-        <item></item>
+        <item>2</item>
     </string-array>
     <string-array name="dog190">
         <item>190</item>
         <item>ブービエ・デ・フランダース</item>
         <item>ぶーびえでふらんだーす</item>
-        <item></item>
+        <item>3</item>
     </string-array>
     <string-array name="dog191">
         <item>191</item>
         <item>ブラック・ロシアン・テリア</item>
         <item>ぶらっくろしあんてりあ</item>
-        <item></item>
+        <item>3</item>
     </string-array>
     <string-array name="dog192">
         <item>192</item>
         <item>ブラッコ・イタリアーノ</item>
         <item>ぶらっこいたりあーの</item>
-        <item></item>
+        <item>3</item>
     </string-array>
     <string-array name="dog193">
         <item>193</item>
         <item>ホファヴァルト</item>
         <item>ほふばると</item>
-        <item></item>
+        <item>3</item>
     </string-array>
     <string-array name="dog194">
         <item>194</item>
-        <item>ロシアン・トイ</item>
-        <item></item>
-        <item></item>
+        <item>ロシアン・トイ・テリア</item>
+        <item>ろしあんといてりあ</item>
+        <item>1</item>
     </string-array>
     <string-array name="dog195">
         <item>195</item>
         <item>ブル・マスティフ</item>
         <item>ぶるますてぃふ</item>
-        <item></item>
+        <item>3</item>
     </string-array>
     <string-array name="dog196">
         <item>196</item>
         <item>ピレニアン・マスティフ</item>
         <item>ぴれにあんますてぃふ</item>
-        <item></item>
+        <item>3</item>
     </string-array>
     <string-array name="dog197">
         <item>197</item>
         <item>チベタン・マスティフ</item>
         <item>ちべたんますてぃふ</item>
-        <item></item>
+        <item>3</item>
     </string-array>
 
 </resources>
