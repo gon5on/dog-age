@@ -346,7 +346,39 @@ public class ImgHelper {
     }
 
     /**
-     * 実際の保存処理
+     * 画像をjpgで保存する
+     *
+     * @param filePath  保存先パス
+     * @return boolean 成功/失敗
+     * @throws IOException
+     */
+    public Boolean saveJpg(String filePath) throws IOException {
+        //画像読み込み
+        Bitmap img = getBitmap();
+
+        //画像保存
+        return saveJpg(filePath, img);
+    }
+
+    /**
+     * リサイズして画像をjpgで保存する
+     *
+     * @param filePath  保存先パス
+     * @param height   高さピクセル
+     * @param weight   幅ピクセル
+     * @return boolean 成功/失敗
+     * @throws IOException
+     */
+    public Boolean saveResizeJpg(String filePath, Integer height, Integer weight) throws IOException {
+        //画像読み込み
+        Bitmap img = getResizeBitmap(height, weight);
+
+        //画像保存
+        return saveJpg(filePath, img);
+    }
+
+    /**
+     * 保存前フォルダ存在確認
      *
      * @param dirPath  保存先パス
      * @param filename 保存画像名
@@ -363,8 +395,22 @@ public class ImgHelper {
             }
         }
 
-        //jpgで保存
+        //パスを生成
         String filePath = dir.getAbsolutePath() + "/" + filename;
+
+        //実際の保存
+        return saveJpg(filePath, img);
+    }
+
+    /**
+     * 実際の保存処理
+     *
+     * @param filePath  保存先パス
+     * @param img      ビットマップ画像
+     * @return boolean 成功/失敗
+     * @throws IOException
+     */
+    private Boolean saveJpg(String filePath, Bitmap img) throws IOException {
         FileOutputStream out = new FileOutputStream(filePath, false);
         img.compress(CompressFormat.JPEG, 100, out);
         out.flush();

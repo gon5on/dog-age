@@ -27,17 +27,13 @@ public class AboutActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
+        setContentView(R.layout.activity_common);
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction().add(R.id.container, new AboutFragment()).commit();
-        }
+            //アクションバーをセットする
+            setActionbar(true);
 
-        //アクションバーに戻るボタンをセット
-        if (getActionBar() != null) {
-            getActionBar().setDisplayShowHomeEnabled(true);
-            getActionBar().setHomeButtonEnabled(true);
-            getActionBar().setLogo(R.drawable.ic_back);
+            getFragmentManager().beginTransaction().add(R.id.container, new AboutFragment()).commit();
         }
     }
 

@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 
 import android.content.Context;
@@ -41,6 +43,17 @@ public class MediaUtils {
         }
 
         return path;
+    }
+
+    /**
+     * ファイルパスからURIを取得する
+     *
+     * @param context コンテキスト
+     * @param path ファイルパス
+     * @return Uri
+     */
+    public static Uri getUriFromPath(Context context, String path) {
+        return Uri.fromFile(new File(context.getExternalFilesDir(null), path));
     }
 
     /**
@@ -206,5 +219,30 @@ public class MediaUtils {
         outputFileStream.close();
         inputChannel.close();
         outputChannel.close();
+    }
+
+    /**
+     * ファイルの保存
+     *
+     * @param tmpFile 一時ファイル
+     * @param outputPath コピー先のファイルパス
+     * @throws IOException
+     */
+    public static void saveFile(File tmpFile, String outputPath) throws IOException {
+        File outputFile = new File(outputPath);
+
+        InputStream in = new FileInputStream(tmpFile);
+        OutputStream out = new FileOutputStream(outputFile);
+
+        try {
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = in.read(buffer)) >= 0) {
+                out.write(buffer, 0, bytesRead);
+            }
+        } finally {
+            out.close();
+            in.close();
+        }
     }
 }

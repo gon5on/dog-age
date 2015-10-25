@@ -1,7 +1,9 @@
 package jp.co.e2.dogage.activity;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -9,6 +11,7 @@ import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.common.AndroidUtils;
 import jp.co.e2.dogage.common.DateHelper;
 import jp.co.e2.dogage.common.ImgHelper;
+import jp.co.e2.dogage.common.LogUtils;
 import jp.co.e2.dogage.common.MediaUtils;
 import jp.co.e2.dogage.common.Utils;
 import jp.co.e2.dogage.config.Config;
@@ -28,14 +31,20 @@ import jp.co.e2.dogage.validate.ValidateRequire;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -47,6 +56,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 /**
  * 入力画面アクテビティ
@@ -58,22 +68,17 @@ public class InputActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_input);
-
-        //初回起動以外だったら、アクションバーに戻るボタンをセット
-        if (getIntent().getIntExtra("initFlag", 0) == 0) {
-            if (getActionBar() != null) {
-                getActionBar().setDisplayShowHomeEnabled(true);
-                getActionBar().setHomeButtonEnabled(true);
-                getActionBar().setLogo(R.drawable.ic_back);
-            }
-        }
-
-        //編集の場合は値がわたってくる
-        PetEntity savedItem = (PetEntity) getIntent().getSerializableExtra("item");
-        Integer pageNum = (Integer) getIntent().getIntExtra("pageNum", 0);
+        setContentView(R.layout.activity_common);
 
         if (savedInstanceState == null) {
+            //アクションバーをセットする
+            boolean backFlg = (getIntent().getIntExtra("initFlag", 0) == 0);
+            setActionbar(backFlg);
+
+            //編集の場合は値がわたってくる
+            PetEntity savedItem = (PetEntity) getIntent().getSerializableExtra("item");
+            Integer pageNum = getIntent().getIntExtra("pageNum", 0);
+
             InputFragment fragment = new InputFragment();
             Bundle args = new Bundle();
             args.putSerializable("data", savedItem);
@@ -156,11 +161,11 @@ public class InputActivity extends BaseActivity {
                         null
                 );
 
-                fromCameraGalleryIntent(data);
+                fromCameraGalleryIntent(data, requestCode);
             }
             //ギャラリ
-            else if (resultCode == RESULT_OK && requestCode == Config.INTENT_CODE_GALLERY) {
-                fromCameraGalleryIntent(data);
+            else if (resultCode == RESULT_OK && (requestCode == Config.INTENT_CODE_GALLERY)) {
+                fromCameraGalleryIntent(data, requestCode);
             }
             //トリミング
             else if (resultCode == RESULT_OK && requestCode == Config.INTENT_CODE_TRIMMING) {
@@ -172,33 +177,34 @@ public class InputActivity extends BaseActivity {
          * カメラ・ギャラリーインテントからの戻り処理
          *
          * @param data データ
+         * @param requestCode リクエストコード
          */
-        private void fromCameraGalleryIntent(Intent data) {
+        private void fromCameraGalleryIntent(Intent data, int requestCode) {
             try {
-                //元画像（カメラで写真を撮った場合はdataが空なので、事前に保持していたURIを採用する）
-                Uri inputData;
+                String savePath = Config.getImgTmpFilePath(getActivity());
+
                 if (data != null && data.getData() != null) {
-                    inputData = data.getData();
-                } else {
-                    inputData = mPhotoUri;
+                    LogUtils.d(data.getData());
+
+                    InputStream is = getActivity().getContentResolver().openInputStream(data.getData());
+                    Bitmap bmp = BitmapFactory.decodeStream(is);
+                    ImgHelper imgHelper = new ImgHelper(bmp);
+                    imgHelper.saveJpg(savePath);
                 }
-
-                //画像保存先のURIを取得
-                mPhotoUri = Uri.fromFile(new File(Config.getImgTmpFilePath(getActivity())));
-
-                //トリミングインテントを投げる
-                Intent intent = new Intent();
-                intent.setAction(Config.INTENT_TRIMMING);
-                intent.setData(inputData);
-                intent.putExtra("aspectX", 1);
-                intent.putExtra("aspectY", 1);
-                intent.putExtra("scale", true);
-                intent.putExtra("return-data", false);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri);
-                startActivityForResult(intent, Config.INTENT_CODE_TRIMMING);
+                startActivityForResult(TrimmingActivity.getInstance(getActivity(), savePath), Config.INTENT_CODE_TRIMMING);
 
                 String msg = getResources().getString(R.string.lets_trimming_photo);
                 AndroidUtils.showToastL(getActivity(), msg);
+
+            }
+            //ギャラリーから選択した画像一時保存に失敗
+            catch (IOException e){
+                String title = getResources().getString(R.string.error);
+                String msg = getResources().getString(R.string.save_photo_fail);
+
+                ErrorDialog errorDialog = ErrorDialog.getInstance(title, msg);
+                errorDialog.show(getFragmentManager(), "dialog");
+                e.printStackTrace();
             }
             //トリミングインテントに反応するアクテビティがなくてエラー
             catch (ActivityNotFoundException e) {
@@ -676,8 +682,7 @@ public class InputActivity extends BaseActivity {
         @Override
         public void onClickPhotoSelectDialogGallery() {
             try {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_PICK);
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
                 startActivityForResult(intent, Config.INTENT_CODE_GALLERY);
             }

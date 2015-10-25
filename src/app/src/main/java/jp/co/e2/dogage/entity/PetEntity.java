@@ -321,10 +321,10 @@ public class PetEntity implements Serializable {
 
         Integer size = AndroidUtils.dpToPixel(context, Config.PHOTO_BIG_DP);
 
-        ImgHelper imgUtils = new ImgHelper(path);
-        Bitmap bitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(context));
+        ImgHelper imgHelper = new ImgHelper(path);
+        Bitmap bitmap = imgHelper.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(context));
 
-        imgUtils = null;
+        imgHelper = null;
 
         return bitmap;
     }

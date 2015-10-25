@@ -29,6 +29,13 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="jp.co.e2.dogage.activity.TrimmingActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
+
+
 
 </manifest>

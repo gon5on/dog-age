@@ -5,14 +5,16 @@
     android:background="@drawable/bg"
     tools:context=".PetAgeActivity" >
 
+    <include layout="@layout/parts_action_bar"/>
+
     <LinearLayout
         android:id="@+id/linearLayoutPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center_vertical|center_horizontal"
-        android:paddingBottom="10dp"
-        android:paddingTop="15dp" >
+        android:paddingBottom="@dimen/margin_default_between_view"
+        android:paddingTop="@dimen/margin_between_big_view" >
 
         <TextView
             android:id="@+id/textViewMeter2"
@@ -25,14 +27,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/img_foots" />
+        android:src="@drawable/img_foots"
+        android:layout_alignTop="@+id/viewPager"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/linearLayoutPager" >
+        android:layout_above="@+id/linearLayoutPager"
+        android:layout_below="@+id/toolbar">
     </android.support.v4.view.ViewPager>
 
 </RelativeLayout>

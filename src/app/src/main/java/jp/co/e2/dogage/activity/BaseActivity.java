@@ -1,23 +1,27 @@
 package jp.co.e2.dogage.activity;
 
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+
+import jp.co.e2.dogage.R;
 
 /**
  * 基底アクテビティ
  */
-public class BaseActivity extends FragmentActivity {
+public class BaseActivity extends ActionBarActivity {
     /**
-     * ${inheritDoc}
+     * アクションバーをセット
+     *
+     * @param backFlg 戻るボタン有無
      */
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setActionbar(boolean backFlg) {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
 
-        //タイトルとアイコン非表示
-        if (getActionBar() != null) {
-            getActionBar().setDisplayShowTitleEnabled(false);
-            getActionBar().setDisplayShowHomeEnabled(false);
+        setSupportActionBar(toolbar);
+
+        if (backFlg) {
+            toolbar.setNavigationIcon(R.drawable.ic_back);
         }
     }
 }

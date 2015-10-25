@@ -38,6 +38,9 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
         setContentView(R.layout.activity_pet_age);
 
         if (savedInstanceState == null) {
+            //アクションバーをセットする
+            setActionbar(false);
+
             //ページ数が渡ってきたら取得する
             if (getIntent().hasExtra("pageNum")) {
                 mPageNum = getIntent().getIntExtra("pageNum", 0);

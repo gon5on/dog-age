@@ -9,7 +9,7 @@
     <color name="bg_listview_off">#00ffffff</color>
     <color name="bg_listview_on">#8FCCA8</color>
     <color name="bg_actionbar_item_off">#00ffffff</color>
-    <color name="bg_actionbar_item_on">#88332219</color>
+    <color name="bg_actionbar_item_on">#77332219</color>
     <color name="bg_table_cell">#ffffff</color>
     <color name="bg_table_cell_label">#888888</color>
     <color name="bg_table_cell_frame">#888888</color>
@@ -20,5 +20,6 @@
     <color name="text_button">#ffffff</color>
     <color name="text">#595143</color>
     <color name="text_highlight">#ffffff</color>
+    <color name="trimming_guide">#8FCCA8</color>
 
 </resources>

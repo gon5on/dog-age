@@ -52,6 +52,7 @@
     <string name="lets_trimming_photo">ワンちゃんの顔が中心になるようにトリミングしてください。</string>
     <string name="no_trimming_app">トリミング可能なアプリがインストールされていません。\nもしくは、先程選択した写真が読み込めません、別の写真を選択してください。</string>
     <string name="trimming_fail">トリミングに失敗しました。</string>
+    <string name="save_photo_fail">写真の保存に失敗しました。</string>
     <string name="save_success">保存しました。</string>
     <string name="save_fail">保存に失敗しました。\nもう一度やり直してください。</string>
     <string name="validate_error_archive_date">亡くなった日はお誕生日より過去は指定できません。</string>

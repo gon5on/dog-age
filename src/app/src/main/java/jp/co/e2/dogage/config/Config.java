@@ -71,6 +71,7 @@ public class Config {
 
     //画像tmpフォルダ名
     public static String TMP_DIR_NAME = "tmp";
+    public static String TMP_DIR_FILENAME = "tmp.jpg";
 
     //画像dp
     public static int KADOMARU_DP = 20;                                         //角丸画像の角丸サイズ
@@ -83,6 +84,7 @@ public class Config {
 
     //インテント判別
     public static final int INTENT_CODE_CAMERA = 1;                             //カメラ起動
+    public static final int INTENT_CODE_GALLERY_UNDER_KITKAT = 4;               //ギャラリー起動（4.4より下）
     public static final int INTENT_CODE_GALLERY = 2;                            //ギャラリー起動
     public static final int INTENT_CODE_TRIMMING = 3;                           //画像トリミング
 
@@ -242,7 +244,7 @@ public class Config {
      * @return String
      */
     public static String getImgTmpFilePath(Context context) {
-        return getImgTmpDirPath(context) + "/" + "tmp.jpg";
+        return getImgTmpDirPath(context) + "/" + TMP_DIR_FILENAME;
     }
 
     /**
