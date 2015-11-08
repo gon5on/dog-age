@@ -1,5 +1,6 @@
 package jp.co.e2.dogage.alarm;
 
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -101,6 +102,7 @@ public class AlarmManagerReceiver extends BroadcastReceiver {
         builder.setContentTitle(message);
         builder.setContentText(subMessage);
         builder.setContentIntent(pendingIntent);
+        builder.setDefaults(Notification.DEFAULT_ALL);
         NotificationManagerCompat manager = NotificationManagerCompat.from(context);
         manager.notify(data.getId(), builder.build());
     }

@@ -22,7 +22,7 @@
         android:title="@string/action_delete"/>
     <item
         android:id="@+id/action_setting"
-        android:icon="@drawable/ic_about"
+        android:icon="@drawable/ic_setting"
         android:orderInCategory="4"
         app:showAsAction="always"
         android:title="@string/action_setting"/>

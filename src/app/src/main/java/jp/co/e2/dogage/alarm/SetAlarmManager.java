@@ -113,8 +113,8 @@ public class SetAlarmManager {
         }
 
         ///////////////////////////////////////
-        dateHelper = new DateHelper();
-        dateHelper.addSec(20);
+        //dateHelper = new DateHelper();
+        //dateHelper.addSec(20);
         //AndroidUtils.showToastL(mContext, dateHelper.format(DateHelper.FMT_DATETIME));
         ///////////////////////////////////////
 

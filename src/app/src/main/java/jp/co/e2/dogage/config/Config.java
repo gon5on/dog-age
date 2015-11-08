@@ -88,8 +88,8 @@ public class Config {
     public static final String PREF_NOTIFICATION = "notification";              //誕生日・命日の通知
 
     //アラーム
-    public static int ALARM_HOUR = 17;                                          //アラームの時間
-    public static int ALARM_MINUTE = 17;                                        //アラームの時間
+    public static int ALARM_HOUR = 13;                                          //アラームの時間
+    public static int ALARM_MINUTE = 00;                                        //アラームの時間
 
     /**
      * 犬種マスタを配列で返す
