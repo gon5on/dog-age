@@ -14,6 +14,7 @@ import jp.co.e2.dogage.module.PetAgeFragmentPagerAdapter;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +41,10 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
         if (savedInstanceState == null) {
             //アクションバーをセットする
             setActionbar(false);
+
+            //通知を消す
+            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
+            notificationManagerCompat.cancelAll();
 
             //ページ数が渡ってきたら取得する
             if (getIntent().hasExtra("pageNum")) {
@@ -99,6 +104,11 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
             ConfirmDialog confirmDialog = ConfirmDialog.getInstance(title, msg);
             confirmDialog.setCallbackListener(this);
             confirmDialog.show(getFragmentManager(), "dialog");
+        }
+        //アプリについて
+        else if (id == R.id.action_setting) {
+            Intent intent = new Intent(PetAgeActivity.this, SettingActivity.class);
+            startActivity(intent);
         }
         //アプリについて
         else if (id == R.id.action_about) {

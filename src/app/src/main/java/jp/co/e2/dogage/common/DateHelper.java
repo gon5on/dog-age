@@ -88,6 +88,60 @@ public class DateHelper {
     }
 
     /**
+     * 年をセットする
+     *
+     * @param val 年
+     */
+    public void setYear(int val) {
+        mCal.set(Calendar.YEAR, val);
+    }
+
+    /**
+     * 月をセットする
+     *
+     * @param val 月
+     */
+    public void setMonth(int val) {
+        mCal.set(Calendar.MONTH, (val - 1));
+    }
+
+    /**
+     * 日をセットする
+     *
+     * @param val 日
+     */
+    public void setDay(int val) {
+        mCal.set(Calendar.DAY_OF_WEEK, val);
+    }
+
+    /**
+     * 時間をセットする
+     *
+     * @param val 日
+     */
+    public void setHour(int val) {
+        mCal.set(Calendar.HOUR_OF_DAY, val);
+    }
+
+    /**
+     * 分をセットする
+     *
+     * @param val 日
+     */
+    public void setMin(int val) {
+        mCal.set(Calendar.MINUTE, val);
+    }
+
+    /**
+     * 分をセットする
+     *
+     * @param val 日
+     */
+    public void setSec(int val) {
+        mCal.set(Calendar.SECOND, val);
+    }
+
+    /**
      * 年の加減算
      *
      * マイナスを指定すれば過去が計算可能
@@ -210,7 +264,70 @@ public class DateHelper {
      *
      * @return Calendar mCal
      */
-    public Calendar get() {
+    public Calendar getCalendar() {
         return mCal;
+    }
+
+    /**
+     * 年を返す
+     *
+     * @return int
+     */
+    public int getYear() {
+        return mCal.get(Calendar.YEAR);
+    }
+
+    /**
+     * 月を返す
+     *
+     * @return int
+     */
+    public int getMonth() {
+        return mCal.get(Calendar.MONTH);
+    }
+
+    /**
+     * 日を返す
+     *
+     * @return int
+     */
+    public int getDay() {
+        return mCal.get(Calendar.DAY_OF_MONTH);
+    }
+
+    /**
+     * 時間を返す
+     *
+     * @return int
+     */
+    public int getHour() {
+        return mCal.get(Calendar.HOUR_OF_DAY);
+    }
+
+    /**
+     * 分を返す
+     *
+     * @return int
+     */
+    public int getMinute() {
+        return mCal.get(Calendar.MINUTE);
+    }
+
+    /**
+     * 秒を返す
+     *
+     * @return int
+     */
+    public int getSecond() {
+        return mCal.get(Calendar.SECOND);
+    }
+
+    /**
+     * ミリ秒を返す
+     *
+     * @return long
+     */
+    public long getMilliSecond() {
+        return mCal.getTimeInMillis();
     }
 }

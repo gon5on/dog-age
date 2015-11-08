@@ -1,18 +1,16 @@
 package jp.co.e2.dogage.activity;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import jp.co.e2.dogage.alarm.SetAlarmManager;
 import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.common.AndroidUtils;
 import jp.co.e2.dogage.common.DateHelper;
 import jp.co.e2.dogage.common.ImgHelper;
 import jp.co.e2.dogage.common.LogUtils;
-import jp.co.e2.dogage.common.MediaUtils;
 import jp.co.e2.dogage.common.Utils;
 import jp.co.e2.dogage.config.Config;
 import jp.co.e2.dogage.dialog.DatePickerDialog;
@@ -31,22 +29,18 @@ import jp.co.e2.dogage.validate.ValidateRequire;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,7 +50,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 /**
  * 入力画面アクテビティ
@@ -69,6 +62,30 @@ public class InputActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_common);
+
+        /*/////////////////////////////////
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_notification_large);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
+        builder.setSmallIcon(R.drawable.ic_notification);
+        builder.setLargeIcon(largeIcon);
+        builder.setContentTitle("11/08 モナカお誕生日");
+        builder.setContentText("6歳になりました、おめでとうございます！！");
+
+        NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
+        manager.notify(1111, builder.build());
+
+        Bitmap largeIcon2 = BitmapFactory.decodeResource(getResources(), R.drawable.ic_notification_large_archive);
+
+        NotificationCompat.Builder builder2 = new NotificationCompat.Builder(getApplicationContext());
+        builder2.setSmallIcon(R.drawable.ic_notification);
+        builder2.setLargeIcon(largeIcon2);
+        builder2.setContentTitle("11/08 モナカ命日");
+        builder2.setContentText("亡くなって2年経ちました。");
+
+        NotificationManagerCompat manager2 = NotificationManagerCompat.from(getApplicationContext());
+        manager2.notify(2222, builder2.build());
+        /////////////////////////////////*/
 
         if (savedInstanceState == null) {
             //アクションバーをセットする
@@ -116,6 +133,7 @@ public class InputActivity extends BaseActivity {
         private String mBirthday = null;
         private Integer mKind = null;
         private Integer mPhotoFlg = 0;
+        private Integer mPhotoSaveFlg = 0;
         private Uri mPhotoUri = null;
         private String mArchiveDate = null;
         private Boolean mArchiveOpenFlg = false;
@@ -153,23 +171,15 @@ public class InputActivity extends BaseActivity {
 
             //カメラ
             if (resultCode == RESULT_OK && requestCode == Config.INTENT_CODE_CAMERA) {
-                //ギャラリーに追加
-                MediaScannerConnection.scanFile(
-                        getActivity(),
-                        new String[] {MediaUtils.getPathFromUri(getActivity(), mPhotoUri)},
-                        new String[] {"image/jpeg"},
-                        null
-                );
-
-                fromCameraGalleryIntent(data, requestCode);
+                fromCameraGalleryIntent(data);
             }
             //ギャラリ
             else if (resultCode == RESULT_OK && (requestCode == Config.INTENT_CODE_GALLERY)) {
-                fromCameraGalleryIntent(data, requestCode);
+                fromCameraGalleryIntent(data);
             }
             //トリミング
             else if (resultCode == RESULT_OK && requestCode == Config.INTENT_CODE_TRIMMING) {
-                fromTrimmingIntent();
+                fromTrimmingIntent(data);
             }
         }
 
@@ -177,20 +187,21 @@ public class InputActivity extends BaseActivity {
          * カメラ・ギャラリーインテントからの戻り処理
          *
          * @param data データ
-         * @param requestCode リクエストコード
          */
-        private void fromCameraGalleryIntent(Intent data, int requestCode) {
+        private void fromCameraGalleryIntent(Intent data) {
             try {
-                String savePath = Config.getImgTmpFilePath(getActivity());
-
                 if (data != null && data.getData() != null) {
                     LogUtils.d(data.getData());
-
-                    InputStream is = getActivity().getContentResolver().openInputStream(data.getData());
-                    Bitmap bmp = BitmapFactory.decodeStream(is);
-                    ImgHelper imgHelper = new ImgHelper(bmp);
-                    imgHelper.saveJpg(savePath);
+                    mPhotoUri = data.getData();
                 }
+
+                //写真を一時ファイルとして保存
+                String savePath = Config.getImgTmpFilePath(getActivity());
+                InputStream is = getActivity().getContentResolver().openInputStream(mPhotoUri);
+                Bitmap bmp = BitmapFactory.decodeStream(is);
+                ImgHelper imgHelper = new ImgHelper(bmp);
+                imgHelper.saveJpg(savePath);
+
                 startActivityForResult(TrimmingActivity.getInstance(getActivity(), savePath), Config.INTENT_CODE_TRIMMING);
 
                 String msg = getResources().getString(R.string.lets_trimming_photo);
@@ -219,13 +230,21 @@ public class InputActivity extends BaseActivity {
 
         /**
          * トリミングインテントからの戻り処理
+         *
+         * @param data データ
          */
-        private void fromTrimmingIntent() {
+        private void fromTrimmingIntent(Intent data) {
             try {
+                //トリミングインテントから帰ってきたトリミング結果がfalseだった
+                if (!data.getBooleanExtra(TrimmingActivity.TRIMMING_RESULT, false)) {
+                    throw new Exception();
+                }
+
                 mPhotoFlg = 1;
+                mPhotoSaveFlg = 1;
 
                 //トリミング後保存した画像を取得
-                ImgHelper imgUtils = new ImgHelper(getActivity(), mPhotoUri);
+                ImgHelper imgUtils = new ImgHelper(Config.getImgTmpFilePath(getActivity()));
                 Integer size = AndroidUtils.dpToPixel(getActivity(), Config.PHOTO_INPUT_DP);
                 Bitmap bitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(getActivity()));
 
@@ -482,6 +501,9 @@ public class InputActivity extends BaseActivity {
 
             //保存とページ遷移
             if (saveDb()) {
+                //アラームセット
+                new SetAlarmManager(getActivity()).set();
+
                 String msg = getResources().getString(R.string.save_success);
                 AndroidUtils.showToastS(getActivity(), msg);
 
@@ -550,8 +572,8 @@ public class InputActivity extends BaseActivity {
             }
 
             try {
-                Long archiveDateMillis = new DateHelper(archiveDate, DateHelper.FMT_DATE).get().getTimeInMillis();
-                Long birthdayMillis = new DateHelper(birthday, DateHelper.FMT_DATE).get().getTimeInMillis();
+                Long archiveDateMillis = new DateHelper(archiveDate, DateHelper.FMT_DATE).getMilliSecond();
+                Long birthdayMillis = new DateHelper(birthday, DateHelper.FMT_DATE).getMilliSecond();
 
                 ret = ((archiveDateMillis.compareTo(birthdayMillis)) <= 0);
 
@@ -580,7 +602,7 @@ public class InputActivity extends BaseActivity {
                 data.setBirthday(mBirthday);
                 data.setKind(mKind);
                 data.setPhotoFlg(mPhotoFlg);
-                data.setPhotoUri(mPhotoUri);
+                data.setPhotoSaveFlg(mPhotoSaveFlg);
                 data.setArchiveDate(mArchiveDate);
 
                 if (mSavedItem != null) {
@@ -703,6 +725,7 @@ public class InputActivity extends BaseActivity {
         @Override
         public void onClickPhotoSelectDialogDelPhoto() {
             mPhotoFlg = 0;
+            mPhotoSaveFlg = 0;
 
             //NO PHOTOをセットする
             setNoPhoto();

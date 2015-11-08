@@ -12,14 +12,14 @@
             android:id="@+id/cropImageView"
             xmlns:custom="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="320dp"
+            android:layout_height="wrap_content"
             custom:cropMode="ratio_1_1"
             android:padding="@dimen/margin_default_container"
             android:layout_gravity="center"/>
     </FrameLayout>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout"
@@ -27,24 +27,27 @@
 
         <Button
             android:id="@+id/buttonRotate"
-            android:layout_width="@dimen/width_button"
+            android:layout_width="@dimen/width_zero"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/btn2"
-            android:text="@string/ok"
+            android:text="@string/rotate"
             android:textColor="@color/text_button"
-            android:textSize="@dimen/font_size_default_button" />
+            android:textSize="@dimen/font_size_default_button"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/margin_between_small_view"/>
 
         <Button
             android:id="@+id/buttonOk"
-            android:layout_width="@dimen/width_button"
+            android:layout_width="@dimen/width_zero"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/margin_default_between_view"
             android:background="@drawable/btn"
             android:text="@string/ok"
             android:textColor="@color/text_button"
-            android:textSize="@dimen/font_size_default_button" />
+            android:textSize="@dimen/font_size_default_button"
+            android:layout_marginLeft="@dimen/margin_between_small_view"
+            android:layout_weight="1"/>
     </LinearLayout>
 
 </LinearLayout>

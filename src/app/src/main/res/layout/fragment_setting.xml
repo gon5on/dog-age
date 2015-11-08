@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_default_container" >
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notification"
+            android:textColor="@color/text"
+            android:textSize="@dimen/font_size_default_title"
+            android:drawableLeft="@drawable/img_foot"
+            android:drawablePadding="@dimen/margin_default_icon"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBoxNotification"
+            android:layout_alignParentRight="true"
+            android:checked="false"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/btn"
+        android:text="@string/save"
+        android:textColor="@color/text_button"
+        android:textSize="@dimen/font_size_default_button"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>

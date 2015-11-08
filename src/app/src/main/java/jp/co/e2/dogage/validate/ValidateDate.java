@@ -257,10 +257,10 @@ public class ValidateDate {
             //今日のミリ秒を取得
             DateHelper dateUtils = new DateHelper();
             dateUtils.clearHour();
-            Long border = dateUtils.get().getTimeInMillis();
+            Long border = dateUtils.getMilliSecond();
 
             //指定日のミリ秒を取得
-            Long date = new DateHelper(value, format).get().getTimeInMillis();
+            Long date = new DateHelper(value, format).getMilliSecond();
 
             //比較
             ret = border.compareTo(date);

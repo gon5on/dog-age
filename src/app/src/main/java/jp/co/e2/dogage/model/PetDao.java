@@ -91,8 +91,8 @@ public class PetDao extends BaseDao {
 
         //画像保存
         if (data.getPhotoFlg() == 1) {
-            if (data.getPhotoUri() != null) {
-                String tmpPath = MediaUtils.getPathFromUri(mContext, data.getPhotoUri());
+            if(data.getPhotoSaveFlg() == 1) {
+                String tmpPath = Config.getImgTmpFilePath(mContext);
                 String savePath = Config.getImgDirPath(mContext) + "/" + Config.getImgFileName(savedId);
                 MediaUtils.copyFile(tmpPath, savePath);
 
@@ -152,6 +152,44 @@ public class PetDao extends BaseDao {
 
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("SELECT * FROM %s ", TABLE_NAME));
+        sb.append(String.format("ORDER BY %s DESC", COLUMN_ID));
+
+        Cursor cursor = db.rawQuery(sb.toString(), null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                PetEntity values = new PetEntity();
+                values.setId(getInteger(cursor, COLUMN_ID));
+                values.setName(getString(cursor, COLUMN_NAME));
+                values.setBirthday(getString(cursor, COLUMN_BIRTHDAY));
+                values.setKind(getInteger(cursor, COLUMN_KIND));
+                values.setPhotoFlg(getInteger(cursor, COLUMN_PHOTO_FLG));
+                values.setArchiveDate(getString(cursor, COLUMN_ARCHIVE_DATE));
+                values.setCreated(getString(cursor, COLUMN_CREATED));
+                values.setModified(getString(cursor, COLUMN_MODIFIED));
+                data.add(values);
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return data;
+    }
+
+    /**
+     * 誕生日か命日からデータを取得する
+     *
+     * @param db SQLiteDatabase
+     * @param date 年月日
+     * @return ArrayList<PetEntity> data
+     */
+    public ArrayList<PetEntity> findByBirthdayOrArchiveDate(SQLiteDatabase db, String date) {
+        ArrayList<PetEntity> data = new ArrayList<>();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("SELECT * FROM %s ", TABLE_NAME));
+        sb.append(String.format("WHERE (%s is null AND %s LIKE '%%-%s') ", COLUMN_ARCHIVE_DATE, COLUMN_BIRTHDAY, date));
+        sb.append(String.format("OR (%s is not null AND %s LIKE '%%-%s')", COLUMN_ARCHIVE_DATE, COLUMN_ARCHIVE_DATE, date));
         sb.append(String.format("ORDER BY %s DESC", COLUMN_ID));
 
         Cursor cursor = db.rawQuery(sb.toString(), null);

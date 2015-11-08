@@ -9,6 +9,19 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
+        <receiver
+            android:name="jp.co.e2.dogage.alarm.AlarmManagerReceiver" />
+        <receiver android:name="jp.co.e2.dogage.alarm.AlarmManagerResetReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.ACTION_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name="jp.co.e2.dogage.activity.PetAgeActivity"
             android:label="@string/app_name"
@@ -31,6 +44,11 @@
         </activity>
         <activity
             android:name="jp.co.e2.dogage.activity.TrimmingActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="jp.co.e2.dogage.activity.SettingActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>

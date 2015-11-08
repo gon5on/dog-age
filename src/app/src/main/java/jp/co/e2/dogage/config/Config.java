@@ -79,14 +79,17 @@ public class Config {
     public static int PHOTO_THUMB_DP = 80;                                      //サムネイル写真
     public static int PHOTO_BIG_DP = 310;                                       //拡大写真
 
-    //画像トリミング用インテント
-    public static final String INTENT_TRIMMING = "com.android.camera.action.CROP";
-
     //インテント判別
     public static final int INTENT_CODE_CAMERA = 1;                             //カメラ起動
-    public static final int INTENT_CODE_GALLERY_UNDER_KITKAT = 4;               //ギャラリー起動（4.4より下）
     public static final int INTENT_CODE_GALLERY = 2;                            //ギャラリー起動
     public static final int INTENT_CODE_TRIMMING = 3;                           //画像トリミング
+
+    //プリファレンス
+    public static final String PREF_NOTIFICATION = "notification";              //誕生日・命日の通知
+
+    //アラーム
+    public static int ALARM_HOUR = 17;                                          //アラームの時間
+    public static int ALARM_MINUTE = 17;                                        //アラームの時間
 
     /**
      * 犬種マスタを配列で返す

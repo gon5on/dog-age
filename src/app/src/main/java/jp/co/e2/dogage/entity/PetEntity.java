@@ -28,8 +28,8 @@ public class PetEntity implements Serializable {
     private String mName;                                       //名前
     private String mBirthday;                                   //誕生日
     private Integer mKind;                                      //種類
-    private Integer mPhotoFlg;                                  //写真フラグ
-    private Uri mPhotoUri;                                      //写真URI
+    private Integer mPhotoFlg = 0;                              //写真有無フラグ
+    private Integer mPhotoSaveFlg = 0;                          //写真保存フラグ（このフラグが立っていれば画像保存し直す）
     private String mArchiveDate;                                //アーカイブ日付
     private String mCreated;                                    //作成日時
     private String mModified;                                   //更新日時
@@ -125,50 +125,27 @@ public class PetEntity implements Serializable {
     }
 
     /**
-     * ペット年齢を返す
-     *
-     * @return String
-     */
-    private Integer[] getPetAge() {
-        Integer year = 0;
-        Integer month = 0;
-
-        try {
-            DateHelper birthday = new DateHelper(mBirthday, DateHelper.FMT_DATE);
-            birthday.clearHour();
-
-            DateHelper today;
-            if (mArchiveDate != null) {
-                today = new DateHelper(mArchiveDate, DateHelper.FMT_DATE);
-            } else {
-                today = new DateHelper();
-            }
-            today.addDay(1);    //Nヶ月目の日の翌日にならないとNヶ月がカウントアップしないので、Nヶ月目の日にカウントアップするように調整
-            today.clearHour();
-
-            DateHelper age = new DateHelper(today.get().getTimeInMillis() - birthday.get().getTimeInMillis());
-            year = age.get().get(Calendar.YEAR) - 1970;
-            month = age.get().get(Calendar.MONTH);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return new Integer[]{year, month};
-    }
-
-    /**
-     * ペット年齢を返す
+     * 表示用ペット年齢を返す
      *
      * @param context コンテキスト
      * @return String
      */
     public String getPetAgeDisp(Context context) {
-        Integer[] age = getPetAge();
+        Integer[] age = calcPetAge();
 
         String ageFormat = context.getResources().getString(R.string.age_format);
 
         return String.format(ageFormat, age[0], age[1]);
+    }
+
+    /**
+     * ペット年齢を返す
+     * @return int
+     */
+    public int getPetAge() {
+        Integer[] age = calcPetAge();
+
+        return age[0];
     }
 
     /**
@@ -181,7 +158,7 @@ public class PetEntity implements Serializable {
         Double humanAge = 0.0;
 
         //犬年齢を取得
-        Integer[] age = getPetAge();
+        Integer[] age = calcPetAge();
         Integer year = age[0];
         Integer month = age[1];
 
@@ -226,7 +203,7 @@ public class PetEntity implements Serializable {
             }
             today.clearHour();
 
-            long diff = today.get().getTimeInMillis() - birthday.get().getTimeInMillis();
+            long diff = today.getMilliSecond() - birthday.getMilliSecond();
             days = (int) (diff / (60 * 60 * 24 * 1000)) + 1;
 
         } catch (ParseException e) {
@@ -292,21 +269,21 @@ public class PetEntity implements Serializable {
     }
 
     /**
-     * 写真URIをセットする
+     * 写真保存フラグをセット
      *
      * @param value 値
      */
-    public void setPhotoUri(Uri value) {
-        mPhotoUri = value;
+    public void setPhotoSaveFlg(Integer value) {
+        mPhotoSaveFlg = value;
     }
 
     /**
-     * 写真URIを返す
+     * 写真保存フラグを返す
      *
-     * @return Uri mPhotoUri
+     * @return Integer mPhotoFlg
      */
-    public Uri getPhotoUri() {
-        return mPhotoUri;
+    public Integer getPhotoSaveFlg() {
+        return mPhotoSaveFlg;
     }
 
     /**
@@ -407,6 +384,36 @@ public class PetEntity implements Serializable {
     }
 
     /**
+     * 亡くなってから何年かを返す
+     *
+     * @return int
+     */
+    public int getArchiveAge() {
+        int age = 0;
+
+        if (mArchiveDate == null) {
+            return age;
+        }
+
+        try {
+            DateHelper archiveDateHelper = new DateHelper(mArchiveDate, DateHelper.FMT_DATE);
+            archiveDateHelper.clearHour();
+
+            DateHelper todayDateHelper = new DateHelper();
+            todayDateHelper.addDay(1);    //Nヶ月目の日の翌日にならないとNヶ月がカウントアップしないので、Nヶ月目の日にカウントアップするように調整
+            todayDateHelper.clearHour();
+
+            DateHelper ageDateHelper = new DateHelper(todayDateHelper.getMilliSecond() - archiveDateHelper.getMilliSecond());
+            age = ageDateHelper.getYear() - 1970;
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return age;
+    }
+
+    /**
      * 作成日時をセット
      *
      * @param value 値
@@ -440,5 +447,38 @@ public class PetEntity implements Serializable {
      */
     public String Modified() {
         return mModified;
+    }
+
+    /**
+     * ペット年齢を計算する
+     *
+     * @return Integer[]
+     */
+    private Integer[] calcPetAge() {
+        Integer year = 0;
+        Integer month = 0;
+
+        try {
+            DateHelper birthday = new DateHelper(mBirthday, DateHelper.FMT_DATE);
+            birthday.clearHour();
+
+            DateHelper today;
+            if (mArchiveDate != null) {
+                today = new DateHelper(mArchiveDate, DateHelper.FMT_DATE);
+            } else {
+                today = new DateHelper();
+            }
+            today.addDay(1);    //Nヶ月目の日の翌日にならないとNヶ月がカウントアップしないので、Nヶ月目の日にカウントアップするように調整
+            today.clearHour();
+
+            DateHelper age = new DateHelper(today.getMilliSecond() - birthday.getMilliSecond());
+            year = age.getYear() - 1970;
+            month = age.getMonth();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return new Integer[]{year, month};
     }
 }

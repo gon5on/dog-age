@@ -59,6 +59,7 @@ import jp.co.e2.dogage.validate.ValidateRequire;
  * トリミング画面アクテビティ
  */
 public class TrimmingActivity extends BaseActivity {
+    public static final String TRIMMING_RESULT = "trimming_result";
     public static final String PATH = "path";
 
     /**
@@ -130,9 +131,6 @@ public class TrimmingActivity extends BaseActivity {
             // fragment再生成抑止
             setRetainInstance(true);
 
-            //最初に失敗のステータスをセットしておく
-            getActivity().setResult(100);
-
             //コンテンツをセット
             setContent();
 
@@ -154,6 +152,12 @@ public class TrimmingActivity extends BaseActivity {
                 bitmap = imgHelper.getBitmap();
             } catch (IOException e) {
                 e.printStackTrace();
+
+                Intent data = new Intent();
+                data.putExtra(TRIMMING_RESULT, false);
+                getActivity().setResult(RESULT_OK, data);
+                getActivity().finish();
+                return;
             }
 
             //画像をセット
@@ -190,9 +194,17 @@ public class TrimmingActivity extends BaseActivity {
                         imgHelper.saveJpg(Config.getImgTmpFilePath(getActivity()));
                     } catch (IOException e) {
                         e.printStackTrace();
+
+                        Intent data = new Intent();
+                        data.putExtra(TRIMMING_RESULT, false);
+                        getActivity().setResult(RESULT_OK, data);
+                        getActivity().finish();
+                        return;
                     }
 
-                    getActivity().setResult(RESULT_OK);
+                    Intent data = new Intent();
+                    data.putExtra(TRIMMING_RESULT, true);
+                    getActivity().setResult(RESULT_OK, data);
                     getActivity().finish();
                 }
             });

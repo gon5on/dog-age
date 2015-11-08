@@ -163,7 +163,6 @@
         android:layout_width="@dimen/width_button"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/margin_default_between_view"
         android:layout_marginTop="@dimen/margin_between_big_view"
         android:background="@drawable/btn"
         android:text="@string/save"

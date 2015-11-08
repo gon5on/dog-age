@@ -5,6 +5,7 @@
     <string name="action_add">追加</string>
     <string name="action_edit">編集</string>
     <string name="action_delete">削除</string>
+    <string name="action_setting">設定</string>
     <string name="action_about">アプリについて</string>
     <string name="action_back">戻る</string>
 
@@ -13,6 +14,7 @@
     <string name="ok">OK</string>
     <string name="error">エラー</string>
     <string name="save">保存</string>
+    <string name="rotate">回転</string>
     <string name="dog_age">犬年齢</string>
     <string name="human_age">人間年齢</string>
     <string name="born_from">生まれて</string>
@@ -26,6 +28,7 @@
     <string name="dog_die_date">ワンちゃんが亡くなった日</string>
     <string name="open_other">▼その他の項目を開く</string>
     <string name="close_other">▲その他の項目を閉じる</string>
+    <string name="notification">お誕生日・命日の通知</string>
     <string name="notice_mark">※</string>
     <string name="close_mark">×</string>
     <string name="url">http://www.e-2.co.jp/</string>
@@ -68,6 +71,10 @@
     <string name="day">日</string>
     <string name="day_count">日目</string>
     <string name="other">その他</string>
+    <string name="notify_birthday" formatted="false">%s %s お誕生日</string>
+    <string name="notify_birthday_sub" formatted="false">%s歳になりました、おめでとうございます！</string>
+    <string name="notify_archive" formatted="false">%s %s 命日</string>
+    <string name="notify_archive_sub" formatted="false">亡くなって%s年経ちました</string>
 
     <string-array name="initial_label_list">
         <item>あ行</item>
