@@ -23,6 +23,7 @@ import jp.co.e2.dogage.model.PetDao;
  */
 public class SetAlarmManager {
     public static final String DATE = "date";
+    public static final String DATE_FORMAT = "MM-dd";
 
     private Context mContext;
 
@@ -48,13 +49,15 @@ public class SetAlarmManager {
 
             //アラームマネージャセット
             Intent intent = new Intent(mContext, AlarmManagerReceiver.class);
-            intent.putExtra(DATE, dateHelper.format("MM-dd"));
-            PendingIntent sender = PendingIntent.getBroadcast(mContext, 0, intent, 0);
+            intent.putExtra(DATE, dateHelper.format(DATE_FORMAT));
+            PendingIntent sender = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, dateHelper.getMilliSecond(), sender);
 
             LogUtils.v("SetAlarmManager", "push = " + dateHelper.format(DateHelper.FMT_DATETIME));
+
+AndroidUtils.showToastL(mContext, dateHelper.format(DateHelper.FMT_DATETIME));
         }
         catch (ParseException e) {
             e.printStackTrace();
@@ -77,6 +80,12 @@ public class SetAlarmManager {
                 date = compare(date, val.getBirthday());
             }
         }
+
+        ///////////////////////////////////////
+        //date = new DateHelper();
+        //date.addSec(20);
+        //AndroidUtils.showToastL(mContext, date.format(DateHelper.FMT_DATETIME));
+        ///////////////////////////////////////
 
         return date;
     }
@@ -111,12 +120,6 @@ public class SetAlarmManager {
         else if (tmpDateHelper.getMilliSecond() < dateHelper.getMilliSecond()) {
             dateHelper = new DateHelper(tmpDateHelper.getCalendar());
         }
-
-        ///////////////////////////////////////
-        //dateHelper = new DateHelper();
-        //dateHelper.addSec(20);
-        //AndroidUtils.showToastL(mContext, dateHelper.format(DateHelper.FMT_DATETIME));
-        ///////////////////////////////////////
 
         return dateHelper;
     }

@@ -2,6 +2,7 @@ package jp.co.e2.dogage.model;
 
 import java.util.ArrayList;
 
+import jp.co.e2.dogage.common.AndroidUtils;
 import jp.co.e2.dogage.common.DateHelper;
 import jp.co.e2.dogage.common.LogUtils;
 import jp.co.e2.dogage.common.MediaUtils;
@@ -189,7 +190,7 @@ public class PetDao extends BaseDao {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("SELECT * FROM %s ", TABLE_NAME));
         sb.append(String.format("WHERE (%s is null AND %s LIKE '%%-%s') ", COLUMN_ARCHIVE_DATE, COLUMN_BIRTHDAY, date));
-        sb.append(String.format("OR (%s is not null AND %s LIKE '%%-%s')", COLUMN_ARCHIVE_DATE, COLUMN_ARCHIVE_DATE, date));
+        sb.append(String.format("OR (%s is not null AND %s LIKE '%%-%s') ", COLUMN_ARCHIVE_DATE, COLUMN_ARCHIVE_DATE, date));
         sb.append(String.format("ORDER BY %s DESC", COLUMN_ID));
 
         Cursor cursor = db.rawQuery(sb.toString(), null);

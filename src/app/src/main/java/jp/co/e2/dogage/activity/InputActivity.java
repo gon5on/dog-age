@@ -63,43 +63,19 @@ public class InputActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_common);
 
-        /*/////////////////////////////////
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_notification_large);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
-        builder.setSmallIcon(R.drawable.ic_notification);
-        builder.setLargeIcon(largeIcon);
-        builder.setContentTitle("11/08 モナカお誕生日");
-        builder.setContentText("6歳になりました、おめでとうございます！！");
-
-        NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
-        manager.notify(1111, builder.build());
-
-        Bitmap largeIcon2 = BitmapFactory.decodeResource(getResources(), R.drawable.ic_notification_large_archive);
-
-        NotificationCompat.Builder builder2 = new NotificationCompat.Builder(getApplicationContext());
-        builder2.setSmallIcon(R.drawable.ic_notification);
-        builder2.setLargeIcon(largeIcon2);
-        builder2.setContentTitle("11/08 モナカ命日");
-        builder2.setContentText("亡くなって2年経ちました。");
-
-        NotificationManagerCompat manager2 = NotificationManagerCompat.from(getApplicationContext());
-        manager2.notify(2222, builder2.build());
-        /////////////////////////////////*/
-
         if (savedInstanceState == null) {
             //アクションバーをセットする
-            boolean backFlg = (getIntent().getIntExtra("initFlag", 0) == 0);
+            boolean backFlg = (getIntent().getIntExtra(PetAgeActivity.INIT_FLG, 0) == 0);
             setActionbar(backFlg);
 
             //編集の場合は値がわたってくる
-            PetEntity savedItem = (PetEntity) getIntent().getSerializableExtra("item");
-            Integer pageNum = getIntent().getIntExtra("pageNum", 0);
+            PetEntity savedItem = (PetEntity) getIntent().getSerializableExtra(PetAgeActivity.DATA);
+            Integer pageNum = getIntent().getIntExtra(PetAgeActivity.PAGE_NUM, 0);
 
             InputFragment fragment = new InputFragment();
             Bundle args = new Bundle();
-            args.putSerializable("data", savedItem);
-            args.putInt("pageNum", pageNum);
+            args.putSerializable(PetAgeActivity.DATA, savedItem);
+            args.putInt(PetAgeActivity.PAGE_NUM, pageNum);
             fragment.setArguments(args);
 
             getFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
@@ -268,7 +244,7 @@ public class InputActivity extends BaseActivity {
          * 値を画面にセットする
          */
         private void setItem() {
-            mSavedItem = (PetEntity) getArguments().getSerializable("data");
+            mSavedItem = (PetEntity) getArguments().getSerializable(PetAgeActivity.DATA);
 
             try {
                 //編集の場合
@@ -509,7 +485,7 @@ public class InputActivity extends BaseActivity {
 
                 Intent intent = new Intent(getActivity(), PetAgeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("pageNum", getArguments().getInt("pageNum", 0));
+                intent.putExtra(PetAgeActivity.PAGE_NUM, getArguments().getInt(PetAgeActivity.PAGE_NUM, 0));
                 startActivity(intent);
                 getActivity().finish();
             } else {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.common.AndroidUtils;
+import jp.co.e2.dogage.common.DateHelper;
 import jp.co.e2.dogage.dialog.ConfirmDialog;
 import jp.co.e2.dogage.dialog.ErrorDialog;
 import jp.co.e2.dogage.entity.PetEntity;
@@ -26,6 +27,11 @@ import android.widget.LinearLayout;
  * ペット年齢アクテビティ
  */
 public class PetAgeActivity extends BaseActivity implements ConfirmDialog.CallbackListener {
+    public static final String ID = "id";
+    public static final String DATA = "data";
+    public static final String PAGE_NUM = "page_num";
+    public static final String INIT_FLG = "init_flg";
+
     private PetAgeFragmentPagerAdapter mAdapter = null;      // ページアダプター
     private ArrayList<PetEntity> mData = null;               // ペット情報一覧
     private Integer mPageNum = 0;                            // 現在表示中のページ数
@@ -47,8 +53,8 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
             notificationManagerCompat.cancelAll();
 
             //ページ数が渡ってきたら取得する
-            if (getIntent().hasExtra("pageNum")) {
-                mPageNum = getIntent().getIntExtra("pageNum", 0);
+            if (getIntent().hasExtra(PAGE_NUM)) {
+                mPageNum = getIntent().getIntExtra(PAGE_NUM, 0);
             }
 
             //ペット情報一覧を取得
@@ -57,7 +63,7 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
             //データがない場合は入力画面に飛ばす
             if (mData.size() == 0) {
                 Intent intent = new Intent(PetAgeActivity.this, InputActivity.class);
-                intent.putExtra("initFlag", 1);
+                intent.putExtra(INIT_FLG, 1);
                 startActivity(intent);
                 finish();
                 return;
@@ -92,8 +98,8 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
         //編集
         else if (id == R.id.action_edit) {
             Intent intent = new Intent(PetAgeActivity.this, InputActivity.class);
-            intent.putExtra("pageNum", mPageNum);
-            intent.putExtra("item", mData.get(mPageNum));
+            intent.putExtra(PAGE_NUM, mPageNum);
+            intent.putExtra(DATA, mData.get(mPageNum));
             startActivity(intent);
         }
         //削除
@@ -244,7 +250,7 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
 
                 Intent intent = new Intent(this, PetAgeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("pageNum", (mPageNum != 0) ? (mPageNum - 1) : 0);
+                intent.putExtra(PetAgeActivity.PAGE_NUM, (mPageNum != 0) ? (mPageNum - 1) : 0);
                 startActivity(intent);
             } else {
                 String title = getResources().getString(R.string.error);

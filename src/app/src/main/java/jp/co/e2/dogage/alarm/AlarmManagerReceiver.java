@@ -13,13 +13,11 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.activity.PetAgeActivity;
 import jp.co.e2.dogage.common.AndroidUtils;
 import jp.co.e2.dogage.common.DateHelper;
-import jp.co.e2.dogage.common.LogUtils;
 import jp.co.e2.dogage.common.PreferenceUtils;
 import jp.co.e2.dogage.config.Config;
 import jp.co.e2.dogage.entity.PetEntity;
@@ -30,6 +28,8 @@ import jp.co.e2.dogage.model.PetDao;
  * アラームマネージャレシーバー
  */
 public class AlarmManagerReceiver extends BroadcastReceiver {
+    public static String DISP_DATE_FORMAT = "MM/dd";
+
     /**
      * ${inheritDoc}
      */
@@ -74,26 +74,27 @@ public class AlarmManagerReceiver extends BroadcastReceiver {
             return;
         }
 
-        String message = "";
-        String subMessage = "";
-        Bitmap largeIcon = null;
+        String message;
+        String subMessage;
+        Bitmap largeIcon;
 
         if (data.getArchiveDate() != null) {
             message = context.getResources().getString(R.string.notify_archive);
-            message = String.format(message, new DateHelper().format("MM/dd"), data.getName());
+            message = String.format(message, new DateHelper().format(DISP_DATE_FORMAT), data.getName());
             subMessage = context.getResources().getString(R.string.notify_archive_sub);
             subMessage = String.format(subMessage, data.getArchiveAge());
             largeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notification_large_archive);
         }
         else {
             message = context.getResources().getString(R.string.notify_birthday);
-            message = String.format(message, new DateHelper().format("MM/dd"), data.getName());
+            message = String.format(message, new DateHelper().format(DISP_DATE_FORMAT), data.getName());
             subMessage = context.getResources().getString(R.string.notify_birthday_sub);
             subMessage = String.format(subMessage, data.getPetAge());
             largeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notification_large);
         }
 
         Intent intent = new Intent(context, PetAgeActivity.class);
+        intent.putExtra(PetAgeActivity.ID, data.getId());
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
@@ -116,6 +117,8 @@ public class AlarmManagerReceiver extends BroadcastReceiver {
      */
     private ArrayList<PetEntity> getDispPetData(Context context, Intent intent) throws ParseException {
         String date = intent.getStringExtra(SetAlarmManager.DATE);
+
+//AndroidUtils.showToastS(context, "recieve str = " + intent.getStringExtra(SetAlarmManager.DATE));
 
         ArrayList<PetEntity> data = null;
         SQLiteDatabase db = null;
