@@ -1,5 +1,6 @@
 package jp.co.e2.dogage.activity;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -10,18 +11,35 @@ import jp.co.e2.dogage.R;
  */
 public class BaseActivity extends ActionBarActivity {
     /**
-     * アクションバーをセット
-     *
-     * @param backFlg 戻るボタン有無
+     * ツールバーをセット
      */
-    protected void setActionbar(boolean backFlg) {
+    protected void setToolbar() {
+        //ツールバーをアクションバーとして扱う
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
 
-        setSupportActionBar(toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
 
-        if (backFlg) {
-            toolbar.setNavigationIcon(R.drawable.ic_back);
+        //タイトル非表示
+        ActionBar actionbar = getSupportActionBar();
+
+        if (actionbar != null) {
+            actionbar.setDisplayShowTitleEnabled(false);
+        }
+    }
+
+    /**
+     * 戻る矢印付きのツールバーをセット
+     */
+    protected void setBackArrowToolbar() {
+        setToolbar();
+
+        ActionBar actionbar = getSupportActionBar();
+
+        if (actionbar != null) {
+            actionbar.setHomeButtonEnabled(true);
+            actionbar.setDisplayHomeAsUpEnabled(true);
         }
     }
 }

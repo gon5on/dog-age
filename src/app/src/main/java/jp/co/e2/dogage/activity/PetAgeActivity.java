@@ -46,7 +46,7 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
 
         if (savedInstanceState == null) {
             //アクションバーをセットする
-            setActionbar(false);
+            setToolbar();
 
             //通知を消す
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());

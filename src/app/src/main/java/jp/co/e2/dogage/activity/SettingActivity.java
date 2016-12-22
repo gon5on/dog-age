@@ -29,7 +29,7 @@ public class SettingActivity extends BaseActivity {
 
         if (savedInstanceState == null) {
             //アクションバーをセットする
-            setActionbar(true);
+            setBackArrowToolbar();
 
             getFragmentManager().beginTransaction().add(R.id.container, new AboutFragment()).commit();
         }

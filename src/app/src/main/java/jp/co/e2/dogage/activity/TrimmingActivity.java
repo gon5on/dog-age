@@ -86,7 +86,7 @@ public class TrimmingActivity extends BaseActivity {
 
         if (savedInstanceState == null) {
             //アクションバーをセットする
-            setActionbar(true);
+            setBackArrowToolbar();
 
             String path = getIntent().getStringExtra(PATH);
 

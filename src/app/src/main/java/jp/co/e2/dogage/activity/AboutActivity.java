@@ -31,7 +31,7 @@ public class AboutActivity extends BaseActivity {
 
         if (savedInstanceState == null) {
             //アクションバーをセットする
-            setActionbar(true);
+            setBackArrowToolbar();
 
             getFragmentManager().beginTransaction().add(R.id.container, new AboutFragment()).commit();
         }
@@ -69,30 +69,11 @@ public class AboutActivity extends BaseActivity {
             // fragment再生成抑止
             setRetainInstance(true);
 
-            //ライセンスにリンクを貼る
-            linkLisence();
 
             //スクロールビューのオーバースクロールで端の色を変えないように
             container.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
             return mView;
-        }
-
-        /**
-         * ライセンスにリンクを貼る
-         */
-        private void linkLisence() {
-            TextView textViewCC = (TextView) mView.findViewById(R.id.textViewCC);
-
-            Pattern pattern = Pattern.compile(PATTERN);
-            Linkify.TransformFilter filter = new Linkify.TransformFilter() {
-                @Override
-                public String transformUrl(Matcher match, String url) {
-                    return URL;
-                }
-            };
-
-            Linkify.addLinks(textViewCC, pattern, URL, null, filter);
         }
     }
 }

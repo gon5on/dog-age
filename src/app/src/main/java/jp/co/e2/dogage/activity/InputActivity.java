@@ -39,8 +39,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,8 +63,11 @@ public class InputActivity extends BaseActivity {
 
         if (savedInstanceState == null) {
             //アクションバーをセットする
-            boolean backFlg = (getIntent().getIntExtra(PetAgeActivity.INIT_FLG, 0) == 0);
-            setActionbar(backFlg);
+            if (getIntent().getBooleanExtra(PetAgeActivity.INIT_FLG, false)) {
+                setToolbar();
+            } else {
+                setBackArrowToolbar();
+            }
 
             //編集の場合は値がわたってくる
             PetEntity savedItem = (PetEntity) getIntent().getSerializableExtra(PetAgeActivity.DATA);

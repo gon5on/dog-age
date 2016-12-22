@@ -252,25 +252,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/margin_between_big_view"
-        android:paddingTop="@dimen/margin_between_big_view"
-        android:scaleType="fitXY"
-        android:src="@android:drawable/divider_horizontal_textfield" />
-
-        <TextView
-            android:id="@+id/textViewCC"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_cc"
-            android:drawablePadding="@dimen/margin_default_icon"
-            android:layout_marginLeft="@dimen/margin_between_small_view"
-            android:text="@string/cc_pixel_kit"
-            android:textColor="@color/text"
-            android:layout_gravity="center_horizontal"/>
-
 </LinearLayout>
 
     </ScrollView>
