@@ -4,13 +4,12 @@ import java.util.ArrayList;
 
 import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.common.AndroidUtils;
-import jp.co.e2.dogage.common.DateHelper;
 import jp.co.e2.dogage.dialog.ConfirmDialog;
 import jp.co.e2.dogage.dialog.ErrorDialog;
 import jp.co.e2.dogage.entity.PetEntity;
 import jp.co.e2.dogage.model.BaseSQLiteOpenHelper;
 import jp.co.e2.dogage.model.PetDao;
-import jp.co.e2.dogage.module.PetAgeFragmentPagerAdapter;
+import jp.co.e2.dogage.adapter.PetAgeFragmentPagerAdapter;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -33,8 +32,8 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
     public static final String INIT_FLG = "init_flg";
 
     private PetAgeFragmentPagerAdapter mAdapter = null;      // ページアダプター
-    private ArrayList<PetEntity> mData = null;               // ペット情報一覧
     private Integer mPageNum = 0;                            // 現在表示中のページ数
+    private ArrayList<PetEntity> mData = null;               // ペット情報一覧
 
     /**
      * ${inheritDoc}
@@ -44,18 +43,18 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pet_age);
 
-        if (savedInstanceState == null) {
-            //アクションバーをセットする
-            setToolbar();
+        //アクションバーをセットする
+        setToolbar();
 
+        //ページ数が渡ってきたら取得する
+        if (getIntent().hasExtra(PAGE_NUM)) {
+            mPageNum = getIntent().getIntExtra(PAGE_NUM, 0);
+        }
+
+        if (savedInstanceState == null) {
             //通知を消す
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
             notificationManagerCompat.cancelAll();
-
-            //ページ数が渡ってきたら取得する
-            if (getIntent().hasExtra(PAGE_NUM)) {
-                mPageNum = getIntent().getIntExtra(PAGE_NUM, 0);
-            }
 
             //ペット情報一覧を取得
             getPetList();
@@ -68,9 +67,11 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
                 finish();
                 return;
             }
-
-            createViewPager();
+        } else {
+            mData = (ArrayList<PetEntity>) savedInstanceState.getSerializable(DATA);
         }
+
+        createViewPager();
     }
 
     /**
@@ -123,6 +124,16 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * ${inheritDoc}
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable(DATA, mData);
     }
 
     /**

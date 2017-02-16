@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- タップ時 -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/oneBlock" />
+            <solid android:angle="90" android:color="@color/brown" />
+        </shape>
+    </item>
+
+    <!-- 通常時 -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/oneBlock" />
+            <solid android:angle="90" android:color="@color/lightBrown" />
+        </shape>
+    </item>
+
+</selector>

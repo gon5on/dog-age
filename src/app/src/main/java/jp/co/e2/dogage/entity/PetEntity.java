@@ -3,7 +3,6 @@ package jp.co.e2.dogage.entity;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
-import java.util.Calendar;
 import java.util.HashMap;
 
 import jp.co.e2.dogage.R;
@@ -14,7 +13,6 @@ import jp.co.e2.dogage.config.Config;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 
 /**
  * ペットエンティティクラス
@@ -28,8 +26,8 @@ public class PetEntity implements Serializable {
     private String mName;                                       //名前
     private String mBirthday;                                   //誕生日
     private Integer mKind;                                      //種類
-    private Integer mPhotoFlg = 0;                              //写真有無フラグ
-    private Integer mPhotoSaveFlg = 0;                          //写真保存フラグ（このフラグが立っていれば画像保存し直す）
+    private boolean mPhotoFlg;                                  //写真有無フラグ
+    private boolean mPhotoSaveFlg;                              //写真保存フラグ（このフラグが立っていれば画像保存し直す）
     private String mArchiveDate;                                //アーカイブ日付
     private String mCreated;                                    //作成日時
     private String mModified;                                   //更新日時
@@ -255,16 +253,16 @@ public class PetEntity implements Serializable {
      *
      * @param value 値
      */
-    public void setPhotoFlg(Integer value) {
+    public void setPhotoFlg(boolean value) {
         mPhotoFlg = value;
     }
 
     /**
      * 写真フラグを返す
      *
-     * @return Integer mPhotoFlg
+     * @return mPhotoFlg
      */
-    public Integer getPhotoFlg() {
+    public boolean getPhotoFlg() {
         return mPhotoFlg;
     }
 
@@ -273,16 +271,16 @@ public class PetEntity implements Serializable {
      *
      * @param value 値
      */
-    public void setPhotoSaveFlg(Integer value) {
+    public void setPhotoSaveFlg(boolean value) {
         mPhotoSaveFlg = value;
     }
 
     /**
      * 写真保存フラグを返す
      *
-     * @return Integer mPhotoFlg
+     * @return mPhotoFlg
      */
-    public Integer getPhotoSaveFlg() {
+    public boolean getPhotoSaveFlg() {
         return mPhotoSaveFlg;
     }
 

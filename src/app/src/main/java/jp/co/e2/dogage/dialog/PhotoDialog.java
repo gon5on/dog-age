@@ -43,18 +43,6 @@ public class PhotoDialog extends BaseDialog<CallbackListener> {
         ImageView imageViewPhoto = (ImageView) dialog.findViewById(R.id.imageViewPhoto);
         imageViewPhoto.setImageBitmap((Bitmap) getArguments().getParcelable("bitmap"));
 
-        //ボタンにイベントをセット
-        Button buttonClose = (Button) dialog.findViewById(R.id.buttonClose);
-        buttonClose.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mCallbackListener != null) {
-                    mCallbackListener.onClickPhotoDialogClose();
-                }
-                dismiss();
-            }
-        });
-
         return dialog;
     }
 
@@ -62,9 +50,5 @@ public class PhotoDialog extends BaseDialog<CallbackListener> {
      * コールバックリスナー
      */
     public interface CallbackListener {
-        /**
-         * 写真表示ダイアログで閉じるが押された
-         */
-        void onClickPhotoDialogClose();
     }
 }

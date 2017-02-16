@@ -1,7 +1,8 @@
-package jp.co.e2.dogage.module;
+package jp.co.e2.dogage.adapter;
 
 import java.util.ArrayList;
 
+import jp.co.e2.dogage.activity.PetAgeFragment;
 import jp.co.e2.dogage.entity.PetEntity;
 
 import android.os.Bundle;

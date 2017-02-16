@@ -91,8 +91,8 @@ public class PetDao extends BaseDao {
         }
 
         //画像保存
-        if (data.getPhotoFlg() == 1) {
-            if(data.getPhotoSaveFlg() == 1) {
+        if (data.getPhotoFlg()) {
+            if(data.getPhotoSaveFlg()) {
                 String tmpPath = Config.getImgTmpFilePath(mContext);
                 String savePath = Config.getImgDirPath(mContext) + "/" + Config.getImgFileName(savedId);
                 MediaUtils.copyFile(tmpPath, savePath);
@@ -131,7 +131,7 @@ public class PetDao extends BaseDao {
                 data.setName(getString(cursor, COLUMN_NAME));
                 data.setBirthday(getString(cursor, COLUMN_BIRTHDAY));
                 data.setKind(getInteger(cursor, COLUMN_KIND));
-                data.setPhotoFlg(getInteger(cursor, COLUMN_PHOTO_FLG));
+                data.setPhotoFlg(getBoolean(cursor, COLUMN_PHOTO_FLG));
                 data.setArchiveDate(getString(cursor, COLUMN_ARCHIVE_DATE));
                 data.setCreated(getString(cursor, COLUMN_CREATED));
                 data.setModified(getString(cursor, COLUMN_MODIFIED));
@@ -164,7 +164,7 @@ public class PetDao extends BaseDao {
                 values.setName(getString(cursor, COLUMN_NAME));
                 values.setBirthday(getString(cursor, COLUMN_BIRTHDAY));
                 values.setKind(getInteger(cursor, COLUMN_KIND));
-                values.setPhotoFlg(getInteger(cursor, COLUMN_PHOTO_FLG));
+                values.setPhotoFlg(getBoolean(cursor, COLUMN_PHOTO_FLG));
                 values.setArchiveDate(getString(cursor, COLUMN_ARCHIVE_DATE));
                 values.setCreated(getString(cursor, COLUMN_CREATED));
                 values.setModified(getString(cursor, COLUMN_MODIFIED));
@@ -202,7 +202,7 @@ public class PetDao extends BaseDao {
                 values.setName(getString(cursor, COLUMN_NAME));
                 values.setBirthday(getString(cursor, COLUMN_BIRTHDAY));
                 values.setKind(getInteger(cursor, COLUMN_KIND));
-                values.setPhotoFlg(getInteger(cursor, COLUMN_PHOTO_FLG));
+                values.setPhotoFlg(getBoolean(cursor, COLUMN_PHOTO_FLG));
                 values.setArchiveDate(getString(cursor, COLUMN_ARCHIVE_DATE));
                 values.setCreated(getString(cursor, COLUMN_CREATED));
                 values.setModified(getString(cursor, COLUMN_MODIFIED));

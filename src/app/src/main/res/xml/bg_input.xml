@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- フォーカス時 -->
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" />
+            <stroke android:width="@dimen/line" android:color="@color/green" />
+            <corners android:radius="@dimen/oneBlock" />
+            <padding android:bottom="@dimen/oneBlock" android:left="@dimen/twoBlock" android:right="@dimen/twoBlock" android:top="@dimen/oneBlock" />
+        </shape>
+    </item>
+
+    <!-- タップ時 -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" />
+            <stroke android:width="@dimen/line" android:color="@color/green" />
+            <corners android:radius="@dimen/oneBlock" />
+            <padding android:bottom="@dimen/oneBlock" android:left="@dimen/twoBlock" android:right="@dimen/twoBlock" android:top="@dimen/oneBlock" />
+        </shape>
+    </item>
+
+    <!-- 通常時 -->
+    <item android:state_pressed="false">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" />
+            <stroke android:width="@dimen/line" android:color="@color/gray" />
+            <corners android:radius="@dimen/oneBlock" />
+            <padding android:bottom="@dimen/oneBlock" android:left="@dimen/twoBlock" android:right="@dimen/twoBlock" android:top="@dimen/oneBlock" />
+        </shape>
+    </item>
+
+</selector>

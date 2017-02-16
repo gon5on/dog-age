@@ -1,57 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/margin_default_container"
-    android:background="@drawable/bg_dialog"
+    android:layout_margin="@dimen/twoBlock"
+    android:background="@xml/bg_dialog"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/margin_default_container"
-    android:paddingRight="@dimen/margin_default_container" >
+    android:paddingLeft="@dimen/twoBlock"
+    android:paddingRight="@dimen/twoBlock"
+    >
 
     <TextView
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/twoBlock"
         android:text="@string/dog_birthday"
-        android:textSize="@dimen/font_size_default_title"
-        android:textStyle="bold" 
-        android:drawableLeft="@drawable/img_foot"
-        android:drawablePadding="@dimen/margin_default_icon"
         android:gravity="center_vertical"
-        android:textColor="@color/text"/>
+        android:textStyle="bold"
+        style="@style/LabelTextViewStyle"
+        />
 
     <DatePicker
         android:id="@+id/datePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:calendarViewShown="false" />
+        android:calendarViewShown="false"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/twoBlock"
+        >
 
         <Button
             android:id="@+id/buttonCancel"
-            android:layout_width="@dimen/width_zero"
+            android:layout_width="@dimen/zero"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin_default_horizontal_button"
+            android:layout_marginRight="@dimen/halfBlock"
+            android:layout_marginEnd="@dimen/halfBlock"
             android:layout_weight="1"
-            android:background="@drawable/btn2"
             android:text="@string/cancel"
-            android:textColor="@color/text_button"
-            android:textSize="@dimen/font_size_default_button" />
+            style="@style/LightBrownButtonStyle"
+            />
 
         <Button
             android:id="@+id/buttonOk"
-            android:layout_width="@dimen/width_zero"
+            android:layout_width="@dimen/zero"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_default_horizontal_button"
+            android:layout_marginLeft="@dimen/halfBlock"
+            android:layout_marginStart="@dimen/halfBlock"
             android:layout_weight="1"
-            android:background="@drawable/btn"
             android:text="@string/ok"
-            android:textColor="@color/text_button"
-            android:textSize="@dimen/font_size_default_button" />
+            style="@style/AppButtonStyle"
+            />
+
     </LinearLayout>
 
 </LinearLayout>

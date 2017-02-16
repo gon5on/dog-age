@@ -1,4 +1,4 @@
-package jp.co.e2.dogage.module;
+package jp.co.e2.dogage.activity;
 
 import java.io.IOException;
 
@@ -41,16 +41,13 @@ public class PetAgeFragment extends Fragment {
 
         mView = inflater.inflate(R.layout.fragment_pet_age, container, false);
 
-        // fragment再生成抑止
-        setRetainInstance(true);
-
         // データを取得
         Bundle bundle = getArguments();
         mItem = (PetEntity) bundle.getSerializable("item");
         mPageNum = bundle.getInt("pageNum");
 
         // 画面表示
-        setDispItem();
+        setDisplayItem();
 
         return mView;
     }
@@ -58,7 +55,7 @@ public class PetAgeFragment extends Fragment {
     /**
      * 画面表示
      */
-    private void setDispItem() {
+    private void setDisplayItem() {
         try {
             TextView textViewName = (TextView) mView.findViewById(R.id.textViewName);
             textViewName.setText(mItem.getName());
@@ -101,7 +98,7 @@ public class PetAgeFragment extends Fragment {
 
             ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
 
-            if (mItem.getPhotoFlg() == 1) {
+            if (mItem.getPhotoFlg()) {
                 Bitmap thumbBitmap = mItem.getPhotoThumb(getActivity());
                 final Bitmap bigBitmap = mItem.getPhotoBig(getActivity());
 

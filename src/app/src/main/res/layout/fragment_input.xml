@@ -2,173 +2,146 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/margin_default_container" >
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dog_name"
-        android:textColor="@color/text"
-        android:textSize="@dimen/font_size_default_title"
-        android:drawableLeft="@drawable/img_foot"
-        android:drawablePadding="@dimen/margin_default_icon"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="@dimen/margin_between_small_view"/>
-
-    <EditText
-        android:id="@+id/editTextName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_input"
-        android:ems="10"
-        android:inputType="text"
-        android:textColor="@color/text"
-        android:textSize="@dimen/font_size_default_edit_text" >
-
-        <requestFocus />
-    </EditText>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dog_birthday"
-        android:textColor="@color/text"
-        android:textSize="@dimen/font_size_default_title"
-        android:drawableLeft="@drawable/img_foot"
-        android:drawablePadding="@dimen/margin_default_icon"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="@dimen/margin_between_small_view"
-        android:layout_marginTop="@dimen/margin_between_big_view"/>
-
-    <Button
-        android:id="@+id/buttonBirthday"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_input"
-        android:minHeight="@dimen/width_zero"
-        android:textColor="@color/text"
-        android:textSize="@dimen/font_size_default_edit_text"
-        android:gravity="left"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dog_kind"
-        android:textColor="@color/text"
-        android:textSize="@dimen/font_size_default_title"
-        android:drawableLeft="@drawable/img_foot"
-        android:drawablePadding="@dimen/margin_default_icon"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="@dimen/margin_between_small_view"
-        android:layout_marginTop="@dimen/margin_between_big_view"/>
-
-    <Button
-        android:id="@+id/buttonKind"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_input"
-        android:minHeight="@dimen/width_zero"
-        android:textColor="@color/text"
-        android:textSize="@dimen/font_size_default_edit_text"
-        android:gravity="left"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dog_photo"
-        android:textColor="@color/text"
-        android:textSize="@dimen/font_size_default_title"
-        android:drawableLeft="@drawable/img_foot"
-        android:drawablePadding="@dimen/margin_default_icon"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="@dimen/margin_between_small_view"
-        android:layout_marginTop="@dimen/margin_between_big_view"/>
-
-    <jp.co.e2.dogage.module.TouchFeedbackImageView
-        android:id="@+id/imageViewPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/margin_between_big_view"
-        android:scaleType="centerCrop"
-        android:src="@drawable/img_no_photo" />
+    android:layout_height="wrap_content"
+    >
 
     <LinearLayout
-        android:id="@+id/linearLayoutArchive"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_between_small_view"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:padding="@dimen/twoBlock"
+        >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dog_die_date"
-            android:textColor="@color/text"
-            android:textSize="@dimen/font_size_default_text"
-            android:drawableLeft="@drawable/img_foot"
-            android:drawablePadding="@dimen/margin_default_icon"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/margin_between_small_view"/>
+            android:text="@string/dog_name"
+            android:layout_marginBottom="@dimen/halfBlock"
+            style="@style/LabelTextViewStyle"
+            />
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/editTextName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical" >
+            android:layout_marginBottom="@dimen/twoBlock"
+            >
 
-            <Button
-                android:id="@+id/buttonArchive"
-                android:layout_width="@dimen/width_zero"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/bg_input"
-                android:minHeight="@dimen/width_zero"
-                android:textColor="@color/text"
-                android:textSize="@dimen/font_size_default_edit_text"
-                android:gravity="left" />
+            <requestFocus />
+        </EditText>
 
-            <Button
-                android:id="@+id/buttonClear"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dog_birthday"
+            android:layout_marginBottom="@dimen/halfBlock"
+            style="@style/LabelTextViewStyle"
+            />
+
+        <Button
+            android:id="@+id/buttonBirthday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/twoBlock"
+            style="@style/EditTextButtonStyle"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dog_kind"
+            android:layout_marginBottom="@dimen/halfBlock"
+            style="@style/LabelTextViewStyle"
+            />
+
+        <Button
+            android:id="@+id/buttonKind"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/twoBlock"
+            style="@style/EditTextButtonStyle"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dog_photo"
+            android:layout_marginBottom="@dimen/halfBlock"
+            style="@style/LabelTextViewStyle"
+            />
+
+        <jp.co.e2.dogage.adapter.TouchFeedbackImageView
+            android:id="@+id/imageViewPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_no_photo"
+            android:layout_marginBottom="@dimen/twoBlock"
+            />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutArchive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_default_between_view"
-                android:background="@drawable/ic_clear"
-                android:minHeight="@dimen/width_zero"
-                android:minWidth="@dimen/width_zero"
-                android:textColor="@color/text" />
+                android:text="@string/dog_die_date"
+                android:layout_marginBottom="@dimen/halfBlock"
+                style="@style/LabelTextViewStyle"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                >
+
+                <Button
+                    android:id="@+id/buttonArchive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    style="@style/EditTextButtonStyle"
+                    />
+
+                <Button
+                    android:id="@+id/buttonClear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/oneBlock"
+                    android:layout_marginStart="@dimen/oneBlock"
+                    android:background="@xml/bg_clear_btn"
+                    android:minHeight="@dimen/zero"
+                    android:minWidth="@dimen/zero"
+                    />
+
+            </LinearLayout>
+
         </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonOpen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/open_other"
+            style="@style/TranslateButtonStyle"
+            />
+
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/twoBlock"
+            android:text="@string/save"
+            />
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/buttonOpen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginTop="@dimen/margin_between_small_view"
-        android:background="@drawable/btn_open"
-        android:minHeight="@dimen/width_zero"
-        android:minWidth="@dimen/width_zero"
-        android:text="@string/open_other"
-        android:textColor="@drawable/color_btn_clear"
-        android:textSize="@dimen/font_size_default_text" />
-
-    <Button
-        android:id="@+id/buttonSave"
-        android:layout_width="@dimen/width_button"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/margin_between_big_view"
-        android:background="@drawable/btn"
-        android:text="@string/save"
-        android:textColor="@color/text_button"
-        android:textSize="@dimen/font_size_default_button" />
-
-</LinearLayout>
-
-    </ScrollView>
+</ScrollView>

@@ -1,6 +1,92 @@
 <resources>
 
+    <!-- 基本設定 -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/brown</item>
+        <item name="colorPrimaryDark">@color/darkBrown</item>
+        <item name="colorAccent">@color/green</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/fontSizeDefault</item>
+        <item name="android:buttonStyle">@style/AppButtonStyle</item>
+        <item name="android:editTextStyle">@style/AppEditTextStyle</item>
+    </style>
+
+    <!-- 入力欄 -->
+    <style name="AppEditTextStyle" parent="android:Widget.EditText">
+        <item name="android:textSize">@dimen/fontSizeLarge</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:background">@xml/bg_input</item>
+    </style>
+
+    <!-- 茶色ボタン -->
+    <style name="AppButtonStyle" parent="BaseButton">
+        <item name="android:background">@xml/bg_btn</item>
+    </style>
+
+    <!-- 薄茶色ボタン -->
+    <style name="LightBrownButtonStyle" parent="BaseButton">
+        <item name="android:background">@xml/bg_light_brown_btn</item>
+    </style>
+
+    <!-- 透明背景ボタン -->
+    <style name="TranslateButtonStyle" parent="BaseButton">
+        <item name="android:textSize">@dimen/fontSizeDefault</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:minHeight">@dimen/zero</item>
+        <item name="android:minWidth">@dimen/zero</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <!-- ボタン共通スタイル -->
+    <style name="BaseButton" parent="android:Widget.Button">
+        <item name="android:textSize">@dimen/fontSizeDefault</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:paddingTop">@dimen/oneBlock</item>
+        <item name="android:paddingBottom">@dimen/oneBlock</item>
+        <item name="android:paddingLeft">@dimen/twoBlock</item>
+        <item name="android:paddingRight">@dimen/twoBlock</item>
+        <item name="android:minHeight">@dimen/sixBlock</item>
+        <item name="android:minWidth">@dimen/twentyBlock</item>
+    </style>
+
+    <!-- 入力欄見た目ボタン -->
+    <style name="EditTextButtonStyle" parent="android:Widget.Button">
+        <item name="android:textSize">@dimen/fontSizeLarge</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:background">@xml/bg_input</item>
+        <item name="android:minHeight">@dimen/zero</item>
+        <item name="android:minWidth">@dimen/zero</item>
+        <item name="android:gravity">left</item>
+    </style>
+
+    <!-- 足跡付きラベル -->
+    <style name="LabelTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/fontSizeDefault</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:drawableLeft">@drawable/img_foot</item>
+        <item name="android:drawableStart">@drawable/img_foot</item>
+        <item name="android:drawablePadding">@dimen/halfBlock</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <!-- 表組セル -->
+    <style name="TableCellTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/fontSizeDefault</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:padding">@dimen/halfBlock</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <!-- 表組ラベル -->
+    <style name="TableLabelTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/fontSizeDefault</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:padding">@dimen/halfBlock</item>
+        <item name="android:background">@color/gray</item>
+        <item name="android:gravity">center_horizontal</item>
     </style>
 
 </resources>

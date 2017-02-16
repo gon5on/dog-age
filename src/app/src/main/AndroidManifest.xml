@@ -8,7 +8,8 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        >
 
         <receiver
             android:name="jp.co.e2.dogage.alarm.AlarmManagerReceiver" />
@@ -25,7 +26,7 @@
         <activity
             android:name="jp.co.e2.dogage.activity.PetAgeActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,23 +35,19 @@
         </activity>
         <activity
             android:name="jp.co.e2.dogage.activity.InputActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            >
         </activity>
         <activity
             android:name="jp.co.e2.dogage.activity.AboutActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            >
         </activity>
         <activity
             android:name="jp.co.e2.dogage.activity.TrimmingActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            >
         </activity>
         <activity
             android:name="jp.co.e2.dogage.activity.SettingActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            >
         </activity>
     </application>
 

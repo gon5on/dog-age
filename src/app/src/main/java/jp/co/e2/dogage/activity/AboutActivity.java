@@ -1,26 +1,18 @@
 package jp.co.e2.dogage.activity;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import jp.co.e2.dogage.R;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 /**
  * アプリについてアクテビティ
  */
 public class AboutActivity extends BaseActivity {
-    private static final String PATTERN = "PixelKit";
-    private static final String URL = "http://pixelkit.com/";
-
     /**
      * ${inheritDoc}
      */
@@ -29,10 +21,10 @@ public class AboutActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_common);
 
-        if (savedInstanceState == null) {
-            //アクションバーをセットする
-            setBackArrowToolbar();
+        //アクションバーをセットする
+        setBackArrowToolbar();
 
+        if (savedInstanceState == null) {
             getFragmentManager().beginTransaction().add(R.id.container, new AboutFragment()).commit();
         }
     }
@@ -65,10 +57,6 @@ public class AboutActivity extends BaseActivity {
             super.onCreate(savedInstanceState);
 
             mView = inflater.inflate(R.layout.fragment_about, container, false);
-
-            // fragment再生成抑止
-            setRetainInstance(true);
-
 
             //スクロールビューのオーバースクロールで端の色を変えないように
             container.setOverScrollMode(View.OVER_SCROLL_NEVER);

@@ -16,7 +16,6 @@ import jp.co.e2.dogage.config.Config;
 import jp.co.e2.dogage.dialog.DatePickerDialog;
 import jp.co.e2.dogage.dialog.ErrorDialog;
 import jp.co.e2.dogage.dialog.KindSelectDialog;
-import jp.co.e2.dogage.dialog.PhotoSelectDialog;
 import jp.co.e2.dogage.entity.DogMasterEntity;
 import jp.co.e2.dogage.entity.PetEntity;
 import jp.co.e2.dogage.model.BaseSQLiteOpenHelper;
@@ -39,6 +38,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,14 +61,14 @@ public class InputActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_common);
 
-        if (savedInstanceState == null) {
-            //アクションバーをセットする
-            if (getIntent().getBooleanExtra(PetAgeActivity.INIT_FLG, false)) {
-                setToolbar();
-            } else {
-                setBackArrowToolbar();
-            }
+        //アクションバーをセットする
+        if (getIntent().getBooleanExtra(PetAgeActivity.INIT_FLG, false)) {
+            setToolbar();
+        } else {
+            setBackArrowToolbar();
+        }
 
+        if (savedInstanceState == null) {
             //編集の場合は値がわたってくる
             PetEntity savedItem = (PetEntity) getIntent().getSerializableExtra(PetAgeActivity.DATA);
             Integer pageNum = getIntent().getIntExtra(PetAgeActivity.PAGE_NUM, 0);
@@ -100,19 +100,15 @@ public class InputActivity extends BaseActivity {
     /**
      * InputFragment
      */
-    public static class InputFragment extends Fragment implements KindSelectDialog.CallbackListener, DatePickerDialog.CallbackListener, PhotoSelectDialog.CallbackListener {
-        private static Integer DIALOG_BIRTHDAY_FLG = 1;
-        private static Integer DIALOG_ARCHIVE_FLG = 2;
+    public static class InputFragment extends Fragment
+            implements KindSelectDialog.CallbackListener, DatePickerDialog.CallbackListener, PopupMenu.OnMenuItemClickListener {
+
+        private static final Integer DIALOG_BIRTHDAY_FLG = 1;
+        private static final Integer DIALOG_ARCHIVE_FLG = 2;
 
         private View mView = null;
-
-        private PetEntity mSavedItem = null;
-        private String mBirthday = null;
-        private Integer mKind = null;
-        private Integer mPhotoFlg = 0;
-        private Integer mPhotoSaveFlg = 0;
+        private PetEntity mPetEntity;
         private Uri mPhotoUri = null;
-        private String mArchiveDate = null;
         private Boolean mArchiveOpenFlg = false;
 
         /**
@@ -124,9 +120,6 @@ public class InputActivity extends BaseActivity {
 
             mView = inflater.inflate(R.layout.fragment_input, container, false);
 
-            // fragment再生成抑止
-            setRetainInstance(true);
-
             //値を画面にセットする
             setItem();
 
@@ -137,6 +130,14 @@ public class InputActivity extends BaseActivity {
             container.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
             return mView;
+        }
+
+        /**
+         * ${inheritDoc}
+         */
+        @Override
+        public void onSaveInstanceState(Bundle outState) {
+            super.onSaveInstanceState(outState);
         }
 
         /**
@@ -217,8 +218,8 @@ public class InputActivity extends BaseActivity {
                     throw new Exception();
                 }
 
-                mPhotoFlg = 1;
-                mPhotoSaveFlg = 1;
+                mPetEntity.setPhotoSaveFlg(true);
+                mPetEntity.setPhotoFlg(true);
 
                 //トリミング後保存した画像を取得
                 ImgHelper imgUtils = new ImgHelper(Config.getImgTmpFilePath(getActivity()));
@@ -245,42 +246,37 @@ public class InputActivity extends BaseActivity {
          * 値を画面にセットする
          */
         private void setItem() {
-            mSavedItem = (PetEntity) getArguments().getSerializable(PetAgeActivity.DATA);
+            mPetEntity = (PetEntity) getArguments().getSerializable(PetAgeActivity.DATA);
 
             try {
                 //編集の場合
-                if (mSavedItem != null) {
-                    mBirthday = mSavedItem.getBirthday();
-                    mKind = mSavedItem.getKind();
-                    mPhotoFlg = mSavedItem.getPhotoFlg();
-                    mArchiveDate = mSavedItem.getArchiveDate();
-
-                    setDateToButton(R.id.buttonBirthday, mSavedItem.getBirthday());
+                if (mPetEntity != null) {
+                    setDateToButton(R.id.buttonBirthday, mPetEntity.getBirthday());
 
                     Button buttonKind = (Button) mView.findViewById(R.id.buttonKind);
-                    buttonKind.setText(mSavedItem.getKindDisp(getActivity().getApplicationContext()));
+                    buttonKind.setText(mPetEntity.getKindDisp(getActivity().getApplicationContext()));
 
                     EditText editTextName = (EditText) mView.findViewById(R.id.editTextName);
-                    editTextName.setText(mSavedItem.getName());
+                    editTextName.setText(mPetEntity.getName());
 
-                    if (mSavedItem.getArchiveDate() != null) {
-                        setDateToButton(R.id.buttonArchive, mSavedItem.getArchiveDate());
+                    if (mPetEntity.getArchiveDate() != null) {
+                        setDateToButton(R.id.buttonArchive, mPetEntity.getArchiveDate());
                         setOpenButton();
                     }
 
-                    if (mSavedItem.getPhotoFlg() == 1) {
+                    if (mPetEntity.getPhotoFlg()) {
                         ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
-                        imageViewPhoto.setImageBitmap(mSavedItem.getPhotoInput(getActivity()));
+                        imageViewPhoto.setImageBitmap(mPetEntity.getPhotoInput(getActivity()));
                     }
                 }
 
                 //画像がない場合、NO PHOTOを角丸の画像にする
-                if (mSavedItem == null || mSavedItem.getPhotoFlg() == 0) {
+                if (mPetEntity == null || !mPetEntity.getPhotoFlg()) {
                     setNoPhoto();
                 }
 
                 //アーカイブ関連を制御する
-                if (mSavedItem == null || mSavedItem.getArchiveDate() == null) {
+                if (mPetEntity == null || mPetEntity.getArchiveDate() == null) {
                     mArchiveOpenFlg = true;
 
                     setClearButton(false);
@@ -334,7 +330,7 @@ public class InputActivity extends BaseActivity {
                 Button buttonClear = (Button) mView.findViewById(R.id.buttonClear);
                 buttonClear.setVisibility(View.VISIBLE);
             } else {
-                mArchiveDate = null;
+                mPetEntity.setArchiveDate(null);
 
                 Button buttonClear = (Button) mView.findViewById(R.id.buttonClear);
                 buttonClear.setVisibility(View.GONE);
@@ -388,7 +384,7 @@ public class InputActivity extends BaseActivity {
                 public void onClick(View v) {
                     String title = getResources().getString(R.string.dog_birthday);
 
-                    DatePickerDialog datePickerDialog = DatePickerDialog.getInstance(DIALOG_BIRTHDAY_FLG, mBirthday, title);
+                    DatePickerDialog datePickerDialog = DatePickerDialog.getInstance(DIALOG_BIRTHDAY_FLG, mPetEntity.getBirthday(), title);
                     datePickerDialog.setCallbackListener(InputFragment.this);
                     datePickerDialog.show(getFragmentManager(), "dialog");
                 }
@@ -409,12 +405,13 @@ public class InputActivity extends BaseActivity {
 
             //写真
             ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+            final PopupMenu popup = new PopupMenu(getActivity(), imageViewPhoto);
+            popup.getMenuInflater().inflate(R.menu.photo_menu, popup.getMenu());
+            popup.setOnMenuItemClickListener(this);
             imageViewPhoto.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PhotoSelectDialog photoSelectDialog = PhotoSelectDialog.getInstance(mPhotoFlg);
-                    photoSelectDialog.setCallbackListener(InputFragment.this);
-                    photoSelectDialog.show(getFragmentManager(), "dialog");
+                    popup.show();
                 }
             });
 
@@ -434,7 +431,7 @@ public class InputActivity extends BaseActivity {
                 public void onClick(View v) {
                     String title = getResources().getString(R.string.dog_die_date);
 
-                    DatePickerDialog datePickerDialog = DatePickerDialog.getInstance(DIALOG_ARCHIVE_FLG, mArchiveDate, title);
+                    DatePickerDialog datePickerDialog = DatePickerDialog.getInstance(DIALOG_ARCHIVE_FLG, mPetEntity.getArchiveDate(), title);
                     datePickerDialog.setCallbackListener(InputFragment.this);
                     datePickerDialog.show(getFragmentManager(), "dialog");
                 }
@@ -515,19 +512,19 @@ public class InputActivity extends BaseActivity {
             ValidateLength.maxCheck(v, name, keyName, 10);
 
             String keyBirthday = getResources().getString(R.string.dog_birthday);
-            ValidateRequire.check(v, mBirthday, keyBirthday);
-            ValidateDate.check(v, mBirthday, keyBirthday, DateHelper.FMT_DATE);
-            ValidateDate.isPastAllowToday(v, mBirthday, keyBirthday);
+            ValidateRequire.check(v, mPetEntity.getBirthday(), keyBirthday);
+            ValidateDate.check(v, mPetEntity.getBirthday(), keyBirthday, DateHelper.FMT_DATE);
+            ValidateDate.isPastAllowToday(v, mPetEntity.getBirthday(), keyBirthday);
 
             String keyKind = getResources().getString(R.string.dog_kind);
-            ValidateRequire.check(v, mKind, keyKind);
+            ValidateRequire.check(v, mPetEntity.getKind(), keyKind);
 
-            String keyDieDate = getResources().getString(R.string.dog_birthday);
-            ValidateDate.check(v, mArchiveDate, keyDieDate, DateHelper.FMT_DATE);
-            ValidateDate.isPastAllowToday(v, mArchiveDate, keyDieDate);
+            String keyDieDate = getResources().getString(R.string.dog_die_date);
+            ValidateDate.check(v, mPetEntity.getArchiveDate(), keyDieDate, DateHelper.FMT_DATE);
+            ValidateDate.isPastAllowToday(v, mPetEntity.getArchiveDate(), keyDieDate);
 
             //独自バリデーション
-            if (!customValidate(mArchiveDate, mBirthday)) {
+            if (!customValidate(mPetEntity.getArchiveDate(), mPetEntity.getBirthday())) {
                 v.error(keyDieDate, getResources().getString(R.string.validate_error_archive_date));
             }
 
@@ -573,18 +570,7 @@ public class InputActivity extends BaseActivity {
             try {
                 EditText editTextName = (EditText) mView.findViewById(R.id.editTextName);
                 String name = editTextName.getText().toString();
-
-                PetEntity data = new PetEntity();
-                data.setName(name);
-                data.setBirthday(mBirthday);
-                data.setKind(mKind);
-                data.setPhotoFlg(mPhotoFlg);
-                data.setPhotoSaveFlg(mPhotoSaveFlg);
-                data.setArchiveDate(mArchiveDate);
-
-                if (mSavedItem != null) {
-                    data.setId(mSavedItem.getId());
-                }
+                mPetEntity.setName(name);
 
                 BaseSQLiteOpenHelper helper = new BaseSQLiteOpenHelper(getActivity());
                 db = helper.getWritableDatabase();
@@ -592,7 +578,7 @@ public class InputActivity extends BaseActivity {
                 db.beginTransaction();
 
                 PetDao petDao = new PetDao(getActivity());
-                ret = petDao.save(db, data);
+                ret = petDao.save(db, mPetEntity);
 
                 if (ret) {
                     db.setTransactionSuccessful();
@@ -611,47 +597,9 @@ public class InputActivity extends BaseActivity {
         }
 
         /**
-         * ${inheritDoc}
+         * カメラを起動する
          */
-        @Override
-        public void onClickKindSelectDialog(Integer kind, String name) {
-            mKind = kind;
-
-            Button buttonKind = (Button) mView.findViewById(R.id.buttonKind);
-            buttonKind.setText(name);
-        }
-
-        /**
-         * ${inheritDoc}
-         */
-        @Override
-        public void onClickDatePickerDialogOk(Integer flg, String date) {
-            if (flg.equals(DIALOG_BIRTHDAY_FLG)) {
-                mBirthday = date;
-
-                setDateToButton(R.id.buttonBirthday, mBirthday);
-            } else if (flg.equals(DIALOG_ARCHIVE_FLG)) {
-                mArchiveDate = date;
-
-                setDateToButton(R.id.buttonArchive, mArchiveDate);
-
-                Button buttonClear = (Button) mView.findViewById(R.id.buttonClear);
-                buttonClear.setVisibility(View.VISIBLE);
-            }
-        }
-
-        /**
-         * ${inheritDoc}
-         */
-        @Override
-        public void onClickDatePickerDialogCancel(Integer flg) {
-        }
-
-        /**
-         * ${inheritDoc}
-         */
-        @Override
-        public void onClickPhotoSelectDialogCamera() {
+        private void startCamera() {
             try {
                 String filename = System.currentTimeMillis() + ".jpg";
                 ContentValues values = new ContentValues();
@@ -676,10 +624,9 @@ public class InputActivity extends BaseActivity {
         }
 
         /**
-         * ${inheritDoc}
+         * ギャラリーを起動する
          */
-        @Override
-        public void onClickPhotoSelectDialogGallery() {
+        private void startGallery() {
             try {
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
@@ -700,12 +647,59 @@ public class InputActivity extends BaseActivity {
          * ${inheritDoc}
          */
         @Override
-        public void onClickPhotoSelectDialogDelPhoto() {
-            mPhotoFlg = 0;
-            mPhotoSaveFlg = 0;
+        public void onClickKindSelectDialog(Integer kind, String name) {
+            mPetEntity.setKind(kind);
 
-            //NO PHOTOをセットする
-            setNoPhoto();
+            Button buttonKind = (Button) mView.findViewById(R.id.buttonKind);
+            buttonKind.setText(name);
+        }
+
+        /**
+         * ${inheritDoc}
+         */
+        @Override
+        public void onClickDatePickerDialogOk(Integer flg, String date) {
+            if (flg.equals(DIALOG_BIRTHDAY_FLG)) {
+                mPetEntity.setBirthday(date);
+                setDateToButton(R.id.buttonBirthday, mPetEntity.getBirthday());
+            } else if (flg.equals(DIALOG_ARCHIVE_FLG)) {
+                mPetEntity.setArchiveDate(date);
+                setDateToButton(R.id.buttonArchive, mPetEntity.getArchiveDate());
+
+                Button buttonClear = (Button) mView.findViewById(R.id.buttonClear);
+                buttonClear.setVisibility(View.VISIBLE);
+            }
+        }
+
+        /**
+         * ${inheritDoc}
+         */
+        @Override
+        public void onClickDatePickerDialogCancel(Integer flg) {
+        }
+
+        /**
+         * ${inheritDoc}
+         */
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.menuCamera:
+                    startCamera();
+                    break;
+                case R.id.menuGallery:
+                    startGallery();
+                    break;
+                case R.id.menuDelete:
+                    mPetEntity.setPhotoFlg(false);
+                    mPetEntity.setPhotoSaveFlg(false);
+
+                    //NO PHOTOをセットする
+                    setNoPhoto();
+                    break;
+            }
+
+            return false;
         }
     }
 }

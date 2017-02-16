@@ -2,256 +2,264 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-<LinearLayout
-    android:id="@+id/container"
-    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="@dimen/margin_default_container" >
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_default_between_view"
-        android:text="@string/about_app"
-        android:textColor="@color/text"
-        android:textSize="@dimen/font_size_about"/>
-
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/bg_table_cell" >
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_table_cell_label"
-                android:padding="@dimen/margin_between_small_view"
-                android:text=""
-                android:textColor="@color/text"
-                android:textSize="@dimen/font_size_about" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_table_cell_label"
-                android:padding="@dimen/margin_between_small_view"
-                android:text="@string/dog_small"
-                android:textColor="@color/text_highlight"
-                android:textSize="@dimen/font_size_about" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_table_cell_label"
-                android:padding="@dimen/margin_between_small_view"
-                android:text="@string/dog_normal"
-                android:textColor="@color/text_highlight"
-                android:textSize="@dimen/font_size_about" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_table_cell_label"
-                android:padding="@dimen/margin_between_small_view"
-                android:text="@string/dog_large"
-                android:textColor="@color/text_highlight"
-                android:textSize="@dimen/font_size_about" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_table_cell_label"
-                android:padding="@dimen/margin_between_small_view"
-                android:text="@string/until_one_year"
-                android:textColor="@color/text_highlight"
-                android:textSize="@dimen/font_size_about"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_table_cell"
-                android:padding="@dimen/margin_between_small_view"
-                android:text="@string/small_until_one_year_dog_age"
-                android:textColor="@color/text"
-                android:textSize="@dimen/font_size_about"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_table_cell"
-                android:padding="@dimen/margin_between_small_view"
-                android:text="@string/normal_until_one_year_dog_age"
-                android:textColor="@color/text"
-                android:textSize="@dimen/font_size_about"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_table_cell"
-                android:padding="@dimen/margin_between_small_view"
-                android:text="@string/large_until_one_year_dog_age"
-                android:textColor="@color/text"
-                android:textSize="@dimen/font_size_about"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_table_cell_label"
-                android:padding="@dimen/margin_between_small_view"
-                android:text="@string/until_two_year"
-                android:textColor="@color/text_highlight"
-                android:textSize="@dimen/font_size_about" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_table_cell"
-                android:padding="@dimen/margin_between_small_view"
-                android:text="@string/small_until_two_year_dog_age"
-                android:textColor="@color/text"
-                android:textSize="@dimen/font_size_about"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_table_cell"
-                android:padding="@dimen/margin_between_small_view"
-                android:text="@string/normal_until_two_year_dog_age"
-                android:textColor="@color/text"
-                android:textSize="@dimen/font_size_about"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_table_cell"
-                android:padding="@dimen/margin_between_small_view"
-                android:text="@string/large_until_two_year_dog_age"
-                android:textColor="@color/text"
-                android:textSize="@dimen/font_size_about"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_table_cell_label"
-                android:padding="@dimen/margin_between_small_view"
-                android:text="@string/over_two_year"
-                android:textColor="@color/text_highlight"
-                android:textSize="@dimen/font_size_about" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_table_cell"
-                android:padding="@dimen/margin_between_small_view"
-                android:text="@string/small_over_two_year_dog_age"
-                android:textColor="@color/text"
-                android:textSize="@dimen/font_size_about"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_table_cell"
-                android:padding="@dimen/margin_between_small_view"
-                android:text="@string/normal_over_two_year_dog_age"
-                android:textColor="@color/text"
-                android:textSize="@dimen/font_size_about"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_table_cell"
-                android:padding="@dimen/margin_between_small_view"
-                android:text="@string/large_over_two_year_dog_age"
-                android:textColor="@color/text"
-                android:textSize="@dimen/font_size_about"/>
-        </TableRow>
-    </TableLayout>
+    >
 
     <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/twoBlock"
+        >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_default_between_view"
-            android:text="@string/notice_mark"
-            android:textColor="@color/text"
-            android:textSize="@dimen/font_size_about" />
+            android:layout_marginBottom="@dimen/twoBlock"
+            android:text="@string/about_app"
+            />
 
-        <TextView
+        <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_default_between_view"
-            android:text="@string/about_app_notice"
-            android:textColor="@color/text"
-            android:textSize="@dimen/font_size_about"/>
-    </LinearLayout>
+            android:layout_gravity="center_horizontal"
+            android:background="@color/gray"
+            >
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/margin_between_big_view"
-        android:paddingTop="@dimen/margin_between_big_view"
-        android:scaleType="fitXY"
-        android:src="@android:drawable/divider_horizontal_textfield" />
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_vertical" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TableLabelTextViewStyle"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dog_small"
+                    style="@style/TableLabelTextViewStyle"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dog_normal"
+                    style="@style/TableLabelTextViewStyle"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dog_large"
+                    style="@style/TableLabelTextViewStyle"
+                    />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/lineHalf"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/until_one_year"
+                    style="@style/TableLabelTextViewStyle"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/small_until_one_year_dog_age"
+                    android:layout_marginRight="@dimen/lineHalf"
+                    android:layout_marginEnd="@dimen/lineHalf"
+                    style="@style/TableCellTextViewStyle"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/normal_until_one_year_dog_age"
+                    android:layout_marginRight="@dimen/lineHalf"
+                    android:layout_marginEnd="@dimen/lineHalf"
+                    style="@style/TableCellTextViewStyle"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/large_until_one_year_dog_age"
+                    android:layout_marginRight="@dimen/lineHalf"
+                    android:layout_marginEnd="@dimen/lineHalf"
+                    style="@style/TableCellTextViewStyle"
+                    />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/lineHalf"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/until_two_year"
+                    style="@style/TableLabelTextViewStyle"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/small_until_two_year_dog_age"
+                    android:layout_marginRight="@dimen/lineHalf"
+                    android:layout_marginEnd="@dimen/lineHalf"
+                    style="@style/TableCellTextViewStyle"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/normal_until_two_year_dog_age"
+                    android:layout_marginRight="@dimen/lineHalf"
+                    android:layout_marginEnd="@dimen/lineHalf"
+                    style="@style/TableCellTextViewStyle"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/large_until_two_year_dog_age"
+                    android:layout_marginRight="@dimen/lineHalf"
+                    android:layout_marginEnd="@dimen/lineHalf"
+                    style="@style/TableCellTextViewStyle"
+                    />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/lineHalf"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/over_two_year"
+                    android:layout_marginRight="@dimen/lineHalf"
+                    android:layout_marginEnd="@dimen/lineHalf"
+                    style="@style/TableLabelTextViewStyle"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/small_over_two_year_dog_age"
+                    android:layout_marginRight="@dimen/lineHalf"
+                    android:layout_marginEnd="@dimen/lineHalf"
+                    style="@style/TableCellTextViewStyle"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/normal_over_two_year_dog_age"
+                    android:layout_marginRight="@dimen/lineHalf"
+                    android:layout_marginEnd="@dimen/lineHalf"
+                    style="@style/TableCellTextViewStyle"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/large_over_two_year_dog_age"
+                    android:layout_marginRight="@dimen/lineHalf"
+                    android:layout_marginEnd="@dimen/lineHalf"
+                    style="@style/TableCellTextViewStyle"
+                    />
+
+            </TableRow>
+
+        </TableLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/oneBlock"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notice_mark"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about_app_notice"
+                />
+
+        </LinearLayout>
 
         <ImageView
-            android:layout_width="@dimen/width_logo"
-            android:layout_height="@dimen/width_logo"
-            android:layout_marginRight="@dimen/margin_default_between_view"
-            android:src="@drawable/ic_launcher" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/twoBlock"
+            android:paddingTop="@dimen/twoBlock"
+            android:scaleType="fitXY"
+            android:src="@android:drawable/divider_horizontal_textfield"
+            android:contentDescription="@null"
+            />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            >
 
-            <TextView
+            <ImageView
+                android:layout_width="@dimen/sevenBlock"
+                android:layout_height="@dimen/sevenBlock"
+                android:layout_marginRight="@dimen/oneBlock"
+                android:layout_marginEnd="@dimen/oneBlock"
+                android:src="@drawable/ic_launcher"
+                android:contentDescription="@null"
+                />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/produced_by"
-                android:textColor="@color/text" />
+                android:orientation="vertical"
+                >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:text="@string/url"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/text" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/produced_by"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:text="@string/url"
+                    />
+
+            </LinearLayout>
+
         </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
-
-    </ScrollView>
+</ScrollView>

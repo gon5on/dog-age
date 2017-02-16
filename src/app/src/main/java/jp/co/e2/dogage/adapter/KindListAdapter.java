@@ -1,4 +1,4 @@
-package jp.co.e2.dogage.module;
+package jp.co.e2.dogage.adapter;
 
 import java.util.List;
 

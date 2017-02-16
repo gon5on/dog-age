@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">いくつだワン？</string>
     <string name="action_add">追加</string>
     <string name="action_edit">編集</string>
@@ -28,14 +27,15 @@
     <string name="dog_die_date">ワンちゃんが亡くなった日</string>
     <string name="open_other">▼その他の項目を開く</string>
     <string name="close_other">▲その他の項目を閉じる</string>
-    <string name="notification">お誕生日・命日の通知</string>
+    <string name="notification_birth">お誕生日を通知する</string>
+    <string name="notification_archive">命日を通知する</string>
     <string name="notice_mark">※</string>
     <string name="close_mark">×</string>
     <string name="url">http://www.e-2.co.jp/</string>
     <string name="produced_by">Produced By E2</string>
     <string name="cc_pixel_kit">Edit and delete icons on ActionBar by PixelKit</string>
     <string name="before_del">本当に削除してよろしいですか？</string>
-    <string name="about_app">"いくつだワン？"は、ワンちゃんの年齢・人間に換算した年齢・生まれてからの日数がわかるシンプルなアプリです。\n\n人間に換算した年齢は、以下のように計算しています。\n一般的に、小型犬のほうが成長が早く、老化が遅いと言われています。</string>
+    <string name="about_app">”いくつだワン？”は、ワンちゃんの年齢・人間に換算した年齢・生まれてからの日数がわかるシンプルなアプリです。\n\n人間に換算した年齢は、以下のように計算しています。\n一般的に、小型犬のほうが成長が早く、老化が遅いと言われています。</string>
     <string name="about_app_notice">人間に換算した年齢は、犬種によって差があります。あくまでも目安とお考えください。</string>
     <string name="dog_small">小型犬</string>
     <string name="dog_normal">中型犬</string>

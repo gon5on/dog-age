@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.dialog.KindSelectDialog.CallbackListener;
 import jp.co.e2.dogage.entity.DogMasterEntity;
-import jp.co.e2.dogage.module.KindListAdapter;
+import jp.co.e2.dogage.adapter.KindListAdapter;
 
 import android.app.Dialog;
 import android.content.Context;

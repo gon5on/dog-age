@@ -27,10 +27,10 @@ public class SettingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_common);
 
-        if (savedInstanceState == null) {
-            //アクションバーをセットする
-            setBackArrowToolbar();
+        //アクションバーをセットする
+        setBackArrowToolbar();
 
+        if (savedInstanceState == null) {
             getFragmentManager().beginTransaction().add(R.id.container, new AboutFragment()).commit();
         }
     }
@@ -64,9 +64,6 @@ public class SettingActivity extends BaseActivity {
 
             mView = inflater.inflate(R.layout.fragment_setting, container, false);
 
-            // fragment再生成抑止
-            setRetainInstance(true);
-
             //コンテンツセット
             setContent();
 
@@ -80,9 +77,9 @@ public class SettingActivity extends BaseActivity {
          * コンテンツをセットする
          */
         private void setContent() {
-            //通知チェックボックス
+            //誕生日通知チェックボックス
             boolean value = PreferenceUtils.get(getActivity(), Config.PREF_NOTIFICATION, true);
-            CheckBox checkBoxNotification = (CheckBox) mView.findViewById(R.id.checkBoxNotification);
+            CheckBox checkBoxNotification = (CheckBox) mView.findViewById(R.id.checkBoxBirthNotification);
             checkBoxNotification.setChecked(value);
         }
 
@@ -96,7 +93,7 @@ public class SettingActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     //値保存
-                    CheckBox checkBoxNotification = (CheckBox) mView.findViewById(R.id.checkBoxNotification);
+                    CheckBox checkBoxNotification = (CheckBox) mView.findViewById(R.id.checkBoxBirthNotification);
                     boolean value = checkBoxNotification.isChecked();
                     PreferenceUtils.save(getActivity(), Config.PREF_NOTIFICATION, value);
 

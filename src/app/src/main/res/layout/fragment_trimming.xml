@@ -1,53 +1,58 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/twoBlock"
+    >
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/width_zero"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linearLayout"
+        >
 
         <com.isseiaoki.simplecropview.CropImageView
-            android:id="@+id/cropImageView"
             xmlns:custom="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cropImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             custom:cropMode="ratio_1_1"
-            android:padding="@dimen/margin_default_container"
-            android:layout_gravity="center"/>
+            />
+
     </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayout"
-        android:layout_margin="@dimen/margin_default_container">
+        android:layout_marginTop="@dimen/twoBlock"
+        android:layout_alignParentBottom="true"
+        >
 
         <Button
             android:id="@+id/buttonRotate"
-            android:layout_width="@dimen/width_zero"
+            android:layout_width="@dimen/zero"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/btn2"
             android:text="@string/rotate"
-            android:textColor="@color/text_button"
-            android:textSize="@dimen/font_size_default_button"
+            android:layout_marginRight="@dimen/halfBlock"
+            android:layout_marginEnd="@dimen/halfBlock"
             android:layout_weight="1"
-            android:layout_marginRight="@dimen/margin_between_small_view"/>
+            style="@style/LightBrownButtonStyle"
+            />
 
         <Button
             android:id="@+id/buttonOk"
-            android:layout_width="@dimen/width_zero"
+            android:layout_width="@dimen/zero"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/btn"
             android:text="@string/ok"
-            android:textColor="@color/text_button"
-            android:textSize="@dimen/font_size_default_button"
-            android:layout_marginLeft="@dimen/margin_between_small_view"
-            android:layout_weight="1"/>
+            android:layout_marginLeft="@dimen/halfBlock"
+            android:layout_marginStart="@dimen/halfBlock"
+            android:layout_weight="1"
+            />
+
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

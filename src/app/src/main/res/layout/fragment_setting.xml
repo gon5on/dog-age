@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="@dimen/margin_default_container" >
+    android:padding="@dimen/twoBlock"
+    >
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/oneBlock"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notification_birth"
+            style="@style/LabelTextViewStyle"
+            />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBoxBirthNotification"
+            android:layout_alignParentRight="true"
+            android:checked="false"
+            />
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:orientation="horizontal"
@@ -15,33 +40,27 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/notification"
-            android:textColor="@color/text"
-            android:textSize="@dimen/font_size_default_title"
-            android:drawableLeft="@drawable/img_foot"
-            android:drawablePadding="@dimen/margin_default_icon"
-            android:gravity="center_vertical"
-            android:layout_centerVertical="true"/>
+            android:text="@string/notification_archive"
+            style="@style/LabelTextViewStyle"
+            />
 
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/checkBoxNotification"
+            android:id="@+id/checkBoxArciveNotification"
             android:layout_alignParentRight="true"
-            android:checked="false"/>
+            android:checked="false"
+            />
+
     </RelativeLayout>
 
     <Button
         android:id="@+id/buttonSave"
-        android:layout_width="@dimen/width_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/btn"
+        android:layout_marginTop="@dimen/twoBlock"
         android:text="@string/save"
-        android:textColor="@color/text_button"
-        android:textSize="@dimen/font_size_default_button"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
         />
 
-</RelativeLayout>
+</LinearLayout>
