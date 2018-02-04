@@ -10,7 +10,18 @@ import jp.co.e2.dogage.config.Config;
 public class DogMasterEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private static final String[] LINE_PATTERN = {"^[あ-お]+$", "^[か-こが-ご]+$", "^[さ-そざ-ぞ]+$", "^[た-とだ-ど]+$", "^[な-の]+$", "^[は-ほば-ぼぱ-ぽ]+$", "^[ま-も]+$", "^[や-よ]+$", "^[ら-ろ]+$", "^[わ-ん]+$"};
+    private static final String[] LINE_PATTERN = {
+            "^[あ-お]+$",
+            "^[か-こが-ご]+$",
+            "^[さ-そざ-ぞ]+$",
+            "^[た-とだ-ど]+$",
+            "^[な-の]+$",
+            "^[は-ほば-ぼぱ-ぽ]+$",
+            "^[ま-も]+$",
+            "^[や-よ]+$",
+            "^[ら-ろ]+$",
+            "^[わ-ん]+$"
+    };
 
     private Integer mId;                                        //ID
     private String mKind;                                       //種類名

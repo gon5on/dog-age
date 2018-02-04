@@ -4,14 +4,19 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.support.design.widget.Snackbar;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.concurrent.atomic.AtomicInteger;
+
+import jp.co.e2.dogage.R;
 
 /**
  * Android独自の便利なものまとめたクラス
@@ -165,5 +170,37 @@ public class AndroidUtils {
         } else {
             return View.generateViewId();
         }
+    }
+
+    /**
+     * 成功時のスナックバーを表示する
+     *
+     * @param view ビュー
+     * @param text テキスト
+     */
+    public static void showSuccessSnackBarS(View view, String text) {
+        Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_SHORT);
+        snackbar.getView().setBackgroundColor(Color.rgb(60,179,113));
+
+        TextView textView = snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.rgb(255, 255, 255));
+
+        snackbar.show();
+    }
+
+    /**
+     * 失敗時のスナックバーを表示する
+     *
+     * @param view ビュー
+     * @param text テキスト
+     */
+    public static void showErrorSnackBarS(View view, String text) {
+        Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_SHORT);
+        snackbar.getView().setBackgroundColor(Color.rgb(220, 78, 78));
+
+        TextView textView = snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.rgb(255, 255, 255));
+
+        snackbar.show();
     }
 }

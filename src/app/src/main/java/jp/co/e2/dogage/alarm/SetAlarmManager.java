@@ -39,7 +39,7 @@ public class SetAlarmManager {
      */
     public void set() {
         //通知OFFであれば、何もしない
-        if (!PreferenceUtils.get(mContext, Config.PREF_NOTIFICATION, true)) {
+        if (!PreferenceUtils.get(mContext, Config.PREF_BIRTH_NOTIFY_FLG, true)) {
             return;
         }
 

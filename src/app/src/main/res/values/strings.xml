@@ -71,6 +71,9 @@
     <string name="day">日</string>
     <string name="day_count">日目</string>
     <string name="other">その他</string>
+    <string name="change_settings">設定を変更しました</string>
+    <string name="about_calc_age">年齢計算方法について</string>
+    <string name="app_version">アプリバージョン</string>
     <string name="notify_birthday" formatted="false">%s %s お誕生日</string>
     <string name="notify_birthday_sub" formatted="false">%s歳になりました、おめでとうございます！</string>
     <string name="notify_archive" formatted="false">%s %s 命日</string>

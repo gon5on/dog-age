@@ -113,7 +113,7 @@ public class PetEntity implements Serializable {
         String birthdayDisp = "";
 
         try {
-            String unit = context.getResources().getString(R.string.born);
+            String unit = context.getString(R.string.born);
             birthdayDisp = new DateHelper(mBirthday, DateHelper.FMT_DATE).format(DateHelper.FMT_DATE_JP) + unit;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -131,7 +131,7 @@ public class PetEntity implements Serializable {
     public String getPetAgeDisp(Context context) {
         Integer[] age = calcPetAge();
 
-        String ageFormat = context.getResources().getString(R.string.age_format);
+        String ageFormat = context.getString(R.string.age_format);
 
         return String.format(ageFormat, age[0], age[1]);
     }
@@ -177,7 +177,7 @@ public class PetEntity implements Serializable {
             humanAge += month * getDogMaster(context).getAgeOfMonthOverTwoYear();
         }
 
-        return Math.round(humanAge) + context.getResources().getString(R.string.age_about);
+        return Math.round(humanAge) + context.getString(R.string.age_about);
     }
 
     /**
@@ -208,7 +208,7 @@ public class PetEntity implements Serializable {
             e.printStackTrace();
         }
 
-        String unit = context.getResources().getString((getArchiveDate() != null) ? R.string.day : R.string.day_count);
+        String unit = context.getString((getArchiveDate() != null) ? R.string.day : R.string.day_count);
 
         return String.format("%1$,3d", days) + unit;
     }
@@ -238,7 +238,7 @@ public class PetEntity implements Serializable {
      * @return String
      */
     public String getKindDisp(Context context) {
-        String other = context.getResources().getString(R.string.other);
+        String other = context.getString(R.string.other);
 
         //種類にその他という文字列が入っていたら、その他という文字列を取り除く
         if (getDogMaster(context).getKind().contains(other)) {
@@ -289,7 +289,6 @@ public class PetEntity implements Serializable {
      *
      * @param context context
      * @return Bitmap
-     * @throws IOException
      */
     public Bitmap getPhotoBig(Context context) throws IOException {
         String path = Config.getImgDirPath(context) + "/" + Config.getImgFileName(getId());
@@ -309,7 +308,6 @@ public class PetEntity implements Serializable {
      *
      * @param context context
      * @return Bitmap
-     * @throws IOException
      */
     public Bitmap getPhotoThumb(Context context) throws IOException {
         String path = Config.getImgDirPath(context) + "/" + Config.getImgFileName(getId());
@@ -329,7 +327,6 @@ public class PetEntity implements Serializable {
      *
      * @param context context
      * @return Bitmap
-     * @throws IOException
      */
     public Bitmap getPhotoInput(Context context) throws IOException {
         String path = Config.getImgDirPath(context) + "/" + Config.getImgFileName(getId());
@@ -372,7 +369,7 @@ public class PetEntity implements Serializable {
         String archiveDateDisp = "";
 
         try {
-            String unit = context.getResources().getString(R.string.death);
+            String unit = context.getString(R.string.death);
             archiveDateDisp = new DateHelper(mArchiveDate, DateHelper.FMT_DATE).format(DateHelper.FMT_DATE_JP) + unit;
         } catch (ParseException e) {
             e.printStackTrace();

@@ -4,29 +4,28 @@ import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.common.DateHelper;
 import jp.co.e2.dogage.dialog.DatePickerDialog.CallbackListener;
 
+import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TextView;
 
 /**
  * 日付選択ダイアログ
  */
 public class DatePickerDialog extends BaseDialog<CallbackListener> {
-    private Integer mFlg = 0;               //呼び出し元判別用フラグ
+    private static final String PARAM_TITLE = "title";
+    private static final String PARAM_DATE = "date";
 
     /**
-     * インスタンスを返す
+     * ファクトリーメソッド
      *
-     * @param flg 呼び出し元判別用フラグ
      * @param date 日付
      * @param title タイトル
      * @return dialog DatePickerDialog
      */
-    public static DatePickerDialog getInstance(Integer flg, String date, String title) {
+    public static DatePickerDialog newInstance(String date, String title) {
         DatePickerDialog dialog = new DatePickerDialog();
 
         //日付が空で渡ってきたときは、今日の日付を入れておく
@@ -35,9 +34,8 @@ public class DatePickerDialog extends BaseDialog<CallbackListener> {
         }
 
         Bundle bundle = new Bundle();
-        bundle.putInt("flg", flg);
-        bundle.putString("date", date);
-        bundle.putString("title", title);
+        bundle.putString(PARAM_DATE, date);
+        bundle.putString(PARAM_TITLE, title);
         dialog.setArguments(bundle);
 
         return dialog;
@@ -48,50 +46,42 @@ public class DatePickerDialog extends BaseDialog<CallbackListener> {
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        mFlg = getArguments().getInt("flg");
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_datepicker, null);
 
-        //ダイアログ生成
-        Dialog dialog = createDefaultDialog(R.layout.dialog_datepicker);
-
-        //タイトルセット
-        TextView textViewTitle = (TextView) dialog.findViewById(R.id.textViewTitle);
-        textViewTitle.setText(getArguments().getString("title"));
-
-        //日付がわたってきていたらセット
-        final DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.datePicker);
-        if (getArguments().getString("date") != null) {
-            String date[] = getArguments().getString("date").split("-");
+        final DatePicker datePicker = view.findViewById(R.id.datePicker);
+        if (getArguments().containsKey(PARAM_DATE)) {
+            String date[] = getArguments().getString(PARAM_DATE).split("-");
             datePicker.updateDate(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]));
         }
 
-        //ボタンにイベントをセット
-        Button buttonOk = (Button) dialog.findViewById(R.id.buttonOk);
-        buttonOk.setOnClickListener(new OnClickListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(getArguments().getString(PARAM_TITLE));
+        builder.setIcon(R.drawable.img_foot);
+        builder.setView(view);
+
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
                 if (mCallbackListener != null) {
                     Integer year = datePicker.getYear();
                     Integer month = datePicker.getMonth() + 1;
                     Integer day = datePicker.getDayOfMonth();
                     String date = String.format("%d-%02d-%02d", year, month, day);
-                    mCallbackListener.onClickDatePickerDialogOk(mFlg, date);
+                    mCallbackListener.onClickDatePickerDialogOk(getTag(), date);
                 }
-                dismiss();
             }
         });
 
-        Button buttonCancel = (Button) dialog.findViewById(R.id.buttonCancel);
-        buttonCancel.setOnClickListener(new OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
                 if (mCallbackListener != null) {
-                    mCallbackListener.onClickDatePickerDialogCancel(mFlg);
+                    mCallbackListener.onClickDatePickerDialogCancel(getTag());
                 }
-                dismiss();
             }
         });
 
-        return dialog;
+        return builder.create();
     }
 
     /**
@@ -101,16 +91,16 @@ public class DatePickerDialog extends BaseDialog<CallbackListener> {
         /**
          * 日付選択ダイアログでOKが押された
          *
-         * @param flg 呼び出し元判別フラグ
+         * @param tag タグ
          * @param date 日付
          */
-        void onClickDatePickerDialogOk(Integer flg, String date);
+        void onClickDatePickerDialogOk(String tag, String date);
 
         /**
          * 日付選択ダイアログでキャンセルが押された
          *
-         * @param flg 呼び出し元判別フラグ
+         * @param tag タグ
          */
-        void onClickDatePickerDialogCancel(Integer flg);
+        void onClickDatePickerDialogCancel(String tag);
     }
 }

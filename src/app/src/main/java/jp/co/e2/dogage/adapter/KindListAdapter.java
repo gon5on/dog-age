@@ -6,6 +6,7 @@ import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.entity.DogMasterEntity;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +23,9 @@ public class KindListAdapter extends ArrayAdapter<DogMasterEntity> {
      * コンストラクタ
      *
      * @param context コンテキスト
-     * @param layoutId レイアウトのリソースID
      * @param objects 犬マスタデータ
      */
-    public KindListAdapter(Context context, int layoutId, List<DogMasterEntity> objects) {
+    public KindListAdapter(Context context, List<DogMasterEntity> objects) {
         super(context, 0, objects);
 
         if (mInflater == null) {
@@ -37,7 +37,8 @@ public class KindListAdapter extends ArrayAdapter<DogMasterEntity> {
      * ${inheritDoc}
      */
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         // 特定の行(position)のデータを得る
         DogMasterEntity item = getItem(position);
 
@@ -45,10 +46,10 @@ public class KindListAdapter extends ArrayAdapter<DogMasterEntity> {
 
         //頭文字行のラベル
         if (item.getCategory() == null) {
-            TextView textViewKind = (TextView) convertView.findViewById(R.id.textViewKind);
+            TextView textViewKind = convertView.findViewById(R.id.textViewKind);
             textViewKind.setVisibility(View.GONE);
 
-            TextView textViewLabel = (TextView) convertView.findViewById(R.id.textViewLabel);
+            TextView textViewLabel = convertView.findViewById(R.id.textViewLabel);
             textViewLabel.setText(item.getKind());
             textViewLabel.setVisibility(View.VISIBLE);
 
@@ -56,11 +57,11 @@ public class KindListAdapter extends ArrayAdapter<DogMasterEntity> {
         }
         //種類
         else {
-            TextView textViewKind = (TextView) convertView.findViewById(R.id.textViewKind);
+            TextView textViewKind = convertView.findViewById(R.id.textViewKind);
             textViewKind.setVisibility(View.VISIBLE);
             textViewKind.setText(item.getKind());
 
-            TextView textViewLabel = (TextView) convertView.findViewById(R.id.textViewLabel);
+            TextView textViewLabel = convertView.findViewById(R.id.textViewLabel);
             textViewLabel.setVisibility(View.GONE);
         }
 
@@ -74,6 +75,6 @@ public class KindListAdapter extends ArrayAdapter<DogMasterEntity> {
     public boolean isEnabled(int position) {
         DogMasterEntity item = getItem(position);
 
-        return (item.getCategory() != null);
+        return (item != null && item.getCategory() != null);
     }
 }

@@ -3,29 +3,30 @@ package jp.co.e2.dogage.dialog;
 import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.dialog.PhotoDialog.CallbackListener;
 
+import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 
 /**
  * 画像表示ダイアログ
  */
 public class PhotoDialog extends BaseDialog<CallbackListener> {
+    private static final String PARAM_BITMAP = "bitmap";
+
     /**
-     * インスタンスを返す
+     * ファクトリーメソッド
      *
      * @param bitmap ビットマップ
      * @return SampleDialog
      */
-    public static PhotoDialog getInstance(Bitmap bitmap) {
+    public static PhotoDialog newInstance(Bitmap bitmap) {
         PhotoDialog dialog = new PhotoDialog();
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable("bitmap", bitmap);
+        bundle.putParcelable(PARAM_BITMAP, bitmap);
         dialog.setArguments(bundle);
 
         return dialog;
@@ -36,19 +37,20 @@ public class PhotoDialog extends BaseDialog<CallbackListener> {
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        //ダイアログ生成
-        Dialog dialog = createDefaultDialog(R.layout.dialog_photo);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_photo, null);
 
-        //画像セット
-        ImageView imageViewPhoto = (ImageView) dialog.findViewById(R.id.imageViewPhoto);
-        imageViewPhoto.setImageBitmap((Bitmap) getArguments().getParcelable("bitmap"));
+        ImageView imageViewPhoto = view.findViewById(R.id.imageViewPhoto);
+        imageViewPhoto.setImageBitmap((Bitmap) getArguments().getParcelable(PARAM_BITMAP));
 
-        return dialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(view);
+
+        return builder.create();
     }
 
     /**
      * コールバックリスナー
      */
-    public interface CallbackListener {
+    interface CallbackListener {
     }
 }

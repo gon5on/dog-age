@@ -11,6 +11,7 @@ import jp.co.e2.dogage.model.BaseSQLiteOpenHelper;
 import jp.co.e2.dogage.model.PetDao;
 import jp.co.e2.dogage.adapter.PetAgeFragmentPagerAdapter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -26,14 +27,28 @@ import android.widget.LinearLayout;
  * ペット年齢アクテビティ
  */
 public class PetAgeActivity extends BaseActivity implements ConfirmDialog.CallbackListener {
-    public static final String ID = "id";
-    public static final String DATA = "data";
-    public static final String PAGE_NUM = "page_num";
-    public static final String INIT_FLG = "init_flg";
+    private static final String PARAM_PAGE_NUM = "page_num";
+    private static final String PARAM_DATA = "data";
+    private static final int REQUEST_CODE_ADD = 1;
+    private static final int REQUEST_CODE_EDIT = 2;
 
-    private PetAgeFragmentPagerAdapter mAdapter = null;      // ページアダプター
     private Integer mPageNum = 0;                            // 現在表示中のページ数
     private ArrayList<PetEntity> mData = null;               // ペット情報一覧
+
+    /**
+     * ファクトリーメソッドもどき
+     *
+     * @param activity アクテビティ
+     * @param pageNum 表示対象のページ数
+     * @return intent
+     */
+    public static Intent newInstance(Activity activity, int pageNum) {
+        Intent intent = new Intent(activity, InputActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(PARAM_PAGE_NUM, pageNum);
+
+        return intent;
+    }
 
     /**
      * ${inheritDoc}
@@ -47,9 +62,7 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
         setToolbar();
 
         //ページ数が渡ってきたら取得する
-        if (getIntent().hasExtra(PAGE_NUM)) {
-            mPageNum = getIntent().getIntExtra(PAGE_NUM, 0);
-        }
+        mPageNum = getIntent().getIntExtra(PARAM_PAGE_NUM, 0);
 
         if (savedInstanceState == null) {
             //通知を消す
@@ -61,14 +74,11 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
 
             //データがない場合は入力画面に飛ばす
             if (mData.size() == 0) {
-                Intent intent = new Intent(PetAgeActivity.this, InputActivity.class);
-                intent.putExtra(INIT_FLG, 1);
-                startActivity(intent);
-                finish();
-                return;
+                Intent intent = InputActivity.newInstance(PetAgeActivity.this, true, 0, null);
+                startActivityForResult(intent, REQUEST_CODE_ADD);
             }
         } else {
-            mData = (ArrayList<PetEntity>) savedInstanceState.getSerializable(DATA);
+            mData = (ArrayList<PetEntity>) savedInstanceState.getSerializable(PARAM_DATA);
         }
 
         createViewPager();
@@ -93,34 +103,26 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
 
         //追加
         if (id == R.id.action_add) {
-            Intent intent = new Intent(PetAgeActivity.this, InputActivity.class);
-            startActivity(intent);
+            Intent intent = InputActivity.newInstance(PetAgeActivity.this, false, 0, null);
+            startActivityForResult(intent, REQUEST_CODE_ADD);
         }
         //編集
         else if (id == R.id.action_edit) {
-            Intent intent = new Intent(PetAgeActivity.this, InputActivity.class);
-            intent.putExtra(PAGE_NUM, mPageNum);
-            intent.putExtra(DATA, mData.get(mPageNum));
-            startActivity(intent);
+            Intent intent = InputActivity.newInstance(PetAgeActivity.this, false, mPageNum, mData.get(mPageNum));
+            startActivityForResult(intent, REQUEST_CODE_EDIT);
         }
         //削除
         else if (id == R.id.action_delete) {
-            String title = getResources().getString(R.string.confirm);
-            String msg = getResources().getString(R.string.before_del);
+            String title = getString(R.string.confirm);
+            String msg = getString(R.string.before_del);
 
-            ConfirmDialog confirmDialog = ConfirmDialog.getInstance(title, msg);
+            ConfirmDialog confirmDialog = ConfirmDialog.newInstance(title, msg);
             confirmDialog.setCallbackListener(this);
             confirmDialog.show(getFragmentManager(), "dialog");
         }
-        //アプリについて
+        //設定
         else if (id == R.id.action_setting) {
-            Intent intent = new Intent(PetAgeActivity.this, SettingActivity.class);
-            startActivity(intent);
-        }
-        //アプリについて
-        else if (id == R.id.action_about) {
-            Intent intent = new Intent(PetAgeActivity.this, AboutActivity.class);
-            startActivity(intent);
+            startActivity(SettingActivity.newInstance(PetAgeActivity.this));
         }
 
         return super.onOptionsItemSelected(item);
@@ -133,33 +135,23 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putSerializable(DATA, mData);
+        outState.putSerializable(PARAM_DATA, mData);
     }
 
     /**
-     * ページャ作成
+     * ${inheritDoc}
      */
-    private void createViewPager() {
-        // ページングを動的に生成
-        createPaging();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_ADD || requestCode == REQUEST_CODE_EDIT) {
+            if (resultCode == RESULT_OK) {
+                View view = findViewById(android.R.id.content);
+                AndroidUtils.showSuccessSnackBarS(view, getString(R.string.save_success));
 
-        // ページアダプタ生成
-        mAdapter = new PetAgeFragmentPagerAdapter(getSupportFragmentManager());
-        mAdapter.addAll(mData);
-
-        // ページアダプタをセット
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setAdapter(mAdapter);
-        viewPager.setCurrentItem(mPageNum);
-
-        // ページフリック遷移のイベントを受け取る
-        viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                mPageNum = position;
-                flickEvent();
+                getPetList();
+                createViewPager();
             }
-        });
+        }
     }
 
     /**
@@ -185,6 +177,29 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
     }
 
     /**
+     * ページャ作成
+     */
+    private void createViewPager() {
+        // ページングを動的に生成
+        createPaging();
+
+        PetAgeFragmentPagerAdapter adapter = new PetAgeFragmentPagerAdapter(getSupportFragmentManager(), mData);
+
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(mPageNum);
+
+        // ページフリック遷移のイベントを受け取る
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                mPageNum = position;
+                flickEvent();
+            }
+        });
+    }
+
+    /**
      * ページングの○を動的にページ分生成
      */
     private void createPaging() {
@@ -192,7 +207,7 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
             return;
         }
 
-        LinearLayout linearLayoutPager = (LinearLayout) findViewById(R.id.linearLayoutPager);
+        LinearLayout linearLayoutPager = findViewById(R.id.linearLayoutPager);
         linearLayoutPager.removeAllViewsInLayout();
 
         //1匹の場合はページングを表示しない
@@ -225,18 +240,18 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
             return;
         }
 
-        ImageView now = (ImageView) findViewById(mPageNum);
+        ImageView now = findViewById(mPageNum);
         now.setImageResource(R.drawable.img_page_on);
 
         if (mPageNum == 0) {
-            ImageView next = (ImageView) findViewById(mPageNum + 1);
+            ImageView next = findViewById(mPageNum + 1);
             next.setImageResource(R.drawable.img_page_off);
-        } else if (mPageNum == mAdapter.getCount() - 1) {
-            ImageView back = (ImageView) findViewById(mPageNum - 1);
+        } else if (mPageNum == mData.size() - 1) {
+            ImageView back = findViewById(mPageNum - 1);
             back.setImageResource(R.drawable.img_page_off);
         } else {
-            ImageView next = (ImageView) findViewById(mPageNum + 1);
-            ImageView back = (ImageView) findViewById(mPageNum - 1);
+            ImageView next = findViewById(mPageNum + 1);
+            ImageView back = findViewById(mPageNum - 1);
             next.setImageResource(R.drawable.img_page_off);
             back.setImageResource(R.drawable.img_page_off);
         }
@@ -246,7 +261,7 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
      * ${inheritDoc}
      */
     @Override
-    public void onClickConfirmDialogOk() {
+    public void onClickConfirmDialogOk(String tag) {
         SQLiteDatabase db = null;
 
         try {
@@ -256,18 +271,16 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
             PetDao petDao = new PetDao(getApplicationContext());
 
             if (petDao.deleteById(db, mData.get(mPageNum).getId())) {
-                String msg = getResources().getString(R.string.delete_success);
-                AndroidUtils.showToastS(getApplicationContext(), msg);
+                View view = findViewById(android.R.id.content);
+                AndroidUtils.showSuccessSnackBarS(view, getString(R.string.delete_success));
 
-                Intent intent = new Intent(this, PetAgeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra(PetAgeActivity.PAGE_NUM, (mPageNum != 0) ? (mPageNum - 1) : 0);
-                startActivity(intent);
+                getPetList();
+                createViewPager();
             } else {
-                String title = getResources().getString(R.string.error);
-                String msg = getResources().getString(R.string.delete_fail);
+                String title = getString(R.string.error);
+                String msg = getString(R.string.delete_fail);
 
-                ErrorDialog errorDialog = ErrorDialog.getInstance(title, msg);
+                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
             }
         } catch (Exception e) {
@@ -283,6 +296,6 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
      * ${inheritDoc}
      */
     @Override
-    public void onClickConfirmDialogCancel() {
+    public void onClickConfirmDialogCancel(String tag) {
     }
 }

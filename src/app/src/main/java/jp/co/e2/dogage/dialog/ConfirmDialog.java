@@ -4,29 +4,30 @@ import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.dialog.ConfirmDialog.CallbackListener;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
+import android.support.v7.app.AlertDialog;
 
 /**
  * 確認ダイアログ
  */
 public class ConfirmDialog extends BaseDialog<CallbackListener> {
+    private static final String PARAM_TITLE = "title";
+    private static final String PARAM_MSG = "msg";
+
     /**
-     * インスタンスを返す
+     * ファクトリーメソッド
      *
      * @param title タイトル
      * @param msg 本文
      * @return dialog ConfirmDialog
      */
-    public static ConfirmDialog getInstance(String title, String msg) {
+    public static ConfirmDialog newInstance(String title, String msg) {
         ConfirmDialog dialog = new ConfirmDialog();
 
         Bundle bundle = new Bundle();
-        bundle.putString("title", title);
-        bundle.putString("msg", msg);
+        bundle.putString(PARAM_TITLE, title);
+        bundle.putString(PARAM_MSG, msg);
         dialog.setArguments(bundle);
 
         return dialog;
@@ -37,41 +38,30 @@ public class ConfirmDialog extends BaseDialog<CallbackListener> {
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        //ダイアログ生成
-        Dialog dialog = createDefaultDialog(R.layout.dialog_confirm);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(getArguments().getString(PARAM_TITLE));
+        builder.setIcon(R.drawable.img_foot);
+        builder.setMessage(getArguments().getString(PARAM_MSG));
 
-        //タイトルセット
-        TextView textViewTitle = (TextView) dialog.findViewById(R.id.textViewTitle);
-        textViewTitle.setText(getArguments().getString("title"));
-
-        //テキストセット
-        TextView textViewMsg = (TextView) dialog.findViewById(R.id.textViewMsg);
-        textViewMsg.setText(getArguments().getString("msg"));
-
-        //ボタンにイベントをセット
-        Button buttonOk = (Button) dialog.findViewById(R.id.buttonOk);
-        buttonOk.setOnClickListener(new OnClickListener() {
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
                 if (mCallbackListener != null) {
-                    mCallbackListener.onClickConfirmDialogOk();
+                    mCallbackListener.onClickConfirmDialogOk(getTag());
                 }
-                dismiss();
             }
         });
 
-        Button buttonCancel = (Button) dialog.findViewById(R.id.buttonCancel);
-        buttonCancel.setOnClickListener(new OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
                 if (mCallbackListener != null) {
-                    mCallbackListener.onClickConfirmDialogCancel();
+                    mCallbackListener.onClickConfirmDialogCancel(getTag());
                 }
-                dismiss();
             }
         });
 
-        return dialog;
+        return builder.create();
     }
 
     /**
@@ -80,12 +70,16 @@ public class ConfirmDialog extends BaseDialog<CallbackListener> {
     public interface CallbackListener {
         /**
          * 確認ダイアログでOKが押された
+         *
+         * @param tag タグ
          */
-        void onClickConfirmDialogOk();
+        void onClickConfirmDialogOk(String tag);
 
         /**
          * 確認ダイアログでキャンセルが押された
+         *
+         * @param tag タグ
          */
-        void onClickConfirmDialogCancel();
+        void onClickConfirmDialogCancel(String tag);
     }
 }

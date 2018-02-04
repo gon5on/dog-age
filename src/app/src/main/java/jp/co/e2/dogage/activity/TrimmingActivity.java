@@ -25,10 +25,10 @@ import jp.co.e2.dogage.config.Config;
  */
 public class TrimmingActivity extends BaseActivity {
     public static final String TRIMMING_RESULT = "trimming_result";
-    public static final String PATH = "path";
+    private static final String PARAM_PATH = "path";
 
     /**
-     * ファクトリーメソッド
+     * ファクトリーメソッドもどき
      *
      * @param activity アクティビティ
      * @param path 画像パス
@@ -36,7 +36,7 @@ public class TrimmingActivity extends BaseActivity {
      */
     public static Intent getInstance(Activity activity, String path) {
         Intent intent = new Intent(activity, TrimmingActivity.class);
-        intent.putExtra(PATH, path);
+        intent.putExtra(PARAM_PATH, path);
 
         return intent;
     }
@@ -53,13 +53,7 @@ public class TrimmingActivity extends BaseActivity {
         setBackArrowToolbar();
 
         if (savedInstanceState == null) {
-            String path = getIntent().getStringExtra(PATH);
-
-            TrimmingFragment fragment = new TrimmingFragment();
-            Bundle args = new Bundle();
-            args.putString(PATH, path);
-            fragment.setArguments(args);
-
+            Fragment fragment = TrimmingFragment.newInstance(getIntent().getStringExtra(PARAM_PATH));
             getFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
         }
     }
@@ -83,6 +77,22 @@ public class TrimmingActivity extends BaseActivity {
      */
     public static class TrimmingFragment extends Fragment {
         private View mView = null;
+
+        /**
+         *  ファクトリーメソッド
+         *
+         * @param path パス
+         * @return TrimmingFragment
+         */
+        public static TrimmingFragment newInstance(String path) {
+            Bundle args = new Bundle();
+            args.putString(PARAM_PATH, path);
+
+            TrimmingFragment fragment = new TrimmingFragment();
+            fragment.setArguments(args);
+
+            return fragment;
+        }
 
         /**
          * ${inheritDoc}
@@ -109,7 +119,7 @@ public class TrimmingActivity extends BaseActivity {
             //元画像取得
             Bitmap bitmap;
             try {
-                String path = getArguments().getString(PATH);
+                String path = getArguments().getString(PARAM_PATH);
                 ImgHelper imgHelper = new ImgHelper(path);
                 bitmap = imgHelper.getBitmap();
             } catch (IOException e) {
@@ -123,7 +133,7 @@ public class TrimmingActivity extends BaseActivity {
             }
 
             //画像をセット
-            CropImageView cropImageView = (CropImageView) mView.findViewById(R.id.cropImageView);
+            CropImageView cropImageView = mView.findViewById(R.id.cropImageView);
             cropImageView.setImageBitmap(bitmap);
             cropImageView.setFrameColor(getResources().getColor(R.color.green));
             cropImageView.setHandleColor(getResources().getColor(R.color.green));
@@ -134,10 +144,10 @@ public class TrimmingActivity extends BaseActivity {
          * クリックイベントをセットする
          */
         private void setClickEvent() {
-            final CropImageView cropImageView = (CropImageView) mView.findViewById(R.id.cropImageView);
+            final CropImageView cropImageView = mView.findViewById(R.id.cropImageView);
 
             //回転ボタン
-            Button buttonRotate = (Button) mView.findViewById(R.id.buttonRotate);
+            Button buttonRotate = mView.findViewById(R.id.buttonRotate);
             buttonRotate.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -146,7 +156,7 @@ public class TrimmingActivity extends BaseActivity {
             });
 
             //OKボタン
-            Button buttonOk = (Button) mView.findViewById(R.id.buttonOk);
+            Button buttonOk = mView.findViewById(R.id.buttonOk);
             buttonOk.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

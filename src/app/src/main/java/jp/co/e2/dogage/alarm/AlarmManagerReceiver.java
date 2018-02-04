@@ -39,7 +39,7 @@ public class AlarmManagerReceiver extends BroadcastReceiver {
         new SetAlarmManager(context).set();
 
         //通知設定がOFF
-        if (!PreferenceUtils.get(context, Config.PREF_NOTIFICATION, true)) {
+        if (!PreferenceUtils.get(context, Config.PREF_BIRTH_NOTIFY_FLG, true)) {
             return;
         }
 
@@ -79,21 +79,21 @@ public class AlarmManagerReceiver extends BroadcastReceiver {
         Bitmap largeIcon;
 
         if (data.getArchiveDate() != null) {
-            message = context.getResources().getString(R.string.notify_archive);
+            message = context.getString(R.string.notify_archive);
             message = String.format(message, new DateHelper().format(DISP_DATE_FORMAT), data.getName());
-            subMessage = context.getResources().getString(R.string.notify_archive_sub);
+            subMessage = context.getString(R.string.notify_archive_sub);
             subMessage = String.format(subMessage, data.getArchiveAge());
             largeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notification_large_archive);
         }
         else {
-            message = context.getResources().getString(R.string.notify_birthday);
+            message = context.getString(R.string.notify_birthday);
             message = String.format(message, new DateHelper().format(DISP_DATE_FORMAT), data.getName());
-            subMessage = context.getResources().getString(R.string.notify_birthday_sub);
+            subMessage = context.getString(R.string.notify_birthday_sub);
             subMessage = String.format(subMessage, data.getPetAge());
             largeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notification_large);
         }
 
-        Intent intent = new Intent(context, PetAgeActivity.class);
+        /*Intent intent = new Intent(context, PetAgeActivity.class);
         intent.putExtra(PetAgeActivity.ID, data.getId());
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
@@ -105,7 +105,7 @@ public class AlarmManagerReceiver extends BroadcastReceiver {
         builder.setContentIntent(pendingIntent);
         builder.setDefaults(Notification.DEFAULT_ALL);
         NotificationManagerCompat manager = NotificationManagerCompat.from(context);
-        manager.notify(data.getId(), builder.build());
+        manager.notify(data.getId(), builder.build());*/
     }
 
     /**

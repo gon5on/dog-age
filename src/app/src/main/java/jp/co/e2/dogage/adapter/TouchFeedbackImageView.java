@@ -7,12 +7,12 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.ImageView;
+import android.support.v7.widget.AppCompatImageView;
 
 /**
  * タップ時に色が少し濃くなるフィードバックがついているImageView
  */
-public class TouchFeedbackImageView extends ImageView implements OnTouchListener {
+public class TouchFeedbackImageView extends AppCompatImageView implements OnTouchListener {
     /**
      * コンテキスト
      *
@@ -75,7 +75,7 @@ public class TouchFeedbackImageView extends ImageView implements OnTouchListener
      * @param v View
      */
     public void shadeOn(View v) {
-        ((ImageView) v).setColorFilter(new LightingColorFilter(Color.LTGRAY, 0));
+        ((AppCompatImageView) v).setColorFilter(new LightingColorFilter(Color.LTGRAY, 0));
     }
 
     /**
@@ -84,6 +84,6 @@ public class TouchFeedbackImageView extends ImageView implements OnTouchListener
      * @param v View
      */
     public void shadeOff(View v) {
-        ((ImageView) v).clearColorFilter();
+        ((AppCompatImageView) v).clearColorFilter();
     }
 }

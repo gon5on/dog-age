@@ -1,6 +1,7 @@
 package jp.co.e2.dogage.dialog;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -14,26 +15,11 @@ import android.widget.LinearLayout.LayoutParams;
  * ダイアログ基底クラス
  */
 public abstract class BaseDialog<Interface> extends DialogFragment {
-    public static final int LISTENER_ACTIVITY = 1;
-    public static final int LISTENER_FRAGMENT = 2;
+    private static final String PARAM_LISTENER_TYPE = "listenerType";
+    private static final int LISTENER_ACTIVITY = 1;
+    private static final int LISTENER_FRAGMENT = 2;
 
     protected Interface mCallbackListener = null;
-
-    /**
-     * 基本ダイアログ作成
-     *
-     * @param layoutId レイアウトリソースID
-     * @return Dialog dialog
-     */
-    protected Dialog createDefaultDialog(int layoutId) {
-        Dialog dialog = new Dialog(getActivity());
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(layoutId);
-        dialog.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-
-        return dialog;
-    }
 
     /**
      * ${inheritDoc}
@@ -43,7 +29,7 @@ public abstract class BaseDialog<Interface> extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        Integer listenerType = getArguments().getInt("listenerType");
+        Integer listenerType = getArguments().getInt(PARAM_LISTENER_TYPE);
 
         if (listenerType == BaseDialog.LISTENER_ACTIVITY) {
             mCallbackListener = (Interface) activity;
@@ -73,7 +59,7 @@ public abstract class BaseDialog<Interface> extends DialogFragment {
         }
 
         Bundle bundle = getArguments();
-        bundle.putInt("listenerType", listenerType);
+        bundle.putInt(PARAM_LISTENER_TYPE, listenerType);
         setArguments(bundle);
     }
 

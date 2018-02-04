@@ -3,6 +3,7 @@
     <dimen name="zero">0dp</dimen>
     <dimen name="halfBlock">4dp</dimen>
     <dimen name="oneBlock">8dp</dimen>
+    <dimen name="oneHalfBlock">12dp</dimen>
     <dimen name="twoBlock">16dp</dimen>
     <dimen name="threeBlock">24dp</dimen>
     <dimen name="fourBlock">32dp</dimen>

@@ -28,9 +28,11 @@ import jp.co.e2.dogage.validate.ValidateRequire;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -53,6 +55,28 @@ import android.widget.LinearLayout;
  * 入力画面アクテビティ
  */
 public class InputActivity extends BaseActivity {
+    private static final String PARAM_DATA = "data";
+    private static final String PARAM_PAGE_NUM = "page_num";
+    private static final String PARAM_INIT_FLG = "init_flg";
+
+    /**
+     * ファクトリーメソッドもどき
+     *
+     * @param activity アクテビティ
+     * @param initFlg 初期フラグ
+     * @param pageNum 表示対象のページ数
+     * @param data エンティティ
+     * @return intent
+     */
+    public static Intent newInstance(Activity activity, boolean initFlg, int pageNum, PetEntity data) {
+        Intent intent = new Intent(activity, InputActivity.class);
+        intent.putExtra(PARAM_INIT_FLG, initFlg);
+        intent.putExtra(PARAM_PAGE_NUM, pageNum);
+        intent.putExtra(PARAM_DATA, data);
+
+        return intent;
+    }
+
     /**
      * ${inheritDoc}
      */
@@ -62,23 +86,17 @@ public class InputActivity extends BaseActivity {
         setContentView(R.layout.activity_common);
 
         //アクションバーをセットする
-        if (getIntent().getBooleanExtra(PetAgeActivity.INIT_FLG, false)) {
+        if (getIntent().getBooleanExtra(PARAM_INIT_FLG, false)) {
             setToolbar();
         } else {
             setBackArrowToolbar();
         }
 
         if (savedInstanceState == null) {
-            //編集の場合は値がわたってくる
-            PetEntity savedItem = (PetEntity) getIntent().getSerializableExtra(PetAgeActivity.DATA);
-            Integer pageNum = getIntent().getIntExtra(PetAgeActivity.PAGE_NUM, 0);
+            PetEntity data = (PetEntity) getIntent().getSerializableExtra(PARAM_DATA);
+            Integer pageNum = getIntent().getIntExtra(PARAM_PAGE_NUM, 0);
 
-            InputFragment fragment = new InputFragment();
-            Bundle args = new Bundle();
-            args.putSerializable(PetAgeActivity.DATA, savedItem);
-            args.putInt(PetAgeActivity.PAGE_NUM, pageNum);
-            fragment.setArguments(args);
-
+            Fragment fragment = InputFragment.newInstance(pageNum, data);
             getFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
         }
     }
@@ -103,13 +121,34 @@ public class InputActivity extends BaseActivity {
     public static class InputFragment extends Fragment
             implements KindSelectDialog.CallbackListener, DatePickerDialog.CallbackListener, PopupMenu.OnMenuItemClickListener {
 
-        private static final Integer DIALOG_BIRTHDAY_FLG = 1;
-        private static final Integer DIALOG_ARCHIVE_FLG = 2;
+        private static final String TAG_DIALOG_BIRTHDAY = "birthday";
+        private static final String TAG_DIALOG_ARCHIVE = "archive";
 
         private View mView = null;
         private PetEntity mPetEntity;
         private Uri mPhotoUri = null;
-        private Boolean mArchiveOpenFlg = false;
+        private boolean mArchiveOpenFlg = false;
+
+        /**
+         * ファクトリーメソッド
+         *
+         * @param pageNum 表示対象のページ数
+         * @param data エンティティ
+         * @return intent
+         */
+        public static Fragment newInstance(int pageNum, PetEntity data) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(PARAM_PAGE_NUM, pageNum);
+
+            if (data != null) {
+                bundle.putSerializable(PARAM_DATA, data);
+            }
+
+            Fragment fragment = new InputFragment();
+            fragment.setArguments(bundle);
+
+            return fragment;
+        }
 
         /**
          * ${inheritDoc}
@@ -119,6 +158,16 @@ public class InputActivity extends BaseActivity {
             super.onCreate(savedInstanceState);
 
             mView = inflater.inflate(R.layout.fragment_input, container, false);
+
+            if (savedInstanceState == null) {
+                if (getArguments().containsKey(PARAM_DATA)) {
+                    mPetEntity = (PetEntity) getArguments().getSerializable(PARAM_DATA);
+                } else {
+                    mPetEntity = new PetEntity();
+                }
+            } else {
+                mPetEntity = (PetEntity) savedInstanceState.getSerializable(PARAM_DATA);
+            }
 
             //値を画面にセットする
             setItem();
@@ -138,6 +187,8 @@ public class InputActivity extends BaseActivity {
         @Override
         public void onSaveInstanceState(Bundle outState) {
             super.onSaveInstanceState(outState);
+
+            outState.putSerializable(PARAM_DATA, mPetEntity);
         }
 
         /**
@@ -182,25 +233,25 @@ public class InputActivity extends BaseActivity {
 
                 startActivityForResult(TrimmingActivity.getInstance(getActivity(), savePath), Config.INTENT_CODE_TRIMMING);
 
-                String msg = getResources().getString(R.string.lets_trimming_photo);
+                String msg = getString(R.string.lets_trimming_photo);
                 AndroidUtils.showToastL(getActivity(), msg);
 
             }
             //ギャラリーから選択した画像一時保存に失敗
             catch (IOException e){
-                String title = getResources().getString(R.string.error);
-                String msg = getResources().getString(R.string.save_photo_fail);
+                String title = getString(R.string.error);
+                String msg = getString(R.string.save_photo_fail);
 
-                ErrorDialog errorDialog = ErrorDialog.getInstance(title, msg);
+                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
                 e.printStackTrace();
             }
             //トリミングインテントに反応するアクテビティがなくてエラー
             catch (ActivityNotFoundException e) {
-                String title = getResources().getString(R.string.error);
-                String msg = getResources().getString(R.string.no_trimming_app);
+                String title = getString(R.string.error);
+                String msg = getString(R.string.no_trimming_app);
 
-                ErrorDialog errorDialog = ErrorDialog.getInstance(title, msg);
+                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
                 e.printStackTrace();
             }
@@ -226,17 +277,15 @@ public class InputActivity extends BaseActivity {
                 Integer size = AndroidUtils.dpToPixel(getActivity(), Config.PHOTO_INPUT_DP);
                 Bitmap bitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(getActivity()));
 
-                imgUtils = null;
-
                 //画像を表示
-                ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+                ImageView imageViewPhoto = mView.findViewById(R.id.imageViewPhoto);
                 imageViewPhoto.setImageBitmap(bitmap);
 
             } catch (Exception e) {
-                String title = getResources().getString(R.string.error);
-                String msg = getResources().getString(R.string.trimming_fail);
+                String title = getString(R.string.error);
+                String msg = getString(R.string.trimming_fail);
 
-                ErrorDialog errorDialog = ErrorDialog.getInstance(title, msg);
+                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
                 e.printStackTrace();
             }
@@ -246,17 +295,15 @@ public class InputActivity extends BaseActivity {
          * 値を画面にセットする
          */
         private void setItem() {
-            mPetEntity = (PetEntity) getArguments().getSerializable(PetAgeActivity.DATA);
-
             try {
                 //編集の場合
-                if (mPetEntity != null) {
+                if (mPetEntity.getId() != null) {
                     setDateToButton(R.id.buttonBirthday, mPetEntity.getBirthday());
 
-                    Button buttonKind = (Button) mView.findViewById(R.id.buttonKind);
+                    Button buttonKind = mView.findViewById(R.id.buttonKind);
                     buttonKind.setText(mPetEntity.getKindDisp(getActivity().getApplicationContext()));
 
-                    EditText editTextName = (EditText) mView.findViewById(R.id.editTextName);
+                    EditText editTextName = mView.findViewById(R.id.editTextName);
                     editTextName.setText(mPetEntity.getName());
 
                     if (mPetEntity.getArchiveDate() != null) {
@@ -265,18 +312,18 @@ public class InputActivity extends BaseActivity {
                     }
 
                     if (mPetEntity.getPhotoFlg()) {
-                        ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+                        ImageView imageViewPhoto = mView.findViewById(R.id.imageViewPhoto);
                         imageViewPhoto.setImageBitmap(mPetEntity.getPhotoInput(getActivity()));
                     }
                 }
 
                 //画像がない場合、NO PHOTOを角丸の画像にする
-                if (mPetEntity == null || !mPetEntity.getPhotoFlg()) {
+                if (!mPetEntity.getPhotoFlg()) {
                     setNoPhoto();
                 }
 
                 //アーカイブ関連を制御する
-                if (mPetEntity == null || mPetEntity.getArchiveDate() == null) {
+                if (mPetEntity.getArchiveDate() == null) {
                     mArchiveOpenFlg = true;
 
                     setClearButton(false);
@@ -295,9 +342,7 @@ public class InputActivity extends BaseActivity {
                 ImgHelper imgUtils = new ImgHelper(getActivity(), R.drawable.img_no_photo);
                 Bitmap bitmap = imgUtils.getKadomaruBitmap(Config.getKadomaruPixcel(getActivity()));
 
-                imgUtils = null;
-
-                ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+                ImageView imageViewPhoto = mView.findViewById(R.id.imageViewPhoto);
                 imageViewPhoto.setImageBitmap(bitmap);
 
             } catch (IOException e) {
@@ -314,9 +359,9 @@ public class InputActivity extends BaseActivity {
         private void setDateToButton(Integer resId, String date) {
             String[] dateArray = date.split("-");
 
-            String dateFormat = getResources().getString(R.string.date_format);
+            String dateFormat = getString(R.string.date_format);
 
-            Button button = (Button) mView.findViewById(resId);
+            Button button = mView.findViewById(resId);
             button.setText(String.format(dateFormat, dateArray[0], dateArray[1], dateArray[2]));
         }
 
@@ -325,17 +370,17 @@ public class InputActivity extends BaseActivity {
          *
          * @param flg 表示フラグ
          */
-        private void setClearButton(Boolean flg) {
+        private void setClearButton(boolean flg) {
             if (flg) {
-                Button buttonClear = (Button) mView.findViewById(R.id.buttonClear);
+                Button buttonClear = mView.findViewById(R.id.buttonClear);
                 buttonClear.setVisibility(View.VISIBLE);
             } else {
                 mPetEntity.setArchiveDate(null);
 
-                Button buttonClear = (Button) mView.findViewById(R.id.buttonClear);
+                Button buttonClear = mView.findViewById(R.id.buttonClear);
                 buttonClear.setVisibility(View.GONE);
 
-                Button buttonArchive = (Button) mView.findViewById(R.id.buttonArchive);
+                Button buttonArchive = mView.findViewById(R.id.buttonArchive);
                 buttonArchive.setText(null);
             }
         }
@@ -344,8 +389,8 @@ public class InputActivity extends BaseActivity {
          * その他を開くボタン表示非表示etc処理
          */
         private void setOpenButton() {
-            final LinearLayout linearLayoutArchive = (LinearLayout) mView.findViewById(R.id.linearLayoutArchive);
-            final Button buttonOpen = (Button) mView.findViewById(R.id.buttonOpen);
+            final LinearLayout linearLayoutArchive = mView.findViewById(R.id.linearLayoutArchive);
+            final Button buttonOpen = mView.findViewById(R.id.buttonOpen);
 
             if (!mArchiveOpenFlg) {
                 mArchiveOpenFlg = true;
@@ -356,7 +401,7 @@ public class InputActivity extends BaseActivity {
                 objectAnimator.setDuration(500);
                 objectAnimator.start();
 
-                buttonOpen.setText(getResources().getString(R.string.close_other));
+                buttonOpen.setText(getString(R.string.close_other));
             } else {
                 mArchiveOpenFlg = false;
 
@@ -366,7 +411,7 @@ public class InputActivity extends BaseActivity {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         linearLayoutArchive.setVisibility(View.GONE);
-                        buttonOpen.setText(getResources().getString(R.string.open_other));
+                        buttonOpen.setText(getString(R.string.open_other));
                     }
                 });
                 objectAnimator.start();
@@ -378,24 +423,24 @@ public class InputActivity extends BaseActivity {
          */
         private void setClickEvent() {
             //誕生日
-            Button buttonBirthday = (Button) mView.findViewById(R.id.buttonBirthday);
+            Button buttonBirthday = mView.findViewById(R.id.buttonBirthday);
             buttonBirthday.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String title = getResources().getString(R.string.dog_birthday);
+                    String title = getString(R.string.dog_birthday);
 
-                    DatePickerDialog datePickerDialog = DatePickerDialog.getInstance(DIALOG_BIRTHDAY_FLG, mPetEntity.getBirthday(), title);
+                    DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(mPetEntity.getBirthday(), title);
                     datePickerDialog.setCallbackListener(InputFragment.this);
-                    datePickerDialog.show(getFragmentManager(), "dialog");
+                    datePickerDialog.show(getFragmentManager(), TAG_DIALOG_BIRTHDAY);
                 }
             });
 
             //種類
             ArrayList<DogMasterEntity> dogMasters = Config.getDogMastersList(getActivity());
-            final KindSelectDialog kindSelectDialog = KindSelectDialog.getInstance(dogMasters);
+            final KindSelectDialog kindSelectDialog = KindSelectDialog.newInstance(dogMasters);
             kindSelectDialog.setCallbackListener(this);
 
-            Button buttonKind = (Button) mView.findViewById(R.id.buttonKind);
+            Button buttonKind = mView.findViewById(R.id.buttonKind);
             buttonKind.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -404,7 +449,7 @@ public class InputActivity extends BaseActivity {
             });
 
             //写真
-            ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+            ImageView imageViewPhoto = mView.findViewById(R.id.imageViewPhoto);
             final PopupMenu popup = new PopupMenu(getActivity(), imageViewPhoto);
             popup.getMenuInflater().inflate(R.menu.photo_menu, popup.getMenu());
             popup.setOnMenuItemClickListener(this);
@@ -416,7 +461,7 @@ public class InputActivity extends BaseActivity {
             });
 
             //開くボタン
-            Button buttonOpen = (Button) mView.findViewById(R.id.buttonOpen);
+            Button buttonOpen = mView.findViewById(R.id.buttonOpen);
             buttonOpen.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -425,20 +470,20 @@ public class InputActivity extends BaseActivity {
             });
 
             //アーカイブ
-            Button buttonArchive = (Button) mView.findViewById(R.id.buttonArchive);
+            Button buttonArchive = mView.findViewById(R.id.buttonArchive);
             buttonArchive.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String title = getResources().getString(R.string.dog_die_date);
+                    String title = getString(R.string.dog_die_date);
 
-                    DatePickerDialog datePickerDialog = DatePickerDialog.getInstance(DIALOG_ARCHIVE_FLG, mPetEntity.getArchiveDate(), title);
+                    DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(mPetEntity.getArchiveDate(), title);
                     datePickerDialog.setCallbackListener(InputFragment.this);
-                    datePickerDialog.show(getFragmentManager(), "dialog");
+                    datePickerDialog.show(getFragmentManager(), TAG_DIALOG_ARCHIVE);
                 }
             });
 
             //クリアボタン
-            Button buttonClear = (Button) mView.findViewById(R.id.buttonClear);
+            Button buttonClear = mView.findViewById(R.id.buttonClear);
             buttonClear.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -447,7 +492,7 @@ public class InputActivity extends BaseActivity {
             });
 
             //保存ボタン
-            Button buttonSave = (Button) mView.findViewById(R.id.buttonSave);
+            Button buttonSave = mView.findViewById(R.id.buttonSave);
             buttonSave.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -467,8 +512,8 @@ public class InputActivity extends BaseActivity {
             if (!v.getResult()) {
                 String errorMsg = Utils.implode(v.getErrorMsgList(), "\n");
 
-                String title = getResources().getString(R.string.error);
-                ErrorDialog errorDialog = ErrorDialog.getInstance(title, errorMsg);
+                String title = getString(R.string.error);
+                ErrorDialog errorDialog = ErrorDialog.newInstance(title, errorMsg);
                 errorDialog.show(getFragmentManager(), "dialog");
                 return;
             }
@@ -478,19 +523,13 @@ public class InputActivity extends BaseActivity {
                 //アラームセット
                 new SetAlarmManager(getActivity()).set();
 
-                String msg = getResources().getString(R.string.save_success);
-                AndroidUtils.showToastS(getActivity(), msg);
-
-                Intent intent = new Intent(getActivity(), PetAgeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra(PetAgeActivity.PAGE_NUM, getArguments().getInt(PetAgeActivity.PAGE_NUM, 0));
-                startActivity(intent);
+                getActivity().setResult(RESULT_OK);
                 getActivity().finish();
             } else {
-                String title = getResources().getString(R.string.error);
-                String msg = getResources().getString(R.string.save_fail);
+                String title = getString(R.string.error);
+                String msg = getString(R.string.save_fail);
 
-                ErrorDialog errorDialog = ErrorDialog.getInstance(title, msg);
+                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
             }
         }
@@ -501,31 +540,31 @@ public class InputActivity extends BaseActivity {
          * @return boolean
          */
         private ValidateHelper validate() {
-            EditText editTextName = (EditText) mView.findViewById(R.id.editTextName);
+            EditText editTextName = mView.findViewById(R.id.editTextName);
             String name = editTextName.getText().toString();
 
             //バリデーション
             ValidateHelper v = new ValidateHelper();
 
-            String keyName = getResources().getString(R.string.dog_name);
+            String keyName = getString(R.string.dog_name);
             ValidateRequire.check(v, name, keyName);
             ValidateLength.maxCheck(v, name, keyName, 10);
 
-            String keyBirthday = getResources().getString(R.string.dog_birthday);
+            String keyBirthday = getString(R.string.dog_birthday);
             ValidateRequire.check(v, mPetEntity.getBirthday(), keyBirthday);
             ValidateDate.check(v, mPetEntity.getBirthday(), keyBirthday, DateHelper.FMT_DATE);
             ValidateDate.isPastAllowToday(v, mPetEntity.getBirthday(), keyBirthday);
 
-            String keyKind = getResources().getString(R.string.dog_kind);
+            String keyKind = getString(R.string.dog_kind);
             ValidateRequire.check(v, mPetEntity.getKind(), keyKind);
 
-            String keyDieDate = getResources().getString(R.string.dog_die_date);
+            String keyDieDate = getString(R.string.dog_die_date);
             ValidateDate.check(v, mPetEntity.getArchiveDate(), keyDieDate, DateHelper.FMT_DATE);
             ValidateDate.isPastAllowToday(v, mPetEntity.getArchiveDate(), keyDieDate);
 
             //独自バリデーション
             if (!customValidate(mPetEntity.getArchiveDate(), mPetEntity.getBirthday())) {
-                v.error(keyDieDate, getResources().getString(R.string.validate_error_archive_date));
+                v.error(keyDieDate, getString(R.string.validate_error_archive_date));
             }
 
             return v;
@@ -561,14 +600,14 @@ public class InputActivity extends BaseActivity {
         /**
          * DBに保存する
          *
-         * @return Boolean ret
+         * @return boolean ret
          */
-        private Boolean saveDb() {
-            Boolean ret = false;
+        private boolean saveDb() {
+            boolean ret;
             SQLiteDatabase db = null;
 
             try {
-                EditText editTextName = (EditText) mView.findViewById(R.id.editTextName);
+                EditText editTextName = mView.findViewById(R.id.editTextName);
                 String name = editTextName.getText().toString();
                 mPetEntity.setName(name);
 
@@ -614,10 +653,10 @@ public class InputActivity extends BaseActivity {
             }
             //カメラアプリなくてエラー
             catch (ActivityNotFoundException e) {
-                String title = getResources().getString(R.string.error);
-                String msg = getResources().getString(R.string.no_camera_app);
+                String title = getString(R.string.error);
+                String msg = getString(R.string.no_camera_app);
 
-                ErrorDialog errorDialog = ErrorDialog.getInstance(title, msg);
+                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
                 e.printStackTrace();
             }
@@ -634,10 +673,10 @@ public class InputActivity extends BaseActivity {
             }
             //トリミングインテントに反応するアクテビティがなくてエラー
             catch (ActivityNotFoundException e) {
-                String title = getResources().getString(R.string.error);
-                String msg = getResources().getString(R.string.no_gallery_app);
+                String title = getString(R.string.error);
+                String msg = getString(R.string.no_gallery_app);
 
-                ErrorDialog errorDialog = ErrorDialog.getInstance(title, msg);
+                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
                 e.printStackTrace();
             }
@@ -647,10 +686,10 @@ public class InputActivity extends BaseActivity {
          * ${inheritDoc}
          */
         @Override
-        public void onClickKindSelectDialog(Integer kind, String name) {
+        public void onClickKindSelectDialog(String tag, Integer kind, String name) {
             mPetEntity.setKind(kind);
 
-            Button buttonKind = (Button) mView.findViewById(R.id.buttonKind);
+            Button buttonKind = mView.findViewById(R.id.buttonKind);
             buttonKind.setText(name);
         }
 
@@ -658,15 +697,16 @@ public class InputActivity extends BaseActivity {
          * ${inheritDoc}
          */
         @Override
-        public void onClickDatePickerDialogOk(Integer flg, String date) {
-            if (flg.equals(DIALOG_BIRTHDAY_FLG)) {
+        public void onClickDatePickerDialogOk(String tag, String date) {
+            if (tag.equals(TAG_DIALOG_BIRTHDAY)) {
                 mPetEntity.setBirthday(date);
                 setDateToButton(R.id.buttonBirthday, mPetEntity.getBirthday());
-            } else if (flg.equals(DIALOG_ARCHIVE_FLG)) {
+            }
+            else if (tag.equals(TAG_DIALOG_ARCHIVE)) {
                 mPetEntity.setArchiveDate(date);
                 setDateToButton(R.id.buttonArchive, mPetEntity.getArchiveDate());
 
-                Button buttonClear = (Button) mView.findViewById(R.id.buttonClear);
+                Button buttonClear = mView.findViewById(R.id.buttonClear);
                 buttonClear.setVisibility(View.VISIBLE);
             }
         }
@@ -675,7 +715,7 @@ public class InputActivity extends BaseActivity {
          * ${inheritDoc}
          */
         @Override
-        public void onClickDatePickerDialogCancel(Integer flg) {
+        public void onClickDatePickerDialogCancel(String tag) {
         }
 
         /**

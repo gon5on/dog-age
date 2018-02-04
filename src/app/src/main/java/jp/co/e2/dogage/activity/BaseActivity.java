@@ -1,7 +1,7 @@
 package jp.co.e2.dogage.activity;
 
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import jp.co.e2.dogage.R;
@@ -9,13 +9,13 @@ import jp.co.e2.dogage.R;
 /**
  * 基底アクテビティ
  */
-public class BaseActivity extends ActionBarActivity {
+public class BaseActivity extends AppCompatActivity {
     /**
      * ツールバーをセット
      */
     protected void setToolbar() {
         //ツールバーをアクションバーとして扱う
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);

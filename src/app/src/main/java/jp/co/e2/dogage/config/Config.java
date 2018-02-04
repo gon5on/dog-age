@@ -1,7 +1,6 @@
 package jp.co.e2.dogage.config;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -85,11 +84,15 @@ public class Config {
     public static final int INTENT_CODE_TRIMMING = 3;                           //画像トリミング
 
     //プリファレンス
-    public static final String PREF_NOTIFICATION = "notification";              //誕生日・命日の通知
+    public static final String PREF_BIRTH_NOTIFY_FLG = "birth_notify_flg";              //誕生日の通知
+    public static final String PREF_ARCHIVE_NOTIFY_FLG = "archive_notify_flg";              //命日の通知
 
     //アラーム
     public static int ALARM_HOUR = 20;                                          //アラームの時間
     public static int ALARM_MINUTE = 26;                                         //アラームの時間
+
+    //E2のURL
+    public static String OFFICIAL_LINK = "https://www.e-2.co.jp";
 
     /**
      * 犬種マスタを配列で返す

@@ -154,7 +154,6 @@ public class Utils {
      * @param context コンテキスト
      * @param resId   ファイルのリソースID
      * @return Integer
-     * @throws IOException
      */
     public static String readTextFile(Context context, Integer resId) throws IOException {
         InputStream is = null;

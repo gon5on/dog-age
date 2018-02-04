@@ -5,15 +5,14 @@ import java.util.ArrayList;
 import jp.co.e2.dogage.activity.PetAgeFragment;
 import jp.co.e2.dogage.entity.PetEntity;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * ページアダプタ―
  */
-public class PetAgeFragmentPagerAdapter extends FragmentPagerAdapter {
+public class PetAgeFragmentPagerAdapter extends FragmentStatePagerAdapter {
     private ArrayList<PetEntity> mList;
 
     /**
@@ -21,10 +20,10 @@ public class PetAgeFragmentPagerAdapter extends FragmentPagerAdapter {
      *
      * @param fm FragmentManager
      */
-    public PetAgeFragmentPagerAdapter(FragmentManager fm) {
+    public PetAgeFragmentPagerAdapter(FragmentManager fm, ArrayList<PetEntity> list) {
         super(fm);
 
-        mList = new ArrayList<>();
+        mList = list;
     }
 
     /**
@@ -32,19 +31,7 @@ public class PetAgeFragmentPagerAdapter extends FragmentPagerAdapter {
      */
     @Override
     public Fragment getItem(int position) {
-        //対象ページのデータを取得
-        PetEntity item = mList.get(position);
-
-        //バンドルにデータをセット
-        Bundle bundle = new Bundle();
-        bundle.putInt("pageNum", position);
-        bundle.putSerializable("item", item);
-
-        //フラグメント起動
-        PetAgeFragment petAgeFragment = new PetAgeFragment();
-        petAgeFragment.setArguments(bundle);
-
-        return petAgeFragment;
+        return PetAgeFragment.newInstance(position, mList.get(position));
     }
 
     /**
@@ -53,23 +40,5 @@ public class PetAgeFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return mList.size();
-    }
-
-    /**
-     * ページを追加
-     *
-     * @param item ペットデータ
-     */
-    public void add(PetEntity item) {
-        mList.add(item);
-    }
-
-    /**
-     * ページを一気に追加
-     *
-     * @param list ペットデータリスト
-     */
-    public void addAll(ArrayList<PetEntity> list) {
-        mList.addAll(list);
     }
 }

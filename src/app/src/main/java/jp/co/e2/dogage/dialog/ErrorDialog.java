@@ -3,30 +3,31 @@ package jp.co.e2.dogage.dialog;
 import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.dialog.ErrorDialog.CallbackListener;
 
+import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
 
 /**
  * エラーダイアログ
  */
 public class ErrorDialog extends BaseDialog<CallbackListener> {
+    private static final String PARAM_TITLE = "title";
+    private static final String PARAM_MSG = "msg";
+
     /**
-     * インスタンスを返す
+     * ファクトリーメソッド
      *
-     * @return SampleDialog
      * @param title タイトル
      * @param msg 本文
+     * @return SampleDialog
      */
-    public static ErrorDialog getInstance(String title, String msg) {
+    public static ErrorDialog newInstance(String title, String msg) {
         ErrorDialog dialog = new ErrorDialog();
 
         Bundle bundle = new Bundle();
-        bundle.putString("title", title);
-        bundle.putString("msg", msg);
+        bundle.putString(PARAM_TITLE, title);
+        bundle.putString(PARAM_MSG, msg);
         dialog.setArguments(bundle);
 
         return dialog;
@@ -37,30 +38,21 @@ public class ErrorDialog extends BaseDialog<CallbackListener> {
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        //ダイアログ生成
-        Dialog dialog = createDefaultDialog(R.layout.dialog_error);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(getArguments().getString(PARAM_TITLE));
+        builder.setIcon(R.drawable.img_foot);
+        builder.setMessage(getArguments().getString(PARAM_MSG));
 
-        //タイトルセット
-        TextView textViewTitle = (TextView) dialog.findViewById(R.id.textViewTitle);
-        textViewTitle.setText(getArguments().getString("title"));
-
-        //テキストセット
-        TextView textViewMsg = (TextView) dialog.findViewById(R.id.textViewMsg);
-        textViewMsg.setText(getArguments().getString("msg"));
-
-        //ボタンにイベントをセット
-        Button buttonOk = (Button) dialog.findViewById(R.id.buttonOk);
-        buttonOk.setOnClickListener(new OnClickListener() {
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
                 if (mCallbackListener != null) {
-                    mCallbackListener.onClickErrorDialogOk();
+                    mCallbackListener.onClickErrorDialogOk(getTag());
                 }
-                dismiss();
             }
         });
 
-        return dialog;
+        return builder.create();
     }
 
     /**
@@ -69,7 +61,9 @@ public class ErrorDialog extends BaseDialog<CallbackListener> {
     public interface CallbackListener {
         /**
          * エラーダイアログでOKが押された
+         *
+         * @param tag タグ
          */
-        void onClickErrorDialogOk();
+        void onClickErrorDialogOk(String tag);
     }
 }

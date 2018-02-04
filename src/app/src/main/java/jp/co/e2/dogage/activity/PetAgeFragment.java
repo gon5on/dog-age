@@ -8,6 +8,7 @@ import jp.co.e2.dogage.entity.PetEntity;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,9 +27,28 @@ public class PetAgeFragment extends Fragment {
     private static final Integer[] BG_UNDER = new Integer[]{R.drawable.img_frame_under1, R.drawable.img_frame_under2, R.drawable.img_frame_under3};
     private static final Integer BG_CNT = BG_ABOVE.length;
 
-    private PetEntity mItem = null;
+    private static final String PARAM_PAGE_NUM = "page_num";
+    private static final String PARAM_DATA = "data";
+
+    private PetEntity mData = null;
     private Integer mPageNum = 0;
     private View mView = null;
+
+    /**
+     * ファクトリーメソッド
+     *
+     * @return PetAgeFragment
+     */
+    public static PetAgeFragment newInstance(int pageNum, PetEntity data) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(PARAM_PAGE_NUM, pageNum);
+        bundle.putSerializable(PARAM_DATA, data);
+
+        PetAgeFragment fragment = new PetAgeFragment();
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
 
     /**
      * onCreateView
@@ -36,15 +56,15 @@ public class PetAgeFragment extends Fragment {
      * @return void
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mView = inflater.inflate(R.layout.fragment_pet_age, container, false);
 
         // データを取得
         Bundle bundle = getArguments();
-        mItem = (PetEntity) bundle.getSerializable("item");
-        mPageNum = bundle.getInt("pageNum");
+        mData = (PetEntity) bundle.getSerializable(PARAM_DATA);
+        mPageNum = bundle.getInt(PARAM_PAGE_NUM);
 
         // 画面表示
         setDisplayItem();
@@ -57,50 +77,50 @@ public class PetAgeFragment extends Fragment {
      */
     private void setDisplayItem() {
         try {
-            TextView textViewName = (TextView) mView.findViewById(R.id.textViewName);
-            textViewName.setText(mItem.getName());
+            TextView textViewName = mView.findViewById(R.id.textViewName);
+            textViewName.setText(mData.getName());
 
-            TextView textViewKind = (TextView) mView.findViewById(R.id.textViewKind);
-            textViewKind.setText(mItem.getKindDisp(getActivity().getApplicationContext()));
+            TextView textViewKind = mView.findViewById(R.id.textViewKind);
+            textViewKind.setText(mData.getKindDisp(getContext()));
 
-            TextView textViewBirthday = (TextView) mView.findViewById(R.id.textViewBirthday);
-            textViewBirthday.setText(mItem.getDispBirthday(getActivity()));
+            TextView textViewBirthday = mView.findViewById(R.id.textViewBirthday);
+            textViewBirthday.setText(mData.getDispBirthday(getActivity()));
 
-            TextView textViewPetAge = (TextView) mView.findViewById(R.id.textViewPetAge);
-            textViewPetAge.setText(mItem.getPetAgeDisp(getActivity()));
+            TextView textViewPetAge = mView.findViewById(R.id.textViewPetAge);
+            textViewPetAge.setText(mData.getPetAgeDisp(getActivity()));
 
-            TextView textViewHumanAge = (TextView) mView.findViewById(R.id.textViewHumanAge);
-            textViewHumanAge.setText(mItem.getHumanAge(getActivity().getApplicationContext()));
+            TextView textViewHumanAge = mView.findViewById(R.id.textViewHumanAge);
+            textViewHumanAge.setText(mData.getHumanAge(getContext()));
 
-            TextView textViewDays = (TextView) mView.findViewById(R.id.textViewDays);
-            textViewDays.setText(mItem.getDaysFromBorn(getActivity()));
+            TextView textViewDays = mView.findViewById(R.id.textViewDays);
+            textViewDays.setText(mData.getDaysFromBorn(getActivity()));
 
-            LinearLayout linearLayout1 = (LinearLayout) mView.findViewById(R.id.linearLayout1);
+            LinearLayout linearLayout1 = mView.findViewById(R.id.linearLayout1);
             linearLayout1.setBackgroundResource(BG_ABOVE[mPageNum % BG_CNT]);
 
-            RelativeLayout relativeLayout1 = (RelativeLayout) mView.findViewById(R.id.relativeLayout1);
+            RelativeLayout relativeLayout1 = mView.findViewById(R.id.relativeLayout1);
             relativeLayout1.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
 
-            RelativeLayout relativeLayout2 = (RelativeLayout) mView.findViewById(R.id.relativeLayout2);
+            RelativeLayout relativeLayout2 = mView.findViewById(R.id.relativeLayout2);
             relativeLayout2.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
 
-            RelativeLayout relativeLayout3 = (RelativeLayout) mView.findViewById(R.id.relativeLayout3);
+            RelativeLayout relativeLayout3 = mView.findViewById(R.id.relativeLayout3);
             relativeLayout3.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
 
-            TextView textViewArchive = (TextView) mView.findViewById(R.id.textViewArchive);
+            TextView textViewArchive = mView.findViewById(R.id.textViewArchive);
 
-            if (mItem.getArchiveDate() != null) {
+            if (mData.getArchiveDate() != null) {
                 textViewArchive.setVisibility(View.VISIBLE);
-                textViewArchive.setText(mItem.getDispArchiveDate(getActivity()));
+                textViewArchive.setText(mData.getDispArchiveDate(getActivity()));
             } else {
                 textViewArchive.setVisibility(View.GONE);
             }
 
-            ImageView imageViewPhoto = (ImageView) mView.findViewById(R.id.imageViewPhoto);
+            ImageView imageViewPhoto = mView.findViewById(R.id.imageViewPhoto);
 
-            if (mItem.getPhotoFlg()) {
-                Bitmap thumbBitmap = mItem.getPhotoThumb(getActivity());
-                final Bitmap bigBitmap = mItem.getPhotoBig(getActivity());
+            if (mData.getPhotoFlg()) {
+                Bitmap thumbBitmap = mData.getPhotoThumb(getActivity());
+                final Bitmap bigBitmap = mData.getPhotoBig(getActivity());
 
                 imageViewPhoto.setImageBitmap(thumbBitmap);
                 imageViewPhoto.setVisibility(View.VISIBLE);
@@ -108,7 +128,7 @@ public class PetAgeFragment extends Fragment {
                 imageViewPhoto.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        PhotoDialog photoDialog = PhotoDialog.getInstance(bigBitmap);
+                        PhotoDialog photoDialog = PhotoDialog.newInstance(bigBitmap);
                         photoDialog.show(getActivity().getFragmentManager(), "dialog");
                     }
                 });

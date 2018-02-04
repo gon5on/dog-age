@@ -93,7 +93,6 @@ public class ImgHelper {
      * 丸にくりぬいたビットマップ画像を返す
      *
      * @return Bitmap
-     * @throws IOException
      */
     public Bitmap getCircleBitmap() throws IOException {
         return getCircleBitmap(getBitmap());
@@ -105,7 +104,6 @@ public class ImgHelper {
      * @param height 高さピクセル
      * @param width  幅ピクセル
      * @return Bitmap
-     * @throws IOException
      */
     public Bitmap getResizeCircleBitmap(Integer height, Integer width) throws IOException {
         return getCircleBitmap(getResizeBitmap(height, width));
@@ -116,7 +114,6 @@ public class ImgHelper {
      *
      * @param bitmap ビットマップ
      * @return Bitmap
-     * @throws IOException
      */
     private Bitmap getCircleBitmap(Bitmap bitmap) throws IOException {
         Integer height = bitmap.getHeight();
@@ -143,7 +140,6 @@ public class ImgHelper {
      *
      * @param radius 角丸にしたいピクセル数
      * @return Bitmap
-     * @throws IOException
      */
     public Bitmap getKadomaruBitmap(Integer radius) throws IOException {
         return getKadomaruBitmap(getBitmap(), radius);
@@ -156,7 +152,6 @@ public class ImgHelper {
      * @param width  幅ピクセル
      * @param radius 角丸にしたいピクセル数
      * @return Bitmap
-     * @throws IOException
      */
     public Bitmap getResizeKadomaruBitmap(Integer height, Integer width, Integer radius) throws IOException {
         return getKadomaruBitmap(getResizeBitmap(height, width), radius);
@@ -193,7 +188,6 @@ public class ImgHelper {
      * ビットマップ画像を返す
      *
      * @return Bitmap
-     * @throws IOException
      */
     public Bitmap getBitmap() throws IOException {
         if (mBitmap != null) {
@@ -254,7 +248,6 @@ public class ImgHelper {
      * @param height 高さピクセル
      * @param width  幅ピクセル
      * @return Bitmap
-     * @throws IOException
      */
     private Bitmap getPreResizeBitmap(Integer height, Integer width) throws IOException {
         //画像がすでに読み込んである場合は、それを返す
@@ -335,7 +328,6 @@ public class ImgHelper {
      * @param height   高さピクセル
      * @param weight   幅ピクセル
      * @return boolean 成功/失敗
-     * @throws IOException
      */
     public Boolean saveResizeJpg(String dirPath, String filename, Integer height, Integer weight) throws IOException {
         //画像読み込み
@@ -350,7 +342,6 @@ public class ImgHelper {
      *
      * @param filePath  保存先パス
      * @return boolean 成功/失敗
-     * @throws IOException
      */
     public Boolean saveJpg(String filePath) throws IOException {
         //画像読み込み
@@ -384,7 +375,6 @@ public class ImgHelper {
      * @param filename 保存画像名
      * @param img      ビットマップ画像
      * @return boolean 成功/失敗
-     * @throws IOException
      */
     private Boolean saveJpg(String dirPath, String filename, Bitmap img) throws IOException {
         //保存先のフォルダ存在確認
@@ -408,7 +398,6 @@ public class ImgHelper {
      * @param filePath  保存先パス
      * @param img      ビットマップ画像
      * @return boolean 成功/失敗
-     * @throws IOException
      */
     private Boolean saveJpg(String filePath, Bitmap img) throws IOException {
         FileOutputStream out = new FileOutputStream(filePath, false);

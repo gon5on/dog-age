@@ -103,7 +103,7 @@
 
                 <Button
                     android:id="@+id/buttonArchive"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     style="@style/EditTextButtonStyle"
@@ -135,10 +135,11 @@
 
         <Button
             android:id="@+id/buttonSave"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/twoBlock"
+            android:layout_marginBottom="@dimen/twoBlock"
             android:text="@string/save"
             />
 

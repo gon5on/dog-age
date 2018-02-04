@@ -7,7 +7,6 @@
             <solid android:color="@color/white" />
             <stroke android:width="@dimen/line" android:color="@color/green" />
             <corners android:radius="@dimen/oneBlock" />
-            <padding android:bottom="@dimen/oneBlock" android:left="@dimen/twoBlock" android:right="@dimen/twoBlock" android:top="@dimen/oneBlock" />
         </shape>
     </item>
 
@@ -17,7 +16,6 @@
             <solid android:color="@color/white" />
             <stroke android:width="@dimen/line" android:color="@color/green" />
             <corners android:radius="@dimen/oneBlock" />
-            <padding android:bottom="@dimen/oneBlock" android:left="@dimen/twoBlock" android:right="@dimen/twoBlock" android:top="@dimen/oneBlock" />
         </shape>
     </item>
 
@@ -27,7 +25,6 @@
             <solid android:color="@color/white" />
             <stroke android:width="@dimen/line" android:color="@color/gray" />
             <corners android:radius="@dimen/oneBlock" />
-            <padding android:bottom="@dimen/oneBlock" android:left="@dimen/twoBlock" android:right="@dimen/twoBlock" android:top="@dimen/oneBlock" />
         </shape>
     </item>
 

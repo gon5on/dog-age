@@ -2,7 +2,9 @@ package jp.co.e2.dogage.activity;
 
 import jp.co.e2.dogage.R;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,6 +15,16 @@ import android.view.ViewGroup;
  * アプリについてアクテビティ
  */
 public class AboutActivity extends BaseActivity {
+    /**
+     * ファクトリーメソッドもどき
+     *
+     * @param activity アクテビティ
+     * @return intent
+     */
+    public static Intent newInstance(Activity activity) {
+        return new Intent(activity, AboutActivity.class);
+    }
+
     /**
      * ${inheritDoc}
      */
@@ -25,7 +37,7 @@ public class AboutActivity extends BaseActivity {
         setBackArrowToolbar();
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction().add(R.id.container, new AboutFragment()).commit();
+            getFragmentManager().beginTransaction().add(R.id.container, AboutFragment.newInstance()).commit();
         }
     }
 
@@ -48,6 +60,20 @@ public class AboutActivity extends BaseActivity {
      */
     public static class AboutFragment extends Fragment {
         private View mView = null;
+
+        /**
+         * ファクトリーメソッド
+         *
+         * @return AboutFragment
+         */
+        public static AboutFragment newInstance() {
+            Bundle args = new Bundle();
+
+            AboutFragment fragment = new AboutFragment();
+            fragment.setArguments(args);
+
+            return fragment;
+        }
 
         /**
          * ${inheritDoc}
