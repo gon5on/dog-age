@@ -135,13 +135,12 @@
                 />
 
             <TextView
+                style="@style/LabelTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/human_age"
-                android:textSize="@dimen/fontSizeLarge"
                 android:layout_centerVertical="true"
-                style="@style/LabelTextViewStyle"
-                />
+                android:text="@string/human_age"
+                android:textSize="@dimen/fontSizeLarge" />
 
         </RelativeLayout>
 

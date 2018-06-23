@@ -115,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/oneBlock"
                     android:layout_marginStart="@dimen/oneBlock"
-                    android:background="@xml/bg_clear_btn"
+                    android:background="@xml/clear_btn_bg"
                     android:minHeight="@dimen/zero"
                     android:minWidth="@dimen/zero"
                     />

@@ -22,6 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 /**
  * ペット年齢アクテビティ
@@ -207,25 +209,25 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
             return;
         }
 
-        LinearLayout linearLayoutPager = findViewById(R.id.linearLayoutPager);
-        linearLayoutPager.removeAllViewsInLayout();
+        RadioGroup radioGroupPager = findViewById(R.id.radioGroupPager);
+        radioGroupPager.removeAllViewsInLayout();
 
         //1匹の場合はページングを表示しない
         if (mData.size() == 1) {
-            linearLayoutPager.setVisibility(View.GONE);
+            radioGroupPager.setVisibility(View.GONE);
         }
         //2匹以上の場合はページングを表示する
         else {
-            linearLayoutPager.setVisibility(View.VISIBLE);
+            radioGroupPager.setVisibility(View.VISIBLE);
 
             for (int i = 0; i < mData.size(); i++) {
-                ImageView imageViewPager = (ImageView) getLayoutInflater().inflate(R.layout.parts_pager, null);
-                imageViewPager.setId(i);
-                linearLayoutPager.addView(imageViewPager);
+                RadioButton radioButton = (RadioButton) getLayoutInflater().inflate(R.layout.parts_pager, null);
+                radioButton.setId(i);
+                radioGroupPager.addView(radioButton);
 
                 //表示ページはONにしておく
                 if (i == mPageNum) {
-                    imageViewPager.setImageResource(R.drawable.img_page_on);
+                    radioGroupPager.check(i);
                 }
             }
         }
@@ -240,21 +242,8 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
             return;
         }
 
-        ImageView now = findViewById(mPageNum);
-        now.setImageResource(R.drawable.img_page_on);
-
-        if (mPageNum == 0) {
-            ImageView next = findViewById(mPageNum + 1);
-            next.setImageResource(R.drawable.img_page_off);
-        } else if (mPageNum == mData.size() - 1) {
-            ImageView back = findViewById(mPageNum - 1);
-            back.setImageResource(R.drawable.img_page_off);
-        } else {
-            ImageView next = findViewById(mPageNum + 1);
-            ImageView back = findViewById(mPageNum - 1);
-            next.setImageResource(R.drawable.img_page_off);
-            back.setImageResource(R.drawable.img_page_off);
-        }
+        RadioGroup radioGroupPager = findViewById(R.id.radioGroupPager);
+        radioGroupPager.check(mPageNum);
     }
 
     /**

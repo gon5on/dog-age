@@ -601,19 +601,19 @@
     <string-array name="dog99">
         <item>99</item>
         <item>ミックス（小型犬）</item>
-        <item>みっくすあ</item>
+        <item>みっくす1</item>
         <item>1</item>
     </string-array>
     <string-array name="dog100">
         <item>100</item>
         <item>ミックス（中型犬）</item>
-        <item>みっくすい</item>
+        <item>みっくす2</item>
         <item>2</item>
     </string-array>
     <string-array name="dog101">
         <item>101</item>
         <item>ミックス（大型犬）</item>
-        <item>みっくすう</item>
+        <item>みっくす3</item>
         <item>3</item>
     </string-array>
 

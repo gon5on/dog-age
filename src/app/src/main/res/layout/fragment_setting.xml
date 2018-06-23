@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     >
@@ -8,112 +9,98 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
 
         <RelativeLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/oneBlock"
-            android:paddingBottom="@dimen/oneBlock"
+            android:layout_height="@dimen/sevenBlock"
+            android:orientation="horizontal"
             android:paddingLeft="@dimen/twoBlock"
-            android:paddingRight="@dimen/twoBlock"
-            >
+            android:paddingRight="@dimen/twoBlock">
 
             <TextView
                 style="@style/LabelTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="@string/notification_birth"
-                />
+                android:text="@string/notification_birth" />
 
             <CheckBox
+                android:id="@+id/checkBoxBirthNotification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/checkBoxBirthNotification"
-                android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:theme="@style/AppCheckBoxTheme"
-                />
+                android:layout_centerVertical="true"
+                android:theme="@style/AppCheckBoxTheme" />
 
         </RelativeLayout>
 
         <RelativeLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/oneBlock"
-            android:paddingBottom="@dimen/oneBlock"
+            android:layout_height="@dimen/sevenBlock"
+            android:orientation="horizontal"
             android:paddingLeft="@dimen/twoBlock"
-            android:paddingRight="@dimen/twoBlock"
-            >
+            android:paddingRight="@dimen/twoBlock">
 
             <TextView
                 style="@style/LabelTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="@string/notification_archive"
-                />
+                android:text="@string/notification_archive" />
 
             <CheckBox
+                android:id="@+id/checkBoxArchiveNotification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/checkBoxArchiveNotification"
                 android:layout_alignParentEnd="true"
-                android:theme="@style/AppCheckBoxTheme"
-                />
+                android:layout_centerVertical="true"
+                android:theme="@style/AppCheckBoxTheme" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/relativeLayoutCalcAge"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/oneBlock"
-            android:paddingBottom="@dimen/oneBlock"
-            android:paddingLeft="@dimen/twoBlock"
-            android:paddingRight="@dimen/twoBlock"
             style="@style/TranslateButtonStyle"
-            >
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sevenBlock"
+            android:gravity="start"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/twoBlock"
+            android:paddingRight="@dimen/twoBlock">
 
             <TextView
                 style="@style/LabelTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="@string/about_calc_age"
-                />
+                android:text="@string/about_calc_age" />
 
-            <CheckBox
+            <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:visibility="invisible"
-                />
+                android:layout_centerVertical="true"
+                app:srcCompat="@xml/icon_arrow" />
 
         </RelativeLayout>
 
         <RelativeLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/oneBlock"
-            android:paddingBottom="@dimen/oneBlock"
+            android:layout_height="@dimen/sevenBlock"
+            android:orientation="horizontal"
             android:paddingLeft="@dimen/twoBlock"
-            android:paddingRight="@dimen/twoBlock"
-            >
+            android:paddingRight="@dimen/twoBlock">
 
             <TextView
                 style="@style/LabelTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="@string/app_version"
-                />
+                android:text="@string/app_version" />
 
             <TextView
                 android:id="@+id/textViewVer"
@@ -122,14 +109,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/fontSizeLarge"
-                />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:visibility="invisible"
-                />
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
@@ -137,13 +117,12 @@
 
     <Button
         android:id="@+id/buttonProducedBy"
-        android:layout_width="wrap_content"
+        style="@style/TranslateButtonStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:padding="@dimen/twoBlock"
-        android:text="@string/produced_by"
-        style="@style/TranslateButtonStyle"
-        />
+        android:text="@string/produced_by" />
 
 </RelativeLayout>

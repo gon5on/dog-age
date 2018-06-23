@@ -27,7 +27,7 @@
     <style name="AppEditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:textSize">@dimen/fontSizeLarge</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:background">@xml/bg_input</item>
+        <item name="android:background">@xml/input_bg</item>
         <item name="android:paddingLeft">@dimen/twoBlock</item>
         <item name="android:paddingRight">@dimen/twoBlock</item>
         <item name="android:paddingTop">@dimen/oneHalfBlock</item>
@@ -42,12 +42,12 @@
 
     <!-- 茶色ボタン -->
     <style name="AppButtonStyle" parent="BaseButton">
-        <item name="android:background">@xml/bg_btn</item>
+        <item name="android:background">@xml/btn_bg</item>
     </style>
 
     <!-- 薄茶色ボタン -->
     <style name="LightBrownButtonStyle" parent="BaseButton">
-        <item name="android:background">@xml/bg_light_brown_btn</item>
+        <item name="android:background">@xml/light_brown_btn_bg</item>
     </style>
 
     <!-- 透明背景ボタン -->
@@ -78,7 +78,7 @@
         <item name="android:stateListAnimator">@null</item>
         <item name="android:textSize">@dimen/fontSizeLarge</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:background">@xml/bg_input</item>
+        <item name="android:background">@xml/input_bg</item>
         <item name="android:minHeight">@dimen/zero</item>
         <item name="android:minWidth">@dimen/zero</item>
         <item name="android:gravity">left</item>

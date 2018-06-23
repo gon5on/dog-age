@@ -1,7 +1,6 @@
 package jp.co.e2.dogage.activity;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -30,13 +29,9 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.ActivityNotFoundException;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -127,6 +122,7 @@ public class InputActivity extends BaseActivity {
         private View mView = null;
         private PetEntity mPetEntity;
         private Uri mPhotoUri = null;
+        private Uri mTmpPhotoUri = null;
         private boolean mArchiveOpenFlg = false;
 
         /**
@@ -200,11 +196,13 @@ public class InputActivity extends BaseActivity {
 
             //カメラ
             if (resultCode == RESULT_OK && requestCode == Config.INTENT_CODE_CAMERA) {
-                fromCameraGalleryIntent(data);
+                mPhotoUri = mTmpPhotoUri;
+                fromCameraGalleryIntent();
             }
             //ギャラリ
-            else if (resultCode == RESULT_OK && (requestCode == Config.INTENT_CODE_GALLERY)) {
-                fromCameraGalleryIntent(data);
+            else if (resultCode == RESULT_OK && requestCode == Config.INTENT_CODE_GALLERY) {
+                mPhotoUri = data.getData();
+                fromCameraGalleryIntent();
             }
             //トリミング
             else if (resultCode == RESULT_OK && requestCode == Config.INTENT_CODE_TRIMMING) {
@@ -214,46 +212,28 @@ public class InputActivity extends BaseActivity {
 
         /**
          * カメラ・ギャラリーインテントからの戻り処理
-         *
-         * @param data データ
          */
-        private void fromCameraGalleryIntent(Intent data) {
-            try {
-                if (data != null && data.getData() != null) {
-                    LogUtils.d(data.getData());
-                    mPhotoUri = data.getData();
-                }
+        private void fromCameraGalleryIntent() {
+            Intent intent = new Intent("com.android.camera.action.CROP");
+            intent.setDataAndType(mPhotoUri, "image/*");
+            intent.putExtra("crop", "true");
+            intent.putExtra("aspectX", 1);
+            intent.putExtra("aspectY", 1);
+            intent.putExtra("outputX", 500);
+            intent.putExtra("outputY", 500);
 
-                //写真を一時ファイルとして保存
-                String savePath = Config.getImgTmpFilePath(getActivity());
-                InputStream is = getActivity().getContentResolver().openInputStream(mPhotoUri);
-                Bitmap bmp = BitmapFactory.decodeStream(is);
-                ImgHelper imgHelper = new ImgHelper(bmp);
-                imgHelper.saveJpg(savePath);
-
-                startActivityForResult(TrimmingActivity.getInstance(getActivity(), savePath), Config.INTENT_CODE_TRIMMING);
+            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                startActivityForResult(intent, Config.INTENT_CODE_TRIMMING);
 
                 String msg = getString(R.string.lets_trimming_photo);
                 AndroidUtils.showToastL(getActivity(), msg);
-
-            }
-            //ギャラリーから選択した画像一時保存に失敗
-            catch (IOException e){
-                String title = getString(R.string.error);
-                String msg = getString(R.string.save_photo_fail);
-
-                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
-                errorDialog.show(getFragmentManager(), "dialog");
-                e.printStackTrace();
-            }
-            //トリミングインテントに反応するアクテビティがなくてエラー
-            catch (ActivityNotFoundException e) {
+            } else {
+                //トリミングアプリなくてエラー
                 String title = getString(R.string.error);
                 String msg = getString(R.string.no_trimming_app);
 
                 ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
-                e.printStackTrace();
             }
         }
 
@@ -264,22 +244,20 @@ public class InputActivity extends BaseActivity {
          */
         private void fromTrimmingIntent(Intent data) {
             try {
-                //トリミングインテントから帰ってきたトリミング結果がfalseだった
-                if (!data.getBooleanExtra(TrimmingActivity.TRIMMING_RESULT, false)) {
-                    throw new Exception();
-                }
+                Bundle extras = data.getExtras();
+                Bitmap bitmap = extras.getParcelable("data");
 
                 mPetEntity.setPhotoSaveFlg(true);
                 mPetEntity.setPhotoFlg(true);
 
                 //トリミング後保存した画像を取得
-                ImgHelper imgUtils = new ImgHelper(Config.getImgTmpFilePath(getActivity()));
+                ImgHelper imgUtils = new ImgHelper(bitmap);
                 Integer size = AndroidUtils.dpToPixel(getActivity(), Config.PHOTO_INPUT_DP);
-                Bitmap bitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(getActivity()));
+                Bitmap kadomaruBitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(getActivity()));
 
                 //画像を表示
                 ImageView imageViewPhoto = mView.findViewById(R.id.imageViewPhoto);
-                imageViewPhoto.setImageBitmap(bitmap);
+                imageViewPhoto.setImageBitmap(kadomaruBitmap);
 
             } catch (Exception e) {
                 String title = getString(R.string.error);
@@ -639,26 +617,21 @@ public class InputActivity extends BaseActivity {
          * カメラを起動する
          */
         private void startCamera() {
-            try {
-                String filename = System.currentTimeMillis() + ".jpg";
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.TITLE, filename);
-                values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-                mPhotoUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            mTmpPhotoUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+            String filename = System.currentTimeMillis() + ".jpg";
 
-                Intent intent = new Intent();
-                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri);
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.withAppendedPath(mTmpPhotoUri, filename));
+
+            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                 startActivityForResult(intent, Config.INTENT_CODE_CAMERA);
-            }
-            //カメラアプリなくてエラー
-            catch (ActivityNotFoundException e) {
+            } else {
+                //カメラアプリなくてエラー
                 String title = getString(R.string.error);
                 String msg = getString(R.string.no_camera_app);
 
                 ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
-                e.printStackTrace();
             }
         }
 
@@ -666,19 +639,18 @@ public class InputActivity extends BaseActivity {
          * ギャラリーを起動する
          */
         private void startGallery() {
-            try {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                intent.setType("image/*");
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+
+            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                 startActivityForResult(intent, Config.INTENT_CODE_GALLERY);
-            }
-            //トリミングインテントに反応するアクテビティがなくてエラー
-            catch (ActivityNotFoundException e) {
+            } else {
+                //ギャラリーアプリなくてエラー
                 String title = getString(R.string.error);
                 String msg = getString(R.string.no_gallery_app);
 
                 ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
-                e.printStackTrace();
             }
         }
 

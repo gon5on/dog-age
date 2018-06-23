@@ -1,6 +1,7 @@
 <resources>
 
     <dimen name="zero">0dp</dimen>
+    <dimen name="quarterBlock">2dp</dimen>
     <dimen name="halfBlock">4dp</dimen>
     <dimen name="oneBlock">8dp</dimen>
     <dimen name="oneHalfBlock">12dp</dimen>

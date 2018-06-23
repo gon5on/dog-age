@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView
+<android.support.v7.widget.AppCompatRadioButton
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/imageViewPage"
-    android:layout_width="wrap_content"
+    android:id="@+id/radioButtonPage"
+    android:layout_width="@dimen/oneBlock"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/halfBlock"
-    android:paddingRight="@dimen/halfBlock"
-    android:src="@drawable/img_page_off"
+    android:paddingStart="@dimen/halfBlock"
+    android:paddingEnd="@dimen/halfBlock"
+    android:button="@xml/pager_radio_button_bg"
     android:contentDescription="@null"
     />
 

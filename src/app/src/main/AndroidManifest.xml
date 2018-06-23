@@ -42,10 +42,6 @@
             >
         </activity>
         <activity
-            android:name="jp.co.e2.dogage.activity.TrimmingActivity"
-            >
-        </activity>
-        <activity
             android:name="jp.co.e2.dogage.activity.SettingActivity"
             >
         </activity>
