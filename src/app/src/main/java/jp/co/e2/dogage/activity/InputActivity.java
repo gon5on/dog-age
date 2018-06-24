@@ -43,6 +43,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -355,7 +356,7 @@ public class InputActivity extends BaseActivity {
             } else {
                 mPetEntity.setArchiveDate(null);
 
-                Button buttonClear = mView.findViewById(R.id.buttonClear);
+                ImageButton buttonClear = mView.findViewById(R.id.buttonClear);
                 buttonClear.setVisibility(View.GONE);
 
                 Button buttonArchive = mView.findViewById(R.id.buttonArchive);
@@ -461,7 +462,7 @@ public class InputActivity extends BaseActivity {
             });
 
             //クリアボタン
-            Button buttonClear = mView.findViewById(R.id.buttonClear);
+            ImageButton buttonClear = mView.findViewById(R.id.buttonClear);
             buttonClear.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -678,7 +679,7 @@ public class InputActivity extends BaseActivity {
                 mPetEntity.setArchiveDate(date);
                 setDateToButton(R.id.buttonArchive, mPetEntity.getArchiveDate());
 
-                Button buttonClear = mView.findViewById(R.id.buttonClear);
+                ImageButton buttonClear = mView.findViewById(R.id.buttonClear);
                 buttonClear.setVisibility(View.VISIBLE);
             }
         }

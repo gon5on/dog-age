@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -70,7 +69,7 @@
             style="@style/LabelTextViewStyle"
             />
 
-        <jp.co.e2.dogage.adapter.TouchFeedbackImageView
+        <jp.co.e2.dogage.view.TouchFeedbackImageView
             android:id="@+id/imageViewPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -109,15 +108,14 @@
                     style="@style/EditTextButtonStyle"
                     />
 
-                <Button
+                <ImageButton
                     android:id="@+id/buttonClear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/oneBlock"
-                    android:layout_marginStart="@dimen/oneBlock"
-                    android:background="@xml/clear_btn_bg"
+                    app:srcCompat="@xml/icon_clear"
                     android:minHeight="@dimen/zero"
                     android:minWidth="@dimen/zero"
+                    android:background="?android:attr/selectableItemBackground"
                     />
 
             </LinearLayout>

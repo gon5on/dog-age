@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.common.AndroidUtils;
+import jp.co.e2.dogage.common.LogUtils;
 import jp.co.e2.dogage.common.MediaUtils;
 import jp.co.e2.dogage.entity.DogMasterEntity;
 
@@ -42,12 +43,12 @@ public class Config {
     public static final boolean LOG_FLG = true;
 
     //犬種数
-    public static final int KIND_NUM = 197;
+    private static final int KIND_NUM = 194;
 
     //カテゴリ
-    public static final int CATEGORY_SMALL = 1;                                 //小型犬
-    public static final int CATEGORY_MEDIUM = 2;                                //中型犬
-    public static final int CATEGORY_LARGE = 3;                                 //大型犬
+    public static final int CATEGORY_SMALL = 1;                                    //小型犬
+    public static final int CATEGORY_MEDIUM = 2;                                   //中型犬
+    public static final int CATEGORY_LARGE = 3;                                    //大型犬
 
     //0～1歳までに1ヶ月で取る年齢
     public static final Double AGE_OF_MONTH_UNTIL_ONE_YEAR_SMALL = 1.333;       //小型犬
@@ -65,31 +66,31 @@ public class Config {
     public static final Double AGE_OF_MONTH_OVER_TWO_YEAR_LARGE = 0.5833;       //大型犬
 
     //犬種マスタ
-    public static HashMap<Integer, DogMasterEntity> mDogMasterMap;
-    public static ArrayList<DogMasterEntity> mDogMasterList;
+    private static HashMap<Integer, DogMasterEntity> mDogMasterMap;
+    private static ArrayList<DogMasterEntity> mDogMasterList;
 
     //画像tmpフォルダ名
-    public static String TMP_DIR_NAME = "tmp";
-    public static String TMP_DIR_FILENAME = "tmp.jpg";
+    private static String TMP_DIR_NAME = "tmp";
+    private static String TMP_DIR_FILENAME = "tmp.jpg";
 
     //画像dp
-    public static int KADOMARU_DP = 20;                                         //角丸画像の角丸サイズ
-    public static int PHOTO_INPUT_DP = 150;                                     //入力画面の写真
-    public static int PHOTO_THUMB_DP = 80;                                      //サムネイル写真
-    public static int PHOTO_BIG_DP = 310;                                       //拡大写真
+    public static int KADOMARU_DP = 20;                         //角丸画像の角丸サイズ
+    public static int PHOTO_INPUT_DP = 150;                     //入力画面の写真
+    public static int PHOTO_THUMB_DP = 80;                      //サムネイル写真
+    public static int PHOTO_BIG_DP = 310;                       //拡大写真
 
     //インテント判別
-    public static final int INTENT_CODE_CAMERA = 1;                             //カメラ起動
-    public static final int INTENT_CODE_GALLERY = 2;                            //ギャラリー起動
-    public static final int INTENT_CODE_TRIMMING = 3;                           //画像トリミング
+    public static final int INTENT_CODE_CAMERA = 1;                                     //カメラ起動
+    public static final int INTENT_CODE_GALLERY = 2;                                    //ギャラリー起動
+    public static final int INTENT_CODE_TRIMMING = 3;                                   //画像トリミング
 
     //プリファレンス
-    public static final String PREF_BIRTH_NOTIFY_FLG = "birth_notify_flg";              //誕生日の通知
-    public static final String PREF_ARCHIVE_NOTIFY_FLG = "archive_notify_flg";              //命日の通知
+    public static final String PREF_BIRTH_NOTIFY_FLG = "birth_notify_flg";           //誕生日の通知
+    public static final String PREF_ARCHIVE_NOTIFY_FLG = "archive_notify_flg";      //命日の通知
 
     //アラーム
-    public static int ALARM_HOUR = 20;                                          //アラームの時間
-    public static int ALARM_MINUTE = 26;                                         //アラームの時間
+    public static int ALARM_HOUR = 15;                                                      //アラームの時間
+    public static int ALARM_MINUTE = 26;                                                    //アラームの時間
 
     //E2のURL
     public static String OFFICIAL_LINK = "https://www.e-2.co.jp";
@@ -107,6 +108,8 @@ public class Config {
             Resources res = context.getResources();
 
             for (int i = 0; i < Config.KIND_NUM; i++) {
+                LogUtils.d(i);
+
                 Integer resId = res.getIdentifier("dog" + (i + 1), "array", context.getPackageName());
                 String[] dogArray = res.getStringArray(resId);
                 DogMasterEntity dogEntity = setDogMasterEntity(dogArray);
@@ -132,7 +135,7 @@ public class Config {
 
             //犬種マスタを取得してソート
             HashMap<Integer, DogMasterEntity> tmp2 = Config.getDogMastersMap(context);
-            ArrayList<DogMasterEntity> tmp = new ArrayList<DogMasterEntity>(tmp2.values());
+            ArrayList<DogMasterEntity> tmp = new ArrayList<>(tmp2.values());
             Collections.sort(tmp, new DogMasterKindComparator());
             Collections.sort(tmp, new DogMasterInitialLineComparator());
 

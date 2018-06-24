@@ -20,8 +20,6 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -29,13 +27,17 @@ import android.widget.RadioGroup;
  * ペット年齢アクテビティ
  */
 public class PetAgeActivity extends BaseActivity implements ConfirmDialog.CallbackListener {
+    public static final String PARAM_ID = "id";
     private static final String PARAM_PAGE_NUM = "page_num";
     private static final String PARAM_DATA = "data";
+    private static final String PARAM_RADIO_RES_IDS = "radio_res_ids";
+
     private static final int REQUEST_CODE_ADD = 1;
     private static final int REQUEST_CODE_EDIT = 2;
 
     private Integer mPageNum = 0;                            // 現在表示中のページ数
     private ArrayList<PetEntity> mData = null;               // ペット情報一覧
+    private int[] mRadioResIds = null;                     // ページャのラジオボタンリソースID
 
     /**
      * ファクトリーメソッドもどき
@@ -79,8 +81,6 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
                 Intent intent = InputActivity.newInstance(PetAgeActivity.this, true, 0, null);
                 startActivityForResult(intent, REQUEST_CODE_ADD);
             }
-        } else {
-            mData = (ArrayList<PetEntity>) savedInstanceState.getSerializable(PARAM_DATA);
         }
 
         createViewPager();
@@ -138,6 +138,18 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
         super.onSaveInstanceState(outState);
 
         outState.putSerializable(PARAM_DATA, mData);
+        outState.putIntArray(PARAM_RADIO_RES_IDS, mRadioResIds);
+    }
+
+    /**
+     * ${inheritDoc}
+     */
+    @Override
+    protected void onRestoreInstanceState(Bundle outState) {
+        super.onRestoreInstanceState(outState);
+
+        mData = (ArrayList<PetEntity>) outState.getSerializable(PARAM_DATA);
+        mRadioResIds = outState.getIntArray(PARAM_RADIO_RES_IDS);
     }
 
     /**
@@ -146,13 +158,20 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_ADD || requestCode == REQUEST_CODE_EDIT) {
-            if (resultCode == RESULT_OK) {
-                View view = findViewById(android.R.id.content);
-                AndroidUtils.showSuccessSnackBarS(view, getString(R.string.save_success));
-
-                getPetList();
-                createViewPager();
+            if (resultCode != RESULT_OK) {
+                return;
             }
+
+            View view = findViewById(android.R.id.content);
+            AndroidUtils.showSuccessSnackBarS(view, getString(R.string.save_success));
+
+            //追加の場合は、1ページ目を表示する
+            if (requestCode == REQUEST_CODE_ADD) {
+                mPageNum = 0;
+            }
+
+            getPetList();
+            createViewPager();
         }
     }
 
@@ -212,6 +231,8 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
         RadioGroup radioGroupPager = findViewById(R.id.radioGroupPager);
         radioGroupPager.removeAllViewsInLayout();
 
+        mRadioResIds = new int[mData.size()];
+
         //1匹の場合はページングを表示しない
         if (mData.size() == 1) {
             radioGroupPager.setVisibility(View.GONE);
@@ -221,13 +242,15 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
             radioGroupPager.setVisibility(View.VISIBLE);
 
             for (int i = 0; i < mData.size(); i++) {
+                mRadioResIds[i] = View.generateViewId();
+
                 RadioButton radioButton = (RadioButton) getLayoutInflater().inflate(R.layout.parts_pager, null);
-                radioButton.setId(i);
+                radioButton.setId(mRadioResIds[i]);
                 radioGroupPager.addView(radioButton);
 
                 //表示ページはONにしておく
                 if (i == mPageNum) {
-                    radioGroupPager.check(i);
+                    radioGroupPager.check(mRadioResIds[i]);
                 }
             }
         }
@@ -243,7 +266,7 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
         }
 
         RadioGroup radioGroupPager = findViewById(R.id.radioGroupPager);
-        radioGroupPager.check(mPageNum);
+        radioGroupPager.check(mRadioResIds[mPageNum]);
     }
 
     /**

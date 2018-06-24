@@ -4,7 +4,12 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
@@ -202,5 +207,29 @@ public class AndroidUtils {
         textView.setTextColor(Color.rgb(255, 255, 255));
 
         snackbar.show();
+    }
+
+    /**
+     * ビットマップ画像に色を付ける
+     *
+     * @param bitmap ビットマップ
+     * @param color カラーコード
+     * @return ビットマップ
+     */
+    public static Bitmap setBitmapColor(Bitmap bitmap, int color) {
+        //mutable化する
+        Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        bitmap.recycle();
+
+        Canvas myCanvas = new Canvas(mutableBitmap);
+
+        int myColor = mutableBitmap.getPixel(0,0);
+        ColorFilter filter = new LightingColorFilter(myColor, color);
+
+        Paint pnt = new Paint();
+        pnt.setColorFilter(filter);
+        myCanvas.drawBitmap(mutableBitmap,0,0,pnt);
+
+        return mutableBitmap;
     }
 }

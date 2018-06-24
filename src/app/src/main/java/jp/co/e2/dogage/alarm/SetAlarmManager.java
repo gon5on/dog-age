@@ -56,8 +56,6 @@ public class SetAlarmManager {
             alarmManager.set(AlarmManager.RTC_WAKEUP, dateHelper.getMilliSecond(), sender);
 
             LogUtils.v("SetAlarmManager", "push = " + dateHelper.format(DateHelper.FMT_DATETIME));
-
-AndroidUtils.showToastL(mContext, dateHelper.format(DateHelper.FMT_DATETIME));
         }
         catch (ParseException e) {
             e.printStackTrace();

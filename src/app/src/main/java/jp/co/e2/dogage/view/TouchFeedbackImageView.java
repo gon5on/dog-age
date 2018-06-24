@@ -1,4 +1,4 @@
-package jp.co.e2.dogage.adapter;
+package jp.co.e2.dogage.view;
 
 import android.content.Context;
 import android.graphics.Color;
