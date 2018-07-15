@@ -9,6 +9,7 @@ import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.common.AndroidUtils;
 import jp.co.e2.dogage.common.DateHelper;
 import jp.co.e2.dogage.common.ImgHelper;
+import jp.co.e2.dogage.common.MediaUtils;
 import jp.co.e2.dogage.config.Config;
 
 import android.content.Context;
@@ -39,7 +40,11 @@ public class PetEntity implements Serializable {
      * @return DogMasterEntity mDogMaster
      */
     public DogMasterEntity getDogMaster(Context context) {
-        if (getId() == null || mDogMaster != null) {
+        if (getKind() == null) {
+            return null;
+        }
+
+        if (mDogMaster != null) {
             return mDogMaster;
         }
 
@@ -220,6 +225,8 @@ public class PetEntity implements Serializable {
      */
     public void setKind(Integer value) {
         mKind = value;
+
+        mDogMaster = null;
     }
 
     /**
@@ -291,16 +298,10 @@ public class PetEntity implements Serializable {
      * @return Bitmap
      */
     public Bitmap getPhotoBig(Context context) throws IOException {
-        String path = Config.getImgDirPath(context) + "/" + Config.getImgFileName(getId());
-
         Integer size = AndroidUtils.dpToPixel(context, Config.PHOTO_BIG_DP);
 
-        ImgHelper imgHelper = new ImgHelper(path);
-        Bitmap bitmap = imgHelper.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(context));
-
-        imgHelper = null;
-
-        return bitmap;
+        ImgHelper imgHelper = new ImgHelper(getImgFilePath(context));
+        return imgHelper.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(context));
     }
 
     /**
@@ -310,16 +311,10 @@ public class PetEntity implements Serializable {
      * @return Bitmap
      */
     public Bitmap getPhotoThumb(Context context) throws IOException {
-        String path = Config.getImgDirPath(context) + "/" + Config.getImgFileName(getId());
-
         Integer size = AndroidUtils.dpToPixel(context, Config.PHOTO_THUMB_DP);
 
-        ImgHelper imgUtils = new ImgHelper(path);
-        Bitmap bitmap = imgUtils.getResizeCircleBitmap(size, size);
-
-        imgUtils = null;
-
-        return bitmap;
+        ImgHelper imgHelper = new ImgHelper(getImgFilePath(context));
+        return imgHelper.getResizeCircleBitmap(size, size);
     }
 
     /**
@@ -329,16 +324,17 @@ public class PetEntity implements Serializable {
      * @return Bitmap
      */
     public Bitmap getPhotoInput(Context context) throws IOException {
-        String path = Config.getImgDirPath(context) + "/" + Config.getImgFileName(getId());
-
         Integer size = AndroidUtils.dpToPixel(context, Config.PHOTO_INPUT_DP);
 
-        ImgHelper imgUtils = new ImgHelper(path);
-        Bitmap bitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(context));
+        ImgHelper imgHelper = new ImgHelper(getImgTmpFilePath(context));
 
-        imgUtils = null;
+        //一時保存画像が取得できた場合は、それを採用
+        //取得できなかった場合は、保存画像を読み込みなおす
+        if (!imgHelper.exist()) {
+            imgHelper = new ImgHelper(getImgFilePath(context));
+        }
 
-        return bitmap;
+        return imgHelper.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(context));
     }
 
     /**
@@ -475,5 +471,66 @@ public class PetEntity implements Serializable {
         }
 
         return new Integer[]{year, month};
+    }
+
+    /**
+     * 画像保存tmpディレクトリパス
+     *
+     * @param context コンテキスト
+     * @return String
+     */
+    public String getImgTmpDirPath(Context context) {
+        return MediaUtils.createDirPath(context, Config.TMP_DIR_NAME).getAbsolutePath();
+    }
+
+    /**
+     * 画像保存tmpファイルパス
+     *
+     * @param context コンテキスト
+     * @return String
+     */
+    public String getImgTmpFilePath(Context context) {
+        return getImgTmpDirPath(context) + "/" + Config.TMP_DIR_FILENAME;
+    }
+
+    /**
+     * 画像保存ファイルパス
+     *
+     * @param context コンテキスト
+     * @return String
+     */
+    public String getImgFilePath(Context context) {
+        return getImgDirPath(context) + "/" + getImgFileName(getId());
+    }
+
+    /**
+     * 画像保存ディレクトリパスを返す
+     *
+     * @param context コンテキスト
+     * @return String
+     */
+    private String getImgDirPath(Context context) {
+        String path = "";
+
+        //外部ストレージが使用可能
+        if (MediaUtils.IsExternalStorageAvailableAndWritable()) {
+            path = context.getExternalFilesDir(null).toString();
+        }
+        //外部ストレージは使用不可
+        else {
+            path = context.getFilesDir().toString();
+        }
+
+        return path;
+    }
+
+    /**
+     * 画像ファイル名を生成
+     *
+     * @param id ID
+     * @return String
+     */
+    private String getImgFileName(Integer id) {
+        return "dog_" + id + ".jpg";
     }
 }

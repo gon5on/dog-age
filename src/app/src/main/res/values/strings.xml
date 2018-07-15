@@ -54,6 +54,7 @@
     <string name="large_over_two_year_dog_age">7歳/年</string>
     <string name="lets_trimming_photo">ワンちゃんの顔が中心になるようにトリミングしてください。</string>
     <string name="no_trimming_app">トリミング可能なアプリがインストールされていません。\nもしくは、先程選択した写真が読み込めません、別の写真を選択してください。</string>
+    <string name="failed_to_use_camera">カメラを利用できません、ギャラリーから選択してください。</string>
     <string name="trimming_fail">トリミングに失敗しました。</string>
     <string name="save_photo_fail">写真の保存に失敗しました。</string>
     <string name="save_success">保存しました。</string>

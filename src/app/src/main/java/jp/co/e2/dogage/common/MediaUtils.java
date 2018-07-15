@@ -61,21 +61,21 @@ public class MediaUtils {
      *
      * @return boolean 外部ストレージが使える/使えない
      */
-    public static boolean IsExternalStorageAvailableAndWriteable() {
-        boolean externalStorageAvailable = false;
-        boolean externalStorageWriteable = false;
+    public static boolean IsExternalStorageAvailableAndWritable() {
+        boolean externalStorageAvailable;
+        boolean externalStorageWritable;
         String state = Environment.getExternalStorageState();
 
         if (Environment.MEDIA_MOUNTED.equals(state)) {
-            externalStorageAvailable = externalStorageWriteable = true;
+            externalStorageAvailable = externalStorageWritable = true;
         } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
             externalStorageAvailable = true;
-            externalStorageWriteable = false;
+            externalStorageWritable = false;
         } else {
-            externalStorageAvailable = externalStorageWriteable = false;
+            externalStorageAvailable = externalStorageWritable = false;
         }
 
-        return externalStorageAvailable && externalStorageWriteable;
+        return externalStorageAvailable && externalStorageWritable;
     }
 
     /**
@@ -186,7 +186,6 @@ public class MediaUtils {
      *
      * @param path ファイルパス
      * @return File
-     * @throws FileNotFoundException
      */
     public static File getBinaryFile(String path) throws FileNotFoundException {
         File file = new File(path);
@@ -203,7 +202,6 @@ public class MediaUtils {
      *
      * @param inputPath コピー元のファイルパス
      * @param outputPath コピー先のファイルパス
-     * @throws IOException
      */
     public static void copyFile(String inputPath, String outputPath) throws IOException {
         File inputFile = new File(inputPath);
@@ -226,7 +224,6 @@ public class MediaUtils {
      *
      * @param tmpFile 一時ファイル
      * @param outputPath コピー先のファイルパス
-     * @throws IOException
      */
     public static void saveFile(File tmpFile, String outputPath) throws IOException {
         File outputFile = new File(outputPath);
@@ -244,5 +241,34 @@ public class MediaUtils {
             out.close();
             in.close();
         }
+    }
+
+    /**
+     * ディレクトリを作成する
+     *
+     * @param context コンテキスト
+     * @param dirName ディレクトリ名
+     * @return String
+     */
+    public static File createDirPath(Context context, String dirName) {
+        String path;
+
+        //外部ストレージが使用可能
+        if (MediaUtils.IsExternalStorageAvailableAndWritable()) {
+            path = context.getExternalFilesDir(dirName).toString();
+        }
+        //外部ストレージは使用不可
+        else {
+            path = context.getFilesDir().toString() + "/" + dirName;
+        }
+
+        File file = new File(path);
+
+        //フォルダが存在しなければ作成
+        if (!file.exists()) {
+            file.mkdir();
+        }
+
+        return  file;
     }
 }

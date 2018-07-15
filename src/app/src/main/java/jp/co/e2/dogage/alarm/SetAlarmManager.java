@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import jp.co.e2.dogage.common.AndroidUtils;
 import jp.co.e2.dogage.common.DateHelper;
 import jp.co.e2.dogage.common.LogUtils;
 import jp.co.e2.dogage.common.PreferenceUtils;

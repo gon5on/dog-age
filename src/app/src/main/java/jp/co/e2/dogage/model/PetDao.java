@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import jp.co.e2.dogage.common.DateHelper;
 import jp.co.e2.dogage.common.LogUtils;
 import jp.co.e2.dogage.common.MediaUtils;
-import jp.co.e2.dogage.config.Config;
 import jp.co.e2.dogage.entity.PetEntity;
 
 import android.content.ContentValues;
@@ -18,17 +17,17 @@ import android.database.sqlite.SQLiteDatabase;
  */
 public class PetDao extends BaseDao {
     // テーブル名
-    public static final String TABLE_NAME = "pets";
+    private static final String TABLE_NAME = "pets";
 
     // カラム名
-    public static final String COLUMN_ID = "pets_id";
-    public static final String COLUMN_NAME = "pets_name";
-    public static final String COLUMN_BIRTHDAY = "pets_birthday";
-    public static final String COLUMN_KIND = "pets_kind";
-    public static final String COLUMN_PHOTO_FLG = "pets_photo_flg";
-    public static final String COLUMN_ARCHIVE_DATE = "pets_archive_date";
-    public static final String COLUMN_CREATED = "pets_created";
-    public static final String COLUMN_MODIFIED = "pets_modified";
+    private static final String COLUMN_ID = "pets_id";
+    private static final String COLUMN_NAME = "pets_name";
+    private static final String COLUMN_BIRTHDAY = "pets_birthday";
+    private static final String COLUMN_KIND = "pets_kind";
+    private static final String COLUMN_PHOTO_FLG = "pets_photo_flg";
+    private static final String COLUMN_ARCHIVE_DATE = "pets_archive_date";
+    private static final String COLUMN_CREATED = "pets_created";
+    private static final String COLUMN_MODIFIED = "pets_modified";
 
     //CREATE TABLE文
     public static final String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " (" +
@@ -69,8 +68,6 @@ public class PetDao extends BaseDao {
     public boolean save(SQLiteDatabase db, PetEntity data) throws Exception {
         long ret;
 
-        Integer savedId;
-
         ContentValues cv = new ContentValues();
         put(cv, COLUMN_NAME, data.getName());
         put(cv, COLUMN_BIRTHDAY, data.getBirthday());
@@ -82,25 +79,24 @@ public class PetDao extends BaseDao {
         if (data.getId() == null) {
             put(cv, COLUMN_CREATED, new DateHelper().format(DateHelper.FMT_DATETIME));
             ret = db.insert(TABLE_NAME, "", cv);
-            savedId = (int) ret;
         } else {
             String[] param = new String[]{String.valueOf(data.getId())};
             ret = db.update(TABLE_NAME, cv, COLUMN_ID + "=?", param);
-            savedId = data.getId();
         }
 
         //画像保存
         if (data.getPhotoFlg()) {
             if(data.getPhotoSaveFlg()) {
-                String tmpPath = Config.getImgTmpFilePath(mContext);
-                String savePath = Config.getImgDirPath(mContext) + "/" + Config.getImgFileName(savedId);
-                MediaUtils.copyFile(tmpPath, savePath);
+                String tmpPath = data.getImgTmpFilePath(mContext);
+                String savePath = data.getImgFilePath(mContext);
 
                 LogUtils.d("tmp file path : ", tmpPath);
                 LogUtils.d("save file path : ", savePath);
+
+                MediaUtils.copyFile(tmpPath, savePath);
             }
         } else {
-            MediaUtils.deleteDirFile(Config.getImgDirPath(mContext) + "/" + Config.getImgFileName(savedId));
+            MediaUtils.deleteDirFile(data.getImgFilePath(mContext));
         }
 
         return (ret != -1);

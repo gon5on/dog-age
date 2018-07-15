@@ -1,6 +1,7 @@
 package jp.co.e2.dogage.common;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -12,6 +13,7 @@ import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import jp.co.e2.dogage.R;
@@ -158,26 +161,6 @@ public class AndroidUtils {
     }
 
     /**
-     * 被らないリソースIDを生成する
-     *
-     * @return int リソースID
-     */
-    public static int generateViewId() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            for (;;) {
-                final int result = mNextGeneratedId.get();
-                int newValue = result + 1;
-                if (newValue > 0x00FFFFFF) newValue = 1;        // Roll over to 1, not 0.
-                if (mNextGeneratedId.compareAndSet(result, newValue)) {
-                    return result;
-                }
-            }
-        } else {
-            return View.generateViewId();
-        }
-    }
-
-    /**
      * 成功時のスナックバーを表示する
      *
      * @param view ビュー
@@ -231,5 +214,49 @@ public class AndroidUtils {
         myCanvas.drawBitmap(mutableBitmap,0,0,pnt);
 
         return mutableBitmap;
+    }
+
+    /**
+     * 外部ストレージに書き込めるか？
+     *
+     * @return boolean
+     */
+    public static boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+
+        return (Environment.MEDIA_MOUNTED.equals(state));
+    }
+
+    /**
+     * 外部ストレージから読み込めるか？
+     *
+     * @return boolean
+     */
+    public static boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+
+        return (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state));
+    }
+
+    /**
+     * 写真をギャラリーに追加する
+     *
+     * @param context コンテキスト
+     * @param path パス
+     */
+    public static void addPhotoToGallery(Context context, String path) {
+        if (path == null) {
+            return;
+        }
+        if (!new File(path).exists()) {
+            return;
+        }
+
+        Uri uri = Uri.fromFile(new File(path));
+
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        intent.setData(uri);
+
+        context.sendBroadcast(intent);
     }
 }

@@ -1,9 +1,13 @@
 package jp.co.e2.dogage.activity;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
+import jp.co.e2.dogage.BuildConfig;
 import jp.co.e2.dogage.alarm.SetAlarmManager;
 import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.common.AndroidUtils;
@@ -34,7 +38,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -54,6 +60,7 @@ public class InputActivity extends BaseActivity {
     private static final String PARAM_DATA = "data";
     private static final String PARAM_PAGE_NUM = "page_num";
     private static final String PARAM_INIT_FLG = "init_flg";
+    private static final String PARAM_PHOTO_PATH = "photo_path";
 
     /**
      * ファクトリーメソッドもどき
@@ -122,8 +129,7 @@ public class InputActivity extends BaseActivity {
 
         private View mView = null;
         private PetEntity mPetEntity;
-        private Uri mPhotoUri = null;
-        private Uri mTmpPhotoUri = null;
+        private String mPhotoPath = null;
         private boolean mArchiveOpenFlg = false;
 
         /**
@@ -162,8 +168,15 @@ public class InputActivity extends BaseActivity {
                 } else {
                     mPetEntity = new PetEntity();
                 }
+
+                //以前の一時保存画像が残っていたら削除しておく
+                File file = new File(mPetEntity.getImgTmpFilePath(getActivity()));
+                if (file.exists()) {
+                    file.delete();
+                }
             } else {
                 mPetEntity = (PetEntity) savedInstanceState.getSerializable(PARAM_DATA);
+                mPhotoPath = savedInstanceState.getString(PARAM_PHOTO_PATH);
             }
 
             //値を画面にセットする
@@ -186,6 +199,7 @@ public class InputActivity extends BaseActivity {
             super.onSaveInstanceState(outState);
 
             outState.putSerializable(PARAM_DATA, mPetEntity);
+            outState.putString(PARAM_PHOTO_PATH, mPhotoPath);
         }
 
         /**
@@ -197,76 +211,18 @@ public class InputActivity extends BaseActivity {
 
             //カメラ
             if (resultCode == RESULT_OK && requestCode == Config.INTENT_CODE_CAMERA) {
-                mPhotoUri = mTmpPhotoUri;
-                fromCameraGalleryIntent();
+                AndroidUtils.addPhotoToGallery(getActivity(), mPhotoPath);
+
+                Uri uri = Uri.fromFile(new File(mPhotoPath));
+                doTrimming(uri);
             }
             //ギャラリ
             else if (resultCode == RESULT_OK && requestCode == Config.INTENT_CODE_GALLERY) {
-                mPhotoUri = data.getData();
-                fromCameraGalleryIntent();
+                doTrimming(data.getData());
             }
             //トリミング
             else if (resultCode == RESULT_OK && requestCode == Config.INTENT_CODE_TRIMMING) {
-                fromTrimmingIntent(data);
-            }
-        }
-
-        /**
-         * カメラ・ギャラリーインテントからの戻り処理
-         */
-        private void fromCameraGalleryIntent() {
-            Intent intent = new Intent("com.android.camera.action.CROP");
-            intent.setDataAndType(mPhotoUri, "image/*");
-            intent.putExtra("crop", "true");
-            intent.putExtra("aspectX", 1);
-            intent.putExtra("aspectY", 1);
-            intent.putExtra("outputX", 500);
-            intent.putExtra("outputY", 500);
-
-            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                startActivityForResult(intent, Config.INTENT_CODE_TRIMMING);
-
-                String msg = getString(R.string.lets_trimming_photo);
-                AndroidUtils.showToastL(getActivity(), msg);
-            } else {
-                //トリミングアプリなくてエラー
-                String title = getString(R.string.error);
-                String msg = getString(R.string.no_trimming_app);
-
-                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
-                errorDialog.show(getFragmentManager(), "dialog");
-            }
-        }
-
-        /**
-         * トリミングインテントからの戻り処理
-         *
-         * @param data データ
-         */
-        private void fromTrimmingIntent(Intent data) {
-            try {
-                Bundle extras = data.getExtras();
-                Bitmap bitmap = extras.getParcelable("data");
-
-                mPetEntity.setPhotoSaveFlg(true);
-                mPetEntity.setPhotoFlg(true);
-
-                //トリミング後保存した画像を取得
-                ImgHelper imgUtils = new ImgHelper(bitmap);
-                Integer size = AndroidUtils.dpToPixel(getActivity(), Config.PHOTO_INPUT_DP);
-                Bitmap kadomaruBitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(getActivity()));
-
-                //画像を表示
-                ImageView imageViewPhoto = mView.findViewById(R.id.imageViewPhoto);
-                imageViewPhoto.setImageBitmap(kadomaruBitmap);
-
-            } catch (Exception e) {
-                String title = getString(R.string.error);
-                String msg = getString(R.string.trimming_fail);
-
-                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
-                errorDialog.show(getFragmentManager(), "dialog");
-                e.printStackTrace();
+                fromTrimmingIntent();
             }
         }
 
@@ -275,29 +231,30 @@ public class InputActivity extends BaseActivity {
          */
         private void setItem() {
             try {
-                //編集の場合
-                if (mPetEntity.getId() != null) {
-                    setDateToButton(R.id.buttonBirthday, mPetEntity.getBirthday());
-
-                    Button buttonKind = mView.findViewById(R.id.buttonKind);
-                    buttonKind.setText(mPetEntity.getKindDisp(getActivity().getApplicationContext()));
-
+                if (mPetEntity.getName() != null) {
                     EditText editTextName = mView.findViewById(R.id.editTextName);
                     editTextName.setText(mPetEntity.getName());
-
-                    if (mPetEntity.getArchiveDate() != null) {
-                        setDateToButton(R.id.buttonArchive, mPetEntity.getArchiveDate());
-                        setOpenButton();
-                    }
-
-                    if (mPetEntity.getPhotoFlg()) {
-                        ImageView imageViewPhoto = mView.findViewById(R.id.imageViewPhoto);
-                        imageViewPhoto.setImageBitmap(mPetEntity.getPhotoInput(getActivity()));
-                    }
                 }
 
-                //画像がない場合、NO PHOTOを角丸の画像にする
-                if (!mPetEntity.getPhotoFlg()) {
+                if (mPetEntity.getBirthday() != null) {
+                    setDateToButton(R.id.buttonBirthday, mPetEntity.getBirthday());
+                }
+
+                if (mPetEntity.getKind() != null) {
+                    Button buttonKind = mView.findViewById(R.id.buttonKind);
+                    buttonKind.setText(mPetEntity.getKindDisp(getActivity().getApplicationContext()));
+                }
+
+                if (mPetEntity.getArchiveDate() != null) {
+                    setDateToButton(R.id.buttonArchive, mPetEntity.getArchiveDate());
+                    setOpenButton();
+                }
+
+                if (mPetEntity.getPhotoFlg()) {
+                    ImageView imageViewPhoto = mView.findViewById(R.id.imageViewPhoto);
+                    imageViewPhoto.setImageBitmap(mPetEntity.getPhotoInput(getActivity()));
+                } else {
+                    //画像がない場合、NO PHOTOを角丸の画像にする
                     setNoPhoto();
                 }
 
@@ -579,7 +536,7 @@ public class InputActivity extends BaseActivity {
         /**
          * DBに保存する
          *
-         * @return boolean ret
+         * @return ret 結果
          */
         private boolean saveDb() {
             boolean ret;
@@ -618,22 +575,63 @@ public class InputActivity extends BaseActivity {
          * カメラを起動する
          */
         private void startCamera() {
-            mTmpPhotoUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-            String filename = System.currentTimeMillis() + ".jpg";
-
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.withAppendedPath(mTmpPhotoUri, filename));
 
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                startActivityForResult(intent, Config.INTENT_CODE_CAMERA);
-            } else {
-                //カメラアプリなくてエラー
-                String title = getString(R.string.error);
-                String msg = getString(R.string.no_camera_app);
+                File file;
+                try {
+                    file = getPhotoFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
 
-                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
-                errorDialog.show(getFragmentManager(), "dialog");
+                    ErrorDialog errorDialog = ErrorDialog.newInstance(getString(R.string.error), e.getMessage());
+                    errorDialog.show(getFragmentManager(), "dialog");
+                    return;
+                }
+
+                Uri uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".provider", file);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                startActivityForResult(intent, Config.INTENT_CODE_CAMERA);
             }
+        }
+
+        /**
+         * カメラの保存先画像ファイル作成
+         *
+         * @return file ファイル
+         */
+        public File getPhotoFile() throws IOException {
+            //外部ストレージ使用不可
+            if (!AndroidUtils.isExternalStorageWritable()) {
+                throw new IOException(getString(R.string.failed_to_use_camera));
+            }
+
+            //ディレクトリ作成
+            File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "dog_age");
+            LogUtils.d(dir.getAbsolutePath());
+
+            if (!dir.exists()) {
+                //ファイル作成失敗
+                if (!dir.mkdirs()) {
+                    throw new IOException(getString(R.string.failed_to_use_camera));
+                }
+            }
+
+            //ファイル作成
+            String filename = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";
+            File file = new File(dir, filename);
+
+            if (!file.exists()) {
+                //ファイル作成失敗
+                if (!file.createNewFile()) {
+                    throw new IOException(getString(R.string.failed_to_use_camera));
+                }
+            }
+
+            mPhotoPath = file.getAbsolutePath();
+            LogUtils.d(mPhotoPath);
+
+            return file;
         }
 
         /**
@@ -652,6 +650,67 @@ public class InputActivity extends BaseActivity {
 
                 ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
                 errorDialog.show(getFragmentManager(), "dialog");
+            }
+        }
+
+        /**
+         * トリミング起動処理
+         *
+         * @param uri トリミング対象の画像URI
+         */
+        private void doTrimming(Uri uri) {
+            Intent intent = new Intent("com.android.camera.action.CROP");
+            intent.setDataAndType(uri, "image/*");
+
+            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                File tmpFile = new File(mPetEntity.getImgTmpFilePath(getActivity()));
+
+                intent.putExtra("crop", "true");
+                intent.putExtra("aspectX", 1);
+                intent.putExtra("aspectY", 1);
+                intent.putExtra("outputX", 500);
+                intent.putExtra("outputY", 500);
+                intent.putExtra("return-data", false);
+                intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.name());
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tmpFile));
+                startActivityForResult(intent, Config.INTENT_CODE_TRIMMING);
+
+                String msg = getString(R.string.lets_trimming_photo);
+                AndroidUtils.showToastL(getActivity(), msg);
+            } else {
+                //トリミングアプリなくてエラー
+                String title = getString(R.string.error);
+                String msg = getString(R.string.no_trimming_app);
+
+                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
+                errorDialog.show(getFragmentManager(), "dialog");
+            }
+        }
+
+        /**
+         * トリミングインテントからの戻り処理
+         */
+        private void fromTrimmingIntent() {
+            try {
+                mPetEntity.setPhotoSaveFlg(true);
+                mPetEntity.setPhotoFlg(true);
+
+                //角丸の画像にを取得
+                ImgHelper imgUtils = new ImgHelper(mPetEntity.getImgTmpFilePath(getActivity()));
+                Integer size = AndroidUtils.dpToPixel(getActivity(), Config.PHOTO_INPUT_DP);
+                Bitmap kadomaruBitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(getActivity()));
+
+                //画像を表示
+                ImageView imageViewPhoto = mView.findViewById(R.id.imageViewPhoto);
+                imageViewPhoto.setImageBitmap(kadomaruBitmap);
+
+            } catch (Exception e) {
+                String title = getString(R.string.error);
+                String msg = getString(R.string.trimming_fail);
+
+                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
+                errorDialog.show(getFragmentManager(), "dialog");
+                e.printStackTrace();
             }
         }
 

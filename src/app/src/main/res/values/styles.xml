@@ -23,6 +23,12 @@
         <item name="android:textColorSecondary">@color/black</item>
     </style>
 
+    <!-- 透明背景ダイアログ -->
+    <style name="TransparentDialogStyle" parent="AppAlertDialogStyle">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
     <!-- 入力欄 -->
     <style name="AppEditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:textSize">@dimen/fontSizeLarge</item>

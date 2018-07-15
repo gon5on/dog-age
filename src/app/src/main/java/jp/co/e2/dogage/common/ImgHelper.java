@@ -90,6 +90,15 @@ public class ImgHelper {
     }
 
     /**
+     * 画像が存在するか
+     *
+     * @return boolean
+     */
+    public boolean exist() {
+        return mBitmap != null || new File(mPath).exists();
+    }
+
+    /**
      * 丸にくりぬいたビットマップ画像を返す
      *
      * @return Bitmap

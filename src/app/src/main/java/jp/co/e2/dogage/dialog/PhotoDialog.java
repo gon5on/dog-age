@@ -42,7 +42,7 @@ public class PhotoDialog extends BaseDialog<CallbackListener> {
         ImageView imageViewPhoto = view.findViewById(R.id.imageViewPhoto);
         imageViewPhoto.setImageBitmap((Bitmap) getArguments().getParcelable(PARAM_BITMAP));
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.TransparentDialogStyle);
         builder.setView(view);
 
         return builder.create();

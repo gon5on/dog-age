@@ -23,8 +23,16 @@ import android.widget.TextView;
  * ペット年齢フラグメント
  */
 public class PetAgeFragment extends Fragment {
-    private static final Integer[] BG_ABOVE = new Integer[]{R.drawable.img_frame_above1, R.drawable.img_frame_above2, R.drawable.img_frame_above3};
-    private static final Integer[] BG_UNDER = new Integer[]{R.drawable.img_frame_under1, R.drawable.img_frame_under2, R.drawable.img_frame_under3};
+    private static final Integer[] BG_ABOVE = new Integer[] {
+            R.drawable.img_frame_above1,
+            R.drawable.img_frame_above2,
+            R.drawable.img_frame_above3
+    };
+    private static final Integer[] BG_UNDER = new Integer[] {
+            R.drawable.img_frame_under1,
+            R.drawable.img_frame_under2,
+            R.drawable.img_frame_under3
+    };
     private static final Integer BG_CNT = BG_ABOVE.length;
 
     private static final String PARAM_PAGE_NUM = "page_num";
@@ -128,8 +136,10 @@ public class PetAgeFragment extends Fragment {
                 imageViewPhoto.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        PhotoDialog photoDialog = PhotoDialog.newInstance(bigBitmap);
-                        photoDialog.show(getActivity().getFragmentManager(), "dialog");
+                        if (getActivity() != null) {
+                            PhotoDialog photoDialog = PhotoDialog.newInstance(bigBitmap);
+                            photoDialog.show(getActivity().getFragmentManager(), "dialog");
+                        }
                     }
                 });
             } else {

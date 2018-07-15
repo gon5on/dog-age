@@ -1,14 +1,11 @@
 package jp.co.e2.dogage.config;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
 import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.common.AndroidUtils;
-import jp.co.e2.dogage.common.LogUtils;
-import jp.co.e2.dogage.common.MediaUtils;
 import jp.co.e2.dogage.entity.DogMasterEntity;
 
 import android.annotation.SuppressLint;
@@ -70,8 +67,8 @@ public class Config {
     private static ArrayList<DogMasterEntity> mDogMasterList;
 
     //画像tmpフォルダ名
-    private static String TMP_DIR_NAME = "tmp";
-    private static String TMP_DIR_FILENAME = "tmp.jpg";
+    public static String TMP_DIR_NAME = "tmp";
+    public static String TMP_DIR_FILENAME = "tmp.jpg";
 
     //画像dp
     public static int KADOMARU_DP = 20;                         //角丸画像の角丸サイズ
@@ -108,8 +105,6 @@ public class Config {
             Resources res = context.getResources();
 
             for (int i = 0; i < Config.KIND_NUM; i++) {
-                LogUtils.d(i);
-
                 Integer resId = res.getIdentifier("dog" + (i + 1), "array", context.getPackageName());
                 String[] dogArray = res.getStringArray(resId);
                 DogMasterEntity dogEntity = setDogMasterEntity(dogArray);
@@ -196,74 +191,6 @@ public class Config {
 
             return before.getInitialLine().compareTo(after.getInitialLine());
         }
-    }
-
-    /**
-     * 画像保存パスを返す
-     *
-     * @param context コンテキスト
-     * @return String
-     */
-    public static String getImgDirPath(Context context) {
-        String path = "";
-
-        //外部ストレージが使用可能
-        if (MediaUtils.IsExternalStorageAvailableAndWriteable()) {
-            path = context.getExternalFilesDir(null).toString();
-        }
-        //外部ストレージは使用不可
-        else {
-            path = context.getFilesDir().toString();
-        }
-
-        return path;
-    }
-
-    /**
-     * 画像保存tmpパスを返す
-     *
-     * @param context コンテキスト
-     * @return String
-     */
-    public static String getImgTmpDirPath(Context context) {
-        String path;
-
-        //外部ストレージが使用可能
-        if (MediaUtils.IsExternalStorageAvailableAndWriteable()) {
-            path = context.getExternalFilesDir(TMP_DIR_NAME).toString();
-        }
-        //外部ストレージは使用不可
-        else {
-            path = context.getFilesDir().toString() + "/" + TMP_DIR_NAME;
-        }
-
-        //フォルダが存在しなければ作成
-        if (!new File(path).exists()) {
-            (new File(path)).mkdir();
-        }
-
-
-        return path;
-    }
-
-    /**
-     * 画像保存tmpファイル名を返す
-     *
-     * @param context コンテキスト
-     * @return String
-     */
-    public static String getImgTmpFilePath(Context context) {
-        return getImgTmpDirPath(context) + "/" + TMP_DIR_FILENAME;
-    }
-
-    /**
-     * 画像ファイル名を生成
-     *
-     * @param id ID
-     * @return String
-     */
-    public static String getImgFileName(Integer id) {
-        return "dog_" + id + ".jpg";
     }
 
     /**

@@ -81,6 +81,9 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
                 Intent intent = InputActivity.newInstance(PetAgeActivity.this, true, 0, null);
                 startActivityForResult(intent, REQUEST_CODE_ADD);
             }
+        } else {
+            mData = (ArrayList<PetEntity>) savedInstanceState.getSerializable(PARAM_DATA);
+            mRadioResIds = savedInstanceState.getIntArray(PARAM_RADIO_RES_IDS);
         }
 
         createViewPager();
@@ -139,17 +142,6 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
 
         outState.putSerializable(PARAM_DATA, mData);
         outState.putIntArray(PARAM_RADIO_RES_IDS, mRadioResIds);
-    }
-
-    /**
-     * ${inheritDoc}
-     */
-    @Override
-    protected void onRestoreInstanceState(Bundle outState) {
-        super.onRestoreInstanceState(outState);
-
-        mData = (ArrayList<PetEntity>) outState.getSerializable(PARAM_DATA);
-        mRadioResIds = outState.getIntArray(PARAM_RADIO_RES_IDS);
     }
 
     /**
