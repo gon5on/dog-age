@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.common.AndroidUtils;
 import jp.co.e2.dogage.dialog.ConfirmDialog;
-import jp.co.e2.dogage.dialog.ErrorDialog;
+import jp.co.e2.dogage.dialog.NoticeDialog;
 import jp.co.e2.dogage.entity.PetEntity;
 import jp.co.e2.dogage.model.BaseSQLiteOpenHelper;
 import jp.co.e2.dogage.model.PetDao;
@@ -284,8 +284,8 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
                 String title = getString(R.string.error);
                 String msg = getString(R.string.delete_fail);
 
-                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
-                errorDialog.show(getFragmentManager(), "dialog");
+                NoticeDialog noticeDialog = NoticeDialog.newInstance(title, msg);
+                noticeDialog.show(getFragmentManager(), "dialog");
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -17,7 +17,7 @@ import jp.co.e2.dogage.common.LogUtils;
 import jp.co.e2.dogage.common.Utils;
 import jp.co.e2.dogage.config.Config;
 import jp.co.e2.dogage.dialog.DatePickerDialog;
-import jp.co.e2.dogage.dialog.ErrorDialog;
+import jp.co.e2.dogage.dialog.NoticeDialog;
 import jp.co.e2.dogage.dialog.KindSelectDialog;
 import jp.co.e2.dogage.entity.DogMasterEntity;
 import jp.co.e2.dogage.entity.PetEntity;
@@ -28,18 +28,23 @@ import jp.co.e2.dogage.validate.ValidateHelper;
 import jp.co.e2.dogage.validate.ValidateLength;
 import jp.co.e2.dogage.validate.ValidateRequire;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
@@ -57,10 +62,14 @@ import android.widget.LinearLayout;
  * 入力画面アクテビティ
  */
 public class InputActivity extends BaseActivity {
+    private static final int PERMISSIONS_REQUEST_READ_WRITE_EXTERNAL_STORAGE = 100;
+
     private static final String PARAM_DATA = "data";
     private static final String PARAM_PAGE_NUM = "page_num";
     private static final String PARAM_INIT_FLG = "init_flg";
     private static final String PARAM_PHOTO_PATH = "photo_path";
+
+    private static final String TAG_PERMISSION_REQUEST = "permission_request";
 
     /**
      * ファクトリーメソッドもどき
@@ -122,7 +131,7 @@ public class InputActivity extends BaseActivity {
      * InputFragment
      */
     public static class InputFragment extends Fragment
-            implements KindSelectDialog.CallbackListener, DatePickerDialog.CallbackListener, PopupMenu.OnMenuItemClickListener {
+            implements KindSelectDialog.CallbackListener, DatePickerDialog.CallbackListener, PopupMenu.OnMenuItemClickListener, NoticeDialog.CallbackListener {
 
         private static final String TAG_DIALOG_BIRTHDAY = "birthday";
         private static final String TAG_DIALOG_ARCHIVE = "archive";
@@ -223,6 +232,27 @@ public class InputActivity extends BaseActivity {
             //トリミング
             else if (resultCode == RESULT_OK && requestCode == Config.INTENT_CODE_TRIMMING) {
                 fromTrimmingIntent();
+            }
+        }
+
+        /**
+         * ${inheritDoc}
+         */
+        @Override
+        public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+            switch (requestCode) {
+                case PERMISSIONS_REQUEST_READ_WRITE_EXTERNAL_STORAGE: {
+                    if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        startCamera();
+                    } else {
+                        //拒否の場合はカメラが使えない旨を表示
+                        String title = getString(R.string.error);
+                        String msg = getString(R.string.permission_denied);
+
+                        NoticeDialog noticeDialog = NoticeDialog.newInstance(title, msg);
+                        noticeDialog.show(getFragmentManager(), "dialog");
+                    }
+                }
             }
         }
 
@@ -449,8 +479,8 @@ public class InputActivity extends BaseActivity {
                 String errorMsg = Utils.implode(v.getErrorMsgList(), "\n");
 
                 String title = getString(R.string.error);
-                ErrorDialog errorDialog = ErrorDialog.newInstance(title, errorMsg);
-                errorDialog.show(getFragmentManager(), "dialog");
+                NoticeDialog noticeDialog = NoticeDialog.newInstance(title, errorMsg);
+                noticeDialog.show(getFragmentManager(), "dialog");
                 return;
             }
 
@@ -465,8 +495,8 @@ public class InputActivity extends BaseActivity {
                 String title = getString(R.string.error);
                 String msg = getString(R.string.save_fail);
 
-                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
-                errorDialog.show(getFragmentManager(), "dialog");
+                NoticeDialog noticeDialog = NoticeDialog.newInstance(title, msg);
+                noticeDialog.show(getFragmentManager(), "dialog");
             }
         }
 
@@ -578,14 +608,18 @@ public class InputActivity extends BaseActivity {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                if (!checkReadWriteExternalStoragePermission()) {
+                    return;
+                }
+
                 File file;
                 try {
                     file = getPhotoFile();
                 } catch (IOException e) {
                     e.printStackTrace();
 
-                    ErrorDialog errorDialog = ErrorDialog.newInstance(getString(R.string.error), e.getMessage());
-                    errorDialog.show(getFragmentManager(), "dialog");
+                    NoticeDialog noticeDialog = NoticeDialog.newInstance(getString(R.string.error), e.getMessage());
+                    noticeDialog.show(getFragmentManager(), "dialog");
                     return;
                 }
 
@@ -596,11 +630,63 @@ public class InputActivity extends BaseActivity {
         }
 
         /**
+         * パーミッションチェック
+         *
+         * @return boolean
+         */
+        private boolean checkReadWriteExternalStoragePermission() {
+            //パーミッションあり
+            if (ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            }
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE)
+                || ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                //一度拒否されているので、必要な理由を表示する
+                String title = getString(R.string.permission_request_title);
+                String msg = getString(R.string.permission_request_text);
+
+                NoticeDialog noticeDialog = NoticeDialog.newInstance(title, msg);
+                noticeDialog.show(getFragmentManager(), TAG_PERMISSION_REQUEST);
+                noticeDialog.setCallbackListener(this);
+            } else {
+                //パーミッションをリクエストする
+                requestReadWriteExternalStoragePermission();
+            }
+
+            return false;
+        }
+
+        /**
+         * パーミッションをリクエストする
+         */
+        private void requestReadWriteExternalStoragePermission() {
+            if (ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                //外部ストレージ読み込みパーミッション
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_READ_WRITE_EXTERNAL_STORAGE);
+            }
+            else if (ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                //外部ストレージ書き込みパーミッション
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_READ_WRITE_EXTERNAL_STORAGE);
+            }
+        }
+
+        /**
          * カメラの保存先画像ファイル作成
          *
          * @return file ファイル
          */
-        public File getPhotoFile() throws IOException {
+        private File getPhotoFile() throws IOException {
             //外部ストレージ使用不可
             if (!AndroidUtils.isExternalStorageWritable()) {
                 throw new IOException(getString(R.string.failed_to_use_camera));
@@ -648,8 +734,8 @@ public class InputActivity extends BaseActivity {
                 String title = getString(R.string.error);
                 String msg = getString(R.string.no_gallery_app);
 
-                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
-                errorDialog.show(getFragmentManager(), "dialog");
+                NoticeDialog noticeDialog = NoticeDialog.newInstance(title, msg);
+                noticeDialog.show(getFragmentManager(), "dialog");
             }
         }
 
@@ -682,8 +768,8 @@ public class InputActivity extends BaseActivity {
                 String title = getString(R.string.error);
                 String msg = getString(R.string.no_trimming_app);
 
-                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
-                errorDialog.show(getFragmentManager(), "dialog");
+                NoticeDialog noticeDialog = NoticeDialog.newInstance(title, msg);
+                noticeDialog.show(getFragmentManager(), "dialog");
             }
         }
 
@@ -708,8 +794,8 @@ public class InputActivity extends BaseActivity {
                 String title = getString(R.string.error);
                 String msg = getString(R.string.trimming_fail);
 
-                ErrorDialog errorDialog = ErrorDialog.newInstance(title, msg);
-                errorDialog.show(getFragmentManager(), "dialog");
+                NoticeDialog noticeDialog = NoticeDialog.newInstance(title, msg);
+                noticeDialog.show(getFragmentManager(), "dialog");
                 e.printStackTrace();
             }
         }
@@ -772,6 +858,17 @@ public class InputActivity extends BaseActivity {
             }
 
             return false;
+        }
+
+        /**
+         * ${inheritDoc}
+         */
+        @Override
+        public void onClickErrorDialogOk(String tag) {
+            //パーミッションリクエスト
+            if (tag.equals(TAG_PERMISSION_REQUEST)) {
+                requestReadWriteExternalStoragePermission();
+            }
         }
     }
 }

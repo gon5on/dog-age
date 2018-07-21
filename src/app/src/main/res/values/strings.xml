@@ -79,6 +79,9 @@
     <string name="notify_birthday_sub" formatted="false">%s歳になりました、おめでとうございます！</string>
     <string name="notify_archive" formatted="false">%s %s 命日</string>
     <string name="notify_archive_sub" formatted="false">亡くなって%s年経ちました</string>
+    <string name="permission_denied">許可されない場合は、カメラは使用できません。ギャラリーから選択してください。</string>
+    <string name="permission_request_title">お願い</string>
+    <string name="permission_request_text">カメラを利用するには、外部ストレージへの読み込み権限と書き込み権限が必要です。次に表示されるダイアログで許可を押してください。</string>
 
     <string-array name="initial_label_list">
         <item>あ行</item>

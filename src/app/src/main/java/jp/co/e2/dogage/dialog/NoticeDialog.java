@@ -1,7 +1,7 @@
 package jp.co.e2.dogage.dialog;
 
 import jp.co.e2.dogage.R;
-import jp.co.e2.dogage.dialog.ErrorDialog.CallbackListener;
+import jp.co.e2.dogage.dialog.NoticeDialog.CallbackListener;
 
 import android.support.v7.app.AlertDialog;
 import android.app.Dialog;
@@ -9,9 +9,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 /**
- * エラーダイアログ
+ * お知らせダイアログ
  */
-public class ErrorDialog extends BaseDialog<CallbackListener> {
+public class NoticeDialog extends BaseDialog<CallbackListener> {
     private static final String PARAM_TITLE = "title";
     private static final String PARAM_MSG = "msg";
 
@@ -22,8 +22,8 @@ public class ErrorDialog extends BaseDialog<CallbackListener> {
      * @param msg 本文
      * @return SampleDialog
      */
-    public static ErrorDialog newInstance(String title, String msg) {
-        ErrorDialog dialog = new ErrorDialog();
+    public static NoticeDialog newInstance(String title, String msg) {
+        NoticeDialog dialog = new NoticeDialog();
 
         Bundle bundle = new Bundle();
         bundle.putString(PARAM_TITLE, title);
