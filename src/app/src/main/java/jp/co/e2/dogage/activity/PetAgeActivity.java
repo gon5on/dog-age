@@ -151,6 +151,11 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_ADD || requestCode == REQUEST_CODE_EDIT) {
             if (resultCode != RESULT_OK) {
+                //データが存在しない場合はアプリ終了
+                if (mData == null || mData.size() == 0) {
+                    finish();
+                    return;
+                }
                 return;
             }
 
