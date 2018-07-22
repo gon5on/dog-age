@@ -225,7 +225,12 @@ public class InputActivity extends BaseActivity {
             if (resultCode == RESULT_OK && requestCode == Config.INTENT_CODE_CAMERA) {
                 AndroidUtils.addPhotoToGallery(getActivity(), mPhotoPath);
 
-                Uri uri = Uri.fromFile(new File(mPhotoPath));
+                Uri uri;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".provider", new File(mPhotoPath));
+                } else {
+                    uri =  Uri.fromFile(new File(mPhotoPath));
+                }
                 doTrimming(uri);
             }
             //ギャラリ
@@ -629,6 +634,8 @@ public class InputActivity extends BaseActivity {
                 }
 
                 Uri uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".provider", file);
+                LogUtils.d(uri);
+
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 startActivityForResult(intent, Config.INTENT_CODE_CAMERA);
             }
