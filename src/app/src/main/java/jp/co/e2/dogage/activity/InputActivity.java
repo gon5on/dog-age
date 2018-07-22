@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import jp.co.e2.dogage.BuildConfig;
 import jp.co.e2.dogage.alarm.SetAlarmManager;
@@ -39,6 +40,7 @@ import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -131,7 +133,8 @@ public class InputActivity extends BaseActivity {
      * InputFragment
      */
     public static class InputFragment extends Fragment
-            implements KindSelectDialog.CallbackListener, DatePickerDialog.CallbackListener, PopupMenu.OnMenuItemClickListener, NoticeDialog.CallbackListener {
+            implements KindSelectDialog.CallbackListener, DatePickerDialog.CallbackListener, PopupMenu.OnMenuItemClickListener,
+                NoticeDialog.CallbackListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
         private static final String TAG_DIALOG_BIRTHDAY = "birthday";
         private static final String TAG_DIALOG_ARCHIVE = "archive";
@@ -240,6 +243,8 @@ public class InputActivity extends BaseActivity {
          */
         @Override
         public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
             switch (requestCode) {
                 case PERMISSIONS_REQUEST_READ_WRITE_EXTERNAL_STORAGE: {
                     if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -636,16 +641,17 @@ public class InputActivity extends BaseActivity {
          */
         private boolean checkReadWriteExternalStoragePermission() {
             //パーミッションあり
-            if (ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+                    (ContextCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                            && ContextCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
                 return true;
             }
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.READ_EXTERNAL_STORAGE)
-                || ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    || ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
                 //一度拒否されているので、必要な理由を表示する
@@ -667,18 +673,17 @@ public class InputActivity extends BaseActivity {
          * パーミッションをリクエストする
          */
         private void requestReadWriteExternalStoragePermission() {
-            if (ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                //外部ストレージ読み込みパーミッション
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_READ_WRITE_EXTERNAL_STORAGE);
+            //バージョンが6.0未満の場合は処理不要
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                return;
             }
-            else if (ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                //外部ストレージ書き込みパーミッション
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_READ_WRITE_EXTERNAL_STORAGE);
-            }
+
+            String[] permissions = new String[]{
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            };
+
+            requestPermissions(permissions, PERMISSIONS_REQUEST_READ_WRITE_EXTERNAL_STORAGE);
         }
 
         /**
@@ -704,7 +709,7 @@ public class InputActivity extends BaseActivity {
             }
 
             //ファイル作成
-            String filename = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";
+            String filename = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date()) + ".jpg";
             File file = new File(dir, filename);
 
             if (!file.exists()) {

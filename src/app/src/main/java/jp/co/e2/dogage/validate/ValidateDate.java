@@ -3,18 +3,20 @@ package jp.co.e2.dogage.validate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+
 import jp.co.e2.dogage.common.DateHelper;
 
 /**
  * 日付系バリデーションクラス
  */
 public class ValidateDate {
-    public static final String ERROR_MSG_FORMAT = "%sは正しい形式ではありません。";
-    public static final String ERROR_MSG_FUTURE = "%sに未来の日付は指定できません。";
-    public static final String ERROR_MSG_PAST = "%sに過去の日付は指定できません。";
+    private static final String ERROR_MSG_FORMAT = "%sは正しい形式ではありません。";
+    private static final String ERROR_MSG_FUTURE = "%sに未来の日付は指定できません。";
+    private static final String ERROR_MSG_PAST = "%sに過去の日付は指定できません。";
 
-    public static final Integer OLDEST_DATE = 19000101;
-    public static final Integer NEWEST_DATE = 22001231;
+    private static final Integer OLDEST_DATE = 19000101;
+    private static final Integer NEWEST_DATE = 22001231;
 
     /**
      * 正しい日付かどうかチェック
@@ -35,11 +37,11 @@ public class ValidateDate {
 
         try {
             //日付形式に変換できるかどうか
-            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
             sdf.setLenient(false);
             Date tmp = sdf.parse(value);
 
-            SimpleDateFormat sdf2 = new SimpleDateFormat(DateHelper.FMT_DATE_NO_UNIT);
+            SimpleDateFormat sdf2 = new SimpleDateFormat(DateHelper.FMT_DATE_NO_UNIT, Locale.getDefault());
             Integer date = Integer.parseInt(sdf2.format(tmp.getTime()));
 
             //指定された日付が過去未来数百年間に収まっているか

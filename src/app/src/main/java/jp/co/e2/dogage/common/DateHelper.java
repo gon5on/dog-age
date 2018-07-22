@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * 日時関連の便利なものをまとめたクラス
@@ -66,10 +67,9 @@ public class DateHelper {
      *
      * @param strDate 日付文字列
      * @param format 日付文字列の形式
-     * @throws ParseException
      */
     public DateHelper(String strDate, String format) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
         Date date = sdf.parse(strDate);
 
         mCal = Calendar.getInstance();
@@ -242,7 +242,7 @@ public class DateHelper {
      * @return String フォーマットした日付文字列
      */
     public String format(String format) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
 
         return sdf.format(mCal.getTime());
     }
