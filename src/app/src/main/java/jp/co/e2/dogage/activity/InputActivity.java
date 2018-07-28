@@ -60,6 +60,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
 /**
  * 入力画面アクテビティ
  */
@@ -180,12 +183,6 @@ public class InputActivity extends BaseActivity {
                 } else {
                     mPetEntity = new PetEntity();
                 }
-
-                //以前の一時保存画像が残っていたら削除しておく
-                File file = new File(mPetEntity.getImgTmpFilePath(getActivity()));
-                if (file.exists()) {
-                    file.delete();
-                }
             } else {
                 mPetEntity = (PetEntity) savedInstanceState.getSerializable(PARAM_DATA);
                 mPhotoPath = savedInstanceState.getString(PARAM_PHOTO_PATH);
@@ -238,9 +235,20 @@ public class InputActivity extends BaseActivity {
                 doTrimming(data.getData());
             }
             //トリミング
-            else if (resultCode == RESULT_OK && requestCode == Config.INTENT_CODE_TRIMMING) {
-                fromTrimmingIntent();
+            else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+                if (resultCode == RESULT_OK) {
+                    fromTrimmingIntent(result.getUri());
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    String title = getString(R.string.error);
+                    String msg = getString(R.string.trimming_fail);
+
+                    NoticeDialog noticeDialog = NoticeDialog.newInstance(title, msg);
+                    noticeDialog.show(getFragmentManager(), "dialog");
+                }
             }
+
         }
 
         /**
@@ -305,7 +313,7 @@ public class InputActivity extends BaseActivity {
                     setClearButton(false);
                     setOpenButton();
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -736,7 +744,7 @@ public class InputActivity extends BaseActivity {
          * ギャラリーを起動する
          */
         private void startGallery() {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
 
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -757,44 +765,25 @@ public class InputActivity extends BaseActivity {
          * @param uri トリミング対象の画像URI
          */
         private void doTrimming(Uri uri) {
-            Intent intent = new Intent("com.android.camera.action.CROP");
-            intent.setDataAndType(uri, "image/*");
+            CropImage.activity(uri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1, 1)
+                    .start(getActivity(), this);
 
-            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                File tmpFile = new File(mPetEntity.getImgTmpFilePath(getActivity()));
-
-                intent.putExtra("crop", "true");
-                intent.putExtra("aspectX", 1);
-                intent.putExtra("aspectY", 1);
-                intent.putExtra("outputX", 500);
-                intent.putExtra("outputY", 500);
-                intent.putExtra("return-data", false);
-                intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.name());
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tmpFile));
-                startActivityForResult(intent, Config.INTENT_CODE_TRIMMING);
-
-                String msg = getString(R.string.lets_trimming_photo);
-                AndroidUtils.showToastL(getActivity(), msg);
-            } else {
-                //トリミングアプリなくてエラー
-                String title = getString(R.string.error);
-                String msg = getString(R.string.no_trimming_app);
-
-                NoticeDialog noticeDialog = NoticeDialog.newInstance(title, msg);
-                noticeDialog.show(getFragmentManager(), "dialog");
-            }
+            String msg = getString(R.string.lets_trimming_photo);
+            AndroidUtils.showToastL(getActivity(), msg);
         }
 
         /**
          * トリミングインテントからの戻り処理
          */
-        private void fromTrimmingIntent() {
+        private void fromTrimmingIntent(Uri uri) {
             try {
-                mPetEntity.setPhotoSaveFlg(true);
+                mPetEntity.setSavePhotoUri(uri);
                 mPetEntity.setPhotoFlg(true);
 
                 //角丸の画像にを取得
-                ImgHelper imgUtils = new ImgHelper(mPetEntity.getImgTmpFilePath(getActivity()));
+                ImgHelper imgUtils = new ImgHelper(uri.getPath());
                 Integer size = AndroidUtils.dpToPixel(getActivity(), Config.PHOTO_INPUT_DP);
                 Bitmap kadomaruBitmap = imgUtils.getResizeKadomaruBitmap(size, size, Config.getKadomaruPixcel(getActivity()));
 
@@ -862,7 +851,7 @@ public class InputActivity extends BaseActivity {
                     break;
                 case R.id.menuDelete:
                     mPetEntity.setPhotoFlg(false);
-                    mPetEntity.setPhotoSaveFlg(false);
+                    mPetEntity.setSavePhotoUri(null);
 
                     //NO PHOTOをセットする
                     setNoPhoto();

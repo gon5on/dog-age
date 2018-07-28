@@ -46,20 +46,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name="jp.co.e2.dogage.activity.InputActivity"
-            >
-        </activity>
+            android:name="jp.co.e2.dogage.activity.InputActivity" />
+
         <activity
-            android:name="jp.co.e2.dogage.activity.AboutActivity"
-            >
-        </activity>
+            android:name="jp.co.e2.dogage.activity.AboutActivity" />
+
         <activity
-            android:name="jp.co.e2.dogage.activity.SettingActivity"
-            >
-        </activity>
+            android:name="jp.co.e2.dogage.activity.SettingActivity" />
+
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
+
     </application>
-
-
 
 </manifest>

@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 
+import java.util.Locale;
+
 /**
  * 日付選択ダイアログ
  */
@@ -66,7 +68,7 @@ public class DatePickerDialog extends BaseDialog<CallbackListener> {
                     Integer year = datePicker.getYear();
                     Integer month = datePicker.getMonth() + 1;
                     Integer day = datePicker.getDayOfMonth();
-                    String date = String.format("%d-%02d-%02d", year, month, day);
+                    String date = String.format(Locale.getDefault(), "%d-%02d-%02d", year, month, day);
                     mCallbackListener.onClickDatePickerDialogOk(getTag(), date);
                 }
             }

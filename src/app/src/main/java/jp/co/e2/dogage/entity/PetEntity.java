@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.HashMap;
+import java.util.Locale;
 
 import jp.co.e2.dogage.R;
 import jp.co.e2.dogage.common.AndroidUtils;
@@ -14,6 +15,7 @@ import jp.co.e2.dogage.config.Config;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 /**
  * ペットエンティティクラス
@@ -28,10 +30,11 @@ public class PetEntity implements Serializable {
     private String mBirthday;                                   //誕生日
     private Integer mKind;                                      //種類
     private boolean mPhotoFlg;                                  //写真有無フラグ
-    private boolean mPhotoSaveFlg;                              //写真保存フラグ（このフラグが立っていれば画像保存し直す）
+    private Uri mSavePhotoUri;                                  //保存対象の写真Uri
     private String mArchiveDate;                                //アーカイブ日付
     private String mCreated;                                    //作成日時
     private String mModified;                                   //更新日時
+
 
     /**
      * 該当の犬種マスタを返す
@@ -143,6 +146,7 @@ public class PetEntity implements Serializable {
 
     /**
      * ペット年齢を返す
+     *
      * @return int
      */
     public int getPetAge() {
@@ -215,7 +219,7 @@ public class PetEntity implements Serializable {
 
         String unit = context.getString((getArchiveDate() != null) ? R.string.day : R.string.day_count);
 
-        return String.format("%1$,3d", days) + unit;
+        return String.format(Locale.getDefault(), "%1$,3d", days) + unit;
     }
 
     /**
@@ -274,21 +278,21 @@ public class PetEntity implements Serializable {
     }
 
     /**
-     * 写真保存フラグをセット
+     * 保存対象の画像URIを返す
      *
-     * @param value 値
+     * @return mSavePhotoUri
      */
-    public void setPhotoSaveFlg(boolean value) {
-        mPhotoSaveFlg = value;
+    public Uri getSavePhotoUri() {
+        return mSavePhotoUri;
     }
 
     /**
-     * 写真保存フラグを返す
+     * 保存対象の画像パスをセットする
      *
-     * @return mPhotoFlg
+     * @param value 値
      */
-    public boolean getPhotoSaveFlg() {
-        return mPhotoSaveFlg;
+    public void setSavePhotoUri(Uri value) {
+        mSavePhotoUri = value;
     }
 
     /**
@@ -323,14 +327,15 @@ public class PetEntity implements Serializable {
      * @param context context
      * @return Bitmap
      */
-    public Bitmap getPhotoInput(Context context) throws IOException {
+    public Bitmap getPhotoInput(Context context) throws Exception {
         Integer size = AndroidUtils.dpToPixel(context, Config.PHOTO_INPUT_DP);
 
-        ImgHelper imgHelper = new ImgHelper(getImgTmpFilePath(context));
+        ImgHelper imgHelper;
 
-        //一時保存画像が取得できた場合は、それを採用
-        //取得できなかった場合は、保存画像を読み込みなおす
-        if (!imgHelper.exist()) {
+        //保存対象画像が取得できた場合は、それを採用（activity再生成対応）
+        if (mSavePhotoUri != null) {
+            imgHelper = new ImgHelper(context, mSavePhotoUri);
+        } else {
             imgHelper = new ImgHelper(getImgFilePath(context));
         }
 
@@ -474,26 +479,6 @@ public class PetEntity implements Serializable {
     }
 
     /**
-     * 画像保存tmpディレクトリパス
-     *
-     * @param context コンテキスト
-     * @return String
-     */
-    public String getImgTmpDirPath(Context context) {
-        return MediaUtils.createDirPath(context, Config.TMP_DIR_NAME).getAbsolutePath();
-    }
-
-    /**
-     * 画像保存tmpファイルパス
-     *
-     * @param context コンテキスト
-     * @return String
-     */
-    public String getImgTmpFilePath(Context context) {
-        return getImgTmpDirPath(context) + "/" + Config.TMP_DIR_FILENAME;
-    }
-
-    /**
      * 画像保存ファイルパス
      *
      * @param context コンテキスト
@@ -510,7 +495,7 @@ public class PetEntity implements Serializable {
      * @return String
      */
     private String getImgDirPath(Context context) {
-        String path = "";
+        String path;
 
         //外部ストレージが使用可能
         if (MediaUtils.IsExternalStorageAvailableAndWritable()) {

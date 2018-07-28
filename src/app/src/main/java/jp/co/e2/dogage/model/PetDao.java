@@ -79,6 +79,8 @@ public class PetDao extends BaseDao {
         if (data.getId() == null) {
             put(cv, COLUMN_CREATED, new DateHelper().format(DateHelper.FMT_DATETIME));
             ret = db.insert(TABLE_NAME, "", cv);
+
+            data.setId((int) ret);
         } else {
             String[] param = new String[]{String.valueOf(data.getId())};
             ret = db.update(TABLE_NAME, cv, COLUMN_ID + "=?", param);
@@ -86,8 +88,8 @@ public class PetDao extends BaseDao {
 
         //画像保存
         if (data.getPhotoFlg()) {
-            if(data.getPhotoSaveFlg()) {
-                String tmpPath = data.getImgTmpFilePath(mContext);
+            if(data.getSavePhotoUri() != null) {
+                String tmpPath = data.getSavePhotoUri().getPath();
                 String savePath = data.getImgFilePath(mContext);
 
                 LogUtils.d("tmp file path : ", tmpPath);

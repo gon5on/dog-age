@@ -84,7 +84,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                app:srcCompat="@xml/icon_arrow" />
+                app:srcCompat="@xml/icon_arrow"
+                android:contentDescription="@null"
+                />
 
         </RelativeLayout>
 

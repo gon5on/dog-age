@@ -116,6 +116,7 @@
                     android:minHeight="@dimen/zero"
                     android:minWidth="@dimen/zero"
                     android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="@null"
                     />
 
             </LinearLayout>
