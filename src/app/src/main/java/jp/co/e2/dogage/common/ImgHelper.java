@@ -171,7 +171,6 @@ public class ImgHelper {
      *
      * @param radius 角丸にしたいピクセル数
      * @return Bitmap
-     * @throws IOException
      */
     private Bitmap getKadomaruBitmap(Bitmap bitmap, Integer radius) throws IOException {
         Integer height = bitmap.getHeight();
@@ -228,7 +227,6 @@ public class ImgHelper {
      * @param height 高さピクセル
      * @param width  幅ピクセル
      * @return Bitmap
-     * @throws IOException
      */
     public Bitmap getResizeBitmap(Integer height, Integer width) throws IOException {
         //一旦、リサイズしたいサイズに一番近い2のべき乗のサイズでbitmapを読み込む
@@ -319,7 +317,6 @@ public class ImgHelper {
      * @param dirPath  保存先パス
      * @param filename 保存画像名
      * @return boolean 成功/失敗
-     * @throws IOException
      */
     public Boolean saveJpg(String dirPath, String filename) throws IOException {
         //画像読み込み
@@ -367,7 +364,6 @@ public class ImgHelper {
      * @param height   高さピクセル
      * @param weight   幅ピクセル
      * @return boolean 成功/失敗
-     * @throws IOException
      */
     public Boolean saveResizeJpg(String filePath, Integer height, Integer weight) throws IOException {
         //画像読み込み

@@ -5,15 +5,12 @@
     <string name="action_edit">編集</string>
     <string name="action_delete">削除</string>
     <string name="action_setting">設定</string>
-    <string name="action_about">アプリについて</string>
-    <string name="action_back">戻る</string>
 
     <string name="confirm">確認</string>
     <string name="cancel">キャンセル</string>
     <string name="ok">OK</string>
     <string name="error">エラー</string>
     <string name="save">保存</string>
-    <string name="rotate">回転</string>
     <string name="dog_age">犬年齢</string>
     <string name="human_age">人間年齢</string>
     <string name="born_from">生まれて</string>
@@ -30,10 +27,7 @@
     <string name="notification_birth">お誕生日を通知する</string>
     <string name="notification_archive">命日を通知する</string>
     <string name="notice_mark">※</string>
-    <string name="close_mark">×</string>
-    <string name="url">http://www.e-2.co.jp/</string>
     <string name="produced_by">Produced By E2</string>
-    <string name="cc_pixel_kit">Edit and delete icons on ActionBar by PixelKit</string>
     <string name="before_del">本当に削除してよろしいですか？</string>
     <string name="about_app">”いくつだワン？”は、ワンちゃんの年齢・人間に換算した年齢・生まれてからの日数がわかるシンプルなアプリです。\n\n人間に換算した年齢は、以下のように計算しています。\n一般的に、小型犬のほうが成長が早く、老化が遅いと言われています。</string>
     <string name="about_app_notice">人間に換算した年齢は、犬種によって差があります。あくまでも目安とお考えください。</string>
@@ -55,11 +49,9 @@
     <string name="lets_trimming_photo">ワンちゃんの顔が中心になるようにトリミングしてください。</string>
     <string name="failed_to_use_camera">カメラを利用できません、ギャラリーから選択してください。</string>
     <string name="trimming_fail">トリミングに失敗しました。</string>
-    <string name="save_photo_fail">写真の保存に失敗しました。</string>
     <string name="save_success">保存しました。</string>
     <string name="save_fail">保存に失敗しました。\nもう一度やり直してください。</string>
     <string name="validate_error_archive_date">亡くなった日はお誕生日より過去は指定できません。</string>
-    <string name="no_camera_app">カメラアプリがインストールされていません。</string>
     <string name="no_gallery_app">ギャラリーアプリがインストールされていません。</string>
     <string name="delete_success">削除しました。</string>
     <string name="delete_fail">削除に失敗しました。もう一度やり直してください。</string>

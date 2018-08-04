@@ -12,7 +12,6 @@ import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.util.DisplayMetrics;
@@ -23,8 +22,6 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import jp.co.e2.dogage.R;
 
 /**
  * Android独自の便利なものまとめたクラス

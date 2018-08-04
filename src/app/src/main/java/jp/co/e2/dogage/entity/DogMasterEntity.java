@@ -127,12 +127,13 @@ public class DogMasterEntity implements Serializable {
      * @return Double
      */
     public Double getAgeOfMonthUntilOneYear() {
-        if (getCategory() == Config.CATEGORY_SMALL) {
-            return Config.AGE_OF_MONTH_UNTIL_ONE_YEAR_SMALL;
-        } else if (getCategory() == Config.CATEGORY_MEDIUM) {
-            return Config.AGE_OF_MONTH_UNTIL_ONE_YEAR_MEDIUM;
-        } else {
-            return Config.AGE_OF_MONTH_UNTIL_ONE_YEAR_LARGE;
+        switch (getCategory()) {
+            case Config.CATEGORY_SMALL:
+                return Config.AGE_OF_MONTH_UNTIL_ONE_YEAR_SMALL;
+            case Config.CATEGORY_MEDIUM:
+                return Config.AGE_OF_MONTH_UNTIL_ONE_YEAR_MEDIUM;
+            default:
+                return Config.AGE_OF_MONTH_UNTIL_ONE_YEAR_LARGE;
         }
     }
 
@@ -142,12 +143,13 @@ public class DogMasterEntity implements Serializable {
      * @return Double
      */
     public Double getAgeOfMonthUntilTwoYear() {
-        if (getCategory() == Config.CATEGORY_SMALL) {
-            return Config.AGE_OF_MONTH_UNTIL_TWO_YEAR_SMALL;
-        } else if (getCategory() == Config.CATEGORY_MEDIUM) {
-            return Config.AGE_OF_MONTH_UNTIL_TWO_YEAR_MEDIUM;
-        } else {
-            return Config.AGE_OF_MONTH_UNTIL_TWO_YEAR_LARGE;
+        switch (getCategory()) {
+            case Config.CATEGORY_SMALL:
+                return Config.AGE_OF_MONTH_UNTIL_TWO_YEAR_SMALL;
+            case Config.CATEGORY_MEDIUM:
+                return Config.AGE_OF_MONTH_UNTIL_TWO_YEAR_MEDIUM;
+            default:
+                return Config.AGE_OF_MONTH_UNTIL_TWO_YEAR_LARGE;
         }
     }
 
@@ -157,12 +159,13 @@ public class DogMasterEntity implements Serializable {
      * @return Double
      */
     public Double getAgeOfMonthOverTwoYear() {
-        if (getCategory() == Config.CATEGORY_SMALL) {
-            return Config.AGE_OF_MONTH_OVER_TWO_YEAR_SMALL;
-        } else if (getCategory() == Config.CATEGORY_MEDIUM) {
-            return Config.AGE_OF_MONTH_OVER_TWO_YEAR_MEDIUM;
-        } else {
-            return Config.AGE_OF_MONTH_OVER_TWO_YEAR_LARGE;
+        switch (getCategory()) {
+            case Config.CATEGORY_SMALL:
+                return Config.AGE_OF_MONTH_OVER_TWO_YEAR_SMALL;
+            case Config.CATEGORY_MEDIUM:
+                return Config.AGE_OF_MONTH_OVER_TWO_YEAR_MEDIUM;
+            default:
+                return Config.AGE_OF_MONTH_OVER_TWO_YEAR_LARGE;
         }
     }
 }

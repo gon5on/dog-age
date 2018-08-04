@@ -28,7 +28,7 @@ public class ValidateHelper {
      */
     public ValidateHelper() {
         mResult = true;
-        mErrorMsg = new LinkedHashMap<String, String>();
+        mErrorMsg = new LinkedHashMap<>();
     }
 
     /**
@@ -77,6 +77,6 @@ public class ValidateHelper {
      * @return ArrayList<String>
      */
     public ArrayList<String> getErrorMsgList() {
-        return new ArrayList<String>(mErrorMsg.values());
+        return new ArrayList<>(mErrorMsg.values());
     }
 }

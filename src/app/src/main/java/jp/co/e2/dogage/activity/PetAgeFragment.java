@@ -9,6 +9,7 @@ import jp.co.e2.dogage.entity.PetEntity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -106,14 +106,14 @@ public class PetAgeFragment extends Fragment {
             LinearLayout linearLayout1 = mView.findViewById(R.id.linearLayout1);
             linearLayout1.setBackgroundResource(BG_ABOVE[mPageNum % BG_CNT]);
 
-            RelativeLayout relativeLayout1 = mView.findViewById(R.id.relativeLayout1);
-            relativeLayout1.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
+            ConstraintLayout constraintLayoutDogAge = mView.findViewById(R.id.constraintLayoutDogAge);
+            constraintLayoutDogAge.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
 
-            RelativeLayout relativeLayout2 = mView.findViewById(R.id.relativeLayout2);
-            relativeLayout2.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
+            ConstraintLayout constraintLayoutHumanAge = mView.findViewById(R.id.constraintLayoutHumanAge);
+            constraintLayoutHumanAge.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
 
-            RelativeLayout relativeLayout3 = mView.findViewById(R.id.relativeLayout3);
-            relativeLayout3.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
+            ConstraintLayout constraintLayoutDayCount = mView.findViewById(R.id.constraintLayoutDayCount);
+            constraintLayoutDayCount.setBackgroundResource(BG_UNDER[mPageNum % BG_CNT]);
 
             TextView textViewArchive = mView.findViewById(R.id.textViewArchive);
 

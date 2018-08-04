@@ -114,13 +114,12 @@ public class PetDao extends BaseDao {
     public PetEntity findById(SQLiteDatabase db, Integer id) {
         PetEntity data = new PetEntity();
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("SELECT * FROM %s ", TABLE_NAME));
-        sb.append(String.format("WHERE %s = ?", COLUMN_ID));
+        String sb = String.format("SELECT * FROM %s ", TABLE_NAME) +
+                String.format("WHERE %s = ?", COLUMN_ID);
 
         String[] param = new String[]{String.valueOf(id)};
 
-        Cursor cursor = db.rawQuery(sb.toString(), param);
+        Cursor cursor = db.rawQuery(sb, param);
 
         if (cursor.moveToFirst()) {
             do {
@@ -148,11 +147,10 @@ public class PetDao extends BaseDao {
     public ArrayList<PetEntity> findAll(SQLiteDatabase db) {
         ArrayList<PetEntity> data = new ArrayList<>();
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("SELECT * FROM %s ", TABLE_NAME));
-        sb.append(String.format("ORDER BY %s DESC", COLUMN_ID));
+        String sb = String.format("SELECT * FROM %s ", TABLE_NAME) +
+                String.format("ORDER BY %s DESC", COLUMN_ID);
 
-        Cursor cursor = db.rawQuery(sb.toString(), null);
+        Cursor cursor = db.rawQuery(sb, null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -184,13 +182,12 @@ public class PetDao extends BaseDao {
     public ArrayList<PetEntity> findByBirthdayOrArchiveDate(SQLiteDatabase db, String date) {
         ArrayList<PetEntity> data = new ArrayList<>();
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("SELECT * FROM %s ", TABLE_NAME));
-        sb.append(String.format("WHERE (%s is null AND %s LIKE '%%-%s') ", COLUMN_ARCHIVE_DATE, COLUMN_BIRTHDAY, date));
-        sb.append(String.format("OR (%s is not null AND %s LIKE '%%-%s') ", COLUMN_ARCHIVE_DATE, COLUMN_ARCHIVE_DATE, date));
-        sb.append(String.format("ORDER BY %s DESC", COLUMN_ID));
+        String sb = String.format("SELECT * FROM %s ", TABLE_NAME) +
+                String.format("WHERE (%s is null AND %s LIKE '%%-%s') ", COLUMN_ARCHIVE_DATE, COLUMN_BIRTHDAY, date) +
+                String.format("OR (%s is not null AND %s LIKE '%%-%s') ", COLUMN_ARCHIVE_DATE, COLUMN_ARCHIVE_DATE, date) +
+                String.format("ORDER BY %s DESC", COLUMN_ID);
 
-        Cursor cursor = db.rawQuery(sb.toString(), null);
+        Cursor cursor = db.rawQuery(sb, null);
 
         if (cursor.moveToFirst()) {
             do {

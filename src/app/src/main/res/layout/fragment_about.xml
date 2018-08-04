@@ -78,7 +78,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/small_until_one_year_dog_age"
-                    android:layout_marginRight="@dimen/lineHalf"
                     android:layout_marginEnd="@dimen/lineHalf"
                     style="@style/TableCellTextViewStyle"
                     />
@@ -87,7 +86,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/normal_until_one_year_dog_age"
-                    android:layout_marginRight="@dimen/lineHalf"
                     android:layout_marginEnd="@dimen/lineHalf"
                     style="@style/TableCellTextViewStyle"
                     />
@@ -96,7 +94,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/large_until_one_year_dog_age"
-                    android:layout_marginRight="@dimen/lineHalf"
                     android:layout_marginEnd="@dimen/lineHalf"
                     style="@style/TableCellTextViewStyle"
                     />
@@ -120,7 +117,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/small_until_two_year_dog_age"
-                    android:layout_marginRight="@dimen/lineHalf"
                     android:layout_marginEnd="@dimen/lineHalf"
                     style="@style/TableCellTextViewStyle"
                     />
@@ -129,7 +125,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/normal_until_two_year_dog_age"
-                    android:layout_marginRight="@dimen/lineHalf"
                     android:layout_marginEnd="@dimen/lineHalf"
                     style="@style/TableCellTextViewStyle"
                     />
@@ -138,7 +133,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/large_until_two_year_dog_age"
-                    android:layout_marginRight="@dimen/lineHalf"
                     android:layout_marginEnd="@dimen/lineHalf"
                     style="@style/TableCellTextViewStyle"
                     />
@@ -155,7 +149,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/over_two_year"
-                    android:layout_marginRight="@dimen/lineHalf"
                     android:layout_marginEnd="@dimen/lineHalf"
                     style="@style/TableLabelTextViewStyle"
                     />
@@ -164,7 +157,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/small_over_two_year_dog_age"
-                    android:layout_marginRight="@dimen/lineHalf"
                     android:layout_marginEnd="@dimen/lineHalf"
                     style="@style/TableCellTextViewStyle"
                     />
@@ -173,7 +165,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/normal_over_two_year_dog_age"
-                    android:layout_marginRight="@dimen/lineHalf"
                     android:layout_marginEnd="@dimen/lineHalf"
                     style="@style/TableCellTextViewStyle"
                     />
@@ -182,7 +173,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/large_over_two_year_dog_age"
-                    android:layout_marginRight="@dimen/lineHalf"
                     android:layout_marginEnd="@dimen/lineHalf"
                     style="@style/TableCellTextViewStyle"
                     />

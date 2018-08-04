@@ -1,54 +1,49 @@
-<RelativeLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/twoBlock"
+        android:layout_marginStart="@dimen/twoBlock"
+        android:layout_marginBottom="@dimen/tenBlock"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/fiveBlock"
-        >
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/twoBlock"
-            android:layout_marginRight="@dimen/twoBlock"
-            android:layout_marginTop="@dimen/oneBlock"
-            android:padding="@dimen/twoBlock"
             android:background="@drawable/img_frame_above1"
             android:gravity="center_vertical|center_horizontal"
             android:orientation="vertical"
-            >
+            android:padding="@dimen/twoBlock">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/oneBlock"
-                android:gravity="center_vertical"
-                >
+                android:gravity="center_vertical">
 
                 <jp.co.e2.dogage.view.TouchFeedbackImageView
                     android:id="@+id/imageViewPhoto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/oneBlock"
-                    android:layout_marginEnd="@dimen/oneBlock"
-                    />
+                    android:layout_marginEnd="@dimen/oneBlock" />
 
                 <TextView
                     android:id="@+id/textViewName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/fontSizeXLarge"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -56,129 +51,118 @@
                 android:id="@+id/textViewKind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/fontSizeLarge"
-                />
+                android:textSize="@dimen/fontSizeLarge" />
 
             <TextView
                 android:id="@+id/textViewBirthday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/fontSizeLarge"
-                />
+                android:textSize="@dimen/fontSizeLarge" />
 
             <TextView
                 android:id="@+id/textViewArchive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/fontSizeLarge"
-                />
+                android:textSize="@dimen/fontSizeLarge" />
 
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout1"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayoutDogAge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/twoBlock"
-            android:layout_marginRight="@dimen/twoBlock"
             android:layout_marginTop="@dimen/oneBlock"
+            android:background="@drawable/img_frame_under1"
+            android:paddingBottom="@dimen/oneBlock"
             android:paddingLeft="@dimen/twoBlock"
             android:paddingRight="@dimen/twoBlock"
-            android:paddingTop="@dimen/oneBlock"
-            android:paddingBottom="@dimen/oneBlock"
-            android:background="@drawable/img_frame_under1"
-            >
+            android:paddingTop="@dimen/oneBlock">
 
             <TextView
+                style="@style/LabelTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dog_age"
                 android:textSize="@dimen/fontSizeLarge"
-                android:layout_centerVertical="true"
-                style="@style/LabelTextViewStyle"
-                />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textViewPetAge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/fontSizeXLarge"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout2"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayoutHumanAge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/twoBlock"
-            android:layout_marginRight="@dimen/twoBlock"
             android:layout_marginTop="@dimen/oneBlock"
+            android:background="@drawable/img_frame_under1"
+            android:paddingBottom="@dimen/oneBlock"
             android:paddingLeft="@dimen/twoBlock"
             android:paddingRight="@dimen/twoBlock"
-            android:paddingTop="@dimen/oneBlock"
-            android:paddingBottom="@dimen/oneBlock"
-            android:background="@drawable/img_frame_under1"
-            >
+            android:paddingTop="@dimen/oneBlock">
 
             <TextView
                 android:id="@+id/textViewHumanAge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
                 android:textSize="@dimen/fontSizeXLarge"
-                />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 style="@style/LabelTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:text="@string/human_age"
-                android:textSize="@dimen/fontSizeLarge" />
+                android:textSize="@dimen/fontSizeLarge"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout3"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayoutDayCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/twoBlock"
-            android:layout_marginRight="@dimen/twoBlock"
             android:layout_marginTop="@dimen/oneBlock"
+            android:background="@drawable/img_frame_under1"
+            android:paddingBottom="@dimen/oneBlock"
             android:paddingLeft="@dimen/twoBlock"
             android:paddingRight="@dimen/twoBlock"
-            android:paddingTop="@dimen/oneBlock"
-            android:paddingBottom="@dimen/oneBlock"
-            android:background="@drawable/img_frame_under1"
-            >
+            android:paddingTop="@dimen/oneBlock">
 
             <TextView
                 android:id="@+id/textViewDays"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
                 android:textSize="@dimen/fontSizeXLarge"
-                />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                style="@style/LabelTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/born_from"
                 android:textSize="@dimen/fontSizeLarge"
-                android:layout_centerVertical="true"
-                style="@style/LabelTextViewStyle"
-                />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
     </LinearLayout>
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

@@ -13,6 +13,7 @@
         <item name="android:textViewStyle">@style/TextViewStyle</item>
         <item name="android:textColorPrimary">@color/brown</item>
         <item name="android:textColorSecondary">@color/brown</item>
+        <item name="android:windowBackground">@null</item>
     </style>
 
     <!-- アラートダイアログ -->
@@ -49,11 +50,6 @@
     <!-- 茶色ボタン -->
     <style name="AppButtonStyle" parent="BaseButton">
         <item name="android:background">@xml/btn_bg</item>
-    </style>
-
-    <!-- 薄茶色ボタン -->
-    <style name="LightBrownButtonStyle" parent="BaseButton">
-        <item name="android:background">@xml/light_brown_btn_bg</item>
     </style>
 
     <!-- 透明背景ボタン -->

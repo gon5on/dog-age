@@ -10,7 +10,6 @@ import jp.co.e2.dogage.common.LogUtils;
  * アラームマネージャがリセットされてしまうタイミングで呼ばれる
  *
  * adb shell am broadcast -a android.intent.action.BOOT_COMPLETED
- * adb shell am broadcast -a android.intent.action.ACTION_PACKAGE_REPLACED
  * adb shell am broadcast -a android.intent.action.TIME_SET
  * adb shell am broadcast -a android.intent.action.TIMEZONE_CHANGED
  * adb shell am broadcast -a android.intent.action.DATE_CHANGED

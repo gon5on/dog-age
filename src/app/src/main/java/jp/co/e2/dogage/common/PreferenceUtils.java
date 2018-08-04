@@ -84,7 +84,7 @@ public class PreferenceUtils {
      */
     public static void save(Context context, String name, Integer value) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putInt(name, value).commit();
+        sp.edit().putInt(name, value).apply();
     }
 
     /**
@@ -96,7 +96,7 @@ public class PreferenceUtils {
      */
     public static void save(Context context, String name, String value) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putString(name, value).commit();
+        sp.edit().putString(name, value).apply();
     }
 
     /**
@@ -108,7 +108,7 @@ public class PreferenceUtils {
      */
     public static void save(Context context, String name, Float value) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putFloat(name, value).commit();
+        sp.edit().putFloat(name, value).apply();
     }
 
     /**
@@ -120,7 +120,7 @@ public class PreferenceUtils {
      */
     public static void save(Context context, String name, Long value) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putLong(name, value).commit();
+        sp.edit().putLong(name, value).apply();
     }
 
     /**
@@ -132,7 +132,7 @@ public class PreferenceUtils {
      */
     public static void save(Context context, String name, Boolean value) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(name, value).commit();
+        sp.edit().putBoolean(name, value).apply();
     }
 
     /**
@@ -143,7 +143,7 @@ public class PreferenceUtils {
      */
     public static void delete(Context context, String name) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().remove(name).commit();
+        sp.edit().remove(name).apply();
     }
 
     /**
@@ -153,6 +153,6 @@ public class PreferenceUtils {
      */
     public static void deleteAll(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().clear().commit();
+        sp.edit().clear().apply();
     }
 }

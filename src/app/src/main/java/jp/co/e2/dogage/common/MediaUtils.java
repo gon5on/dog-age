@@ -66,13 +66,17 @@ public class MediaUtils {
         boolean externalStorageWritable;
         String state = Environment.getExternalStorageState();
 
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            externalStorageAvailable = externalStorageWritable = true;
-        } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            externalStorageAvailable = true;
-            externalStorageWritable = false;
-        } else {
-            externalStorageAvailable = externalStorageWritable = false;
+        switch (state) {
+            case Environment.MEDIA_MOUNTED:
+                externalStorageAvailable = externalStorageWritable = true;
+                break;
+            case Environment.MEDIA_MOUNTED_READ_ONLY:
+                externalStorageAvailable = true;
+                externalStorageWritable = false;
+                break;
+            default:
+                externalStorageAvailable = externalStorageWritable = false;
+                break;
         }
 
         return externalStorageAvailable && externalStorageWritable;
@@ -153,10 +157,6 @@ public class MediaUtils {
     public static String getFileExt(String path) throws FileNotFoundException {
         String name = geFileName(path);
 
-        if (name == null) {
-            return null;
-        }
-
         int lastDotPosition = name.lastIndexOf(".");
         if (lastDotPosition != -1) {
             return name.substring(lastDotPosition + 1);
@@ -231,16 +231,15 @@ public class MediaUtils {
         InputStream in = new FileInputStream(tmpFile);
         OutputStream out = new FileOutputStream(outputFile);
 
-        try {
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = in.read(buffer)) >= 0) {
-                out.write(buffer, 0, bytesRead);
-            }
-        } finally {
-            out.close();
-            in.close();
+        byte[] buffer = new byte[4096];
+        int bytesRead;
+
+        while ((bytesRead = in.read(buffer)) >= 0) {
+            out.write(buffer, 0, bytesRead);
         }
+
+        in.close();
+        out.close();
     }
 
     /**

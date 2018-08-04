@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/sevenBlock"
-            android:orientation="horizontal"
             android:paddingLeft="@dimen/twoBlock"
             android:paddingRight="@dimen/twoBlock">
 
@@ -24,23 +19,25 @@
                 style="@style/LabelTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="@string/notification_birth" />
+                android:text="@string/notification_birth"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <CheckBox
                 android:id="@+id/checkBoxBirthNotification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:theme="@style/AppCheckBoxTheme" />
+                android:theme="@style/AppCheckBoxTheme"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/sevenBlock"
-            android:orientation="horizontal"
             android:paddingLeft="@dimen/twoBlock"
             android:paddingRight="@dimen/twoBlock">
 
@@ -48,26 +45,27 @@
                 style="@style/LabelTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="@string/notification_archive" />
+                android:text="@string/notification_archive"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <CheckBox
                 android:id="@+id/checkBoxArchiveNotification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:theme="@style/AppCheckBoxTheme" />
+                android:theme="@style/AppCheckBoxTheme"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
-        <RelativeLayout
-            android:id="@+id/relativeLayoutCalcAge"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayoutCalcAge"
             style="@style/TranslateButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/sevenBlock"
-            android:gravity="start"
-            android:orientation="horizontal"
             android:paddingLeft="@dimen/twoBlock"
             android:paddingRight="@dimen/twoBlock">
 
@@ -75,25 +73,26 @@
                 style="@style/LabelTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="@string/about_calc_age" />
+                android:text="@string/about_calc_age"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                app:srcCompat="@xml/icon_arrow"
                 android:contentDescription="@null"
-                />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@xml/icon_arrow" />
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/sevenBlock"
-            android:orientation="horizontal"
             android:paddingLeft="@dimen/twoBlock"
             android:paddingRight="@dimen/twoBlock">
 
@@ -101,19 +100,22 @@
                 style="@style/LabelTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="@string/app_version" />
+                android:text="@string/app_version"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textViewVer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
                 android:textSize="@dimen/fontSizeLarge"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
     </LinearLayout>
 
@@ -122,9 +124,8 @@
         style="@style/TranslateButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:padding="@dimen/twoBlock"
-        android:text="@string/produced_by" />
+        android:text="@string/produced_by"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

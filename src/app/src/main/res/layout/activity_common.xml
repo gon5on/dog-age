@@ -3,10 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@xml/bg"
-    >
+    android:background="@xml/bg" >
 
-    <include layout="@layout/parts_action_bar"/>
+    <include
+        layout="@layout/parts_action_bar"
+        android:id="@+id/toolbar"/>
 
     <RelativeLayout
         android:id="@+id/container"

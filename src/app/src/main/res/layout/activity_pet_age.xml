@@ -1,39 +1,35 @@
-<RelativeLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@xml/bg"
-    >
+    android:background="@xml/bg">
 
-    <include layout="@layout/parts_action_bar" />
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/parts_action_bar" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:src="@drawable/img_foots"
+        app:layout_constraintEnd_toEndOf="@+id/viewPager"
+        app:layout_constraintTop_toTopOf="@+id/viewPager" />
 
     <RadioGroup
         android:id="@+id/radioGroupPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_vertical|center_horizontal"
-        android:paddingBottom="@dimen/oneBlock"
-        android:paddingTop="@dimen/twoBlock"
+        android:gravity="center_horizontal"
         android:orientation="horizontal"
-        >
-
-    </RadioGroup>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/img_foots"
-        android:layout_alignTop="@+id/viewPager"
-        android:contentDescription="@null"
-        />
+        android:paddingBottom="@dimen/oneBlock"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

@@ -256,7 +256,7 @@ public class DateHelper {
         int today = Integer.parseInt(new DateHelper().format(FMT_DATE_NO_UNIT));
         int born = Integer.parseInt(format(FMT_DATE_NO_UNIT));
 
-        return (int)((today - born) / 10000);
+        return ((today - born) / 10000);
     }
 
     /**

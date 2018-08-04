@@ -156,7 +156,7 @@ public class Utils {
      * @return Integer
      */
     public static String readTextFile(Context context, Integer resId) throws IOException {
-        InputStream is = null;
+        InputStream is;
         BufferedReader br = null;
 
         StringBuilder sb = new StringBuilder();
@@ -167,7 +167,7 @@ public class Utils {
 
             String str;
             while ((str = br.readLine()) != null) {
-                sb.append(str + "\n");
+                sb.append(str).append("\n");
             }
         } finally {
             if (br != null) {
@@ -184,7 +184,7 @@ public class Utils {
      * @return String
      */
     public static String hiragana2katakana(String s) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         for (int i = 0; i < s.length(); i++) {
             char code = s.charAt(i);

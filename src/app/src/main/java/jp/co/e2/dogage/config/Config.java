@@ -67,10 +67,10 @@ public class Config {
     private static ArrayList<DogMasterEntity> mDogMasterList;
 
     //画像dp
-    public static int KADOMARU_DP = 20;                         //角丸画像の角丸サイズ
-    public static int PHOTO_INPUT_DP = 150;                     //入力画面の写真
-    public static int PHOTO_THUMB_DP = 80;                      //サムネイル写真
-    public static int PHOTO_BIG_DP = 310;                       //拡大写真
+    public static int KADOMARU_DP = 20;                                             //角丸画像の角丸サイズ
+    public static int PHOTO_INPUT_DP = 150;                                         //入力画面の写真
+    public static int PHOTO_THUMB_DP = 80;                                          //サムネイル写真
+    public static int PHOTO_BIG_DP = 310;                                           //拡大写真
 
     //インテント判別
     public static final int INTENT_CODE_CAMERA = 1;                                 //カメラ起動
@@ -81,8 +81,8 @@ public class Config {
     public static final String PREF_ARCHIVE_NOTIFY_FLG = "archive_notify_flg";      //命日の通知
 
     //アラーム
-    public static int ALARM_HOUR = 15;                                              //アラームの時間
-    public static int ALARM_MINUTE = 26;                                            //アラームの時間
+    public static int ALARM_HOUR = 14;                                              //アラームの時間
+    public static int ALARM_MINUTE = 00;                                            //アラームの時間
 
     //E2のURL
     public static String OFFICIAL_LINK = "https://www.e-2.co.jp";

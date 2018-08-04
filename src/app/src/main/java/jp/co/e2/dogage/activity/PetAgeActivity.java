@@ -57,6 +57,7 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
     /**
      * ${inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,29 +106,32 @@ public class PetAgeActivity extends BaseActivity implements ConfirmDialog.Callba
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Integer id = item.getItemId();
+        Intent intent;
 
-        //追加
-        if (id == R.id.action_add) {
-            Intent intent = InputActivity.newInstance(PetAgeActivity.this, false, 0, null);
-            startActivityForResult(intent, REQUEST_CODE_ADD);
-        }
-        //編集
-        else if (id == R.id.action_edit) {
-            Intent intent = InputActivity.newInstance(PetAgeActivity.this, false, mPageNum, mData.get(mPageNum));
-            startActivityForResult(intent, REQUEST_CODE_EDIT);
-        }
-        //削除
-        else if (id == R.id.action_delete) {
-            String title = getString(R.string.confirm);
-            String msg = getString(R.string.before_del);
+        switch (id) {
+            //追加
+            case R.id.action_add:
+                intent = InputActivity.newInstance(PetAgeActivity.this, false, 0, null);
+                startActivityForResult(intent, REQUEST_CODE_ADD);
+                break;
+            //編集
+            case R.id.action_edit:
+                intent = InputActivity.newInstance(PetAgeActivity.this, false, mPageNum, mData.get(mPageNum));
+                startActivityForResult(intent, REQUEST_CODE_EDIT);
+                break;
+            //削除
+            case R.id.action_delete:
+                String title = getString(R.string.confirm);
+                String msg = getString(R.string.before_del);
 
-            ConfirmDialog confirmDialog = ConfirmDialog.newInstance(title, msg);
-            confirmDialog.setCallbackListener(this);
-            confirmDialog.show(getFragmentManager(), "dialog");
-        }
-        //設定
-        else if (id == R.id.action_setting) {
-            startActivity(SettingActivity.newInstance(PetAgeActivity.this));
+                ConfirmDialog confirmDialog = ConfirmDialog.newInstance(title, msg);
+                confirmDialog.setCallbackListener(this);
+                confirmDialog.show(getFragmentManager(), "dialog");
+                break;
+            //設定
+            case R.id.action_setting:
+                startActivity(SettingActivity.newInstance(PetAgeActivity.this));
+                break;
         }
 
         return super.onOptionsItemSelected(item);

@@ -39,6 +39,7 @@ public class KindSelectDialog extends BaseDialog<CallbackListener> {
     /**
      * ${inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final ArrayList<DogMasterEntity> data = (ArrayList<DogMasterEntity>) getArguments().getSerializable(PARAM_DATA);

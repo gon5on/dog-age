@@ -5,7 +5,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import jp.co.e2.dogage.R;
@@ -143,8 +142,8 @@ public class SettingActivity extends BaseActivity {
             });
 
             //年齢計算について
-            RelativeLayout relativeLayoutCalcAge = mView.findViewById(R.id.relativeLayoutCalcAge);
-            relativeLayoutCalcAge.setOnClickListener(new View.OnClickListener() {
+            ConstraintLayout constraintLayoutCalcAge = mView.findViewById(R.id.constraintLayoutCalcAge);
+            constraintLayoutCalcAge.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     startActivity(AboutActivity.newInstance(getActivity()));
