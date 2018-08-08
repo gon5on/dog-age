@@ -1,12 +1,12 @@
-package jp.co.e2.dogage.model;
+package jp.co.e2.dogage.model
 
-import android.content.ContentValues;
-import android.database.Cursor;
+import android.content.ContentValues
+import android.database.Cursor
 
 /**
  * Daoの基底クラス
  */
-public class BaseDao {
+open class BaseDao {
     /**
      * NULLかどうかを判定して、ContentValuesに値を入れる
      *
@@ -15,14 +15,14 @@ public class BaseDao {
      * @param value 値
      * @return ContentValues cv
      */
-    public ContentValues put(ContentValues cv, String key, String value) {
+    fun put(cv: ContentValues, key: String, value: String?): ContentValues {
         if (value != null) {
-            cv.put(key, value);
+            cv.put(key, value)
         } else {
-            cv.putNull(key);
+            cv.putNull(key)
         }
 
-        return cv;
+        return cv
     }
 
     /**
@@ -33,14 +33,14 @@ public class BaseDao {
      * @param value 値
      * @return ContentValues cv
      */
-    public ContentValues put(ContentValues cv, String key, Integer value) {
+    fun put(cv: ContentValues, key: String, value: Int?): ContentValues {
         if (value != null) {
-            cv.put(key, value);
+            cv.put(key, value)
         } else {
-            cv.putNull(key);
+            cv.putNull(key)
         }
 
-        return cv;
+        return cv
     }
 
     /**
@@ -51,14 +51,14 @@ public class BaseDao {
      * @param value 値
      * @return ContentValues cv
      */
-    public ContentValues put(ContentValues cv, String key, Double value) {
+    fun put(cv: ContentValues, key: String, value: Double?): ContentValues {
         if (value != null) {
-            cv.put(key, value);
+            cv.put(key, value)
         } else {
-            cv.putNull(key);
+            cv.putNull(key)
         }
 
-        return cv;
+        return cv
     }
 
     /**
@@ -69,14 +69,14 @@ public class BaseDao {
      * @param value 値
      * @return ContentValues cv
      */
-    public ContentValues put(ContentValues cv, String key, Float value) {
+    fun put(cv: ContentValues, key: String, value: Float?): ContentValues {
         if (value != null) {
-            cv.put(key, value);
+            cv.put(key, value)
         } else {
-            cv.putNull(key);
+            cv.putNull(key)
         }
 
-        return cv;
+        return cv
     }
 
     /**
@@ -87,14 +87,14 @@ public class BaseDao {
      * @param value 値
      * @return ContentValues cv
      */
-    public ContentValues put(ContentValues cv, String key, Long value) {
+    fun put(cv: ContentValues, key: String, value: Long?): ContentValues {
         if (value != null) {
-            cv.put(key, value);
+            cv.put(key, value)
         } else {
-            cv.putNull(key);
+            cv.putNull(key)
         }
 
-        return cv;
+        return cv
     }
 
     /**
@@ -105,14 +105,14 @@ public class BaseDao {
      * @param value 値
      * @return ContentValues cv
      */
-    public ContentValues put(ContentValues cv, String key, Boolean value) {
+    fun put(cv: ContentValues, key: String, value: Boolean?): ContentValues {
         if (value != null) {
-            cv.put(key, value);
+            cv.put(key, value)
         } else {
-            cv.putNull(key);
+            cv.putNull(key)
         }
 
-        return cv;
+        return cv
     }
 
     /**
@@ -122,16 +122,16 @@ public class BaseDao {
      * @param key カラム名
      * @return Integer value
      */
-    public Integer getInteger(Cursor cursor, String key) {
-        Integer value = null;
+    fun getInteger(cursor: Cursor, key: String): Int? {
+        var value: Int? = null
 
-        Integer i = cursor.getColumnIndex(key);
+        val i = cursor.getColumnIndex(key)
 
         if (!cursor.isNull(i)) {
-            value = cursor.getInt(i);
+            value = cursor.getInt(i)
         }
 
-        return value;
+        return value
     }
 
     /**
@@ -141,16 +141,16 @@ public class BaseDao {
      * @param key カラム名
      * @return String value
      */
-    public String getString(Cursor cursor, String key) {
-        String value = null;
+    fun getString(cursor: Cursor, key: String): String? {
+        var value: String? = null
 
-        Integer i = cursor.getColumnIndex(key);
+        val i = cursor.getColumnIndex(key)
 
         if (!cursor.isNull(i)) {
-            value = cursor.getString(i);
+            value = cursor.getString(i)
         }
 
-        return value;
+        return value
     }
 
     /**
@@ -160,16 +160,16 @@ public class BaseDao {
      * @param key カラム名
      * @return Double value
      */
-    public Double getDouble(Cursor cursor, String key) {
-        Double value = null;
+    fun getDouble(cursor: Cursor, key: String): Double? {
+        var value: Double? = null
 
-        Integer i = cursor.getColumnIndex(key);
+        val i = cursor.getColumnIndex(key)
 
         if (!cursor.isNull(i)) {
-            value = cursor.getDouble(i);
+            value = cursor.getDouble(i)
         }
 
-        return value;
+        return value
     }
 
     /**
@@ -179,16 +179,16 @@ public class BaseDao {
      * @param key カラム名
      * @return Float value
      */
-    public Float getFloat(Cursor cursor, String key) {
-        Float value = null;
+    fun getFloat(cursor: Cursor, key: String): Float? {
+        var value: Float? = null
 
-        Integer i = cursor.getColumnIndex(key);
+        val i = cursor.getColumnIndex(key)
 
         if (!cursor.isNull(i)) {
-            value = cursor.getFloat(i);
+            value = cursor.getFloat(i)
         }
 
-        return value;
+        return value
     }
 
     /**
@@ -198,16 +198,16 @@ public class BaseDao {
      * @param key カラム名
      * @return Long value
      */
-    public Long getLong(Cursor cursor, String key) {
-        Long value = null;
+    fun getLong(cursor: Cursor, key: String): Long? {
+        var value: Long? = null
 
-        Integer i = cursor.getColumnIndex(key);
+        val i = cursor.getColumnIndex(key)
 
         if (!cursor.isNull(i)) {
-            value = cursor.getLong(i);
+            value = cursor.getLong(i)
         }
 
-        return value;
+        return value
     }
 
     /**
@@ -217,13 +217,13 @@ public class BaseDao {
      * @param key カラム名
      * @return Boolean value
      */
-    public Boolean getBoolean(Cursor cursor, String key) {
-        Boolean value = null;
+    fun getBoolean(cursor: Cursor, key: String): Boolean? {
+        var value: Boolean? = null
 
         if (getInteger(cursor, key) != null) {
-            value = getInteger(cursor, key).equals(1);
+            value = getInteger(cursor, key) == 1
         }
 
-        return value;
+        return value
     }
 }

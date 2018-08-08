@@ -1,0 +1,65 @@
+package jp.co.e2.dogage.dialog
+
+import jp.co.e2.dogage.R
+import jp.co.e2.dogage.dialog.NoticeDialog.CallbackListener
+
+import android.support.v7.app.AlertDialog
+import android.app.Dialog
+import android.os.Bundle
+
+/**
+ * お知らせダイアログ
+ */
+class NoticeDialog : BaseDialog<CallbackListener>() {
+
+    companion object {
+        const val PARAM_TITLE = "title"
+        const val PARAM_MSG = "msg"
+
+        /**
+         * ファクトリーメソッド
+         *
+         * @param title タイトル
+         * @param msg 本文
+         * @return SampleDialog
+         */
+        fun newInstance(title: String, msg: String): NoticeDialog {
+            val bundle = Bundle()
+            bundle.putString(PARAM_TITLE, title)
+            bundle.putString(PARAM_MSG, msg)
+
+            val dialog = NoticeDialog()
+            dialog.arguments = bundle
+
+            return dialog
+        }
+    }
+
+    /**
+     * ${inheritDoc}
+     */
+    override fun onCreateDialog(savedInstanceState: Bundle): Dialog {
+        val builder = AlertDialog.Builder(activity)
+        builder.setTitle(arguments.getString(PARAM_TITLE))
+        builder.setIcon(R.drawable.img_foot)
+        builder.setMessage(arguments.getString(PARAM_MSG))
+
+        builder.setPositiveButton(getString(R.string.ok)) { dialog, which ->
+            mCallbackListener?.onClickErrorDialogOk(tag)
+        }
+
+        return builder.create()
+    }
+
+    /**
+     * コールバックリスナー
+     */
+    interface CallbackListener {
+        /**
+         * エラーダイアログでOKが押された
+         *
+         * @param tag タグ
+         */
+        fun onClickErrorDialogOk(tag: String)
+    }
+}
