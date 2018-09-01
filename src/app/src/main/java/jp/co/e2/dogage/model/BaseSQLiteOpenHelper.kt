@@ -10,11 +10,11 @@ import android.database.sqlite.SQLiteOpenHelper
 class BaseSQLiteOpenHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
     companion object {
-        const val VERSION1 = 1
-        const val VERSION2 = 2
+        private const val VERSION1 = 1
+        private const val VERSION2 = 2
 
-        const val DB_NAME = "database.db"             //データベース名
-        const val DB_VERSION = VERSION2                  //データベースバージョン
+        private const val DB_NAME = "database.db"             //データベース名
+        private const val DB_VERSION = VERSION2               //データベースバージョン
     }
 
     /**
@@ -23,17 +23,12 @@ class BaseSQLiteOpenHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME
      * @param db SQLiteDatabase
      */
     override fun onCreate(db: SQLiteDatabase) {
-        try {
-            db.beginTransaction()
+        db.beginTransaction()
 
-            //テーブル作成
-            db.execSQL(PetDao.CREATE_TABLE_SQL)
+        //テーブル作成
+        db.execSQL(PetDao.CREATE_TABLE_SQL)
 
-            db.setTransactionSuccessful()
-
-        } finally {
-            db.endTransaction()
-        }
+        db.setTransactionSuccessful()
     }
 
     /**

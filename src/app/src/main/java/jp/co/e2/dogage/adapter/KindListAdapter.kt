@@ -13,7 +13,11 @@ import android.widget.TextView
 /**
  * 種類一覧アダプター
  */
-class KindListAdapter(context: Context, objects: List<DogMasterEntity>) : ArrayAdapter<DogMasterEntity>(context, 0, objects) {
+class KindListAdapter(
+        context: Context,
+        objects: List<DogMasterEntity>
+) : ArrayAdapter<DogMasterEntity>(context, 0, objects) {
+
     /**
      * ${inheritDoc}
      */
@@ -37,6 +41,12 @@ class KindListAdapter(context: Context, objects: List<DogMasterEntity>) : ArrayA
         val item = getItem(position)
 
         if (item.category == 0) {
+            //種類
+            viewHolder.kind.visibility = View.VISIBLE
+            viewHolder.kind.text = item.kind
+
+            viewHolder.label.visibility = View.GONE
+        } else {
             //頭文字行のラベル
             viewHolder.kind.visibility = View.GONE
 
@@ -45,12 +55,6 @@ class KindListAdapter(context: Context, objects: List<DogMasterEntity>) : ArrayA
 
             //クリックできないようにする
             isEnabled(position)
-        } else {
-            //種類
-            viewHolder.kind.visibility = View.VISIBLE
-            viewHolder.kind.text = item.kind
-
-            viewHolder.label.visibility = View.GONE
         }
 
         return view

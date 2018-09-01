@@ -7,7 +7,12 @@ import jp.co.e2.dogage.config.Config
 /**
  * 犬マスタエンティティクラス
  */
-class DogMasterEntity(val id: Int, val kind: String, val furigana: String, val category: Int) : Serializable {
+data class DogMasterEntity(
+        val id: Int,                //ID
+        val kind: String,           //犬種
+        val furigana: String,       //犬種フリガナ
+        val category: Int           //サイズカテゴリ
+) : Serializable {
 
     companion object {
         private val LINE_PATTERN = arrayOf(
@@ -24,7 +29,8 @@ class DogMasterEntity(val id: Int, val kind: String, val furigana: String, val c
         )
     }
 
-    var initialLine: Int = -1                    //頭文字の行番号を取得する
+    //頭文字の行番号
+    var initialLine: Int = -1
         get() {
             if (field == -1) {
                 val initial = furigana.substring(0, 1)
@@ -40,30 +46,33 @@ class DogMasterEntity(val id: Int, val kind: String, val furigana: String, val c
             return field
         }
 
-    val ageOfMonthUntilOneYear: Double             //0～1歳までに1ヶ月で取る年齢
+    //0～1歳までに1ヶ月で取る年齢
+    val ageOfMonthUntilOneYear: Double
         get() {
-            when (category) {
-                Config.CATEGORY_SMALL -> return Config.AGE_OF_MONTH_UNTIL_ONE_YEAR_SMALL
-                Config.CATEGORY_MEDIUM -> return Config.AGE_OF_MONTH_UNTIL_ONE_YEAR_MEDIUM
-                else -> return Config.AGE_OF_MONTH_UNTIL_ONE_YEAR_LARGE
+            return when (category) {
+                Config.CATEGORY_SMALL -> Config.AGE_OF_MONTH_UNTIL_ONE_YEAR_SMALL
+                Config.CATEGORY_MEDIUM -> Config.AGE_OF_MONTH_UNTIL_ONE_YEAR_MEDIUM
+                else -> Config.AGE_OF_MONTH_UNTIL_ONE_YEAR_LARGE
             }
         }
 
-    val ageOfMonthUntilTwoYear: Double             //1～2歳までに1ヶ月で取る年齢
+    //1～2歳までに1ヶ月で取る年齢
+    val ageOfMonthUntilTwoYear: Double
         get() {
-            when (category) {
-                Config.CATEGORY_SMALL -> return Config.AGE_OF_MONTH_UNTIL_TWO_YEAR_SMALL
-                Config.CATEGORY_MEDIUM -> return Config.AGE_OF_MONTH_UNTIL_TWO_YEAR_MEDIUM
-                else -> return Config.AGE_OF_MONTH_UNTIL_TWO_YEAR_LARGE
+            return when (category) {
+                Config.CATEGORY_SMALL -> Config.AGE_OF_MONTH_UNTIL_TWO_YEAR_SMALL
+                Config.CATEGORY_MEDIUM -> Config.AGE_OF_MONTH_UNTIL_TWO_YEAR_MEDIUM
+                else -> Config.AGE_OF_MONTH_UNTIL_TWO_YEAR_LARGE
             }
         }
 
-    val ageOfMonthOverTwoYear: Double              //2歳以上1年間で取る年齢
+    //2歳以上1年間で取る年齢
+    val ageOfMonthOverTwoYear: Double
         get() {
-            when (category) {
-                Config.CATEGORY_SMALL -> return Config.AGE_OF_MONTH_OVER_TWO_YEAR_SMALL
-                Config.CATEGORY_MEDIUM -> return Config.AGE_OF_MONTH_OVER_TWO_YEAR_MEDIUM
-                else -> return Config.AGE_OF_MONTH_OVER_TWO_YEAR_LARGE
+            return when (category) {
+                Config.CATEGORY_SMALL -> Config.AGE_OF_MONTH_OVER_TWO_YEAR_SMALL
+                Config.CATEGORY_MEDIUM -> Config.AGE_OF_MONTH_OVER_TWO_YEAR_MEDIUM
+                else -> Config.AGE_OF_MONTH_OVER_TWO_YEAR_LARGE
             }
         }
 }

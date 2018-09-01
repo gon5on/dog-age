@@ -5,15 +5,11 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.support.v4.content.ContextCompat
-
-import java.util.ArrayList
-
 import jp.co.e2.dogage.R
 import jp.co.e2.dogage.activity.PetAgeActivity
 import jp.co.e2.dogage.common.AndroidUtils
@@ -23,13 +19,15 @@ import jp.co.e2.dogage.config.Config
 import jp.co.e2.dogage.entity.PetEntity
 import jp.co.e2.dogage.model.BaseSQLiteOpenHelper
 import jp.co.e2.dogage.model.PetDao
+import java.util.*
 
 /**
  * アラームマネージャレシーバー
  */
 class AlarmManagerReceiver : BroadcastReceiver() {
+
     companion object {
-        const val DISP_DATE_FORMAT = "MM/dd"
+        private const val DISP_DATE_FORMAT = "MM/dd"
     }
 
     /**
@@ -91,9 +89,7 @@ class AlarmManagerReceiver : BroadcastReceiver() {
             largeIcon = AndroidUtils.setBitmapColor(largeIconOrg, ContextCompat.getColor(context, R.color.pink))
         }
 
-        val intent = Intent(context, PetAgeActivity::class.java)
-        intent.putExtra(PetAgeActivity.PARAM_ID, data.id)
-
+        val intent = PetAgeActivity.newInstance(context, data.id!!)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
 
         val builder = NotificationCompat.Builder(context, "channel_id")
@@ -120,23 +116,13 @@ class AlarmManagerReceiver : BroadcastReceiver() {
      * @param intent インテント
      * @return data ペット一覧
      */
-    private fun getDispPetData(context: Context, intent: Intent): ArrayList<PetEntity>? {
+    private fun getDispPetData(context: Context, intent: Intent): ArrayList<PetEntity> {
+        lateinit var data: ArrayList<PetEntity>
         val date = intent.getStringExtra(SetAlarmManager.DATE)
 
-        var data: ArrayList<PetEntity>? = null
-        var db: SQLiteDatabase? = null
-
-        try {
-            val helper = BaseSQLiteOpenHelper(context)
-            db = helper.writableDatabase
-
+        BaseSQLiteOpenHelper(context).writableDatabase.use {
             val petDao = PetDao(context)
-            data = petDao.findByBirthdayOrArchiveDate(db, date)
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            db?.close()
+            data = petDao.findByBirthdayOrArchiveDate(it, date)
         }
 
         return data

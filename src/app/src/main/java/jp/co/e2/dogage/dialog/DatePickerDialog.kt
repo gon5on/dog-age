@@ -17,8 +17,8 @@ import java.util.Locale
 class DatePickerDialog : BaseDialog<CallbackListener>() {
 
     companion object {
-        const val PARAM_TITLE = "title"
-        const val PARAM_DATE = "date"
+        private const val PARAM_TITLE = "title"
+        private const val PARAM_DATE = "date"
 
         /**
          * ファクトリーメソッド
@@ -45,16 +45,16 @@ class DatePickerDialog : BaseDialog<CallbackListener>() {
     /**
      * ${inheritDoc}
      */
-    override fun onCreateDialog(savedInstanceState: Bundle): Dialog {
-        val view = activity.layoutInflater.inflate(R.layout.dialog_datepicker, null)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val view = activity!!.layoutInflater.inflate(R.layout.dialog_datepicker, null)
 
-        val date = arguments.getString(PARAM_DATE).split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val date = arguments!!.getString(PARAM_DATE).split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
         val datePicker = view.findViewById<DatePicker>(R.id.datePicker)
         datePicker.updateDate(Integer.parseInt(date[0]), (Integer.parseInt(date[1]) - 1), Integer.parseInt(date[2]))
 
-        val builder = AlertDialog.Builder(activity)
-        builder.setTitle(arguments.getString(PARAM_TITLE))
+        val builder = AlertDialog.Builder(context!!)
+        builder.setTitle(arguments!!.getString(PARAM_TITLE))
         builder.setIcon(R.drawable.img_foot)
         builder.setView(view)
 
@@ -64,11 +64,11 @@ class DatePickerDialog : BaseDialog<CallbackListener>() {
             val day = datePicker.dayOfMonth
             val retDate = String.format(Locale.getDefault(), "%d-%02d-%02d", year, month, day)
 
-            mCallbackListener?.onClickDatePickerDialogOk(tag, retDate)
+            call?.onClickDatePickerDialogOk(tag!!, retDate)
         }
 
         builder.setNegativeButton(getString(R.string.cancel)) { dialog, which ->
-            mCallbackListener?.onClickDatePickerDialogCancel(tag)
+            call?.onClickDatePickerDialogCancel(tag!!)
         }
 
         return builder.create()

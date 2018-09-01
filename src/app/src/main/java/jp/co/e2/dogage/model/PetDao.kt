@@ -14,7 +14,7 @@ import android.database.sqlite.SQLiteDatabase
 /**
  * ペットテーブルへのデータアクセスオブジェクト
  */
-class PetDao(private val mContext: Context) : BaseDao() {
+class PetDao(private val context: Context) : BaseDao() {
 
     companion object {
         // テーブル名
@@ -84,7 +84,7 @@ class PetDao(private val mContext: Context) : BaseDao() {
         if (data.photoFlg) {
             if (data.savePhotoUri != null) {
                 val tmpPath = data.savePhotoUri!!.path
-                val savePath = data.getImgFilePath(mContext)
+                val savePath = data.getImgFilePath(context)
 
                 LogUtils.d("tmp file path : ", tmpPath)
                 LogUtils.d("save file path : ", savePath)
@@ -92,43 +92,10 @@ class PetDao(private val mContext: Context) : BaseDao() {
                 MediaUtils.copyFile(tmpPath, savePath)
             }
         } else {
-            MediaUtils.deleteDirFile(data.getImgFilePath(mContext))
+            MediaUtils.deleteDirFile(data.getImgFilePath(context))
         }
 
         return (ret != -1)
-    }
-
-    /**
-     * IDからデータを取得する
-     *
-     * @param db SQLiteDatabase
-     * @param id ID
-     * @return PetEntity values
-     */
-    fun findById(db: SQLiteDatabase, id: Int?): PetEntity {
-        val data = PetEntity()
-
-        val sb = String.format("SELECT * FROM %s ", TABLE_NAME) + String.format("WHERE %s = ?", COLUMN_ID)
-
-        val param = arrayOf(id.toString())
-
-        val cursor = db.rawQuery(sb, param)
-
-        if (cursor.moveToFirst()) {
-            do {
-                data.id = getInteger(cursor, COLUMN_ID)
-                data.name = getString(cursor, COLUMN_NAME)
-                data.birthday = getString(cursor, COLUMN_BIRTHDAY)
-                data.kind = getInteger(cursor, COLUMN_KIND)
-                data.photoFlg = getBoolean(cursor, COLUMN_PHOTO_FLG) ?: false
-                data.archiveDate = getString(cursor, COLUMN_ARCHIVE_DATE)
-                data.created = getString(cursor, COLUMN_CREATED)
-                data.modified = getString(cursor, COLUMN_MODIFIED)
-            } while (cursor.moveToNext())
-        }
-        cursor.close()
-
-        return data
     }
 
     /**
@@ -136,7 +103,7 @@ class PetDao(private val mContext: Context) : BaseDao() {
      *
      * @param db SQLiteDatabase
      * @return ArrayList<PetEntity> data
-    </PetEntity> */
+    */
     fun findAll(db: SQLiteDatabase): ArrayList<PetEntity> {
         val data = ArrayList<PetEntity>()
 

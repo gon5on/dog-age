@@ -13,8 +13,8 @@ import android.os.Bundle
 class NoticeDialog : BaseDialog<CallbackListener>() {
 
     companion object {
-        const val PARAM_TITLE = "title"
-        const val PARAM_MSG = "msg"
+        private const val PARAM_TITLE = "title"
+        private const val PARAM_MSG = "msg"
 
         /**
          * ファクトリーメソッド
@@ -38,14 +38,15 @@ class NoticeDialog : BaseDialog<CallbackListener>() {
     /**
      * ${inheritDoc}
      */
-    override fun onCreateDialog(savedInstanceState: Bundle): Dialog {
-        val builder = AlertDialog.Builder(activity)
-        builder.setTitle(arguments.getString(PARAM_TITLE))
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val builder = AlertDialog.Builder(context!!)
+
+        builder.setTitle(arguments!!.getString(PARAM_TITLE))
         builder.setIcon(R.drawable.img_foot)
-        builder.setMessage(arguments.getString(PARAM_MSG))
+        builder.setMessage(arguments!!.getString(PARAM_MSG))
 
         builder.setPositiveButton(getString(R.string.ok)) { dialog, which ->
-            mCallbackListener?.onClickErrorDialogOk(tag)
+            call?.onClickErrorDialogOk(tag!!)
         }
 
         return builder.create()

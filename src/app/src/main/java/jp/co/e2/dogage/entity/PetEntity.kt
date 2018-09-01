@@ -21,31 +21,19 @@ import jp.co.e2.dogage.config.AppApplication
 /**
  * ペットエンティティクラス
  */
-class PetEntity : Serializable {
+data class PetEntity(
+        var id: Int? = null,                    //ペットID
+        var name: String? = null,               //名前
+        var birthday: String? = null,           //誕生日
+        var kind: Int? = null,                  //犬種ID
+        var photoFlg: Boolean = false,          //写真フラグ
+        var savePhotoUri: Uri? = null,          //保存対象写真URI
+        var archiveDate: String? = null,        //死亡日
+        var created: String? = null,            //作成日時
+        var modified: String? = null            //最終更新日時
+) : Serializable {
 
-    private var mDogMaster: DogMasterEntity? = null     //該当の犬種マスタ
-
-    var id: Int? = null                                 //ID
-    var name: String? = null                            //名前
-    var birthday: String? = null                        //誕生日
-    var photoFlg: Boolean = false                       //写真有無フラグ
-    var savePhotoUri: Uri? = null                       //保存対象の写真Uri
-    var archiveDate: String? = null                     //アーカイブ日付
-    var created: String? = null                         //作成日時
-    var modified: String? = null                        //更新日時
-
-    var kind: Int? = null                               //種類
-        set(value) {
-            field = value
-
-            mDogMaster = null
-        }
-
-    /**
-     * ペット年齢を返す
-     *
-     * @return int
-     */
+    //ペット年齢を返す
     val petAge: Int
         get() {
             val age = calcPetAge()
@@ -53,12 +41,7 @@ class PetEntity : Serializable {
             return age[0]
         }
 
-    /**
-     * 亡くなってから何年かを返す
-     *
-     * @return int
-     */
-    //Nヶ月目の日の翌日にならないとNヶ月がカウントアップしないので、Nヶ月目の日にカウントアップするように調整
+    //亡くなってから何年か
     val archiveAge: Int
         get() {
             var age = 0
@@ -87,27 +70,6 @@ class PetEntity : Serializable {
 
 
     /**
-     * 該当の犬種マスタを返す
-     *
-     * @param activity Activity
-     * @return DogMasterEntity mDogMaster
-     */
-    private fun getDogMaster(activity: Activity): DogMasterEntity? {
-        if (kind == null) {
-            return null
-        }
-
-        if (mDogMaster != null) {
-            return mDogMaster
-        }
-
-        val dogMasters = (activity.application as AppApplication).dogMasterMap
-        mDogMaster = dogMasters!!.get(kind!!)
-
-        return mDogMaster
-    }
-
-    /**
      * 表示用誕生日を返す
      *
      * @param context コンテキスト
@@ -134,7 +96,6 @@ class PetEntity : Serializable {
      */
     fun getPetAgeDisp(context: Context): String {
         val age = calcPetAge()
-
         val ageFormat = context.getString(R.string.age_format)
 
         return String.format(ageFormat, age[0], age[1])
@@ -154,19 +115,21 @@ class PetEntity : Serializable {
         val year = age[0]
         val month = age[1]
 
-        if (year < 1) {
-            //1年目まで
-            humanAge += month * getDogMaster(activity)!!.ageOfMonthUntilOneYear
-        } else if (year < 2) {
-            //2年目まで
-            humanAge += year * (getDogMaster(activity)!!.ageOfMonthUntilOneYear * 12)
-            humanAge += month * getDogMaster(activity)!!.ageOfMonthUntilTwoYear
-        } else {
-            //2年目以上
-            humanAge += getDogMaster(activity)!!.ageOfMonthUntilOneYear * 12
-            humanAge += getDogMaster(activity)!!.ageOfMonthUntilTwoYear * 12
-            humanAge += (year - 2) * (getDogMaster(activity)!!.ageOfMonthOverTwoYear * 12)
-            humanAge += month * getDogMaster(activity)!!.ageOfMonthOverTwoYear
+        when {
+            year < 1 -> //1年目まで
+                humanAge += month * getDogMaster(activity).ageOfMonthUntilOneYear
+            year < 2 -> {
+                //2年目まで
+                humanAge += year * (getDogMaster(activity).ageOfMonthUntilOneYear * 12)
+                humanAge += month * getDogMaster(activity).ageOfMonthUntilTwoYear
+            }
+            else -> {
+                //2年目以上
+                humanAge += getDogMaster(activity).ageOfMonthUntilOneYear * 12
+                humanAge += getDogMaster(activity).ageOfMonthUntilTwoYear * 12
+                humanAge += (year - 2) * (getDogMaster(activity).ageOfMonthOverTwoYear * 12)
+                humanAge += month * getDogMaster(activity).ageOfMonthOverTwoYear
+            }
         }
 
         return Math.round(humanAge).toString() + activity.getString(R.string.age_about)
@@ -185,11 +148,10 @@ class PetEntity : Serializable {
             val birthday = DateHelper(this.birthday, DateHelper.FMT_DATE)
             birthday.clearHour()
 
-            val today: DateHelper
-            if (archiveDate != null) {
-                today = DateHelper(archiveDate, DateHelper.FMT_DATE)
+            val today: DateHelper = if (archiveDate != null) {
+                DateHelper(archiveDate, DateHelper.FMT_DATE)
             } else {
-                today = DateHelper()
+                DateHelper()
             }
             today.clearHour()
 
@@ -208,17 +170,23 @@ class PetEntity : Serializable {
     /**
      * 表示用種類を返す
      *
-     * @param activity Activity
+     * @param activity
      * @return String
      */
     fun getKindDisp(activity: Activity): String {
         val other = activity.getString(R.string.other)
 
         //種類にその他という文字列が入っていたら、その他という文字列を取り除く
-        return if (getDogMaster(activity)!!.kind.contains(other)) {
-            getDogMaster(activity)!!.kind.replace(other.toRegex(), "")
-        } else {
-            getDogMaster(activity)!!.kind
+        return when {
+            kind == null -> {
+                ""
+            }
+            getDogMaster(activity).kind.contains(other) -> {
+                getDogMaster(activity).kind.replace(other.toRegex(), "")
+            }
+            else -> {
+                getDogMaster(activity).kind
+            }
         }
     }
 
@@ -258,13 +226,11 @@ class PetEntity : Serializable {
     fun getPhotoInput(context: Context): Bitmap {
         val size = AndroidUtils.dpToPixel(context, Config.PHOTO_INPUT_DP)
 
-        val imgHelper: ImgHelper
-
         //保存対象画像が取得できた場合は、それを採用（activity再生成対応）
-        if (savePhotoUri != null) {
-            imgHelper = ImgHelper(context, savePhotoUri)
+        val imgHelper: ImgHelper = if (savePhotoUri != null) {
+            ImgHelper(context, savePhotoUri)
         } else {
-            imgHelper = ImgHelper(getImgFilePath(context))
+            ImgHelper(getImgFilePath(context))
         }
 
         return imgHelper.getResizeKadomaruBitmap(size, size, AndroidUtils.dpToPixel(context, Config.KADOMARU_DP))
@@ -290,6 +256,26 @@ class PetEntity : Serializable {
     }
 
     /**
+     * 画像保存ファイルパス
+     *
+     * @param context コンテキスト
+     * @return String
+     */
+    fun getImgFilePath(context: Context): String {
+        return getImgDirPath(context) + "/" + getImgFileName(id!!)
+    }
+
+    /**
+     * 犬マスタを取得する
+     *
+     * @param activity
+     * @return DogMasterEntity
+     */
+    private fun getDogMaster(activity: Activity): DogMasterEntity {
+        return (activity.application as AppApplication).dogMasterMap[kind]!!
+    }
+
+    /**
      * ペット年齢を計算する
      *
      * @return Integer[]
@@ -302,11 +288,10 @@ class PetEntity : Serializable {
             val birthday = DateHelper(this.birthday, DateHelper.FMT_DATE)
             birthday.clearHour()
 
-            val today: DateHelper
-            if (archiveDate != null) {
-                today = DateHelper(archiveDate, DateHelper.FMT_DATE)
+            val today: DateHelper = if (archiveDate != null) {
+                DateHelper(archiveDate, DateHelper.FMT_DATE)
             } else {
-                today = DateHelper()
+                DateHelper()
             }
             today.addDay(1)    //Nヶ月目の日の翌日にならないとNヶ月がカウントアップしないので、Nヶ月目の日にカウントアップするように調整
             today.clearHour()
@@ -323,33 +308,19 @@ class PetEntity : Serializable {
     }
 
     /**
-     * 画像保存ファイルパス
-     *
-     * @param context コンテキスト
-     * @return String
-     */
-    private fun getImgFilePath(context: Context): String {
-        return getImgDirPath(context) + "/" + getImgFileName(id)
-    }
-
-    /**
      * 画像保存ディレクトリパスを返す
      *
      * @param context コンテキスト
      * @return String
      */
     private fun getImgDirPath(context: Context): String {
-        val path: String
-
-        if (MediaUtils.IsExternalStorageAvailableAndWritable()) {
+        return if (MediaUtils.IsExternalStorageAvailableAndWritable()) {
             //外部ストレージが使用可能
-            path = context.getExternalFilesDir(null)!!.toString()
+            context.getExternalFilesDir(null)!!.toString()
         } else {
             //外部ストレージは使用不可
-            path = context.filesDir.toString()
+            context.filesDir.toString()
         }
-
-        return path
     }
 
     /**
@@ -358,7 +329,7 @@ class PetEntity : Serializable {
      * @param id ID
      * @return String
      */
-    private fun getImgFileName(id: Int?): String {
+    private fun getImgFileName(id: Int): String {
         return "dog_$id.jpg"
     }
 }

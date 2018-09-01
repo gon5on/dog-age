@@ -16,7 +16,7 @@ import android.widget.ImageView
 class PhotoDialog : BaseDialog<CallbackListener>() {
 
     companion object {
-        const val PARAM_BITMAP = "bitmap"
+        private const val PARAM_BITMAP = "bitmap"
 
         /**
          * ファクトリーメソッド
@@ -38,13 +38,13 @@ class PhotoDialog : BaseDialog<CallbackListener>() {
     /**
      * ${inheritDoc}
      */
-    override fun onCreateDialog(savedInstanceState: Bundle): Dialog {
-        val view = activity.layoutInflater.inflate(R.layout.dialog_photo, null)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val view = activity!!.layoutInflater.inflate(R.layout.dialog_photo, null)
 
         val imageViewPhoto = view.findViewById<ImageView>(R.id.imageViewPhoto)
-        imageViewPhoto.setImageBitmap(arguments.getParcelable<Parcelable>(PARAM_BITMAP) as Bitmap)
+        imageViewPhoto.setImageBitmap(arguments!!.getParcelable<Parcelable>(PARAM_BITMAP) as Bitmap)
 
-        val builder = AlertDialog.Builder(activity, R.style.TransparentDialogStyle)
+        val builder = AlertDialog.Builder(context!!, R.style.TransparentDialogStyle)
         builder.setView(view)
 
         return builder.create()

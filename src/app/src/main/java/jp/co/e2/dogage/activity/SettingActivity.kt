@@ -1,6 +1,5 @@
 package jp.co.e2.dogage.activity
 
-import android.app.Activity
 import android.app.Fragment
 import android.content.Intent
 import android.net.Uri
@@ -23,19 +22,6 @@ import jp.co.e2.dogage.config.Config
  * 設定アクテビティ
  */
 class SettingActivity : BaseActivity() {
-
-    companion object {
-        /**
-         * ファクトリーメソッドもどき
-         *
-         * @param activity アクテビティ
-         * @return intent
-         */
-        fun newInstance(activity: Activity): Intent {
-            return Intent(activity, SettingActivity::class.java)
-        }
-    }
-
     /**
      * ${inheritDoc}
      */
@@ -48,7 +34,7 @@ class SettingActivity : BaseActivity() {
         setBackArrowToolbar()
 
         if (savedInstanceState == null) {
-            fragmentManager.beginTransaction().add(R.id.container, SettingFragment.newInstance()).commit()
+            fragmentManager.beginTransaction().add(R.id.container, SettingFragment()).commit()
         }
     }
 
@@ -70,83 +56,58 @@ class SettingActivity : BaseActivity() {
      * SettingFragment
      */
     class SettingFragment : Fragment() {
-        private var mView: View? = null
-
-        companion object {
-            /**
-             * ファクトリーメソッド
-             *
-             * @return SettingFragment
-             */
-            fun newInstance(): SettingFragment {
-                val args = Bundle()
-
-                val fragment = SettingFragment()
-                fragment.arguments = args
-
-                return fragment
-            }
-        }
-
         /**
          * ${inheritDoc}
          */
-        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle): View? {
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
             super.onCreate(savedInstanceState)
 
-            mView = inflater.inflate(R.layout.fragment_setting, container, false)
+            val view = inflater.inflate(R.layout.fragment_setting, container, false)
 
             //コンテンツセット
-            setContent()
+            setContent(view)
 
-            //イベントセット
-            setClickEvent()
-
-            return mView
+            return view
         }
 
         /**
          * コンテンツをセットする
          */
-        private fun setContent() {
+        private fun setContent(view: View) {
             //誕生日通知チェックボックス
-            val checkBoxBirthNotify = mView!!.findViewById<CheckBox>(R.id.checkBoxBirthNotification)
-            checkBoxBirthNotify.isChecked = PreferenceUtils.get(activity, Config.PREF_BIRTH_NOTIFY_FLG, true)
+            view.findViewById<CheckBox>(R.id.checkBoxBirthNotification).apply {
+                this.isChecked = PreferenceUtils.get(activity, Config.PREF_BIRTH_NOTIFY_FLG, true)
+
+                this.setOnCheckedChangeListener { buttonView, isChecked ->
+                    changeNotifySetting(Config.PREF_BIRTH_NOTIFY_FLG, isChecked) }
+            }
 
             //命日通知チェックボックス
-            val checkBoxArchiveNotify = mView!!.findViewById<CheckBox>(R.id.checkBoxArchiveNotification)
-            checkBoxArchiveNotify.isChecked = PreferenceUtils.get(activity, Config.PREF_ARCHIVE_NOTIFY_FLG, true)
+            view.findViewById<CheckBox>(R.id.checkBoxArchiveNotification).apply {
+                this.isChecked = PreferenceUtils.get(activity, Config.PREF_ARCHIVE_NOTIFY_FLG, true)
+
+                this.setOnCheckedChangeListener { buttonView, isChecked ->
+                    changeNotifySetting(Config.PREF_ARCHIVE_NOTIFY_FLG, isChecked) }
+            }
 
             //アプリバージョン
-            val textViewVer = mView!!.findViewById<TextView>(R.id.textViewVer)
-            textViewVer.text = AndroidUtils.getVerName(activity)
-        }
-
-        /**
-         * クリックイベントをセットする
-         */
-        private fun setClickEvent() {
-            //誕生日通知チェックボックス
-            val checkBoxBirthNotify = mView!!.findViewById<CheckBox>(R.id.checkBoxBirthNotification)
-            checkBoxBirthNotify.setOnCheckedChangeListener { buttonView, isChecked ->
-                changeNotifySetting(Config.PREF_BIRTH_NOTIFY_FLG, isChecked) }
-
-            //誕生日通知チェックボックス
-            val checkBoxArchiveNotify = mView!!.findViewById<CheckBox>(R.id.checkBoxArchiveNotification)
-            checkBoxArchiveNotify.setOnCheckedChangeListener { buttonView, isChecked ->
-                changeNotifySetting(Config.PREF_ARCHIVE_NOTIFY_FLG, isChecked) }
+            view.findViewById<TextView>(R.id.textViewVer).apply {
+                this.text = AndroidUtils.getVerName(activity)
+            }
 
             //年齢計算について
-            val constraintLayoutCalcAge = mView!!.findViewById<ConstraintLayout>(R.id.constraintLayoutCalcAge)
-            constraintLayoutCalcAge.setOnClickListener {
-                startActivity(AboutActivity.newInstance(activity))
+            view.findViewById<ConstraintLayout>(R.id.constraintLayoutCalcAge).apply {
+                this.setOnClickListener {
+                    startActivity(Intent(activity, AboutActivity::class.java))
+                }
             }
 
             //E2リンク
-            val buttonProducedBy = mView!!.findViewById<Button>(R.id.buttonProducedBy)
-            buttonProducedBy.setOnClickListener {
-                val i = Intent(Intent.ACTION_VIEW, Uri.parse(Config.OFFICIAL_LINK))
-                startActivity(i)
+            view.findViewById<Button>(R.id.buttonProducedBy).apply {
+                this.setOnClickListener {
+                    val i = Intent(Intent.ACTION_VIEW, Uri.parse(Config.OFFICIAL_LINK))
+                    startActivity(i)
+                }
             }
         }
 
@@ -159,7 +120,7 @@ class SettingActivity : BaseActivity() {
         private fun changeNotifySetting(name: String, value: Boolean) {
             PreferenceUtils.save(activity, name, value)
 
-            AndroidUtils.showSuccessSnackBarS(mView, getString(R.string.change_settings))
+            AndroidUtils.showSuccessSnackBarS(view, getString(R.string.change_settings))
         }
     }
 }

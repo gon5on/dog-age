@@ -12,8 +12,8 @@ import jp.co.e2.dogage.model.PetDao
 import jp.co.e2.dogage.adapter.PetAgeFragmentPagerAdapter
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.support.v4.app.NotificationManagerCompat
 import android.support.v4.view.ViewPager
@@ -29,23 +29,22 @@ import android.widget.RadioGroup
 class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
 
     companion object {
-        const val PARAM_ID = "id"
-        const val PARAM_PAGE_NUM = "page_num"
-        const val PARAM_DATA = "data"
-        const val PARAM_RADIO_RES_IDS = "radio_res_ids"
+        private const val PARAM_PAGE_NUM = "page_num"
+        private const val PARAM_PET_DATA = "pet_data"
+        private const val PARAM_RADIO_RES_IDS = "radio_res_ids"
 
-        const val REQUEST_CODE_ADD = 1
-        const val REQUEST_CODE_EDIT = 2
+        private const val REQUEST_CODE_ADD = 1
+        private const val REQUEST_CODE_EDIT = 2
 
         /**
          * ファクトリーメソッドもどき
          *
-         * @param activity アクテビティ
+         * @param context コンテキスト
          * @param pageNum 表示対象のページ数
          * @return intent
          */
-        fun newInstance(activity: Activity, pageNum: Int): Intent {
-            val intent = Intent(activity, InputActivity::class.java)
+        fun newInstance(context: Context, pageNum: Int): Intent {
+            val intent = Intent(context, InputActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             intent.putExtra(PARAM_PAGE_NUM, pageNum)
 
@@ -53,9 +52,9 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
         }
     }
 
-    private var mPageNum: Int = 0                             // 現在表示中のページ数
-    private var mData: ArrayList<PetEntity>? = null           // ペット情報一覧
-    private var mRadioResIds: IntArray? = null                // ページャのラジオボタンリソースID
+    private var pageNum: Int = 0                            // 現在表示中のページ数
+    private lateinit var petData: ArrayList<PetEntity>      // ペット情報一覧
+    private lateinit var radioResIds: IntArray              // ページャのラジオボタンリソースID
 
     /**
      * ${inheritDoc}
@@ -69,7 +68,7 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
         setToolbar()
 
         //ページ数が渡ってきたら取得する
-        mPageNum = intent.getIntExtra(PARAM_PAGE_NUM, 0)
+        pageNum = intent.getIntExtra(PARAM_PAGE_NUM, 0)
 
         if (savedInstanceState == null) {
             //通知を消す
@@ -80,13 +79,13 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
             getPetList()
 
             //データがない場合は入力画面に飛ばす
-            if (mData!!.size == 0) {
+            if (petData.size == 0) {
                 val intent = InputActivity.newInstance(this@PetAgeActivity, true, 0, null)
                 startActivityForResult(intent, REQUEST_CODE_ADD)
             }
         } else {
-            mData = savedInstanceState.getSerializable(PARAM_DATA) as ArrayList<PetEntity>
-            mRadioResIds = savedInstanceState.getIntArray(PARAM_RADIO_RES_IDS)
+            petData = savedInstanceState.getSerializable(PARAM_PET_DATA) as ArrayList<PetEntity>
+            radioResIds = savedInstanceState.getIntArray(PARAM_RADIO_RES_IDS)
         }
 
         createViewPager()
@@ -116,7 +115,7 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
             }
             //編集
             R.id.action_edit -> {
-                intent = InputActivity.newInstance(this@PetAgeActivity, false, mPageNum, mData!![mPageNum])
+                intent = InputActivity.newInstance(this@PetAgeActivity, false, pageNum, petData[pageNum])
                 startActivityForResult(intent, REQUEST_CODE_EDIT)
             }
             //削除
@@ -126,10 +125,10 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
 
                 val confirmDialog = ConfirmDialog.newInstance(title, msg)
                 confirmDialog.setCallbackListener(this)
-                confirmDialog.show(fragmentManager, "dialog")
+                confirmDialog.show(supportFragmentManager, "dialog")
             }
             //設定
-            R.id.action_setting -> startActivity(SettingActivity.newInstance(this@PetAgeActivity))
+            R.id.action_setting -> startActivity(Intent(this@PetAgeActivity, SettingActivity::class.java))
         }
 
         return super.onOptionsItemSelected(item)
@@ -141,18 +140,18 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState.putSerializable(PARAM_DATA, mData)
-        outState.putIntArray(PARAM_RADIO_RES_IDS, mRadioResIds)
+        outState.putSerializable(PARAM_PET_DATA, petData)
+        outState.putIntArray(PARAM_RADIO_RES_IDS, radioResIds)
     }
 
     /**
      * ${inheritDoc}
      */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_CODE_ADD || requestCode == REQUEST_CODE_EDIT) {
             if (resultCode != Activity.RESULT_OK) {
                 //データが存在しない場合はアプリ終了
-                if (mData == null || mData!!.size == 0) {
+                if (petData.size == 0) {
                     finish()
                     return
                 }
@@ -164,7 +163,7 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
 
             //追加の場合は、1ページ目を表示する
             if (requestCode == REQUEST_CODE_ADD) {
-                mPageNum = 0
+                pageNum = 0
             }
 
             getPetList()
@@ -176,19 +175,9 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
      * ペット情報一覧を取得
      */
     private fun getPetList() {
-        var db: SQLiteDatabase? = null
-
-        try {
-            val helper = BaseSQLiteOpenHelper(applicationContext)
-            db = helper.writableDatabase
-
-            val petDao = PetDao(applicationContext)
-            mData = petDao.findAll(db!!)
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            db?.close()
+        BaseSQLiteOpenHelper(this).writableDatabase.use {
+            val petDao = PetDao(this)
+            petData = petDao.findAll(it)
         }
     }
 
@@ -199,16 +188,16 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
         // ページングを動的に生成
         createPaging()
 
-        val adapter = PetAgeFragmentPagerAdapter(supportFragmentManager, mData!!)
+        val adapter = PetAgeFragmentPagerAdapter(supportFragmentManager, petData)
 
         val viewPager = findViewById<ViewPager>(R.id.viewPager)
         viewPager.adapter = adapter
-        viewPager.currentItem = mPageNum
+        viewPager.currentItem = pageNum
 
         // ページフリック遷移のイベントを受け取る
         viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                mPageNum = position
+                pageNum = position
                 flickEvent()
             }
         })
@@ -218,32 +207,32 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
      * ページングの○を動的にページ分生成
      */
     private fun createPaging() {
-        if (mData == null) {
+        if (petData.size == 0) {
             return
         }
 
         val radioGroupPager = findViewById<RadioGroup>(R.id.radioGroupPager)
         radioGroupPager.removeAllViewsInLayout()
 
-        mRadioResIds = IntArray(mData!!.size)
+        radioResIds = IntArray(petData.size)
 
-        if (mData!!.size == 1) {
+        if (petData.size == 1) {
             //1匹の場合はページングを表示しない
             radioGroupPager.visibility = View.GONE
         } else {
             radioGroupPager.visibility = View.VISIBLE
 
-            for (i in mData!!.indices) {
+            for (i in petData.indices) {
                 //2匹以上の場合はページングを表示する
-                mRadioResIds!![i] = View.generateViewId()
+                radioResIds[i] = View.generateViewId()
 
                 val radioButton = layoutInflater.inflate(R.layout.parts_pager, null) as RadioButton
-                radioButton.id = mRadioResIds!![i]
+                radioButton.id = radioResIds[i]
                 radioGroupPager.addView(radioButton)
 
                 //表示ページはONにしておく
-                if (i == mPageNum) {
-                    radioGroupPager.check(mRadioResIds!![i])
+                if (i == pageNum) {
+                    radioGroupPager.check(radioResIds[i])
                 }
             }
         }
@@ -254,43 +243,37 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
      */
     fun flickEvent() {
         // 1匹の場合はページング非表示
-        if (mData!!.size == 1) {
+        if (petData.size <= 1) {
             return
         }
 
         val radioGroupPager = findViewById<RadioGroup>(R.id.radioGroupPager)
-        radioGroupPager.check(mRadioResIds!![mPageNum])
+        radioGroupPager.check(radioResIds[pageNum])
     }
 
     /**
      * ${inheritDoc}
      */
     override fun onClickConfirmDialogOk(tag: String) {
-        var db: SQLiteDatabase? = null
+        var ret = false
+        val petDao = PetDao(this)
 
-        try {
-            val helper = BaseSQLiteOpenHelper(applicationContext)
-            db = helper.writableDatabase
+        BaseSQLiteOpenHelper(this).writableDatabase.use {
+            ret = petDao.deleteById(it, petData[pageNum].id)
+        }
 
-            val petDao = PetDao(applicationContext)
+        if (ret) {
+            val view = findViewById<View>(android.R.id.content)
+            AndroidUtils.showSuccessSnackBarS(view, getString(R.string.delete_success))
 
-            if (petDao.deleteById(db!!, mData!![mPageNum].id)) {
-                val view = findViewById<View>(android.R.id.content)
-                AndroidUtils.showSuccessSnackBarS(view, getString(R.string.delete_success))
+            getPetList()
+            createViewPager()
+        } else {
+            val title = getString(R.string.error)
+            val msg = getString(R.string.delete_fail)
 
-                getPetList()
-                createViewPager()
-            } else {
-                val title = getString(R.string.error)
-                val msg = getString(R.string.delete_fail)
-
-                val noticeDialog = NoticeDialog.newInstance(title, msg)
-                noticeDialog.show(fragmentManager, "dialog")
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            db?.close()
+            val noticeDialog = NoticeDialog.newInstance(title, msg)
+            noticeDialog.show(supportFragmentManager, "dialog")
         }
     }
 

@@ -1,9 +1,10 @@
 package jp.co.e2.dogage.dialog
 
 import android.app.Activity
-import android.app.DialogFragment
-import android.app.Fragment
+
 import android.content.Context
+import android.support.v4.app.DialogFragment
+import android.support.v4.app.Fragment
 
 /**
  * ダイアログ基底クラス
@@ -16,7 +17,7 @@ abstract class BaseDialog<Interface> : DialogFragment() {
         const val LISTENER_FRAGMENT = 2
     }
 
-    protected var mCallbackListener: Interface? = null
+    protected var call: Interface? = null
 
     /**
      * ${inheritDoc}
@@ -24,12 +25,12 @@ abstract class BaseDialog<Interface> : DialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        val listenerType = arguments.getInt(PARAM_LISTENER_TYPE)
+        val listenerType = arguments!!.getInt(PARAM_LISTENER_TYPE)
 
         if (listenerType == BaseDialog.LISTENER_ACTIVITY) {
-            mCallbackListener = activity as Interface
+            call = activity as Interface
         } else if (listenerType == BaseDialog.LISTENER_FRAGMENT) {
-            mCallbackListener = targetFragment as Interface
+            call = targetFragment as Interface
         }
     }
 
@@ -42,27 +43,26 @@ abstract class BaseDialog<Interface> : DialogFragment() {
      * @param listener コールバックリスナー
      */
     fun setCallbackListener(listener: Interface) {
-        val listenerType: Int?
+        val listenerType: Int
 
-        if (listener is Activity) {
-            listenerType = BaseDialog.LISTENER_ACTIVITY
-        } else if (listener is Fragment) {
-            listenerType = BaseDialog.LISTENER_FRAGMENT
-            setTargetFragment(listener as Fragment, 0)
-        } else {
-            throw IllegalArgumentException(listener.toString() + " must be either an Activity or a Fragment")
+        when (listener) {
+            is Activity -> {
+                listenerType = BaseDialog.LISTENER_ACTIVITY
+            }
+            is Fragment -> {
+                listenerType = BaseDialog.LISTENER_FRAGMENT
+                setTargetFragment(listener as Fragment, 0)
+            }
+            else -> throw IllegalArgumentException(listener.toString() + " must be either an Activity or a Fragment")
         }
 
-        val bundle = arguments
-        bundle.putInt(PARAM_LISTENER_TYPE, listenerType)
-
-        arguments = bundle
+        arguments!!.putInt(PARAM_LISTENER_TYPE, listenerType)
     }
 
     /**
      * コールバックリスナーを削除
      */
     fun removeCallbackListener() {
-        mCallbackListener = null
+        call = null
     }
 }

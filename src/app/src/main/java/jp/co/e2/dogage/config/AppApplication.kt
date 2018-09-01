@@ -13,51 +13,39 @@ import java.util.*
 class AppApplication : Application() {
 
     //犬種マスタマップ
-    var dogMasterMap: HashMap<Int, DogMasterEntity>? = null
-        get() {
-            if (field == null) {
-                field = HashMap()
+    val dogMasterMap: HashMap<Int, DogMasterEntity> by lazy {
+        HashMap<Int, DogMasterEntity>().apply {
+            for (i in 0 until Config.KIND_NUM) {
+                val resId = resources.getIdentifier("dog" + (i + 1), "array", applicationContext.packageName)
+                val array = resources.getStringArray(resId)
+                val dogEntity = DogMasterEntity(Integer.parseInt(array[0]), array[1], array[2], Integer.parseInt(array[3]))
 
-                val res = applicationContext.resources
-
-                for (i in 0 until Config.KIND_NUM) {
-                    val resId = res.getIdentifier("dog" + (i + 1), "array", applicationContext.packageName)
-                    val array = res.getStringArray(resId)
-                    val dogEntity = DogMasterEntity(Integer.parseInt(array[0]), array[1], array[2], Integer.parseInt(array[3]))
-
-                    field!![dogEntity.id] = dogEntity
-                }
+                this[dogEntity.id] = dogEntity
             }
-
-            return field
         }
+    }
 
     //犬種マスタ配列
-    var dogMasterList: ArrayList<DogMasterEntity>? = null
-        get() {
-            if (field == null) {
-                field = ArrayList()
+    val dogMasterList: ArrayList<DogMasterEntity> by lazy {
+        ArrayList<DogMasterEntity>().apply {
+            val initialLabelList = resources.getStringArray(R.array.initial_label_list)
 
-                val initialLabelList = applicationContext.resources.getStringArray(R.array.initial_label_list)
+            //犬種マスタを取得してソート
+            val tmp = ArrayList(dogMasterMap.values)
+                    .sortedWith(compareBy(DogMasterEntity::furigana, DogMasterEntity::initialLine))
 
-                //犬種マスタを取得してソート
-                val tmp = ArrayList(dogMasterMap!!.values)
-                        .sortedWith(compareBy(DogMasterEntity::furigana, DogMasterEntity::initialLine))
-
-                for (i in tmp.indices) {
-                    //頭文字行のラベルを追加
-                    if (i == 0 || tmp[i].initialLine != tmp[i - 1].initialLine) {
-                        val values = DogMasterEntity(0, initialLabelList[tmp[i].initialLine], "", 0)
-                        field!!.add(values)
-                    }
-
-                    // 犬種をセット
-                    field!!.add(tmp[i])
+            for (i in tmp.indices) {
+                //頭文字行のラベルを追加
+                if (i == 0 || tmp[i].initialLine != tmp[i - 1].initialLine) {
+                    val values = DogMasterEntity(0, initialLabelList[tmp[i].initialLine], "", 0)
+                    this.add(values)
                 }
-            }
 
-            return field
+                // 犬種をセット
+                this.add(tmp[i])
+            }
         }
+    }
 
     /**
      * ${inheritDoc}

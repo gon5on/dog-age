@@ -14,10 +14,8 @@ open class BaseActivity : AppCompatActivity() {
      */
     protected fun setToolbar() {
         //ツールバーをアクションバーとして扱う
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-
-        if (toolbar != null) {
-            setSupportActionBar(toolbar)
+        findViewById<Toolbar>(R.id.toolbar).apply {
+            setSupportActionBar(this)
         }
 
         //タイトル非表示

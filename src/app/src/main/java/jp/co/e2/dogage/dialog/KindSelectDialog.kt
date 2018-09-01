@@ -19,7 +19,7 @@ import android.widget.ListView
 class KindSelectDialog : BaseDialog<CallbackListener>() {
 
     companion object {
-        const val PARAM_DATA = "data"
+        private const val PARAM_DATA = "data"
 
         /**
          * ファクトリーメソッド
@@ -40,21 +40,21 @@ class KindSelectDialog : BaseDialog<CallbackListener>() {
     /**
      * ${inheritDoc}
      */
-    override fun onCreateDialog(savedInstanceState: Bundle): Dialog {
-        val data = arguments.getSerializable(PARAM_DATA) as ArrayList<DogMasterEntity>
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val data = arguments!!.getSerializable(PARAM_DATA) as ArrayList<DogMasterEntity>
 
-        val layout = activity.layoutInflater.inflate(R.layout.dialog_kind_list, null)
+        val layout = activity!!.layoutInflater.inflate(R.layout.dialog_kind_list, null)
 
-        val listViewKind = view.findViewById<ListView>(R.id.listViewKind)
-        listViewKind.adapter = KindListAdapter(activity, data)
+        val listViewKind = layout!!.findViewById<ListView>(R.id.listViewKind)
+        listViewKind.adapter = KindListAdapter(context!!, data)
         listViewKind.isScrollingCacheEnabled = false
 
         listViewKind.onItemClickListener = OnItemClickListener { items, view, position, id ->
-            mCallbackListener?.onClickKindSelectDialog(tag, data[position].id, data[position].kind)
+            call?.onClickKindSelectDialog(tag!!, data[position].id, data[position].kind)
             dismiss()
         }
 
-        val builder = AlertDialog.Builder(activity)
+        val builder = AlertDialog.Builder(context!!)
         builder.setView(layout)
 
         return builder.create()
@@ -71,6 +71,6 @@ class KindSelectDialog : BaseDialog<CallbackListener>() {
          * @param kind 種類ID
          * @param name 名称
          */
-        fun onClickKindSelectDialog(tag: String, kind: Int?, name: String)
+        fun onClickKindSelectDialog(tag: String, kind: Int, name: String)
     }
 }

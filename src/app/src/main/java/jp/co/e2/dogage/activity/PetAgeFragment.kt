@@ -1,7 +1,5 @@
 package jp.co.e2.dogage.activity
 
-import java.io.IOException
-
 import jp.co.e2.dogage.R
 import jp.co.e2.dogage.dialog.PhotoDialog
 import jp.co.e2.dogage.entity.PetEntity
@@ -25,8 +23,8 @@ class PetAgeFragment : Fragment() {
         val BG_ABOVE = arrayOf(R.drawable.img_frame_above1, R.drawable.img_frame_above2, R.drawable.img_frame_above3)
         val BG_UNDER = arrayOf(R.drawable.img_frame_under1, R.drawable.img_frame_under2, R.drawable.img_frame_under3)
 
-        const val PARAM_PAGE_NUM = "page_num"
-        const val PARAM_DATA = "data"
+        private const val PARAM_PAGE_NUM = "page_num"
+        private const val PARAM_DATA = "data"
 
         /**
          * ファクトリーメソッド
@@ -45,9 +43,8 @@ class PetAgeFragment : Fragment() {
         }
     }
 
-    private var mData: PetEntity? = null
-    private var mPageNum: Int? = 0
-    private var mView: View? = null
+    private val data: PetEntity by lazy { arguments!!.getSerializable(PARAM_DATA) as PetEntity }
+    private val pageNum: Int by lazy { arguments!!.getInt(PARAM_PAGE_NUM) }
 
     /**
      * onCreateView
@@ -57,83 +54,84 @@ class PetAgeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
 
-        mView = inflater.inflate(R.layout.fragment_pet_age, container, false)
-
-        // データを取得
-        val bundle = arguments
-        mData = bundle!!.getSerializable(PARAM_DATA) as PetEntity
-        mPageNum = bundle.getInt(PARAM_PAGE_NUM)
-
+        val view = inflater.inflate(R.layout.fragment_pet_age, container, false)
+        
         // 画面表示
-        setDisplayItem()
+        setDisplayItem(view)
 
-        return mView
+        return view
     }
 
     /**
      * 画面表示
+     *
+     * @param view
      */
-    private fun setDisplayItem() {
-        try {
-            val textViewName = mView!!.findViewById<TextView>(R.id.textViewName)
-            textViewName.text = mData!!.name
-
-            val textViewKind = mView!!.findViewById<TextView>(R.id.textViewKind)
-            textViewKind.text = mData!!.getKindDisp(context)
-
-            val textViewBirthday = mView!!.findViewById<TextView>(R.id.textViewBirthday)
-            textViewBirthday.text = mData!!.getDispBirthday(activity)
-
-            val textViewPetAge = mView!!.findViewById<TextView>(R.id.textViewPetAge)
-            textViewPetAge.text = mData!!.getPetAgeDisp(activity)
-
-            val textViewHumanAge = mView!!.findViewById<TextView>(R.id.textViewHumanAge)
-            textViewHumanAge.text = mData!!.getHumanAge(context)
-
-            val textViewDays = mView!!.findViewById<TextView>(R.id.textViewDays)
-            textViewDays.text = mData!!.getDaysFromBorn(activity)
-
-            val linearLayout1 = mView!!.findViewById<LinearLayout>(R.id.linearLayout1)
-            linearLayout1.setBackgroundResource(BG_ABOVE[mPageNum!! % BG_ABOVE.size])
-
-            val constraintLayoutDogAge = mView!!.findViewById<ConstraintLayout>(R.id.constraintLayoutDogAge)
-            constraintLayoutDogAge.setBackgroundResource(BG_UNDER[mPageNum!! % BG_ABOVE.size])
-
-            val constraintLayoutHumanAge = mView!!.findViewById<ConstraintLayout>(R.id.constraintLayoutHumanAge)
-            constraintLayoutHumanAge.setBackgroundResource(BG_UNDER[mPageNum!! % BG_ABOVE.size])
-
-            val constraintLayoutDayCount = mView!!.findViewById<ConstraintLayout>(R.id.constraintLayoutDayCount)
-            constraintLayoutDayCount.setBackgroundResource(BG_UNDER[mPageNum!! % BG_ABOVE.size])
-
-            val textViewArchive = mView!!.findViewById<TextView>(R.id.textViewArchive)
-
-            if (mData!!.archiveDate != null) {
-                textViewArchive.visibility = View.VISIBLE
-                textViewArchive.text = mData!!.getDispArchiveDate(activity)
-            } else {
-                textViewArchive.visibility = View.GONE
+    private fun setDisplayItem(view: View) {
+            view.findViewById<TextView>(R.id.textViewName).apply {
+                this.text = data.name
             }
 
-            val imageViewPhoto = mView!!.findViewById<ImageView>(R.id.imageViewPhoto)
+            view.findViewById<TextView>(R.id.textViewKind).apply {
+                this.text = data.getKindDisp(activity!!)
+            }
 
-            if (mData!!.photoFlg) {
-                val thumbBitmap = mData!!.getPhotoThumb(activity)
-                val bigBitmap = mData!!.getPhotoBig(activity)
+            view.findViewById<TextView>(R.id.textViewBirthday).apply {
+                this.text = data.getDispBirthday(activity!!)
+            }
 
-                imageViewPhoto.setImageBitmap(thumbBitmap)
-                imageViewPhoto.visibility = View.VISIBLE
+            view.findViewById<TextView>(R.id.textViewPetAge).apply {
+                this.text = data.getPetAgeDisp(activity!!)
+            }
 
-                imageViewPhoto.setOnClickListener {
-                    if (activity != null) {
-                        val photoDialog = PhotoDialog.newInstance(bigBitmap)
-                        photoDialog.show(activity!!.fragmentManager, "dialog")
-                    }
+            view.findViewById<TextView>(R.id.textViewHumanAge).apply {
+                this.text = data.getHumanAge(activity!!)
+            }
+
+            view.findViewById<TextView>(R.id.textViewDays).apply {
+                this.text = data.getDaysFromBorn(activity!!)
+            }
+
+            view.findViewById<LinearLayout>(R.id.linearLayout1).apply {
+                this.setBackgroundResource(BG_ABOVE[pageNum % BG_ABOVE.size])
+            }
+
+            view.findViewById<ConstraintLayout>(R.id.constraintLayoutDogAge).apply {
+                this.setBackgroundResource(BG_UNDER[pageNum % BG_ABOVE.size])
+            }
+
+            view.findViewById<ConstraintLayout>(R.id.constraintLayoutHumanAge).apply {
+                this.setBackgroundResource(BG_UNDER[pageNum % BG_ABOVE.size])
+            }
+
+            view.findViewById<ConstraintLayout>(R.id.constraintLayoutDayCount).apply {
+                this.setBackgroundResource(BG_UNDER[pageNum % BG_ABOVE.size])
+            }
+
+            view.findViewById<TextView>(R.id.textViewArchive).apply {
+                if (data.archiveDate != null) {
+                    this.visibility = View.VISIBLE
+                    this.text = data.getDispArchiveDate(activity!!)
+                } else {
+                    this.visibility = View.GONE
                 }
-            } else {
-                imageViewPhoto.visibility = View.GONE
             }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
+
+            view.findViewById<ImageView>(R.id.imageViewPhoto).apply {
+                if (data.photoFlg) {
+                    val thumbBitmap = data.getPhotoThumb(activity!!)
+                    val bigBitmap = data.getPhotoBig(activity!!)
+
+                    this.setImageBitmap(thumbBitmap)
+                    this.visibility = View.VISIBLE
+
+                    this.setOnClickListener {
+                        val photoDialog = PhotoDialog.newInstance(bigBitmap)
+                        photoDialog.show(fragmentManager, "dialog")
+                    }
+                } else {
+                    this.visibility = View.GONE
+                }
+            }
     }
 }

@@ -1,16 +1,5 @@
 package jp.co.e2.dogage.config
 
-import java.util.ArrayList
-import java.util.Collections
-import java.util.HashMap
-
-import jp.co.e2.dogage.R
-import jp.co.e2.dogage.common.AndroidUtils
-import jp.co.e2.dogage.entity.DogMasterEntity
-
-import android.annotation.SuppressLint
-import android.content.Context
-
 /**
  * 設定ファイル
  */

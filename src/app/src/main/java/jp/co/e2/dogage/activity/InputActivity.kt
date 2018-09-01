@@ -33,16 +33,15 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.app.Activity
-import android.app.Fragment
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.widget.PopupMenu
@@ -65,14 +64,14 @@ import com.theartofdev.edmodo.cropper.CropImageView
 class InputActivity : BaseActivity() {
 
     companion object {
-        const val PERMISSIONS_REQUEST_READ_WRITE_EXTERNAL_STORAGE = 100
+        private const val PERMISSIONS_REQUEST_READ_WRITE_EXTERNAL_STORAGE = 100
 
-        const val PARAM_DATA = "data"
-        const val PARAM_PAGE_NUM = "page_num"
-        const val PARAM_INIT_FLG = "init_flg"
-        const val PARAM_PHOTO_PATH = "photo_path"
+        private const val PARAM_DATA = "data"
+        private const val PARAM_PAGE_NUM = "page_num"
+        private const val PARAM_INIT_FLG = "init_flg"
+        private const val PARAM_PHOTO_PATH = "photo_path"
 
-        const val TAG_PERMISSION_REQUEST = "permission_request"
+        private const val TAG_PERMISSION_REQUEST = "permission_request"
 
         /**
          * ファクトリーメソッドもどき
@@ -83,11 +82,17 @@ class InputActivity : BaseActivity() {
          * @param data エンティティ
          * @return intent
          */
-        fun newInstance(activity: Activity, initFlg: Boolean, pageNum: Int, data: PetEntity): Intent {
+        fun newInstance(activity: Activity, initFlg: Boolean, pageNum: Int, data: PetEntity?): Intent {
             val intent = Intent(activity, InputActivity::class.java)
+
             intent.putExtra(PARAM_INIT_FLG, initFlg)
             intent.putExtra(PARAM_PAGE_NUM, pageNum)
-            intent.putExtra(PARAM_DATA, data)
+
+            if(data != null) {
+                intent.putExtra(PARAM_DATA, data)
+            } else {
+                intent.putExtra(PARAM_DATA, PetEntity())
+            }
 
             return intent
         }
@@ -98,6 +103,7 @@ class InputActivity : BaseActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_common)
 
         //アクションバーをセットする
@@ -112,7 +118,7 @@ class InputActivity : BaseActivity() {
             val pageNum = intent.getIntExtra(PARAM_PAGE_NUM, 0)
 
             val fragment = InputFragment.newInstance(pageNum, data)
-            fragmentManager.beginTransaction().add(R.id.container, fragment).commit()
+            supportFragmentManager.beginTransaction().add(R.id.container, fragment).commit()
         }
     }
 
@@ -135,11 +141,6 @@ class InputActivity : BaseActivity() {
      */
     class InputFragment : Fragment(), KindSelectDialog.CallbackListener, DatePickerDialog.CallbackListener,
             PopupMenu.OnMenuItemClickListener, NoticeDialog.CallbackListener, ActivityCompat.OnRequestPermissionsResultCallback {
-
-        private var mView: View? = null
-        private var mPetEntity: PetEntity? = null
-        private var mPhotoPath: String? = null
-        private var mArchiveOpenFlg = false
 
         companion object {
             const val TAG_DIALOG_BIRTHDAY = "birthday"
@@ -167,35 +168,44 @@ class InputActivity : BaseActivity() {
             }
         }
 
+        private lateinit var petEntity: PetEntity
+        private var photoPath: String? = null
+        private var archiveOpenFlg = false
+
         /**
          * ${inheritDoc}
          */
-        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle?): View {
+        override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
 
-            mView = inflater.inflate(R.layout.fragment_input, container, false)
-
             if (savedInstanceState == null) {
-                if (arguments.containsKey(PARAM_DATA)) {
-                    mPetEntity = arguments.getSerializable(PARAM_DATA) as PetEntity
-                } else {
-                    mPetEntity = PetEntity()
+                if (arguments!!.containsKey(PARAM_DATA)) {
+                    petEntity = arguments!!.getSerializable(PARAM_DATA) as PetEntity
                 }
             } else {
-                mPetEntity = savedInstanceState.getSerializable(PARAM_DATA) as PetEntity
-                mPhotoPath = savedInstanceState.getString(PARAM_PHOTO_PATH)
+                petEntity = savedInstanceState.getSerializable(PARAM_DATA) as PetEntity
+                photoPath = savedInstanceState.getString(PARAM_PHOTO_PATH)
             }
+        }
+
+        /**
+         * ${inheritDoc}
+         */
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+            super.onCreate(savedInstanceState)
+
+            val view = inflater.inflate(R.layout.fragment_input, container, false)
 
             //値を画面にセットする
-            setItem()
+            setItem(view)
 
             //クリックイベントをセットする
-            setClickEvent()
+            setClickEvent(view)
 
             //スクロールビューのオーバースクロールで端の色を変えないように
-            container.overScrollMode = View.OVER_SCROLL_NEVER
+            container!!.overScrollMode = View.OVER_SCROLL_NEVER
 
-            return mView!!
+            return view
         }
 
         /**
@@ -204,30 +214,29 @@ class InputActivity : BaseActivity() {
         override fun onSaveInstanceState(outState: Bundle) {
             super.onSaveInstanceState(outState)
 
-            outState.putSerializable(PARAM_DATA, mPetEntity)
-            outState.putString(PARAM_PHOTO_PATH, mPhotoPath)
+            outState.putSerializable(PARAM_DATA, petEntity)
+            outState.putString(PARAM_PHOTO_PATH, photoPath)
         }
 
         /**
          * ${inheritDoc}
          */
-        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
             super.onActivityResult(requestCode, resultCode, data)
 
             if (resultCode == Activity.RESULT_OK && requestCode == Config.INTENT_CODE_CAMERA) {
                 //カメラ
-                AndroidUtils.addPhotoToGallery(activity, mPhotoPath)
+                AndroidUtils.addPhotoToGallery(activity, photoPath)
 
-                val uri: Uri
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    uri = FileProvider.getUriForFile(activity, BuildConfig.APPLICATION_ID + ".provider", File(mPhotoPath!!))
+                val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    FileProvider.getUriForFile(activity!!, BuildConfig.APPLICATION_ID + ".provider", File(photoPath!!))
                 } else {
-                    uri = Uri.fromFile(File(mPhotoPath!!))
+                    Uri.fromFile(File(photoPath!!))
                 }
                 doTrimming(uri)
             } else if (resultCode == Activity.RESULT_OK && requestCode == Config.INTENT_CODE_GALLERY) {
                 //ギャラリー
-                doTrimming(data.data)
+                doTrimming(data!!.data)
             } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 //トリミング
                 val result = CropImage.getActivityResult(data)
@@ -235,10 +244,7 @@ class InputActivity : BaseActivity() {
                 if (resultCode == Activity.RESULT_OK) {
                     fromTrimmingIntent(result.uri)
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                    val title = getString(R.string.error)
-                    val msg = getString(R.string.trimming_fail)
-
-                    val noticeDialog = NoticeDialog.newInstance(title, msg)
+                    val noticeDialog = NoticeDialog.newInstance(getString(R.string.error), getString(R.string.trimming_fail))
                     noticeDialog.show(fragmentManager, "dialog")
                 }
             }
@@ -268,59 +274,56 @@ class InputActivity : BaseActivity() {
 
         /**
          * 値を画面にセットする
+         *
+         * @param view
          */
-        private fun setItem() {
-            try {
-                if (mPetEntity!!.name != null) {
-                    val editTextName = mView!!.findViewById<EditText>(R.id.editTextName)
-                    editTextName.setText(mPetEntity!!.name)
-                }
-
-                if (mPetEntity!!.birthday != null) {
-                    setDateToButton(R.id.buttonBirthday, mPetEntity!!.birthday!!)
-                }
-
-                if (mPetEntity!!.kind != null) {
-                    val buttonKind = mView!!.findViewById<Button>(R.id.buttonKind)
-                    buttonKind.text = mPetEntity!!.getKindDisp(activity)
-                }
-
-                if (mPetEntity!!.archiveDate != null) {
-                    setDateToButton(R.id.buttonArchive, mPetEntity!!.archiveDate!!)
-                    setOpenButton()
-                }
-
-                if (mPetEntity!!.photoFlg) {
-                    val imageViewPhoto = mView!!.findViewById<ImageView>(R.id.imageViewPhoto)
-                    imageViewPhoto.setImageBitmap(mPetEntity!!.getPhotoInput(activity))
-                } else {
-                    //画像がない場合、NO PHOTOを角丸の画像にする
-                    setNoPhoto()
-                }
-
-                //アーカイブ関連を制御する
-                if (mPetEntity!!.archiveDate == null) {
-                    mArchiveOpenFlg = true
-
-                    setClearButton(false)
-                    setOpenButton()
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
+        private fun setItem(view: View) {
+            view.findViewById<EditText>(R.id.editTextName).apply {
+                this.setText(petEntity.name)
             }
 
+            if (petEntity.birthday != null) {
+                setDateToButton(view, R.id.buttonBirthday, petEntity.birthday!!)
+            }
+
+            view.findViewById<Button>(R.id.buttonKind).apply {
+                this.text = petEntity.getKindDisp(activity!!)
+            }
+
+            if (petEntity.archiveDate != null) {
+                setDateToButton(view, R.id.buttonArchive, petEntity.archiveDate!!)
+                setOpenButton(view)
+            }
+
+            if (petEntity.photoFlg) {
+                view.findViewById<ImageView>(R.id.imageViewPhoto).apply {
+                    this.setImageBitmap(petEntity.getPhotoInput(activity!!))
+                }
+            } else {
+                //画像がない場合、NO PHOTOを角丸の画像にする
+                setNoPhoto(view)
+            }
+
+            //アーカイブ関連を制御する
+            if (petEntity.archiveDate == null) {
+                archiveOpenFlg = true
+
+                setClearButton(view, false)
+                setOpenButton(view)
+            }
         }
 
         /**
          * NO PHOTOをセットする
          */
-        private fun setNoPhoto() {
+        private fun setNoPhoto(view: View) {
             try {
-                val imgUtils = ImgHelper(activity, R.drawable.img_no_photo)
-                val bitmap = imgUtils.getKadomaruBitmap(AndroidUtils.dpToPixel(activity, Config.KADOMARU_DP))
+                view.findViewById<ImageView>(R.id.imageViewPhoto).apply {
+                    val imgUtils = ImgHelper(activity, R.drawable.img_no_photo)
+                    val bitmap = imgUtils.getKadomaruBitmap(AndroidUtils.dpToPixel(activity, Config.KADOMARU_DP))
 
-                val imageViewPhoto = mView!!.findViewById<ImageView>(R.id.imageViewPhoto)
-                imageViewPhoto.setImageBitmap(bitmap)
+                    this.setImageBitmap(bitmap)
+                }
 
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -331,47 +334,54 @@ class InputActivity : BaseActivity() {
         /**
          * ボタン上に日付を表示する
          *
+         * @param view
          * @param resId リソースID
          * @param date 日付
          */
-        private fun setDateToButton(resId: Int?, date: String) {
-            val dateArray = date.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        private fun setDateToButton(view: View, resId: Int, date: String) {
+            view.findViewById<Button>(resId).apply {
+                val dateArray = date.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                val dateFormat = getString(R.string.date_format)
 
-            val dateFormat = getString(R.string.date_format)
-
-            val button = mView!!.findViewById<Button>(resId!!)
-            button.text = String.format(dateFormat, dateArray[0], dateArray[1], dateArray[2])
+                this.text = String.format(dateFormat, dateArray[0], dateArray[1], dateArray[2])
+            }
         }
 
         /**
          * クリアボタン表示非表示etc処理
          *
+         * @param view
          * @param flg 表示フラグ
          */
-        private fun setClearButton(flg: Boolean) {
+        private fun setClearButton(view: View, flg: Boolean) {
             if (flg) {
-                val buttonClear = mView!!.findViewById<Button>(R.id.buttonClear)
-                buttonClear.visibility = View.VISIBLE
+                view.findViewById<Button>(R.id.buttonClear).apply {
+                    this.visibility = View.VISIBLE
+                }
             } else {
-                mPetEntity!!.archiveDate = null
+                petEntity.archiveDate = null
 
-                val buttonClear = mView!!.findViewById<ImageButton>(R.id.buttonClear)
-                buttonClear.visibility = View.GONE
+                view.findViewById<ImageButton>(R.id.buttonClear).apply {
+                    this.visibility = View.GONE
+                }
 
-                val buttonArchive = mView!!.findViewById<Button>(R.id.buttonArchive)
-                buttonArchive.text = null
+                view.findViewById<Button>(R.id.buttonArchive).apply {
+                    this.text = null
+                }
             }
         }
 
         /**
          * その他を開くボタン表示非表示etc処理
+         *
+         * @param view
          */
-        private fun setOpenButton() {
-            val linearLayoutArchive = mView!!.findViewById<LinearLayout>(R.id.linearLayoutArchive)
-            val buttonOpen = mView!!.findViewById<Button>(R.id.buttonOpen)
+        private fun setOpenButton(view: View) {
+            val linearLayoutArchive = view.findViewById<LinearLayout>(R.id.linearLayoutArchive)
+            val buttonOpen = view.findViewById<Button>(R.id.buttonOpen)
 
-            if (!mArchiveOpenFlg) {
-                mArchiveOpenFlg = true
+            if (!archiveOpenFlg) {
+                archiveOpenFlg = true
 
                 linearLayoutArchive.visibility = View.VISIBLE
 
@@ -381,7 +391,7 @@ class InputActivity : BaseActivity() {
 
                 buttonOpen.text = getString(R.string.close_other)
             } else {
-                mArchiveOpenFlg = false
+                archiveOpenFlg = false
 
                 val objectAnimator = ObjectAnimator.ofFloat(linearLayoutArchive, "alpha", 1f, 0f)
                 objectAnimator.duration = 300
@@ -397,54 +407,64 @@ class InputActivity : BaseActivity() {
 
         /**
          * クリックイベントをセットする
+         *
+         * @param view
          */
-        private fun setClickEvent() {
+        private fun setClickEvent(view: View) {
             //誕生日
-            val buttonBirthday = mView!!.findViewById<Button>(R.id.buttonBirthday)
-            buttonBirthday.setOnClickListener {
-                val title = getString(R.string.dog_birthday)
+            view.findViewById<Button>(R.id.buttonBirthday).apply {
+                this.setOnClickListener {
+                    val title = getString(R.string.dog_birthday)
 
-                val datePickerDialog = DatePickerDialog.newInstance(mPetEntity!!.birthday, title)
-                datePickerDialog.setCallbackListener(this@InputFragment)
-                datePickerDialog.show(fragmentManager, TAG_DIALOG_BIRTHDAY)
+                    val datePickerDialog = DatePickerDialog.newInstance(petEntity.birthday, title)
+                    datePickerDialog.setCallbackListener(this@InputFragment)
+                    datePickerDialog.show(fragmentManager, TAG_DIALOG_BIRTHDAY)
+                }
             }
 
             //種類
-            val dogMasters = (activity.application as AppApplication).dogMasterList
-            val kindSelectDialog = KindSelectDialog.newInstance(dogMasters!!)
+            val dogMasters = (activity!!.application as AppApplication).dogMasterList
+            val kindSelectDialog = KindSelectDialog.newInstance(dogMasters)
             kindSelectDialog.setCallbackListener(this)
 
-            val buttonKind = mView!!.findViewById<Button>(R.id.buttonKind)
-            buttonKind.setOnClickListener { kindSelectDialog.show(fragmentManager, "dialog") }
+            view.findViewById<Button>(R.id.buttonKind).apply {
+                this.setOnClickListener { kindSelectDialog.show(fragmentManager, "dialog") }
+            }
 
             //写真
-            val imageViewPhoto = mView!!.findViewById<ImageView>(R.id.imageViewPhoto)
-            val popup = PopupMenu(activity, imageViewPhoto)
-            popup.menuInflater.inflate(R.menu.photo_menu, popup.menu)
-            popup.setOnMenuItemClickListener(this)
-            imageViewPhoto.setOnClickListener { popup.show() }
+            view.findViewById<ImageView>(R.id.imageViewPhoto).apply {
+                val popup = PopupMenu(context, this)
+                popup.menuInflater.inflate(R.menu.photo_menu, popup.menu)
+                popup.setOnMenuItemClickListener(this@InputFragment)
+
+                this.setOnClickListener { popup.show() }
+            }
 
             //開くボタン
-            val buttonOpen = mView!!.findViewById<Button>(R.id.buttonOpen)
-            buttonOpen.setOnClickListener { setOpenButton() }
+            view.findViewById<Button>(R.id.buttonOpen).apply {
+                this.setOnClickListener { setOpenButton(view) }
+            }
 
             //アーカイブ
-            val buttonArchive = mView!!.findViewById<Button>(R.id.buttonArchive)
-            buttonArchive.setOnClickListener {
-                val title = getString(R.string.dog_die_date)
+            view.findViewById<Button>(R.id.buttonArchive).apply {
+                this.setOnClickListener {
+                    val title = getString(R.string.dog_die_date)
 
-                val datePickerDialog = DatePickerDialog.newInstance(mPetEntity!!.archiveDate, title)
-                datePickerDialog.setCallbackListener(this@InputFragment)
-                datePickerDialog.show(fragmentManager, TAG_DIALOG_ARCHIVE)
+                    val datePickerDialog = DatePickerDialog.newInstance(petEntity.archiveDate, title)
+                    datePickerDialog.setCallbackListener(this@InputFragment)
+                    datePickerDialog.show(fragmentManager, TAG_DIALOG_ARCHIVE)
+                }
             }
 
             //クリアボタン
-            val buttonClear = mView!!.findViewById<ImageButton>(R.id.buttonClear)
-            buttonClear.setOnClickListener { setClearButton(false) }
+            view.findViewById<ImageButton>(R.id.buttonClear).apply {
+                this.setOnClickListener { setClearButton(view, false) }
+            }
 
             //保存ボタン
-            val buttonSave = mView!!.findViewById<Button>(R.id.buttonSave)
-            buttonSave.setOnClickListener { save() }
+            view.findViewById<Button>(R.id.buttonSave).apply {
+                this.setOnClickListener { save() }
+            }
         }
 
         /**
@@ -457,8 +477,8 @@ class InputActivity : BaseActivity() {
             //エラーあり
             if (!v.result) {
                 val errorMsg = Utils.implode(v.errorMsgList, "\n")
-
                 val title = getString(R.string.error)
+
                 val noticeDialog = NoticeDialog.newInstance(title, errorMsg)
                 noticeDialog.show(fragmentManager, "dialog")
                 return
@@ -467,10 +487,10 @@ class InputActivity : BaseActivity() {
             //保存とページ遷移
             if (saveDb()) {
                 //アラームセット
-                SetAlarmManager(activity).set()
+//                SetAlarmManager(context!!).set()
 
-                activity.setResult(Activity.RESULT_OK)
-                activity.finish()
+                activity!!.setResult(Activity.RESULT_OK)
+                activity!!.finish()
             } else {
                 val title = getString(R.string.error)
                 val msg = getString(R.string.save_fail)
@@ -481,12 +501,12 @@ class InputActivity : BaseActivity() {
         }
 
         /**
-         * アーカイブ日付は誕生日より未来かどうか
+         * バリデーション
          *
          * @return boolean
          */
         private fun validate(): ValidateHelper {
-            val editTextName = mView!!.findViewById<EditText>(R.id.editTextName)
+            val editTextName = view!!.findViewById<EditText>(R.id.editTextName)
             val name = editTextName.text.toString()
 
             //バリデーション
@@ -497,19 +517,19 @@ class InputActivity : BaseActivity() {
             ValidateLength.maxCheck(v, name, keyName, 10)
 
             val keyBirthday = getString(R.string.dog_birthday)
-            ValidateRequire.check(v, mPetEntity!!.birthday, keyBirthday)
-            ValidateDate.check(v, mPetEntity!!.birthday, keyBirthday, DateHelper.FMT_DATE)
-            ValidateDate.isPastAllowToday(v, mPetEntity!!.birthday, keyBirthday)
+            ValidateRequire.check(v, petEntity.birthday, keyBirthday)
+            ValidateDate.check(v, petEntity.birthday, keyBirthday, DateHelper.FMT_DATE)
+            ValidateDate.isPastAllowToday(v, petEntity.birthday, keyBirthday)
 
             val keyKind = getString(R.string.dog_kind)
-            ValidateRequire.check(v, mPetEntity!!.kind, keyKind)
+            ValidateRequire.check(v, petEntity.kind, keyKind)
 
             val keyDieDate = getString(R.string.dog_die_date)
-            ValidateDate.check(v, mPetEntity!!.archiveDate, keyDieDate, DateHelper.FMT_DATE)
-            ValidateDate.isPastAllowToday(v, mPetEntity!!.archiveDate, keyDieDate)
+            ValidateDate.check(v, petEntity.archiveDate, keyDieDate, DateHelper.FMT_DATE)
+            ValidateDate.isPastAllowToday(v, petEntity.archiveDate, keyDieDate)
 
             //独自バリデーション
-            if (!customValidate(mPetEntity!!.archiveDate, mPetEntity!!.birthday)) {
+            if (!customValidate(petEntity.archiveDate, petEntity.birthday)) {
                 v.error(keyDieDate, getString(R.string.validate_error_archive_date))
             }
 
@@ -534,7 +554,7 @@ class InputActivity : BaseActivity() {
                 val archiveDateMillis = DateHelper(archiveDate, DateHelper.FMT_DATE).milliSecond
                 val birthdayMillis = DateHelper(birthday, DateHelper.FMT_DATE).milliSecond
 
-                ret = (archiveDateMillis.compareTo(birthdayMillis) <= 0)
+                ret = (archiveDateMillis <= birthdayMillis)
 
             } catch (e: ParseException) {
                 e.printStackTrace()
@@ -549,32 +569,20 @@ class InputActivity : BaseActivity() {
          * @return ret 結果
          */
         private fun saveDb(): Boolean {
-            var ret: Boolean
-            var db: SQLiteDatabase? = null
+            var ret = false;
 
-            try {
-                val editTextName = mView!!.findViewById<EditText>(R.id.editTextName)
-                val name = editTextName.text.toString()
-                mPetEntity!!.name = name
+            val editTextName = view!!.findViewById<EditText>(R.id.editTextName)
+            val name = editTextName.text.toString()
+            petEntity.name = name
 
-                val helper = BaseSQLiteOpenHelper(activity)
-                db = helper.writableDatabase
+            BaseSQLiteOpenHelper(context!!).writableDatabase.use {
+                it.beginTransaction()
 
-                db!!.beginTransaction()
-
-                val petDao = PetDao(activity)
-                ret = petDao.save(db, mPetEntity!!)
+                val petDao = PetDao(context!!)
+                ret = petDao.save(it, petEntity)
 
                 if (ret) {
-                    db.setTransactionSuccessful()
-                }
-            } catch (e: Exception) {
-                ret = false
-                e.printStackTrace()
-            } finally {
-                if (db != null) {
-                    db.endTransaction()
-                    db.close()
+                    it.setTransactionSuccessful()
                 }
             }
 
@@ -587,7 +595,7 @@ class InputActivity : BaseActivity() {
         private fun startCamera() {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-            if (intent.resolveActivity(activity.packageManager) != null) {
+            if (intent.resolveActivity(activity!!.packageManager) != null) {
                 if (!checkReadWriteExternalStoragePermission()) {
                     return
                 }
@@ -603,7 +611,7 @@ class InputActivity : BaseActivity() {
                     return
                 }
 
-                val uri = FileProvider.getUriForFile(activity, BuildConfig.APPLICATION_ID + ".provider", file)
+                val uri = FileProvider.getUriForFile(context!!, BuildConfig.APPLICATION_ID + ".provider", file)
                 LogUtils.d(uri)
 
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
@@ -618,15 +626,14 @@ class InputActivity : BaseActivity() {
          */
         private fun checkReadWriteExternalStoragePermission(): Boolean {
             //パーミッションあり
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || ContextCompat.checkSelfPermission(activity,
-                            Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(activity,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+                    ContextCompat.checkSelfPermission(context!!, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 return true
             }
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
-                            Manifest.permission.READ_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(activity,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
                 //一度拒否されているので、必要な理由を表示する
                 val title = getString(R.string.permission_request_title)
@@ -657,6 +664,9 @@ class InputActivity : BaseActivity() {
             requestPermissions(permissions, PERMISSIONS_REQUEST_READ_WRITE_EXTERNAL_STORAGE)
         }
 
+        /**
+         * ファイルを生成する
+         */
         private fun createFile(): File {
             if (!AndroidUtils.isExternalStorageWritable()) {
                 throw IOException(getString(R.string.failed_to_use_camera))
@@ -680,8 +690,8 @@ class InputActivity : BaseActivity() {
                 }
             }
 
-            mPhotoPath = file.absolutePath
-            LogUtils.d(mPhotoPath)
+            photoPath = file.absolutePath
+            LogUtils.d(photoPath)
 
             return file
 
@@ -694,7 +704,7 @@ class InputActivity : BaseActivity() {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
 
-            if (intent.resolveActivity(activity.packageManager) != null) {
+            if (intent.resolveActivity(activity!!.packageManager) != null) {
                 startActivityForResult(intent, Config.INTENT_CODE_GALLERY)
             } else {
                 //ギャラリーアプリなくてエラー
@@ -711,11 +721,11 @@ class InputActivity : BaseActivity() {
          *
          * @param uri トリミング対象の画像URI
          */
-        private fun doTrimming(uri: Uri?) {
+        private fun doTrimming(uri: Uri) {
             CropImage.activity(uri)
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setAspectRatio(1, 1)
-                    .start(activity, this)
+                    .start(activity!!, this)
 
             val msg = getString(R.string.lets_trimming_photo)
             AndroidUtils.showToastL(activity, msg)
@@ -726,8 +736,8 @@ class InputActivity : BaseActivity() {
          */
         private fun fromTrimmingIntent(uri: Uri) {
             try {
-                mPetEntity!!.savePhotoUri = uri
-                mPetEntity!!.photoFlg = true
+                petEntity.savePhotoUri = uri
+                petEntity.photoFlg = true
 
                 //角丸の画像にを取得
                 val imgUtils = ImgHelper(uri.path)
@@ -735,7 +745,7 @@ class InputActivity : BaseActivity() {
                 val kadomaruBitmap = imgUtils.getResizeKadomaruBitmap(size, size, AndroidUtils.dpToPixel(activity, Config.KADOMARU_DP))
 
                 //画像を表示
-                val imageViewPhoto = mView!!.findViewById<ImageView>(R.id.imageViewPhoto)
+                val imageViewPhoto = view!!.findViewById<ImageView>(R.id.imageViewPhoto)
                 imageViewPhoto.setImageBitmap(kadomaruBitmap)
 
             } catch (e: Exception) {
@@ -752,10 +762,10 @@ class InputActivity : BaseActivity() {
         /**
          * ${inheritDoc}
          */
-        override fun onClickKindSelectDialog(tag: String, kind: Int?, name: String) {
-            mPetEntity!!.kind = kind
+        override fun onClickKindSelectDialog(tag: String, kind: Int, name: String) {
+            petEntity.kind = kind
 
-            val buttonKind = mView!!.findViewById<Button>(R.id.buttonKind)
+            val buttonKind = view!!.findViewById<Button>(R.id.buttonKind)
             buttonKind.text = name
         }
 
@@ -764,13 +774,13 @@ class InputActivity : BaseActivity() {
          */
         override fun onClickDatePickerDialogOk(tag: String, date: String) {
             if (tag == TAG_DIALOG_BIRTHDAY) {
-                mPetEntity!!.birthday = date
-                setDateToButton(R.id.buttonBirthday, mPetEntity!!.birthday!!)
+                petEntity.birthday = date
+                setDateToButton(view!!, R.id.buttonBirthday, date)
             } else if (tag == TAG_DIALOG_ARCHIVE) {
-                mPetEntity!!.archiveDate = date
-                setDateToButton(R.id.buttonArchive, mPetEntity!!.archiveDate!!)
+                petEntity.archiveDate = date
+                setDateToButton(view!!, R.id.buttonArchive, date)
 
-                val buttonClear = mView!!.findViewById<ImageButton>(R.id.buttonClear)
+                val buttonClear = view!!.findViewById<ImageButton>(R.id.buttonClear)
                 buttonClear.visibility = View.VISIBLE
             }
         }
@@ -788,11 +798,11 @@ class InputActivity : BaseActivity() {
                 R.id.menuCamera -> startCamera()
                 R.id.menuGallery -> startGallery()
                 R.id.menuDelete -> {
-                    mPetEntity!!.photoFlg = false
-                    mPetEntity!!.savePhotoUri = null
+                    petEntity.photoFlg = false
+                    petEntity.savePhotoUri = null
 
                     //NO PHOTOをセットする
-                    setNoPhoto()
+                    setNoPhoto(view!!)
                 }
             }
 
