@@ -8,7 +8,6 @@ import java.util.Date
 import java.util.Locale
 
 import jp.co.e2.dogage.BuildConfig
-import jp.co.e2.dogage.alarm.SetAlarmManager
 import jp.co.e2.dogage.R
 import jp.co.e2.dogage.common.AndroidUtils
 import jp.co.e2.dogage.common.DateHelper
@@ -54,6 +53,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.database.sqlite.transaction
 
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
@@ -569,20 +569,16 @@ class InputActivity : BaseActivity() {
          * @return ret 結果
          */
         private fun saveDb(): Boolean {
-            var ret = false;
+            var ret = false
 
             val editTextName = view!!.findViewById<EditText>(R.id.editTextName)
             val name = editTextName.text.toString()
             petEntity.name = name
 
             BaseSQLiteOpenHelper(context!!).writableDatabase.use {
-                it.beginTransaction()
-
-                val petDao = PetDao(context!!)
-                ret = petDao.save(it, petEntity)
-
-                if (ret) {
-                    it.setTransactionSuccessful()
+                it.transaction {
+                    val petDao = PetDao(context!!)
+                    ret = petDao.save(it, petEntity)
                 }
             }
 

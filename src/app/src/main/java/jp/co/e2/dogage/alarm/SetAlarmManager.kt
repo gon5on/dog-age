@@ -59,7 +59,7 @@ class SetAlarmManager(private val context: Context) {
         get() {
             lateinit var data: ArrayList<PetEntity>
 
-            BaseSQLiteOpenHelper(context).writableDatabase.use{
+            BaseSQLiteOpenHelper(context).writableDatabase.use {
                 val petDao = PetDao(context)
                 data = petDao.findAll(it)
             }

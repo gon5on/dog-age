@@ -22,6 +22,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.core.database.sqlite.transaction
 
 /**
  * ペット年齢アクテビティ
@@ -259,7 +260,9 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
         val petDao = PetDao(this)
 
         BaseSQLiteOpenHelper(this).writableDatabase.use {
-            ret = petDao.deleteById(it, petData[pageNum].id)
+            it.transaction {
+                ret = petDao.deleteById(it, petData[pageNum].id)
+            }
         }
 
         if (ret) {
