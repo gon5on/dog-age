@@ -1,131 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineStart"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/twoBlock" />
 
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/sevenBlock"
-            android:paddingLeft="@dimen/twoBlock"
-            android:paddingRight="@dimen/twoBlock">
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/twoBlock" />
 
-            <TextView
-                style="@style/LabelTextViewStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/notification_birth"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textViewBirthdayNotify"
+        style="@style/LabelTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/sevenBlock"
+        android:text="@string/notification_birth"
+        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+        app:layout_constraintTop_toTopOf="parent" />
 
-            <CheckBox
-                android:id="@+id/checkBoxBirthNotification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:theme="@style/AppCheckBoxTheme"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    <CheckBox
+        android:id="@+id/checkBoxBirthNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppCheckBoxTheme"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewBirthdayNotify"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+        app:layout_constraintTop_toTopOf="@+id/textViewBirthdayNotify" />
 
-        </android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/textViewArchiveNotify"
+        style="@style/LabelTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/sevenBlock"
+        android:text="@string/notification_archive"
+        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBirthdayNotify" />
 
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/sevenBlock"
-            android:paddingLeft="@dimen/twoBlock"
-            android:paddingRight="@dimen/twoBlock">
+    <CheckBox
+        android:id="@+id/checkBoxArchiveNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppCheckBoxTheme"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewArchiveNotify"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+        app:layout_constraintTop_toTopOf="@+id/textViewArchiveNotify" />
 
-            <TextView
-                style="@style/LabelTextViewStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/notification_archive"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textViewHowToCalc"
+        style="@style/LabelTextViewStyle"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/sevenBlock"
+        android:paddingStart="@dimen/twoBlock"
+        android:paddingEnd="@dimen/twoBlock"
+        android:background="?android:attr/selectableItemBackground"
+        android:text="@string/about_calc_age"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewArchiveNotify" />
 
-            <CheckBox
-                android:id="@+id/checkBoxArchiveNotification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:theme="@style/AppCheckBoxTheme"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/imageViewArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewHowToCalc"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+        app:layout_constraintTop_toTopOf="@+id/textViewHowToCalc"
+        app:srcCompat="@drawable/ic_arrow" />
 
-        </android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/textViewLicense"
+        style="@style/LabelTextViewStyle"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/sevenBlock"
+        android:paddingStart="@dimen/twoBlock"
+        android:paddingEnd="@dimen/twoBlock"
+        android:background="?android:attr/selectableItemBackground"
+        android:text="@string/license"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHowToCalc" />
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/constraintLayoutCalcAge"
-            style="@style/TranslateButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/sevenBlock"
-            android:paddingLeft="@dimen/twoBlock"
-            android:paddingRight="@dimen/twoBlock">
+    <ImageView
+        android:id="@+id/imageViewArrow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewLicense"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+        app:layout_constraintTop_toTopOf="@+id/textViewLicense"
+        app:srcCompat="@drawable/ic_arrow" />
 
-            <TextView
-                style="@style/LabelTextViewStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/about_calc_age"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textViewAppVer"
+        style="@style/LabelTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/sevenBlock"
+        android:text="@string/app_version"
+        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLicense" />
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@null"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@xml/icon_arrow" />
+    <TextView
+        android:id="@+id/textViewVer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/fontSizeLarge"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewAppVer"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+        app:layout_constraintTop_toTopOf="@+id/textViewAppVer" />
 
-        </android.support.constraint.ConstraintLayout>
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/sevenBlock"
-            android:paddingLeft="@dimen/twoBlock"
-            android:paddingRight="@dimen/twoBlock">
-
-            <TextView
-                style="@style/LabelTextViewStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_version"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textViewVer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/fontSizeLarge"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </android.support.constraint.ConstraintLayout>
-
-    </LinearLayout>
-
-    <Button
+    <TextView
         android:id="@+id/buttonProducedBy"
-        style="@style/TranslateButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/twoBlock"
         android:text="@string/produced_by"
+        android:textColor="@color/lightBrown"
+        android:gravity="center_horizontal"
+        android:background="?android:attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

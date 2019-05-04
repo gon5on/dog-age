@@ -1,4 +1,4 @@
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -7,15 +7,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/twoBlock"
         android:layout_marginStart="@dimen/twoBlock"
-        android:layout_marginBottom="@dimen/tenBlock"
+        android:layout_marginEnd="@dimen/twoBlock"
+        android:layout_marginBottom="@dimen/fourBlock"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/linearLayout1"
@@ -32,11 +32,13 @@
                 android:layout_marginBottom="@dimen/oneBlock"
                 android:gravity="center_vertical">
 
-                <jp.co.e2.dogage.view.TouchFeedbackImageView
+                <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/imageViewPhoto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/oneBlock" />
+                    android:layout_marginEnd="@dimen/oneBlock"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:riv_oval="true" />
 
                 <TextView
                     android:id="@+id/textViewName"
@@ -67,16 +69,16 @@
 
         </LinearLayout>
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayoutDogAge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/oneBlock"
             android:background="@drawable/img_frame_under1"
-            android:paddingBottom="@dimen/oneBlock"
             android:paddingLeft="@dimen/twoBlock"
+            android:paddingTop="@dimen/oneBlock"
             android:paddingRight="@dimen/twoBlock"
-            android:paddingTop="@dimen/oneBlock">
+            android:paddingBottom="@dimen/oneBlock">
 
             <TextView
                 style="@style/LabelTextViewStyle"
@@ -97,18 +99,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayoutHumanAge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/oneBlock"
             android:background="@drawable/img_frame_under1"
-            android:paddingBottom="@dimen/oneBlock"
             android:paddingLeft="@dimen/twoBlock"
+            android:paddingTop="@dimen/oneBlock"
             android:paddingRight="@dimen/twoBlock"
-            android:paddingTop="@dimen/oneBlock">
+            android:paddingBottom="@dimen/oneBlock">
 
             <TextView
                 android:id="@+id/textViewHumanAge"
@@ -129,18 +131,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayoutDayCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/oneBlock"
             android:background="@drawable/img_frame_under1"
-            android:paddingBottom="@dimen/oneBlock"
             android:paddingLeft="@dimen/twoBlock"
+            android:paddingTop="@dimen/oneBlock"
             android:paddingRight="@dimen/twoBlock"
-            android:paddingTop="@dimen/oneBlock">
+            android:paddingBottom="@dimen/oneBlock">
 
             <TextView
                 android:id="@+id/textViewDays"
@@ -161,8 +163,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

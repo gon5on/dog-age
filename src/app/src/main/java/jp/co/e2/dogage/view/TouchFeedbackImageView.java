@@ -7,7 +7,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.support.v7.widget.AppCompatImageView;
+
+import androidx.appcompat.widget.AppCompatImageView;
 
 /**
  * タップ時に色が少し濃くなるフィードバックがついているImageView
