@@ -18,4 +18,4 @@
 
 -keep class jp.co.e2.dogage.entity.** { *; }
 
--keep class android.support.v7.widget.** { *; }
+-keep class androidx.appcompat.widget.** { *; }

@@ -4,13 +4,13 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import jp.co.e2.dogage.common.AndroidUtils
 
 import java.text.ParseException
 import java.util.ArrayList
 
 import jp.co.e2.dogage.common.DateHelper
 import jp.co.e2.dogage.common.LogUtils
-import jp.co.e2.dogage.common.PreferenceUtils
 import jp.co.e2.dogage.config.Config
 import jp.co.e2.dogage.entity.PetEntity
 import jp.co.e2.dogage.model.BaseSQLiteOpenHelper
@@ -41,10 +41,10 @@ class SetAlarmManager(private val context: Context) {
                 }
             }
 
-            ///////////////////////////////////////
-            //date = DateHelper()
-            //date.addSec(20);
-            //AndroidUtils.showToastL(context, date.format(DateHelper.FMT_DATETIME));
+            /////////////////////////////////////
+//            date = DateHelper()
+//            date.addSec(20)
+//            AndroidUtils.showToastL(context, date.format(DateHelper.FMT_DATETIME))
             ///////////////////////////////////////
 
             return date
@@ -71,11 +71,6 @@ class SetAlarmManager(private val context: Context) {
      * アラームをセットする
      */
     fun set() {
-        //通知OFFであれば、何もしない
-        if (!PreferenceUtils.get(context, Config.PREF_BIRTH_NOTIFY_FLG, true)) {
-            return
-        }
-
         //アラーム時刻が
         if (nextAlarm == null) {
             return
@@ -91,7 +86,7 @@ class SetAlarmManager(private val context: Context) {
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             alarmManager.set(AlarmManager.RTC_WAKEUP, nextAlarm!!.milliSecond, sender)
 
-            LogUtils.v("SetAlarmManager", "push = " + nextAlarm!!.format(DateHelper.FMT_DATETIME))
+            LogUtils.v("push = " + nextAlarm!!.format(DateHelper.FMT_DATETIME))
 
         } catch (e: ParseException) {
             e.printStackTrace()

@@ -132,18 +132,56 @@ class PetDao(private val context: Context) : BaseDao() {
     }
 
     /**
-     * 誕生日か命日からデータを取得する
+     * 誕生日からデータを取得する
+     *
+     * ※命日が存在しているデータは対象外
      *
      * @param db SQLiteDatabase
      * @param date 年月日
      * @return ArrayList<PetEntity> data
      */
-    fun findByBirthdayOrArchiveDate(db: SQLiteDatabase, date: String): ArrayList<PetEntity> {
+    fun findByBirthday(db: SQLiteDatabase, date: String): ArrayList<PetEntity> {
         val data = ArrayList<PetEntity>()
 
         val sb = String.format("SELECT * FROM %s ", TABLE_NAME) +
-                String.format("WHERE (%s is null AND %s LIKE '%%-%s') ", COLUMN_ARCHIVE_DATE, COLUMN_BIRTHDAY, date) +
-                String.format("OR (%s is not null AND %s LIKE '%%-%s') ", COLUMN_ARCHIVE_DATE, COLUMN_ARCHIVE_DATE, date) +
+                String.format("WHERE %s IS NULL ", COLUMN_ARCHIVE_DATE) +
+                String.format("AND %s LIKE '%%-%s' ", COLUMN_BIRTHDAY, date) +
+                String.format("ORDER BY %s DESC", COLUMN_ID)
+
+        val cursor = db.rawQuery(sb, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val values = PetEntity()
+                values.id = getInteger(cursor, COLUMN_ID)
+                values.name = getString(cursor, COLUMN_NAME)
+                values.birthday = getString(cursor, COLUMN_BIRTHDAY)
+                values.kind = getInteger(cursor, COLUMN_KIND)
+                values.photoFlg = getBoolean(cursor, COLUMN_PHOTO_FLG) ?: false
+                values.archiveDate = getString(cursor, COLUMN_ARCHIVE_DATE)
+                values.created = getString(cursor, COLUMN_CREATED)
+                values.modified = getString(cursor, COLUMN_MODIFIED)
+                data.add(values)
+
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+
+        return data
+    }
+
+    /**
+     * 命日からデータを取得する
+     *
+     * @param db SQLiteDatabase
+     * @param date 年月日
+     * @return ArrayList<PetEntity> data
+     */
+    fun findByArchiveDate(db: SQLiteDatabase, date: String): ArrayList<PetEntity> {
+        val data = ArrayList<PetEntity>()
+
+        val sb = String.format("SELECT * FROM %s ", TABLE_NAME) +
+                String.format("WHERE %s IS NOT null AND %s LIKE '%%-%s' ", COLUMN_ARCHIVE_DATE, COLUMN_ARCHIVE_DATE, date) +
                 String.format("ORDER BY %s DESC", COLUMN_ID)
 
         val cursor = db.rawQuery(sb, null)

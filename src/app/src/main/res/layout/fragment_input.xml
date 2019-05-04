@@ -39,12 +39,12 @@
             style="@style/LabelTextViewStyle"
             />
 
-        <Button
+        <EditText
             android:id="@+id/buttonBirthday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/twoBlock"
-            style="@style/EditTextButtonStyle"
+            android:focusable="false"
             />
 
         <TextView
@@ -55,12 +55,12 @@
             style="@style/LabelTextViewStyle"
             />
 
-        <Button
+        <EditText
             android:id="@+id/buttonKind"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/twoBlock"
-            style="@style/EditTextButtonStyle"
+            android:focusable="false"
             />
 
         <TextView
@@ -71,7 +71,8 @@
             style="@style/LabelTextViewStyle"
             />
 
-        <jp.co.e2.dogage.view.TouchFeedbackImageView
+        <com.makeramen.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/imageViewPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -79,6 +80,9 @@
             android:scaleType="centerCrop"
             android:src="@drawable/img_no_photo"
             android:layout_marginBottom="@dimen/twoBlock"
+            android:contentDescription="@null"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:riv_corner_radius="@dimen/threeBlock"
             />
 
         <LinearLayout
@@ -102,47 +106,50 @@
                 android:gravity="center_vertical"
                 >
 
-                <Button
+                <EditText
                     android:id="@+id/buttonArchive"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/zero"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    style="@style/EditTextButtonStyle"
+                    android:focusable="false"
                     />
 
-                <ImageButton
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                     android:id="@+id/buttonClear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@xml/icon_clear"
                     android:minHeight="@dimen/zero"
                     android:minWidth="@dimen/zero"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:contentDescription="@null"
+                    android:padding="@dimen/zero"
+                    android:layout_marginStart="@dimen/halfBlock"
+                    app:icon="@drawable/ic_clear"
+                    app:iconPadding="@dimen/zero"
+                    app:iconTint="@color/brown"
+                    app:rippleColor="@color/brown"
                     />
 
             </LinearLayout>
 
         </LinearLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
+            style="@style/TranslateButtonStyle"
             android:id="@+id/buttonOpen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:text="@string/open_other"
-            style="@style/TranslateButtonStyle"
             />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
+            style="@style/AppButtonStyle"
             android:id="@+id/buttonSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/twoBlock"
             android:layout_marginBottom="@dimen/twoBlock"
-            android:text="@string/save"
-            />
+            android:text="@string/save" />
 
     </LinearLayout>
 

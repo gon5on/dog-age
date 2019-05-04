@@ -46,6 +46,7 @@
     <string name="large_until_one_year_dog_age">12歳/年</string>
     <string name="large_until_two_year_dog_age">6歳/年</string>
     <string name="large_over_two_year_dog_age">7歳/年</string>
+    <string name="invalid_photo">この画像は使用できません、別の画像を選択してください。</string>
     <string name="lets_trimming_photo">ワンちゃんの顔が中心になるようにトリミングしてください。</string>
     <string name="failed_to_use_camera">カメラを利用できません、ギャラリーから選択してください。</string>
     <string name="trimming_fail">トリミングに失敗しました。</string>
@@ -66,10 +67,13 @@
     <string name="change_settings">設定を変更しました</string>
     <string name="about_calc_age">年齢計算方法について</string>
     <string name="app_version">アプリバージョン</string>
+    <string name="license">ライセンス</string>
     <string name="notify_birthday" formatted="false">%s %s お誕生日</string>
     <string name="notify_birthday_sub" formatted="false">%s歳になりました、おめでとうございます！</string>
     <string name="notify_archive" formatted="false">%s %s 命日</string>
     <string name="notify_archive_sub" formatted="false">亡くなって%s年経ちました</string>
+    <string name="notify_channel_name">通知</string>
+    <string name="notify_channel_description">誕生日と命日を通知します</string>
     <string name="permission_denied">許可されない場合は、カメラは使用できません。ギャラリーから選択してください。</string>
     <string name="permission_request_title">お願い</string>
     <string name="permission_request_text">カメラを利用するには、外部ストレージへの読み込み権限と書き込み権限が必要です。次に表示されるダイアログで許可を押してください。</string>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.AppCompatRadioButton
+<RadioButton
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/radioButtonPage"
     android:layout_width="@dimen/oneBlock"
@@ -8,5 +8,6 @@
     android:paddingEnd="@dimen/halfBlock"
     android:button="@xml/pager_radio_button_bg"
     android:contentDescription="@null"
+    android:clickable="false"
     />
 

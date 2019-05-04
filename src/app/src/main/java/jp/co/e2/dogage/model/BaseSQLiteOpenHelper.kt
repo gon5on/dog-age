@@ -23,12 +23,8 @@ class BaseSQLiteOpenHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME
      * @param db SQLiteDatabase
      */
     override fun onCreate(db: SQLiteDatabase) {
-        db.beginTransaction()
-
         //テーブル作成
         db.execSQL(PetDao.CREATE_TABLE_SQL)
-
-        db.setTransactionSuccessful()
     }
 
     /**

@@ -3,9 +3,9 @@ package jp.co.e2.dogage.dialog
 import jp.co.e2.dogage.R
 import jp.co.e2.dogage.dialog.NoticeDialog.CallbackListener
 
-import android.support.v7.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 
 /**
  * お知らせダイアログ
@@ -42,10 +42,10 @@ class NoticeDialog : BaseDialog<CallbackListener>() {
         val builder = AlertDialog.Builder(context!!)
 
         builder.setTitle(arguments!!.getString(PARAM_TITLE))
-        builder.setIcon(R.drawable.img_foot)
+        builder.setIcon(R.drawable.ic_footprint)
         builder.setMessage(arguments!!.getString(PARAM_MSG))
 
-        builder.setPositiveButton(getString(R.string.ok)) { dialog, which ->
+        builder.setPositiveButton(getString(R.string.ok)) { _, _ ->
             call?.onClickErrorDialogOk(tag!!)
         }
 

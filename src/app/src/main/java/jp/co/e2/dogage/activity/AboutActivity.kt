@@ -2,12 +2,12 @@ package jp.co.e2.dogage.activity
 
 import jp.co.e2.dogage.R
 
-import android.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 
 /**
  * アプリについてアクテビティ
@@ -25,7 +25,7 @@ class AboutActivity : BaseActivity() {
         setBackArrowToolbar()
 
         if (savedInstanceState == null) {
-            fragmentManager.beginTransaction().add(R.id.container, AboutFragment()).commit()
+            supportFragmentManager.beginTransaction().add(R.id.container, AboutFragment()).commit()
         }
     }
 
@@ -53,12 +53,7 @@ class AboutActivity : BaseActivity() {
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
             super.onCreate(savedInstanceState)
 
-            val view = inflater.inflate(R.layout.fragment_about, container, false)
-
-            //スクロールビューのオーバースクロールで端の色を変えないように
-            container!!.overScrollMode = View.OVER_SCROLL_NEVER
-
-            return view
+            return inflater.inflate(R.layout.fragment_about, container, false)
         }
     }
 }

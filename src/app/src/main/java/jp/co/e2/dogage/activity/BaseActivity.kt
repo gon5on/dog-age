@@ -1,8 +1,7 @@
 package jp.co.e2.dogage.activity
 
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import jp.co.e2.dogage.R
 
 /**

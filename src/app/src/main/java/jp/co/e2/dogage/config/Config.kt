@@ -55,7 +55,7 @@ class Config {
         const val KADOMARU_DP = 20                                  //角丸画像の角丸サイズ
         const val PHOTO_INPUT_DP = 150                              //入力画面の写真
         const val PHOTO_THUMB_DP = 80                               //サムネイル写真
-        const val PHOTO_BIG_DP = 310                                //拡大写真
+        const val PHOTO_BIG_DP = 400                                //拡大写真
 
         //インテント判別
         const val INTENT_CODE_CAMERA = 1                            //カメラ起動
@@ -66,7 +66,7 @@ class Config {
         const val PREF_ARCHIVE_NOTIFY_FLG = "archive_notify_flg"    //命日の通知
 
         //アラーム
-        const val ALARM_HOUR = 14                                   //アラームの時間
+        const val ALARM_HOUR = 12                                   //アラームの時間
         const val ALARM_MINUTE = 0                                  //アラームの時間
 
         //E2のURL

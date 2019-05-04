@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/action_add"
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@drawable/ic_add"
         android:orderInCategory="1"
         app:showAsAction="always"
         android:title="@string/action_add"
@@ -13,7 +13,7 @@
 
     <item
         android:id="@+id/action_edit"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@drawable/ic_edit"
         android:orderInCategory="2"
         app:showAsAction="always"
         android:title="@string/action_edit"
@@ -21,7 +21,7 @@
 
     <item
         android:id="@+id/action_delete"
-        android:icon="@android:drawable/ic_menu_delete"
+        android:icon="@drawable/ic_delete"
         android:orderInCategory="3"
         app:showAsAction="always"
         android:title="@string/action_delete"
@@ -29,7 +29,7 @@
 
     <item
         android:id="@+id/action_setting"
-        android:icon="@android:drawable/ic_menu_manage"
+        android:icon="@drawable/ic_settings"
         android:orderInCategory="4"
         app:showAsAction="always"
         android:title="@string/action_setting"

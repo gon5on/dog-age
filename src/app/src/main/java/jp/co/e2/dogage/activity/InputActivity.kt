@@ -11,7 +11,6 @@ import jp.co.e2.dogage.BuildConfig
 import jp.co.e2.dogage.R
 import jp.co.e2.dogage.common.AndroidUtils
 import jp.co.e2.dogage.common.DateHelper
-import jp.co.e2.dogage.common.ImgHelper
 import jp.co.e2.dogage.common.LogUtils
 import jp.co.e2.dogage.common.Utils
 import jp.co.e2.dogage.config.AppApplication
@@ -39,11 +38,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.FileProvider
-import android.support.v7.widget.PopupMenu
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -53,10 +47,18 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.database.sqlite.transaction
+import androidx.fragment.app.Fragment
+import com.squareup.picasso.Picasso
 
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import jp.co.e2.dogage.alarm.SetAlarmManager
 
 /**
  * 入力画面アクテビティ
@@ -106,10 +108,13 @@ class InputActivity : BaseActivity() {
 
         setContentView(R.layout.activity_common)
 
-        //アクションバーをセットする
         if (intent.getBooleanExtra(PARAM_INIT_FLG, false)) {
-            setToolbar()
+            //ツールバーを消す
+            findViewById<Toolbar>(R.id.toolbar).apply{
+                this.visibility = View.GONE
+            }
         } else {
+            //ツールバーに戻る矢印をセットする
             setBackArrowToolbar()
         }
 
@@ -236,7 +241,7 @@ class InputActivity : BaseActivity() {
                 doTrimming(uri)
             } else if (resultCode == Activity.RESULT_OK && requestCode == Config.INTENT_CODE_GALLERY) {
                 //ギャラリー
-                doTrimming(data!!.data)
+                doTrimming(data?.data)
             } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 //トリミング
                 val result = CropImage.getActivityResult(data)
@@ -286,8 +291,8 @@ class InputActivity : BaseActivity() {
                 setDateToButton(view, R.id.buttonBirthday, petEntity.birthday!!)
             }
 
-            view.findViewById<Button>(R.id.buttonKind).apply {
-                this.text = petEntity.getKindDisp(activity!!)
+            view.findViewById<EditText>(R.id.buttonKind).apply {
+                this.setText(petEntity.getKindDisp(activity!!))
             }
 
             if (petEntity.archiveDate != null) {
@@ -297,10 +302,10 @@ class InputActivity : BaseActivity() {
 
             if (petEntity.photoFlg) {
                 view.findViewById<ImageView>(R.id.imageViewPhoto).apply {
-                    this.setImageBitmap(petEntity.getPhotoInput(activity!!))
+                    val size = AndroidUtils.dpToPixel(activity, Config.PHOTO_INPUT_DP)
+                    Picasso.get().load(petEntity.getImgFileUri(context)).resize(size, size).centerCrop().into(this)
                 }
             } else {
-                //画像がない場合、NO PHOTOを角丸の画像にする
                 setNoPhoto(view)
             }
 
@@ -317,18 +322,9 @@ class InputActivity : BaseActivity() {
          * NO PHOTOをセットする
          */
         private fun setNoPhoto(view: View) {
-            try {
-                view.findViewById<ImageView>(R.id.imageViewPhoto).apply {
-                    val imgUtils = ImgHelper(activity, R.drawable.img_no_photo)
-                    val bitmap = imgUtils.getKadomaruBitmap(AndroidUtils.dpToPixel(activity, Config.KADOMARU_DP))
-
-                    this.setImageBitmap(bitmap)
-                }
-
-            } catch (e: IOException) {
-                e.printStackTrace()
+            view.findViewById<ImageView>(R.id.imageViewPhoto).apply {
+                Picasso.get().load(R.drawable.img_no_photo).into(this)
             }
-
         }
 
         /**
@@ -339,11 +335,11 @@ class InputActivity : BaseActivity() {
          * @param date 日付
          */
         private fun setDateToButton(view: View, resId: Int, date: String) {
-            view.findViewById<Button>(resId).apply {
+            view.findViewById<EditText>(resId).apply {
                 val dateArray = date.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 val dateFormat = getString(R.string.date_format)
 
-                this.text = String.format(dateFormat, dateArray[0], dateArray[1], dateArray[2])
+                this.setText(String.format(dateFormat, dateArray[0], dateArray[1], dateArray[2]))
             }
         }
 
@@ -361,11 +357,11 @@ class InputActivity : BaseActivity() {
             } else {
                 petEntity.archiveDate = null
 
-                view.findViewById<ImageButton>(R.id.buttonClear).apply {
+                view.findViewById<Button>(R.id.buttonClear).apply {
                     this.visibility = View.GONE
                 }
 
-                view.findViewById<Button>(R.id.buttonArchive).apply {
+                view.findViewById<EditText>(R.id.buttonArchive).apply {
                     this.text = null
                 }
             }
@@ -412,7 +408,7 @@ class InputActivity : BaseActivity() {
          */
         private fun setClickEvent(view: View) {
             //誕生日
-            view.findViewById<Button>(R.id.buttonBirthday).apply {
+            view.findViewById<EditText>(R.id.buttonBirthday).apply {
                 this.setOnClickListener {
                     val title = getString(R.string.dog_birthday)
 
@@ -427,7 +423,7 @@ class InputActivity : BaseActivity() {
             val kindSelectDialog = KindSelectDialog.newInstance(dogMasters)
             kindSelectDialog.setCallbackListener(this)
 
-            view.findViewById<Button>(R.id.buttonKind).apply {
+            view.findViewById<EditText>(R.id.buttonKind).apply {
                 this.setOnClickListener { kindSelectDialog.show(fragmentManager, "dialog") }
             }
 
@@ -446,7 +442,7 @@ class InputActivity : BaseActivity() {
             }
 
             //アーカイブ
-            view.findViewById<Button>(R.id.buttonArchive).apply {
+            view.findViewById<EditText>(R.id.buttonArchive).apply {
                 this.setOnClickListener {
                     val title = getString(R.string.dog_die_date)
 
@@ -457,7 +453,7 @@ class InputActivity : BaseActivity() {
             }
 
             //クリアボタン
-            view.findViewById<ImageButton>(R.id.buttonClear).apply {
+            view.findViewById<Button>(R.id.buttonClear).apply {
                 this.setOnClickListener { setClearButton(view, false) }
             }
 
@@ -487,7 +483,7 @@ class InputActivity : BaseActivity() {
             //保存とページ遷移
             if (saveDb()) {
                 //アラームセット
-//                SetAlarmManager(context!!).set()
+                SetAlarmManager(context!!).set()
 
                 activity!!.setResult(Activity.RESULT_OK)
                 activity!!.finish()
@@ -717,11 +713,18 @@ class InputActivity : BaseActivity() {
          *
          * @param uri トリミング対象の画像URI
          */
-        private fun doTrimming(uri: Uri) {
+        private fun doTrimming(uri: Uri?) {
+            //uriが空の場合はメッセージを出して戻る
+            if (uri == null) {
+                val msg = getString(R.string.invalid_photo)
+                AndroidUtils.showToastL(activity, msg)
+                return
+            }
+
             CropImage.activity(uri)
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setAspectRatio(1, 1)
-                    .start(activity!!, this)
+                    .start(context!!, this)
 
             val msg = getString(R.string.lets_trimming_photo)
             AndroidUtils.showToastL(activity, msg)
@@ -729,30 +732,17 @@ class InputActivity : BaseActivity() {
 
         /**
          * トリミングインテントからの戻り処理
+         *
+         * @param uri トリミング対象の画像URI
          */
         private fun fromTrimmingIntent(uri: Uri) {
-            try {
-                petEntity.savePhotoUri = uri
-                petEntity.photoFlg = true
+            petEntity.savePhotoUri = uri
+            petEntity.photoFlg = true
 
-                //角丸の画像にを取得
-                val imgUtils = ImgHelper(uri.path)
-                val size = AndroidUtils.dpToPixel(activity, Config.PHOTO_INPUT_DP)
-                val kadomaruBitmap = imgUtils.getResizeKadomaruBitmap(size, size, AndroidUtils.dpToPixel(activity, Config.KADOMARU_DP))
+            val size = AndroidUtils.dpToPixel(activity, Config.PHOTO_INPUT_DP)
+            val imageViewPhoto = view!!.findViewById<ImageView>(R.id.imageViewPhoto)
 
-                //画像を表示
-                val imageViewPhoto = view!!.findViewById<ImageView>(R.id.imageViewPhoto)
-                imageViewPhoto.setImageBitmap(kadomaruBitmap)
-
-            } catch (e: Exception) {
-                val title = getString(R.string.error)
-                val msg = getString(R.string.trimming_fail)
-
-                val noticeDialog = NoticeDialog.newInstance(title, msg)
-                noticeDialog.show(fragmentManager, "dialog")
-                e.printStackTrace()
-            }
-
+            Picasso.get().load(uri).resize(size, size).centerCrop().into(imageViewPhoto)
         }
 
         /**
@@ -761,8 +751,8 @@ class InputActivity : BaseActivity() {
         override fun onClickKindSelectDialog(tag: String, kind: Int, name: String) {
             petEntity.kind = kind
 
-            val buttonKind = view!!.findViewById<Button>(R.id.buttonKind)
-            buttonKind.text = name
+            val buttonKind = view!!.findViewById<EditText>(R.id.buttonKind)
+            buttonKind.setText(name)
         }
 
         /**
@@ -776,7 +766,7 @@ class InputActivity : BaseActivity() {
                 petEntity.archiveDate = date
                 setDateToButton(view!!, R.id.buttonArchive, date)
 
-                val buttonClear = view!!.findViewById<ImageButton>(R.id.buttonClear)
+                val buttonClear = view!!.findViewById<Button>(R.id.buttonClear)
                 buttonClear.visibility = View.VISIBLE
             }
         }

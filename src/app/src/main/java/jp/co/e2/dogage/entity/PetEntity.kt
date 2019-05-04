@@ -17,6 +17,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import jp.co.e2.dogage.config.AppApplication
+import java.io.File
 
 /**
  * ペットエンティティクラス
@@ -191,52 +192,6 @@ data class PetEntity(
     }
 
     /**
-     * 拡大写真用ビットマップを返す
-     *
-     * @param context context
-     * @return Bitmap
-     */
-    fun getPhotoBig(context: Context): Bitmap {
-        val size = AndroidUtils.dpToPixel(context, Config.PHOTO_BIG_DP)
-
-        val imgHelper = ImgHelper(getImgFilePath(context))
-        return imgHelper.getResizeKadomaruBitmap(size, size, AndroidUtils.dpToPixel(context, Config.KADOMARU_DP))
-    }
-
-    /**
-     * サムネイル用ビットマップを返す
-     *
-     * @param context context
-     * @return Bitmap
-     */
-    @Throws(IOException::class)
-    fun getPhotoThumb(context: Context): Bitmap {
-        val size = AndroidUtils.dpToPixel(context, Config.PHOTO_THUMB_DP)
-
-        val imgHelper = ImgHelper(getImgFilePath(context))
-        return imgHelper.getResizeCircleBitmap(size, size)
-    }
-
-    /**
-     * 入力画面用ビットマップを返す
-     *
-     * @param context context
-     * @return Bitmap
-     */
-    fun getPhotoInput(context: Context): Bitmap {
-        val size = AndroidUtils.dpToPixel(context, Config.PHOTO_INPUT_DP)
-
-        //保存対象画像が取得できた場合は、それを採用（activity再生成対応）
-        val imgHelper: ImgHelper = if (savePhotoUri != null) {
-            ImgHelper(context, savePhotoUri)
-        } else {
-            ImgHelper(getImgFilePath(context))
-        }
-
-        return imgHelper.getResizeKadomaruBitmap(size, size, AndroidUtils.dpToPixel(context, Config.KADOMARU_DP))
-    }
-
-    /**
      * 表示用アーカイブ日付を返す
      *
      * @param context コンテキスト
@@ -263,6 +218,16 @@ data class PetEntity(
      */
     fun getImgFilePath(context: Context): String {
         return getImgDirPath(context) + "/" + getImgFileName(id!!)
+    }
+
+    /**
+     * 画像保存ファイルURI
+     *
+     * @param context コンテキスト
+     * @return String
+     */
+    fun getImgFileUri(context: Context): Uri {
+        return Uri.fromFile(File(getImgFilePath(context)))
     }
 
     /**

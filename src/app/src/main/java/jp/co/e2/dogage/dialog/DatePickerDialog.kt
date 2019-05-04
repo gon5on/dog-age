@@ -4,10 +4,10 @@ import jp.co.e2.dogage.R
 import jp.co.e2.dogage.common.DateHelper
 import jp.co.e2.dogage.dialog.DatePickerDialog.CallbackListener
 
-import android.support.v7.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.DatePicker
+import androidx.appcompat.app.AlertDialog
 
 import java.util.Locale
 
@@ -55,7 +55,7 @@ class DatePickerDialog : BaseDialog<CallbackListener>() {
 
         val builder = AlertDialog.Builder(context!!)
         builder.setTitle(arguments!!.getString(PARAM_TITLE))
-        builder.setIcon(R.drawable.img_foot)
+        builder.setIcon(R.drawable.ic_footprint)
         builder.setView(view)
 
         builder.setPositiveButton(getString(R.string.ok)) { dialog, which ->

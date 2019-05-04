@@ -1,27 +1,22 @@
 <resources>
 
     <!-- 基本設定 -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/brown</item>
         <item name="colorPrimaryDark">@color/darkBrown</item>
         <item name="colorAccent">@color/green</item>
-        <item name="windowNoTitle">true</item>
-        <item name="buttonStyle">@style/AppButtonStyle</item>
-        <item name="editTextStyle">@style/AppEditTextStyle</item>
         <item name="alertDialogTheme">@style/AppAlertDialogStyle</item>
-        <item name="colorControlNormal">@color/beige</item>
-        <item name="android:textViewStyle">@style/TextViewStyle</item>
-        <item name="android:textColorPrimary">@color/brown</item>
-        <item name="android:textColorSecondary">@color/brown</item>
-        <item name="android:windowBackground">@null</item>
+        <item name="editTextStyle">@style/AppEditTextStyle</item>
+        <item name="android:textColor">@color/darkBrown</item>
+        <item name="android:textColorSecondary">@color/beige</item>
     </style>
 
     <!-- アラートダイアログ -->
-    <style name="AppAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">@color/darkBrown</item>
+    <style name="AppAlertDialogStyle" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="colorAccent">@color/brown</item>
         <item name="android:background">@color/beige</item>
-        <item name="android:textColorPrimary">@color/black</item>
-        <item name="android:textColorSecondary">@color/black</item>
+        <item name="android:textColorPrimary">@color/darkBrown</item>
+        <item name="android:textColorSecondary">@color/brown</item>
     </style>
 
     <!-- 透明背景ダイアログ -->
@@ -30,7 +25,7 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <!-- 入力欄 -->
+    <!--入力欄-->
     <style name="AppEditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:textSize">@dimen/fontSizeLarge</item>
         <item name="android:textColor">@color/black</item>
@@ -42,66 +37,30 @@
     </style>
 
     <!-- チェックボックス -->
-    <style name="AppCheckBoxTheme" parent="Theme.AppCompat.Light">
+    <style name="AppCheckBoxTheme" parent="Theme.MaterialComponents.Light">
         <item name="colorControlNormal">@color/brown</item>
         <item name="colorControlActivated">@color/darkBrown</item>
     </style>
 
     <!-- 茶色ボタン -->
-    <style name="AppButtonStyle" parent="BaseButton">
-        <item name="android:background">@xml/btn_bg</item>
+    <style name="AppButtonStyle" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:minHeight">@dimen/eightBlock</item>
+        <item name="backgroundTint">@color/brown</item>
+        <item name="cornerRadius">@dimen/fourBlock</item>
     </style>
 
-    <!-- 透明背景ボタン -->
-    <style name="TranslateButtonStyle" parent="BaseButton">
-        <item name="android:textSize">@dimen/fontSizeDefault</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:minHeight">@dimen/zero</item>
-        <item name="android:minWidth">@dimen/zero</item>
-        <item name="android:background">?android:attr/selectableItemBackground</item>
-    </style>
-
-    <!-- ボタン共通スタイル -->
-    <style name="BaseButton" parent="Widget.AppCompat.Button">
-        <item name="android:stateListAnimator">@null</item>
-        <item name="android:textSize">@dimen/fontSizeDefault</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:paddingTop">@dimen/oneBlock</item>
-        <item name="android:paddingBottom">@dimen/oneBlock</item>
-        <item name="android:paddingLeft">@dimen/twoBlock</item>
-        <item name="android:paddingRight">@dimen/twoBlock</item>
-        <item name="android:minHeight">@dimen/sixBlock</item>
-        <item name="android:minWidth">@dimen/twentyBlock</item>
-        <item name="textAllCaps">false</item>
-    </style>
-
-    <!-- 入力欄見た目ボタン -->
-    <style name="EditTextButtonStyle" parent="Widget.AppCompat.Button">
-        <item name="android:stateListAnimator">@null</item>
-        <item name="android:textSize">@dimen/fontSizeLarge</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:background">@xml/input_bg</item>
-        <item name="android:minHeight">@dimen/zero</item>
-        <item name="android:minWidth">@dimen/zero</item>
-        <item name="android:gravity">left</item>
-        <item name="android:paddingLeft">@dimen/twoBlock</item>
-        <item name="android:paddingRight">@dimen/twoBlock</item>
-        <item name="android:paddingTop">@dimen/oneHalfBlock</item>
-        <item name="android:paddingBottom">@dimen/oneHalfBlock</item>
-        <item name="textAllCaps">false</item>
-    </style>
-
-    <!-- 通常のテキストスタイル -->
-    <style name="TextViewStyle" parent="android:Widget.TextView">
-        <item name="android:textColor">@color/black</item>
+    <!-- 透明背景ボタンスタイル -->
+    <style name="TranslateButtonStyle" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/brown</item>
+        <item name="rippleColor">@color/lightBrown</item>
     </style>
 
     <!-- 足跡付きラベル -->
     <style name="LabelTextViewStyle" parent="android:Widget.TextView">
         <item name="android:textSize">@dimen/fontSizeDefault</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:drawableLeft">@drawable/img_foot</item>
-        <item name="android:drawableStart">@drawable/img_foot</item>
+        <item name="android:drawableLeft">@drawable/ic_footprint</item>
+        <item name="android:drawableStart">@drawable/ic_footprint</item>
         <item name="android:drawablePadding">@dimen/oneBlock</item>
         <item name="android:gravity">center_vertical</item>
     </style>

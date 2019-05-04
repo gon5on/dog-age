@@ -5,7 +5,7 @@ import jp.co.e2.dogage.R
 import jp.co.e2.dogage.dialog.ConfirmDialog.CallbackListener
 
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 
 /**
  * 確認ダイアログ
@@ -43,14 +43,14 @@ class ConfirmDialog : BaseDialog<CallbackListener>() {
         val builder = AlertDialog.Builder(context!!)
 
         builder.setTitle(arguments!!.getString(PARAM_TITLE))
-        builder.setIcon(R.drawable.img_foot)
+        builder.setIcon(R.drawable.ic_footprint)
         builder.setMessage(arguments!!.getString(PARAM_MSG))
 
-        builder.setPositiveButton(getString(R.string.ok)) { dialog, which ->
+        builder.setPositiveButton(getString(R.string.ok)) { _, _ ->
             call?.onClickConfirmDialogOk(tag!!)
         }
 
-        builder.setNegativeButton(getString(R.string.cancel)) { dialog, which ->
+        builder.setNegativeButton(getString(R.string.cancel)) { _, _ ->
             call?.onClickConfirmDialogCancel(tag!!)
         }
 

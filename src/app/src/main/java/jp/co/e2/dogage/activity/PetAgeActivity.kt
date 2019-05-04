@@ -15,14 +15,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.NotificationManagerCompat
-import android.support.v4.view.ViewPager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.database.sqlite.transaction
+import androidx.viewpager.widget.ViewPager
 
 /**
  * ペット年齢アクテビティ
@@ -45,7 +45,7 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
          * @return intent
          */
         fun newInstance(context: Context, pageNum: Int): Intent {
-            val intent = Intent(context, InputActivity::class.java)
+            val intent = Intent(context, PetAgeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             intent.putExtra(PARAM_PAGE_NUM, pageNum)
 
@@ -55,7 +55,7 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
 
     private var pageNum: Int = 0                            // 現在表示中のページ数
     private lateinit var petData: ArrayList<PetEntity>      // ペット情報一覧
-    private lateinit var radioResIds: IntArray              // ページャのラジオボタンリソースID
+    private var radioResIds: IntArray = IntArray(0)    // ページャのラジオボタンリソースID
 
     /**
      * ${inheritDoc}
@@ -77,7 +77,7 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
             notificationManagerCompat.cancelAll()
 
             //ペット情報一覧を取得
-            getPetList()
+            setPetList()
 
             //データがない場合は入力画面に飛ばす
             if (petData.size == 0) {
@@ -167,7 +167,7 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
                 pageNum = 0
             }
 
-            getPetList()
+            setPetList()
             createViewPager()
         }
     }
@@ -175,7 +175,7 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
     /**
      * ペット情報一覧を取得
      */
-    private fun getPetList() {
+    private fun setPetList() {
         BaseSQLiteOpenHelper(this).writableDatabase.use {
             val petDao = PetDao(this)
             petData = petDao.findAll(it)
@@ -269,7 +269,7 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
             val view = findViewById<View>(android.R.id.content)
             AndroidUtils.showSuccessSnackBarS(view, getString(R.string.delete_success))
 
-            getPetList()
+            setPetList()
             createViewPager()
         } else {
             val title = getString(R.string.error)

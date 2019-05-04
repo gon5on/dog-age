@@ -13,12 +13,13 @@ import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.design.widget.Snackbar;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -167,7 +168,7 @@ public class AndroidUtils {
         Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_SHORT);
         snackbar.getView().setBackgroundColor(Color.rgb(60,179,113));
 
-        TextView textView = snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+        TextView textView = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
         textView.setTextColor(Color.rgb(255, 255, 255));
 
         snackbar.show();
@@ -183,7 +184,7 @@ public class AndroidUtils {
         Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_SHORT);
         snackbar.getView().setBackgroundColor(Color.rgb(220, 78, 78));
 
-        TextView textView = snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+        TextView textView = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
         textView.setTextColor(Color.rgb(255, 255, 255));
 
         snackbar.show();
