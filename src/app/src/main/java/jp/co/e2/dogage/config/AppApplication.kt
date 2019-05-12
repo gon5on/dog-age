@@ -1,6 +1,7 @@
 package jp.co.e2.dogage.config
 
 import android.app.Application
+import com.google.firebase.analytics.FirebaseAnalytics
 import jp.co.e2.dogage.R
 
 import jp.co.e2.dogage.alarm.SetAlarmManager
@@ -11,6 +12,8 @@ import java.util.*
  * アプリケーションクラス
  */
 class AppApplication : Application() {
+
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     //犬種マスタマップ
     val dogMasterMap: HashMap<Int, DogMasterEntity> by lazy {
@@ -52,6 +55,9 @@ class AppApplication : Application() {
      */
     override fun onCreate() {
         super.onCreate()
+
+        //アナリティクス設定
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         //犬情報を編集しなくても、アプリ立ち上げ時にアラームマネージャをセットする対策
         SetAlarmManager(applicationContext).set()
