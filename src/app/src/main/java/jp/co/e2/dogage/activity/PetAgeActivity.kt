@@ -121,13 +121,13 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
             }
             //削除
             R.id.action_delete -> {
-                val title = getString(R.string.confirm)
-                val msg = getString(R.string.before_del)
+            val title = getString(R.string.confirm)
+            val msg = getString(R.string.before_del)
 
-                val confirmDialog = ConfirmDialog.newInstance(title, msg)
-                confirmDialog.setCallbackListener(this)
-                confirmDialog.show(supportFragmentManager, "dialog")
-            }
+            val confirmDialog = ConfirmDialog.newInstance(title, msg)
+            confirmDialog.setCallbackListener(this)
+            confirmDialog.show(supportFragmentManager, "dialog")
+        }
             //設定
             R.id.action_setting -> startActivity(Intent(this@PetAgeActivity, SettingActivity::class.java))
         }
@@ -270,7 +270,15 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
             AndroidUtils.showSuccessSnackBarS(view, getString(R.string.delete_success))
 
             setPetList()
-            createViewPager()
+
+            if (petData.size == 0) {
+                //データがない場合は入力画面に飛ばす
+                val intent = InputActivity.newInstance(this@PetAgeActivity, true, 0, null)
+                startActivityForResult(intent, REQUEST_CODE_ADD)
+            } else {
+                pageNum--
+                createViewPager()
+            }
         } else {
             val title = getString(R.string.error)
             val msg = getString(R.string.delete_fail)

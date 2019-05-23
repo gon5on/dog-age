@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "684147915620",
+    "firebase_url": "https://dog-age-cb435.firebaseio.com",
+    "project_id": "dog-age-cb435",
+    "storage_bucket": "dog-age-cb435.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684147915620:android:4a7f0d90eebf2f86",
+        "android_client_info": {
+          "package_name": "jp.co.e2.dogage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "684147915620-b51qv5pru4pmo4384nscpq9cspvmacc0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVwFdcJVJq4Jd-_gPgBw9muLL4CnqvSyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "684147915620-b51qv5pru4pmo4384nscpq9cspvmacc0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

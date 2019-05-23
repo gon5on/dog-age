@@ -44,7 +44,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.widget.PopupMenu
@@ -121,8 +120,9 @@ class InputActivity : BaseActivity() {
         if (savedInstanceState == null) {
             val data = intent.getSerializableExtra(PARAM_DATA) as PetEntity
             val pageNum = intent.getIntExtra(PARAM_PAGE_NUM, 0)
+            val initFlg = intent.getBooleanExtra(PARAM_INIT_FLG, false)
 
-            val fragment = InputFragment.newInstance(pageNum, data)
+            val fragment = InputFragment.newInstance(pageNum, data, initFlg)
             supportFragmentManager.beginTransaction().add(R.id.container, fragment).commit()
         }
     }
@@ -158,9 +158,10 @@ class InputActivity : BaseActivity() {
              * @param data エンティティ
              * @return intent
              */
-            fun newInstance(pageNum: Int, data: PetEntity?): Fragment {
+            fun newInstance(pageNum: Int, data: PetEntity?, initFlg: Boolean): Fragment {
                 val bundle = Bundle()
                 bundle.putInt(PARAM_PAGE_NUM, pageNum)
+                bundle.putBoolean(PARAM_INIT_FLG, initFlg)
 
                 if (data != null) {
                     bundle.putSerializable(PARAM_DATA, data)
@@ -376,6 +377,13 @@ class InputActivity : BaseActivity() {
             val linearLayoutArchive = view.findViewById<LinearLayout>(R.id.linearLayoutArchive)
             val buttonOpen = view.findViewById<Button>(R.id.buttonOpen)
 
+            //初回の場合は、なくなった日を表示しない（なんとなく縁起が悪いので）
+            if (arguments!!.get(PARAM_INIT_FLG) as Boolean) {
+                linearLayoutArchive.visibility = View.GONE
+                buttonOpen.visibility = View.GONE
+                return;
+            }
+
             if (!archiveOpenFlg) {
                 archiveOpenFlg = true
 
@@ -429,11 +437,16 @@ class InputActivity : BaseActivity() {
 
             //写真
             view.findViewById<ImageView>(R.id.imageViewPhoto).apply {
-                val popup = PopupMenu(context, this)
-                popup.menuInflater.inflate(R.menu.photo_menu, popup.menu)
-                popup.setOnMenuItemClickListener(this@InputFragment)
+                this.setOnClickListener {
+                    val popup = PopupMenu(context, this)
+                    popup.menuInflater.inflate(R.menu.photo_menu, popup.menu)
+                    popup.setOnMenuItemClickListener(this@InputFragment)
 
-                this.setOnClickListener { popup.show() }
+                    if (!petEntity.photoFlg) {
+                        popup.menu.removeItem(R.id.menuDelete)
+                     }
+                    popup.show()
+                }
             }
 
             //開くボタン
