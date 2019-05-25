@@ -41,10 +41,10 @@ class SetAlarmManager(private val context: Context) {
                 }
             }
 
-            /////////////////////////////////////
-//            date = DateHelper()
-//            date.addSec(20)
-//            AndroidUtils.showToastL(context, date.format(DateHelper.FMT_DATETIME))
+            /////////////////////////////////////DEBUG
+            // date = DateHelper()
+            // date.addSec(40)
+            // AndroidUtils.showToastL(context, date.format(DateHelper.FMT_DATETIME))
             ///////////////////////////////////////
 
             return date

@@ -71,7 +71,7 @@
     <string name="notify_birthday" formatted="false">%s %s お誕生日</string>
     <string name="notify_birthday_sub" formatted="false">%s歳になりました、おめでとうございます！</string>
     <string name="notify_archive" formatted="false">%s %s 命日</string>
-    <string name="notify_archive_sub" formatted="false">亡くなって%s年経ちました</string>
+    <string name="notify_archive_sub" formatted="false">亡くなって%s年経ちました、一緒に過ごした日々を思い出してみましょう</string>
     <string name="notify_channel_name">通知</string>
     <string name="notify_channel_description">誕生日と命日を通知します</string>
     <string name="permission_denied">許可されない場合は、カメラは使用できません。ギャラリーから選択してください。</string>
