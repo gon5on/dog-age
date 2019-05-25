@@ -16,6 +16,19 @@
 #   public *;
 #}
 
+# keep entity
 -keep class jp.co.e2.dogage.entity.** { *; }
 
+# Android Image Cropper
 -keep class androidx.appcompat.widget.** { *; }
+
+# delete log
+-assumenosideeffects public class android.util.Log {
+    public static *** v(...);
+    public static *** d(...);
+    public static *** i(...);
+    public static *** w(...);
+    public static *** e(...);
+    public static *** wtf(...);
+}
+
