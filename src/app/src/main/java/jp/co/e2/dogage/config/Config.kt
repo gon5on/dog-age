@@ -52,7 +52,6 @@ class Config {
         const val AGE_OF_MONTH_OVER_TWO_YEAR_LARGE = 0.5833         //大型犬
 
         //画像dp
-        const val KADOMARU_DP = 20                                  //角丸画像の角丸サイズ
         const val PHOTO_INPUT_DP = 150                              //入力画面の写真
         const val PHOTO_THUMB_DP = 80                               //サムネイル写真
         const val PHOTO_BIG_DP = 400                                //拡大写真

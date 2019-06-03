@@ -498,6 +498,9 @@ class InputActivity : BaseActivity() {
                 //アラームセット
                 SetAlarmManager(context!!).set()
 
+                //同じURIで画像が切り替わるので、picassoのキャッシュをクリア
+                Picasso.get().invalidate(petEntity.getImgFileUri(context!!))
+
                 activity!!.setResult(Activity.RESULT_OK)
                 activity!!.finish()
             } else {
