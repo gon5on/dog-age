@@ -10,8 +10,8 @@ android {
         applicationId "jp.co.e2.dogage"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 4
-        versionName "1.02.00"
+        versionCode 5
+        versionName "1.02.01"
     }
     buildTypes {
         release {
