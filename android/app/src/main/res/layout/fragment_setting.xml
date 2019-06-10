@@ -113,12 +113,36 @@
     <TextView
         android:id="@+id/textViewVer"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/sevenBlock"
         android:textSize="@dimen/fontSizeLarge"
         android:textStyle="bold"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="@+id/textViewAppVer"
         app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
         app:layout_constraintTop_toTopOf="@+id/textViewAppVer" />
+
+    <TextView
+        android:id="@+id/textViewPrivacyPolicy"
+        style="@style/LabelTextViewStyle"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/sevenBlock"
+        android:paddingStart="@dimen/twoBlock"
+        android:paddingEnd="@dimen/twoBlock"
+        android:background="?android:attr/selectableItemBackground"
+        android:text="@string/privacy_policy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewVer" />
+
+    <ImageView
+        android:id="@+id/imageViewNewWin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewPrivacyPolicy"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+        app:layout_constraintTop_toTopOf="@+id/textViewPrivacyPolicy"
+        app:srcCompat="@drawable/ic_arrow" />
 
     <TextView
         android:id="@+id/buttonProducedBy"

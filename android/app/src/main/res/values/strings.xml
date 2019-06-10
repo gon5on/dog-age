@@ -68,6 +68,7 @@
     <string name="about_calc_age">年齢計算方法について</string>
     <string name="app_version">アプリバージョン</string>
     <string name="license">ライセンス</string>
+    <string name="privacy_policy">プライバシーポリシー</string>
     <string name="notify_birthday" formatted="false">%s %s お誕生日</string>
     <string name="notify_birthday_sub" formatted="false">%s歳になりました、おめでとうございます！</string>
     <string name="notify_archive" formatted="false">%s %s 命日</string>
