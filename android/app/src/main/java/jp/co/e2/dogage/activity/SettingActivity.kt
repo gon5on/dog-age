@@ -26,7 +26,7 @@ import jp.co.e2.dogage.config.Config
 class SettingActivity : BaseActivity() {
 
     companion object {
-        private const val PRIVACY_POLICY_URL = "https://dog-age-cb435.web.app/privacy.html"
+        private const val PRIVACY_POLICY_URL = "https://www.e-2.co.jp/policy/"
     }
 
     /**
