@@ -1,23 +1,16 @@
 package jp.co.e2.dogage.entity
 
 import android.app.Activity
-import java.io.IOException
-import java.io.Serializable
-import java.text.ParseException
-import java.util.Locale
-
-import jp.co.e2.dogage.R
-import jp.co.e2.dogage.common.AndroidUtils
-import jp.co.e2.dogage.common.DateHelper
-import jp.co.e2.dogage.common.ImgHelper
-import jp.co.e2.dogage.common.MediaUtils
-import jp.co.e2.dogage.config.Config
-
 import android.content.Context
-import android.graphics.Bitmap
 import android.net.Uri
+import jp.co.e2.dogage.R
+import jp.co.e2.dogage.common.DateHelper
+import jp.co.e2.dogage.common.MediaUtils
 import jp.co.e2.dogage.config.AppApplication
 import java.io.File
+import java.io.Serializable
+import java.text.ParseException
+import java.util.*
 
 /**
  * ペットエンティティクラス
@@ -30,6 +23,7 @@ data class PetEntity(
         var photoFlg: Boolean = false,          //写真フラグ
         var savePhotoUri: Uri? = null,          //保存対象写真URI
         var archiveDate: String? = null,        //死亡日
+        var order: Int? = null,                 //表示順
         var created: String? = null,            //作成日時
         var modified: String? = null            //最終更新日時
 ) : Serializable {
@@ -175,20 +169,7 @@ data class PetEntity(
      * @return String
      */
     fun getKindDisp(activity: Activity): String {
-        val other = activity.getString(R.string.other)
-
-        //種類にその他という文字列が入っていたら、その他という文字列を取り除く
-        return when {
-            kind == null -> {
-                ""
-            }
-            getDogMaster(activity).kind.contains(other) -> {
-                getDogMaster(activity).kind.replace(other.toRegex(), "")
-            }
-            else -> {
-                getDogMaster(activity).kind
-            }
-        }
+        return if (kind == null) { "" } else { getDogMaster(activity).kind }
     }
 
     /**

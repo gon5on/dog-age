@@ -1,20 +1,14 @@
 package jp.co.e2.dogage.activity
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
-import androidx.browser.customtabs.CustomTabsIntent
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-
 import jp.co.e2.dogage.R
 import jp.co.e2.dogage.common.AndroidUtils
 import jp.co.e2.dogage.common.PreferenceUtils
@@ -85,7 +79,7 @@ class SettingActivity : BaseActivity() {
             view.findViewById<CheckBox>(R.id.checkBoxBirthNotification).apply {
                 this.isChecked = PreferenceUtils.get(activity, Config.PREF_BIRTH_NOTIFY_FLG, true)
 
-                this.setOnCheckedChangeListener { buttonView, isChecked ->
+                this.setOnCheckedChangeListener { _, isChecked ->
                     changeNotifySetting(Config.PREF_BIRTH_NOTIFY_FLG, isChecked) }
             }
 
@@ -93,44 +87,28 @@ class SettingActivity : BaseActivity() {
             view.findViewById<CheckBox>(R.id.checkBoxArchiveNotification).apply {
                 this.isChecked = PreferenceUtils.get(activity, Config.PREF_ARCHIVE_NOTIFY_FLG, true)
 
-                this.setOnCheckedChangeListener { buttonView, isChecked ->
+                this.setOnCheckedChangeListener { _, isChecked ->
                     changeNotifySetting(Config.PREF_ARCHIVE_NOTIFY_FLG, isChecked) }
             }
 
-            //アプリバージョン
-            view.findViewById<TextView>(R.id.textViewVer).apply {
-                this.text = AndroidUtils.getVerName(activity)
+            //並び替え
+            view.findViewById<TextView>(R.id.textViewReplaceItem).apply {
+                this.setOnClickListener {
+                    startActivity(Intent(activity, ReplaceItemActivity::class.java))
+                }
             }
 
             //年齢計算について
             view.findViewById<TextView>(R.id.textViewHowToCalc).apply {
                 this.setOnClickListener {
+                    startActivity(Intent(activity, HowToCalcActivity::class.java))
+                }
+            }
+
+            //アプリについて
+            view.findViewById<TextView>(R.id.textViewAbout).apply {
+                this.setOnClickListener {
                     startActivity(Intent(activity, AboutActivity::class.java))
-                }
-            }
-
-            //ライセンス
-            view.findViewById<TextView>(R.id.textViewLicense).apply {
-                this.setOnClickListener {
-                    startActivity(Intent(activity, LicenseActivity::class.java))
-                }
-            }
-
-            //プライバシーポリシー
-            view.findViewById<TextView>(R.id.textViewPrivacyPolicy).apply {
-                this.setOnClickListener {
-                    val builder = CustomTabsIntent.Builder()
-                    builder.setToolbarColor(ContextCompat.getColor(context, R.color.darkBrown));
-                    val customTabsIntent = builder.build()
-                    customTabsIntent.launchUrl(context, Uri.parse(PRIVACY_POLICY_URL))
-                }
-            }
-
-            //E2リンク
-            view.findViewById<TextView>(R.id.buttonProducedBy).apply {
-                this.setOnClickListener {
-                    val i = Intent(Intent.ACTION_VIEW, Uri.parse(Config.OFFICIAL_LINK))
-                    startActivity(i)
                 }
             }
         }

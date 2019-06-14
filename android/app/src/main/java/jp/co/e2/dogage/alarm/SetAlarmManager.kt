@@ -4,17 +4,14 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import jp.co.e2.dogage.common.AndroidUtils
-
-import java.text.ParseException
-import java.util.ArrayList
-
 import jp.co.e2.dogage.common.DateHelper
 import jp.co.e2.dogage.common.LogUtils
 import jp.co.e2.dogage.config.Config
 import jp.co.e2.dogage.entity.PetEntity
 import jp.co.e2.dogage.model.BaseSQLiteOpenHelper
 import jp.co.e2.dogage.model.PetDao
+import java.text.ParseException
+import java.util.*
 
 /**
  * アラームをセットするクラス
