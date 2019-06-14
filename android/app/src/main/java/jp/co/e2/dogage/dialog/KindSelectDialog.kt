@@ -9,9 +9,11 @@ import jp.co.e2.dogage.adapter.KindListAdapter
 
 import android.app.Dialog
 import android.os.Bundle
-import android.widget.AdapterView.OnItemClickListener
-import android.widget.ListView
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+
+
 
 /**
  * 種類選択ダイアログ
@@ -45,14 +47,14 @@ class KindSelectDialog : BaseDialog<CallbackListener>() {
 
         val layout = activity!!.layoutInflater.inflate(R.layout.dialog_kind_list, null)
 
-        val listViewKind = layout!!.findViewById<ListView>(R.id.listViewKind)
-        listViewKind.adapter = KindListAdapter(context!!, data)
-        listViewKind.isScrollingCacheEnabled = false
+        val recyclerViewKind = layout!!.findViewById<RecyclerView>(R.id.recyclerViewKind)
+        recyclerViewKind.adapter = KindListAdapter(data, this)
+        recyclerViewKind.layoutManager = LinearLayoutManager(context)
 
-        listViewKind.onItemClickListener = OnItemClickListener { _, _, position, _ ->
-            call?.onClickKindSelectDialog(tag!!, data[position].id, data[position].kind)
-            dismiss()
-        }
+//        listViewKind.onItemClickListener = OnItemClickListener { _, _, position, _ ->
+//            call?.onClickKindSelectDialog(tag!!, data[position].id, data[position].kind)
+//            dismiss()
+//        }
 
         val builder = AlertDialog.Builder(context!!)
         builder.setView(layout)
