@@ -23,6 +23,9 @@ class LicenseActivity : BaseActivity() {
         //アクションバーをセットする
         setBackArrowToolbar()
 
+        //タイトルをセットする
+        setActionBarTitle(getString(R.string.license))
+
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().add(R.id.container, LicenseFragment()).commit()
         }

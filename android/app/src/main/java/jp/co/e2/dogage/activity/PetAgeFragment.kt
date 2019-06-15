@@ -59,7 +59,7 @@ class PetAgeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_pet_age, container, false)
         
         // 画面表示
-        setDisplayItem(view)
+        setContent(view)
 
         return view
     }
@@ -69,7 +69,7 @@ class PetAgeFragment : Fragment() {
      *
      * @param view
      */
-    private fun setDisplayItem(view: View) {
+    private fun setContent(view: View) {
         view.findViewById<TextView>(R.id.textViewName).apply {
             this.text = data.name
         }

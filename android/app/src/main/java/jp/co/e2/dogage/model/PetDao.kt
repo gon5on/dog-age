@@ -25,6 +25,7 @@ class PetDao(private val context: Context) : BaseDao() {
         const val COLUMN_KIND = "pets_kind"
         const val COLUMN_PHOTO_FLG = "pets_photo_flg"
         const val COLUMN_ARCHIVE_DATE = "pets_archive_date"
+        const val COLUMN_ORDER = "pets_order"
         const val COLUMN_CREATED = "pets_created"
         const val COLUMN_MODIFIED = "pets_modified"
 
@@ -36,6 +37,7 @@ class PetDao(private val context: Context) : BaseDao() {
                 COLUMN_KIND + "             INTEGER     NOT NULL," +
                 COLUMN_PHOTO_FLG + "        INTEGER     NOT NULL        default 0," +
                 COLUMN_ARCHIVE_DATE + "     TEXT," +
+                COLUMN_ORDER + "            INTEGER," +
                 COLUMN_CREATED + "          TEXT        NOT NULL," +
                 COLUMN_MODIFIED + "         TEXT        NOT NULL" +
                 ")"
@@ -45,6 +47,8 @@ class PetDao(private val context: Context) : BaseDao() {
                 " ADD " + COLUMN_PHOTO_FLG + "INTEGER NOT NULL DEFAULT 0"
 
         const val ALTER_TABLE_SQL2 = "ALTER TABLE " + TABLE_NAME + " ADD " + COLUMN_ARCHIVE_DATE + "TEXT"
+
+        const val ALTER_TABLE_SQL3 = "ALTER TABLE " + TABLE_NAME + " ADD " + COLUMN_ORDER + "INTEGER"
     }
 
     /**
@@ -64,6 +68,7 @@ class PetDao(private val context: Context) : BaseDao() {
         put(cv, COLUMN_KIND, data.kind)
         put(cv, COLUMN_PHOTO_FLG, data.photoFlg)
         put(cv, COLUMN_ARCHIVE_DATE, data.archiveDate)
+        put(cv, COLUMN_ORDER, data.order)
         put(cv, COLUMN_MODIFIED, DateHelper().format(DateHelper.FMT_DATETIME))
 
         if (data.id == null) {
@@ -118,6 +123,7 @@ class PetDao(private val context: Context) : BaseDao() {
                 values.kind = getInteger(cursor, COLUMN_KIND)
                 values.photoFlg = getBoolean(cursor, COLUMN_PHOTO_FLG) ?: false
                 values.archiveDate = getString(cursor, COLUMN_ARCHIVE_DATE)
+                values.order = getInteger(cursor, COLUMN_ORDER)
                 values.created = getString(cursor, COLUMN_CREATED)
                 values.modified = getString(cursor, COLUMN_MODIFIED)
                 data.add(values)
@@ -157,6 +163,7 @@ class PetDao(private val context: Context) : BaseDao() {
                 values.kind = getInteger(cursor, COLUMN_KIND)
                 values.photoFlg = getBoolean(cursor, COLUMN_PHOTO_FLG) ?: false
                 values.archiveDate = getString(cursor, COLUMN_ARCHIVE_DATE)
+                values.order = getInteger(cursor, COLUMN_ORDER)
                 values.created = getString(cursor, COLUMN_CREATED)
                 values.modified = getString(cursor, COLUMN_MODIFIED)
                 data.add(values)
@@ -193,6 +200,7 @@ class PetDao(private val context: Context) : BaseDao() {
                 values.kind = getInteger(cursor, COLUMN_KIND)
                 values.photoFlg = getBoolean(cursor, COLUMN_PHOTO_FLG) ?: false
                 values.archiveDate = getString(cursor, COLUMN_ARCHIVE_DATE)
+                values.order = getInteger(cursor, COLUMN_ORDER)
                 values.created = getString(cursor, COLUMN_CREATED)
                 values.modified = getString(cursor, COLUMN_MODIFIED)
                 data.add(values)
@@ -217,5 +225,27 @@ class PetDao(private val context: Context) : BaseDao() {
         val ret = db.delete(TABLE_NAME, "$COLUMN_ID = ?", param)
 
         return (ret != -1)
+    }
+
+    /**
+     * 表示順を保存
+     *
+     * @param tmp データ
+     * @param db SQLiteDatabase
+     */
+    fun updateOrder(db: SQLiteDatabase, tmp: ArrayList<PetEntity>?): Boolean  {
+        val data = tmp ?: findAll(db)
+        var index = 0
+
+        data.forEach { entity ->
+            index++
+            entity.order = index
+
+            if (!save(db, entity)) {
+                return false
+            }
+        }
+
+        return true
     }
 }

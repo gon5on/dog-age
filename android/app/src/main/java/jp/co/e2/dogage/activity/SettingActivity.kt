@@ -90,18 +90,25 @@ class SettingActivity : BaseActivity() {
             view.findViewById<CheckBox>(R.id.checkBoxArchiveNotification).apply {
                 this.isChecked = PreferenceUtils.get(activity, Config.PREF_ARCHIVE_NOTIFY_FLG, true)
 
-                this.setOnCheckedChangeListener { buttonView, isChecked ->
+                this.setOnCheckedChangeListener { _, isChecked ->
                     changeNotifySetting(Config.PREF_ARCHIVE_NOTIFY_FLG, isChecked) }
+            }
+
+            //並び替え
+            view.findViewById<TextView>(R.id.textViewReplaceItem).apply {
+                this.setOnClickListener {
+                    startActivity(Intent(activity, ReplaceItemActivity::class.java))
+                }
             }
 
             //年齢計算について
             view.findViewById<TextView>(R.id.textViewHowToCalc).apply {
                 this.setOnClickListener {
-                    startActivity(Intent(activity, AboutActivity::class.java))
+                    startActivity(Intent(activity, HowToCalcActivity::class.java))
                 }
             }
 
-            //ライセンス
+            //アプリについて
             view.findViewById<TextView>(R.id.textViewAbout).apply {
                 this.setOnClickListener {
                     startActivity(Intent(activity, AboutActivity::class.java))

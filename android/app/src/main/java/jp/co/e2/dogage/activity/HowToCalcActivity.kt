@@ -23,6 +23,9 @@ class HowToCalcActivity : BaseActivity() {
         //アクションバーをセットする
         setBackArrowToolbar()
 
+        //タイトルをセットする
+        setActionBarTitle(getString(R.string.how_to_calc))
+
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().add(R.id.container, HowToCalcFragment()).commit()
         }

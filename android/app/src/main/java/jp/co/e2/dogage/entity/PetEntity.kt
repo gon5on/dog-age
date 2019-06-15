@@ -23,6 +23,7 @@ data class PetEntity(
         var photoFlg: Boolean = false,          //写真フラグ
         var savePhotoUri: Uri? = null,          //保存対象写真URI
         var archiveDate: String? = null,        //死亡日
+        var order: Int? = null,                 //表示順
         var created: String? = null,            //作成日時
         var modified: String? = null            //最終更新日時
 ) : Serializable {
@@ -168,20 +169,7 @@ data class PetEntity(
      * @return String
      */
     fun getKindDisp(activity: Activity): String {
-        val other = activity.getString(R.string.other)
-
-        //種類にその他という文字列が入っていたら、その他という文字列を取り除く
-        return when {
-            kind == null -> {
-                ""
-            }
-            getDogMaster(activity).kind.contains(other) -> {
-                getDogMaster(activity).kind.replace(other.toRegex(), "")
-            }
-            else -> {
-                getDogMaster(activity).kind
-            }
-        }
+        return getDogMaster(activity).kind
     }
 
     /**

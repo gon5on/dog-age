@@ -37,6 +37,9 @@ class AboutActivity : BaseActivity() {
         //アクションバーをセットする
         setBackArrowToolbar()
 
+        //タイトルをセットする
+        setActionBarTitle(getString(R.string.about_app))
+
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().add(R.id.container, AboutFragment()).commit()
         }

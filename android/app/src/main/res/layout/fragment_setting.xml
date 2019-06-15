@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -57,6 +56,29 @@
         app:layout_constraintTop_toTopOf="@+id/textViewArchiveNotify" />
 
     <TextView
+        android:id="@+id/textViewReplaceItem"
+        style="@style/LabelTextViewStyle"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/sevenBlock"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingStart="@dimen/twoBlock"
+        android:paddingEnd="@dimen/twoBlock"
+        android:text="@string/replace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewArchiveNotify" />
+
+    <ImageView
+        android:id="@+id/imageViewArrow3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewReplaceItem"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+        app:layout_constraintTop_toTopOf="@+id/textViewReplaceItem"
+        app:srcCompat="@drawable/ic_arrow" />
+
+    <TextView
         android:id="@+id/textViewHowToCalc"
         style="@style/LabelTextViewStyle"
         android:layout_width="@dimen/zero"
@@ -67,7 +89,7 @@
         android:text="@string/how_to_calc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewArchiveNotify" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewReplaceItem" />
 
     <ImageView
         android:id="@+id/imageViewArrow"

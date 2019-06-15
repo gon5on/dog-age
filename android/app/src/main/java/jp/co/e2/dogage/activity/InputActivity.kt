@@ -199,10 +199,10 @@ class InputActivity : BaseActivity() {
             val view = inflater.inflate(R.layout.fragment_input, container, false)
 
             //値を画面にセットする
-            setItem(view)
+            setContent(view)
 
             //クリックイベントをセットする
-            setClickEvent(view)
+            setEvent(view)
 
             //スクロールビューのオーバースクロールで端の色を変えないように
             container!!.overScrollMode = View.OVER_SCROLL_NEVER
@@ -279,7 +279,7 @@ class InputActivity : BaseActivity() {
          *
          * @param view
          */
-        private fun setItem(view: View) {
+        private fun setContent(view: View) {
             view.findViewById<EditText>(R.id.editTextName).apply {
                 this.setText(petEntity.name)
             }
@@ -410,7 +410,7 @@ class InputActivity : BaseActivity() {
          *
          * @param view
          */
-        private fun setClickEvent(view: View) {
+        private fun setEvent(view: View) {
             //誕生日
             view.findViewById<EditText>(R.id.buttonBirthday).apply {
                 this.setOnClickListener {
