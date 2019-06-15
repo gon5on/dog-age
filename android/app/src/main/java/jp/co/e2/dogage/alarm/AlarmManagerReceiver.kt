@@ -24,7 +24,6 @@ import jp.co.e2.dogage.config.Config
 import jp.co.e2.dogage.entity.PetEntity
 import jp.co.e2.dogage.model.BaseSQLiteOpenHelper
 import jp.co.e2.dogage.model.PetDao
-import kotlin.collections.ArrayList
 
 /**
  * アラームマネージャレシーバー

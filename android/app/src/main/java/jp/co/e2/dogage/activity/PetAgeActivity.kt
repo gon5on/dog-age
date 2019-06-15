@@ -1,16 +1,5 @@
 package jp.co.e2.dogage.activity
 
-import java.util.ArrayList
-
-import jp.co.e2.dogage.R
-import jp.co.e2.dogage.common.AndroidUtils
-import jp.co.e2.dogage.dialog.ConfirmDialog
-import jp.co.e2.dogage.dialog.NoticeDialog
-import jp.co.e2.dogage.entity.PetEntity
-import jp.co.e2.dogage.model.BaseSQLiteOpenHelper
-import jp.co.e2.dogage.model.PetDao
-import jp.co.e2.dogage.adapter.PetAgeFragmentPagerAdapter
-
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -23,6 +12,15 @@ import android.widget.RadioGroup
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.database.sqlite.transaction
 import androidx.viewpager.widget.ViewPager
+import jp.co.e2.dogage.R
+import jp.co.e2.dogage.adapter.PetAgeFragmentPagerAdapter
+import jp.co.e2.dogage.common.AndroidUtils
+import jp.co.e2.dogage.dialog.ConfirmDialog
+import jp.co.e2.dogage.dialog.NoticeDialog
+import jp.co.e2.dogage.entity.PetEntity
+import jp.co.e2.dogage.model.BaseSQLiteOpenHelper
+import jp.co.e2.dogage.model.PetDao
+import java.util.*
 
 /**
  * ペット年齢アクテビティ

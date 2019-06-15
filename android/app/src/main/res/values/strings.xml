@@ -29,8 +29,8 @@
     <string name="notice_mark">※</string>
     <string name="produced_by">Produced By E2</string>
     <string name="before_del">本当に削除してよろしいですか？</string>
-    <string name="about_app">”いくつだワン？”は、ワンちゃんの年齢・人間に換算した年齢・生まれてからの日数がわかるシンプルなアプリです。\n\n人間に換算した年齢は、以下のように計算しています。\n一般的に、小型犬のほうが成長が早く、老化が遅いと言われています。</string>
-    <string name="about_app_notice">人間に換算した年齢は、犬種によって差があります。あくまでも目安とお考えください。</string>
+    <string name="app_description">”いくつだワン？”は、ワンちゃんの年齢・人間に換算した年齢・生まれてからの日数がわかるシンプルなアプリです。\n\n人間に換算した年齢は、以下のように計算しています。\n一般的に、小型犬のほうが成長が早く、老化が遅いと言われています。</string>
+    <string name="app_notice">人間に換算した年齢は、犬種によって差があります。あくまでも目安とお考えください。</string>
     <string name="dog_small">小型犬</string>
     <string name="dog_normal">中型犬</string>
     <string name="dog_large">大型犬</string>
@@ -65,8 +65,9 @@
     <string name="day_count">日目</string>
     <string name="other">その他</string>
     <string name="change_settings">設定を変更しました</string>
-    <string name="about_calc_age">年齢計算方法について</string>
+    <string name="how_to_calc">年齢計算方法について</string>
     <string name="app_version">アプリバージョン</string>
+    <string name="about_app">アプリについて</string>
     <string name="license">ライセンス</string>
     <string name="privacy_policy">プライバシーポリシー</string>
     <string name="notify_birthday" formatted="false">%s %s お誕生日</string>

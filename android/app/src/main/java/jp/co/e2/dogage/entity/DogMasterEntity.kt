@@ -1,8 +1,7 @@
 package jp.co.e2.dogage.entity
 
-import java.io.Serializable
-
 import jp.co.e2.dogage.config.Config
+import java.io.Serializable
 
 /**
  * 犬マスタエンティティクラス

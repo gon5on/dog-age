@@ -1,23 +1,16 @@
 package jp.co.e2.dogage.entity
 
 import android.app.Activity
-import java.io.IOException
-import java.io.Serializable
-import java.text.ParseException
-import java.util.Locale
-
-import jp.co.e2.dogage.R
-import jp.co.e2.dogage.common.AndroidUtils
-import jp.co.e2.dogage.common.DateHelper
-import jp.co.e2.dogage.common.ImgHelper
-import jp.co.e2.dogage.common.MediaUtils
-import jp.co.e2.dogage.config.Config
-
 import android.content.Context
-import android.graphics.Bitmap
 import android.net.Uri
+import jp.co.e2.dogage.R
+import jp.co.e2.dogage.common.DateHelper
+import jp.co.e2.dogage.common.MediaUtils
 import jp.co.e2.dogage.config.AppApplication
 import java.io.File
+import java.io.Serializable
+import java.text.ParseException
+import java.util.*
 
 /**
  * ペットエンティティクラス

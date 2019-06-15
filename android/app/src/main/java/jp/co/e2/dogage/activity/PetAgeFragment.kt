@@ -1,8 +1,5 @@
 package jp.co.e2.dogage.activity
 
-import jp.co.e2.dogage.R
-import jp.co.e2.dogage.entity.PetEntity
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +10,11 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
+import jp.co.e2.dogage.R
 import jp.co.e2.dogage.common.AndroidUtils
 import jp.co.e2.dogage.config.Config
 import jp.co.e2.dogage.dialog.PhotoDialog
+import jp.co.e2.dogage.entity.PetEntity
 
 /**
  * ペット年齢フラグメント

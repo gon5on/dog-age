@@ -1,14 +1,12 @@
 package jp.co.e2.dogage.adapter
 
-import jp.co.e2.dogage.entity.DogMasterEntity
-
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
 import jp.co.e2.dogage.R
-
+import jp.co.e2.dogage.entity.DogMasterEntity
 
 
 /**
@@ -34,14 +32,6 @@ class KindListAdapter(
         val item = data[position]
 
         if (item.category == 0) {
-            //種類
-            holder.kind.visibility = View.VISIBLE
-            holder.kind.text = item.kind
-
-            holder.label.visibility = View.GONE
-
-            holder.linearLayout.setOnClickListener{ view -> listener.onClick(view) }
-        } else {
             //頭文字行のラベル
             holder.kind.visibility = View.GONE
 
@@ -49,6 +39,14 @@ class KindListAdapter(
             holder.label.visibility = View.VISIBLE
 
             holder.linearLayout.setOnClickListener(null)
+        } else {
+            //種類
+            holder.kind.visibility = View.VISIBLE
+            holder.kind.text = item.kind
+
+            holder.label.visibility = View.GONE
+
+            holder.linearLayout.setOnClickListener{ view -> listener.onClick(view) }
         }
     }
 

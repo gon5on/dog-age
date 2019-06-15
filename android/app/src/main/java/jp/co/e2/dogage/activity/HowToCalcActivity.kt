@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import jp.co.e2.dogage.R
 
 /**
- * ライセンスアクテビティ
+ * 年齢計算方法についてアクテビティ
  */
-class LicenseActivity : BaseActivity() {
+class HowToCalcActivity : BaseActivity() {
     /**
      * ${inheritDoc}
      */
@@ -24,7 +24,7 @@ class LicenseActivity : BaseActivity() {
         setBackArrowToolbar()
 
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction().add(R.id.container, LicenseFragment()).commit()
+            supportFragmentManager.beginTransaction().add(R.id.container, HowToCalcFragment()).commit()
         }
     }
 
@@ -43,16 +43,16 @@ class LicenseActivity : BaseActivity() {
     }
 
     /**
-     * LicenseFragment
+     * HowToCalcFragment
      */
-    class LicenseFragment : Fragment() {
+    class HowToCalcFragment : Fragment() {
         /**
          * ${inheritDoc}
          */
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
             super.onCreate(savedInstanceState)
 
-            return inflater.inflate(R.layout.fragment_license, container, false)
+            return inflater.inflate(R.layout.fragment_how_to_calc, container, false)
         }
     }
 }

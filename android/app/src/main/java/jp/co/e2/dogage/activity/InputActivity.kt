@@ -1,31 +1,5 @@
 package jp.co.e2.dogage.activity
 
-import java.io.File
-import java.io.IOException
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-
-import jp.co.e2.dogage.BuildConfig
-import jp.co.e2.dogage.R
-import jp.co.e2.dogage.common.AndroidUtils
-import jp.co.e2.dogage.common.DateHelper
-import jp.co.e2.dogage.common.LogUtils
-import jp.co.e2.dogage.common.Utils
-import jp.co.e2.dogage.config.AppApplication
-import jp.co.e2.dogage.config.Config
-import jp.co.e2.dogage.dialog.DatePickerDialog
-import jp.co.e2.dogage.dialog.NoticeDialog
-import jp.co.e2.dogage.dialog.KindSelectDialog
-import jp.co.e2.dogage.entity.PetEntity
-import jp.co.e2.dogage.model.BaseSQLiteOpenHelper
-import jp.co.e2.dogage.model.PetDao
-import jp.co.e2.dogage.validate.ValidateDate
-import jp.co.e2.dogage.validate.ValidateHelper
-import jp.co.e2.dogage.validate.ValidateLength
-import jp.co.e2.dogage.validate.ValidateRequire
-
 import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -54,10 +28,32 @@ import androidx.core.content.FileProvider
 import androidx.core.database.sqlite.transaction
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
-
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import jp.co.e2.dogage.BuildConfig
+import jp.co.e2.dogage.R
 import jp.co.e2.dogage.alarm.SetAlarmManager
+import jp.co.e2.dogage.common.AndroidUtils
+import jp.co.e2.dogage.common.DateHelper
+import jp.co.e2.dogage.common.LogUtils
+import jp.co.e2.dogage.common.Utils
+import jp.co.e2.dogage.config.AppApplication
+import jp.co.e2.dogage.config.Config
+import jp.co.e2.dogage.dialog.DatePickerDialog
+import jp.co.e2.dogage.dialog.KindSelectDialog
+import jp.co.e2.dogage.dialog.NoticeDialog
+import jp.co.e2.dogage.entity.PetEntity
+import jp.co.e2.dogage.model.BaseSQLiteOpenHelper
+import jp.co.e2.dogage.model.PetDao
+import jp.co.e2.dogage.validate.ValidateDate
+import jp.co.e2.dogage.validate.ValidateHelper
+import jp.co.e2.dogage.validate.ValidateLength
+import jp.co.e2.dogage.validate.ValidateRequire
+import java.io.File
+import java.io.IOException
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * 入力画面アクテビティ

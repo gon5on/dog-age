@@ -1,18 +1,16 @@
 package jp.co.e2.dogage.dialog
 
-import jp.co.e2.dogage.R
-import jp.co.e2.dogage.dialog.PhotoDialog.CallbackListener
-
 import android.app.Dialog
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import com.squareup.picasso.Picasso
+import jp.co.e2.dogage.R
 import jp.co.e2.dogage.common.AndroidUtils
 import jp.co.e2.dogage.config.Config
+import jp.co.e2.dogage.dialog.PhotoDialog.CallbackListener
 
 /**
  * 画像表示ダイアログ
