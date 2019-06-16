@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import jp.co.e2.dogage.R
-import jp.co.e2.dogage.common.LogUtils
 import jp.co.e2.dogage.entity.PetEntity
 
 /**

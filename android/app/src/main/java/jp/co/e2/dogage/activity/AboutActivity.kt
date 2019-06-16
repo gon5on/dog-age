@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.TextView
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
@@ -21,10 +20,6 @@ import jp.co.e2.dogage.config.Config
  * アプリについてアクテビティ
  */
 class AboutActivity : BaseActivity() {
-
-    companion object {
-        private const val PRIVACY_POLICY_URL = "https://www.e-2.co.jp/policy/"
-    }
 
     /**
      * ${inheritDoc}
@@ -97,17 +92,19 @@ class AboutActivity : BaseActivity() {
             view.findViewById<TextView>(R.id.textViewPrivacyPolicy).apply {
                 this.setOnClickListener {
                     val builder = CustomTabsIntent.Builder()
-                    builder.setToolbarColor(ContextCompat.getColor(context, R.color.darkBrown));
+                    builder.setToolbarColor(ContextCompat.getColor(context, R.color.darkBrown))
                     val customTabsIntent = builder.build()
-                    customTabsIntent.launchUrl(context, Uri.parse(PRIVACY_POLICY_URL))
+                    customTabsIntent.launchUrl(context, Uri.parse(Config.PRIVACY_POLICY_URL))
                 }
             }
 
             //E2リンク
             view.findViewById<TextView>(R.id.buttonProducedBy).apply {
                 this.setOnClickListener {
-                    val i = Intent(Intent.ACTION_VIEW, Uri.parse(Config.OFFICIAL_LINK))
-                    startActivity(i)
+                    val builder = CustomTabsIntent.Builder()
+                    builder.setToolbarColor(ContextCompat.getColor(context, R.color.darkBrown))
+                    val customTabsIntent = builder.build()
+                    customTabsIntent.launchUrl(context, Uri.parse(Config.OFFICIAL_LINK))
                 }
             }
         }

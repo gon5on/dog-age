@@ -88,7 +88,7 @@
     <string name="notify_channel_name">通知</string>
     <string name="notify_channel_description">誕生日と命日を通知します</string>
 
-    <string name="how_to_replace">ドラッグ＆ドロップで順番を入れ替えてください</string>
+    <string name="how_to_replace">ワンちゃんのお名前を長押ししたまま、上下に動かして、順番を入れ替えてください</string>
 
     <string-array name="initial_label_list">
         <item>あ行</item>

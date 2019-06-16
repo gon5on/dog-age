@@ -3,7 +3,6 @@ package jp.co.e2.dogage.model
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import androidx.core.database.sqlite.transaction
 
 /**
  * SQLiteOpenHelperのラッパークラス

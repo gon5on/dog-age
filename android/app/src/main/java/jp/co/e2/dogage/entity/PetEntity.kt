@@ -169,7 +169,7 @@ data class PetEntity(
      * @return String
      */
     fun getKindDisp(activity: Activity): String {
-        return getDogMaster(activity).kind
+        return if (kind == null) { "" } else { getDogMaster(activity).kind }
     }
 
     /**

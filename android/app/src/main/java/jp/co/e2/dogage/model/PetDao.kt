@@ -67,8 +67,8 @@ class PetDao(private val context: Context) : BaseDao() {
         put(cv, COLUMN_BIRTHDAY, data.birthday)
         put(cv, COLUMN_KIND, data.kind)
         put(cv, COLUMN_PHOTO_FLG, data.photoFlg)
-        put(cv, COLUMN_ARCHIVE_DATE, data.archiveDate)
         put(cv, COLUMN_ORDER, data.order)
+        put(cv, COLUMN_ARCHIVE_DATE, data.archiveDate)
         put(cv, COLUMN_MODIFIED, DateHelper().format(DateHelper.FMT_DATETIME))
 
         if (data.id == null) {
@@ -110,7 +110,7 @@ class PetDao(private val context: Context) : BaseDao() {
     fun findAll(db: SQLiteDatabase): ArrayList<PetEntity> {
         val data = ArrayList<PetEntity>()
 
-        val sb = String.format("SELECT * FROM %s ", TABLE_NAME) + String.format("ORDER BY %s DESC", COLUMN_ID)
+        val sb = String.format("SELECT * FROM %s ORDER BY %s ASC, %s DESC", TABLE_NAME, COLUMN_ORDER, COLUMN_ID)
 
         val cursor = db.rawQuery(sb, null)
 
@@ -147,10 +147,8 @@ class PetDao(private val context: Context) : BaseDao() {
     fun findByBirthday(db: SQLiteDatabase, date: String): ArrayList<PetEntity> {
         val data = ArrayList<PetEntity>()
 
-        val sb = String.format("SELECT * FROM %s ", TABLE_NAME) +
-                String.format("WHERE %s IS NULL ", COLUMN_ARCHIVE_DATE) +
-                String.format("AND %s LIKE '%%-%s' ", COLUMN_BIRTHDAY, date) +
-                String.format("ORDER BY %s DESC", COLUMN_ID)
+        val sb = String.format("SELECT * FROM %s WHERE %s IS NULL AND %s LIKE '%%-%s' ORDER BY %s ASC, %s DESC",
+                TABLE_NAME, COLUMN_ARCHIVE_DATE, COLUMN_BIRTHDAY, date, COLUMN_ORDER, COLUMN_ID)
 
         val cursor = db.rawQuery(sb, null)
 
@@ -185,9 +183,8 @@ class PetDao(private val context: Context) : BaseDao() {
     fun findByArchiveDate(db: SQLiteDatabase, date: String): ArrayList<PetEntity> {
         val data = ArrayList<PetEntity>()
 
-        val sb = String.format("SELECT * FROM %s ", TABLE_NAME) +
-                String.format("WHERE %s IS NOT null AND %s LIKE '%%-%s' ", COLUMN_ARCHIVE_DATE, COLUMN_ARCHIVE_DATE, date) +
-                String.format("ORDER BY %s DESC", COLUMN_ID)
+        val sb = String.format("SELECT * FROM %s WHERE %s IS NOT null AND %s LIKE '%%-%s' ORDER BY %s ASC, %s DESC",
+                TABLE_NAME, COLUMN_ARCHIVE_DATE, COLUMN_ARCHIVE_DATE, date, COLUMN_ORDER, COLUMN_ID)
 
         val cursor = db.rawQuery(sb, null)
 

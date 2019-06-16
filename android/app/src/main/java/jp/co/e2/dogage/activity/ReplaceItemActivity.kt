@@ -1,26 +1,21 @@
 package jp.co.e2.dogage.activity
 
-import jp.co.e2.dogage.R
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.core.database.sqlite.transaction
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import jp.co.e2.dogage.R
 import jp.co.e2.dogage.adapter.ReplaceItemAdapter
 import jp.co.e2.dogage.entity.PetEntity
 import jp.co.e2.dogage.model.BaseSQLiteOpenHelper
 import jp.co.e2.dogage.model.PetDao
-import java.util.ArrayList
-import androidx.recyclerview.widget.ItemTouchHelper
-import jp.co.e2.dogage.common.AndroidUtils
-
+import java.util.*
 
 /**
  * 入れ替えアクテビティ
@@ -77,9 +72,21 @@ class ReplaceItemActivity : BaseActivity() {
             setPetList()
 
             //コンテンツをセットする
-            setContent()
+            setContent(view)
 
             return view
+        }
+
+        /**
+         * ${inheritDoc}
+         */
+        override fun onPause() {
+            super.onPause()
+
+            //入れ替えた順番をDBに保存する
+            view?.findViewById<RecyclerView>(R.id.recyclerView).apply {
+                saveDb((this?.adapter as ReplaceItemAdapter).data)
+            }
         }
 
         /**
@@ -94,10 +101,12 @@ class ReplaceItemActivity : BaseActivity() {
 
         /**
          * コンテンツをセットする
+         *
+         * @param view ビュー
          */
-        private fun setContent() {
+        private fun setContent(view: View) {
             //ペット一覧
-            view!!.findViewById<RecyclerView>(R.id.recyclerView).apply {
+            view.findViewById<RecyclerView>(R.id.recyclerView).apply {
                 val adapter = ReplaceItemAdapter(petData)
 
                 //ドラドラで並び替え
@@ -106,8 +115,6 @@ class ReplaceItemActivity : BaseActivity() {
                         val data = adapter.data.removeAt(viewHolder.adapterPosition)
                         adapter.data.add(target.adapterPosition, data)
                         adapter.notifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)
-
-                        saveDb(adapter.data)
                         return true
                     }
 
@@ -120,10 +127,6 @@ class ReplaceItemActivity : BaseActivity() {
                 this.adapter = adapter
                 this.addItemDecoration(touchHelper)
             }
-
-            //アラート
-            val msg = getString(R.string.how_to_replace)
-            AndroidUtils.showToastL(context, msg)
         }
 
         /**
