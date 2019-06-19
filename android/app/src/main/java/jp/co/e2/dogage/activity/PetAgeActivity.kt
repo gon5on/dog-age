@@ -11,10 +11,13 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.database.sqlite.transaction
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import jp.co.e2.dogage.R
 import jp.co.e2.dogage.adapter.PetAgeFragmentPagerAdapter
+import jp.co.e2.dogage.adapter.ReplaceItemAdapter
 import jp.co.e2.dogage.common.AndroidUtils
+import jp.co.e2.dogage.config.AppApplication
 import jp.co.e2.dogage.dialog.ConfirmDialog
 import jp.co.e2.dogage.dialog.NoticeDialog
 import jp.co.e2.dogage.entity.PetEntity
@@ -93,6 +96,22 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
     /**
      * ${inheritDoc}
      */
+    override fun onResume() {
+        super.onResume()
+
+        //リロードフラグが立っていたら、ペット一覧を再取得する
+        if ((application as AppApplication).reloadFlg) {
+            setPetList()
+            createViewPager()
+
+            //リロードフラグを落としておく
+            (application as AppApplication).reloadFlg = false
+        }
+    }
+
+    /**
+     * ${inheritDoc}
+     */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.pet_age, menu)
 
@@ -119,13 +138,13 @@ class PetAgeActivity : BaseActivity(), ConfirmDialog.CallbackListener {
             }
             //削除
             R.id.action_delete -> {
-            val title = getString(R.string.confirm)
-            val msg = getString(R.string.before_del)
+                val title = getString(R.string.confirm)
+                val msg = getString(R.string.before_del)
 
-            val confirmDialog = ConfirmDialog.newInstance(title, msg)
-            confirmDialog.setCallbackListener(this)
-            confirmDialog.show(supportFragmentManager, "dialog")
-        }
+                val confirmDialog = ConfirmDialog.newInstance(title, msg)
+                confirmDialog.setCallbackListener(this)
+                confirmDialog.show(supportFragmentManager, "dialog")
+            }
             //設定
             R.id.action_setting -> startActivity(Intent(this@PetAgeActivity, SettingActivity::class.java))
         }

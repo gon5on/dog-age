@@ -12,8 +12,10 @@ import java.util.*
  * アプリケーションクラス
  */
 class AppApplication : Application() {
+    lateinit var firebaseAnalytics: FirebaseAnalytics
 
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
+    //DBからペットデータを再取得するリロードフラグ
+    var reloadFlg = false
 
     //犬種マスタマップ
     val dogMasterMap: HashMap<Int, DogMasterEntity> by lazy {

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import jp.co.e2.dogage.R
 import jp.co.e2.dogage.adapter.ReplaceItemAdapter
+import jp.co.e2.dogage.config.AppApplication
 import jp.co.e2.dogage.entity.PetEntity
 import jp.co.e2.dogage.model.BaseSQLiteOpenHelper
 import jp.co.e2.dogage.model.PetDao
@@ -86,6 +87,9 @@ class ReplaceItemActivity : BaseActivity() {
             //入れ替えた順番をDBに保存する
             view?.findViewById<RecyclerView>(R.id.recyclerView).apply {
                 saveDb((this?.adapter as ReplaceItemAdapter).data)
+
+                //ペット一覧に戻ったときにDBからデータを再取得するリロードフラグを立てておく
+                (activity?.application as AppApplication).reloadFlg = true
             }
         }
 
