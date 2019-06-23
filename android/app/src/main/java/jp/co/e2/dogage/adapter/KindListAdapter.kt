@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import jp.co.e2.dogage.R
 import jp.co.e2.dogage.entity.DogMasterEntity
 
-
 /**
  * 種類一覧アダプター
  */
@@ -21,8 +20,12 @@ class KindListAdapter(
      * ${inheritDoc}
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflate = LayoutInflater.from(parent.context).inflate(R.layout.parts_kind_list, null)
-        return ViewHolder(inflate)
+        val inflate = LayoutInflater.from(parent.context).inflate(R.layout.parts_kind_list, parent, false)
+        val holder = ViewHolder(inflate)
+
+        holder.itemView.setOnClickListener{ view -> listener.onClick(view) }
+
+        return holder
     }
 
     /**
@@ -38,7 +41,7 @@ class KindListAdapter(
             holder.label.text = item.kind
             holder.label.visibility = View.VISIBLE
 
-            holder.linearLayout.setOnClickListener(null)
+            holder.itemView.isEnabled = false
         } else {
             //種類
             holder.kind.visibility = View.VISIBLE
@@ -46,7 +49,7 @@ class KindListAdapter(
 
             holder.label.visibility = View.GONE
 
-            holder.linearLayout.setOnClickListener{ view -> listener.onClick(view) }
+            holder.itemView.isEnabled = true
         }
     }
 
@@ -61,8 +64,7 @@ class KindListAdapter(
      * ViewHolder
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val linearLayout = view
-        val kind: TextView = itemView.findViewById<View>(R.id.textViewKind) as TextView
-        val label: TextView = itemView.findViewById(R.id.textViewLabel) as TextView
+        val kind: TextView = view.findViewById<View>(R.id.textViewKind) as TextView
+        val label: TextView = view.findViewById(R.id.textViewLabel) as TextView
     }
 }

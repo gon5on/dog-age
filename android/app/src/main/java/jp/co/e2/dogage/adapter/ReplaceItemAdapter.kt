@@ -1,6 +1,7 @@
 package jp.co.e2.dogage.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -10,14 +11,21 @@ import jp.co.e2.dogage.entity.PetEntity
 /**
  * 入れ替えアダプタ
  */
-class ReplaceItemAdapter(val data: ArrayList<PetEntity>) : RecyclerView.Adapter<ReplaceItemAdapter.ViewHolder>() {
+class ReplaceItemAdapter(
+        val data: ArrayList<PetEntity>,
+        private val listener: View.OnClickListener
+) : RecyclerView.Adapter<ReplaceItemAdapter.ViewHolder>() {
+
     /**
      * ${inheritDoc}
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val textViewName = LayoutInflater.from(parent.context).inflate(R.layout.parts_replace_item, parent, false) as TextView
+        val inflate = LayoutInflater.from(parent.context).inflate(R.layout.parts_replace_item, parent, false)
+        val holder = ViewHolder(inflate)
 
-        return ViewHolder(textViewName)
+        holder.itemView.setOnClickListener{ view -> listener.onClick(view) }
+
+        return holder
     }
 
     /**
@@ -35,5 +43,7 @@ class ReplaceItemAdapter(val data: ArrayList<PetEntity>) : RecyclerView.Adapter<
     /**
      * ViewHolder
      */
-    class ViewHolder(val name: TextView) : RecyclerView.ViewHolder(name)
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val name: TextView = view as TextView
+    }
 }

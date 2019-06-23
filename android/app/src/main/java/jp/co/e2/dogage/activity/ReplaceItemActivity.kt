@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import jp.co.e2.dogage.R
 import jp.co.e2.dogage.adapter.ReplaceItemAdapter
+import jp.co.e2.dogage.common.LogUtils
 import jp.co.e2.dogage.config.AppApplication
 import jp.co.e2.dogage.entity.PetEntity
 import jp.co.e2.dogage.model.BaseSQLiteOpenHelper
@@ -111,7 +112,7 @@ class ReplaceItemActivity : BaseActivity() {
         private fun setContent(view: View) {
             //ペット一覧
             view.findViewById<RecyclerView>(R.id.recyclerView).apply {
-                val adapter = ReplaceItemAdapter(petData)
+                val adapter = ReplaceItemAdapter(petData, View.OnClickListener {})
 
                 //ドラドラで並び替え
                 val touchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
