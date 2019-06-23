@@ -68,7 +68,8 @@ class Config {
         const val ALARM_HOUR = 12                                   //アラームの時間
         const val ALARM_MINUTE = 0                                  //アラームの時間
 
-        //E2のURL
+        //URL
         const val OFFICIAL_LINK = "https://www.e-2.co.jp"
+        const val PRIVACY_POLICY_URL = "https://www.e-2.co.jp/policy/"
     }
 }

@@ -1,5 +1,12 @@
 package jp.co.e2.dogage.common;
 
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Environment;
+import android.webkit.MimeTypeMap;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,13 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
-
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Environment;
-import android.webkit.MimeTypeMap;
 
 /**
  * メディア・ファイル系の便利なものをまとめたクラス

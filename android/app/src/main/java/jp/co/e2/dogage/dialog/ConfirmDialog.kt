@@ -1,11 +1,10 @@
 package jp.co.e2.dogage.dialog
 
 import android.app.Dialog
-import jp.co.e2.dogage.R
-import jp.co.e2.dogage.dialog.ConfirmDialog.CallbackListener
-
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import jp.co.e2.dogage.R
+import jp.co.e2.dogage.dialog.ConfirmDialog.CallbackListener
 
 /**
  * 確認ダイアログ

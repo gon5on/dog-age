@@ -30,4 +30,12 @@ open class BaseActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
+
+    /**
+     * タイトルをセットする
+     */
+    protected fun setActionBarTitle(title: String) {
+        supportActionBar?.setDisplayShowTitleEnabled(true)
+        supportActionBar?.title = title
+    }
 }
