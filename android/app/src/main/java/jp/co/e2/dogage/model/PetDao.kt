@@ -30,25 +30,24 @@ class PetDao(private val context: Context) : BaseDao() {
         const val COLUMN_MODIFIED = "pets_modified"
 
         //CREATE TABLE文
-        const val CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " (" +
-                COLUMN_ID + "               INTEGER PRIMARY KEY AUTOINCREMENT," +
-                COLUMN_NAME + "             TEXT        NOT NULL," +
-                COLUMN_BIRTHDAY + "         TEXT        NOT NULL," +
-                COLUMN_KIND + "             INTEGER     NOT NULL," +
-                COLUMN_PHOTO_FLG + "        INTEGER     NOT NULL        default 0," +
-                COLUMN_ARCHIVE_DATE + "     TEXT," +
-                COLUMN_ORDER + "            INTEGER," +
-                COLUMN_CREATED + "          TEXT        NOT NULL," +
-                COLUMN_MODIFIED + "         TEXT        NOT NULL" +
-                ")"
+        const val CREATE_TABLE_SQL = """CREATE TABLE $TABLE_NAME (
+                $COLUMN_ID              INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COLUMN_NAME            TEXT        NOT NULL,
+                $COLUMN_BIRTHDAY        TEXT        NOT NULL,
+                $COLUMN_KIND            INTEGER     NOT NULL,
+                $COLUMN_PHOTO_FLG       INTEGER     NOT NULL        default 0,
+                $COLUMN_ARCHIVE_DATE    TEXT,
+                $COLUMN_ORDER           INTEGER,
+                $COLUMN_CREATED         TEXT        NOT NULL,
+                $COLUMN_MODIFIED        TEXT        NOT NULL
+                )"""
 
         //ALTER TABLE文
-        const val ALTER_TABLE_SQL = "ALTER TABLE " + TABLE_NAME +
-                " ADD " + COLUMN_PHOTO_FLG + "INTEGER NOT NULL DEFAULT 0"
+        const val ALTER_TABLE_SQL = "ALTER TABLE $TABLE_NAME ADD $COLUMN_PHOTO_FLG INTEGER NOT NULL DEFAULT 0"
 
-        const val ALTER_TABLE_SQL2 = "ALTER TABLE " + TABLE_NAME + " ADD " + COLUMN_ARCHIVE_DATE + "TEXT"
+        const val ALTER_TABLE_SQL2 = "ALTER TABLE $TABLE_NAME ADD $COLUMN_ARCHIVE_DATE TEXT"
 
-        const val ALTER_TABLE_SQL3 = "ALTER TABLE " + TABLE_NAME + " ADD " + COLUMN_ORDER + "INTEGER"
+        const val ALTER_TABLE_SQL3 = "ALTER TABLE $TABLE_NAME ADD $COLUMN_ORDER INTEGER"
     }
 
     /**
