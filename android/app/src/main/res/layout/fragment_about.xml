@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/twoBlock" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/twoBlock" />
+
+    <TextView
+        android:id="@+id/textViewLicense"
+        style="@style/LabelTextViewStyle"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/sevenBlock"
+        android:paddingStart="@dimen/twoBlock"
+        android:paddingEnd="@dimen/twoBlock"
+        android:background="?android:attr/selectableItemBackground"
+        android:text="@string/license"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewArrow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewLicense"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+        app:layout_constraintTop_toTopOf="@+id/textViewLicense"
+        app:srcCompat="@drawable/ic_arrow" />
+
+    <TextView
+        android:id="@+id/textViewAppVer"
+        style="@style/LabelTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/sevenBlock"
+        android:text="@string/app_version"
+        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPrivacyPolicy" />
+
+    <TextView
+        android:id="@+id/textViewVer"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/sevenBlock"
+        android:textSize="@dimen/fontSizeLarge"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewAppVer"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+        app:layout_constraintTop_toTopOf="@+id/textViewAppVer" />
+
+    <TextView
+        android:id="@+id/textViewPrivacyPolicy"
+        style="@style/LabelTextViewStyle"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/sevenBlock"
+        android:paddingStart="@dimen/twoBlock"
+        android:paddingEnd="@dimen/twoBlock"
+        android:background="?android:attr/selectableItemBackground"
+        android:text="@string/privacy_policy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLicense" />
+
+    <ImageView
+        android:id="@+id/imageViewNewWin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewPrivacyPolicy"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+        app:layout_constraintTop_toTopOf="@+id/textViewPrivacyPolicy"
+        app:srcCompat="@drawable/ic_arrow" />
+
+    <TextView
+        android:id="@+id/buttonProducedBy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/twoBlock"
+        android:text="@string/produced_by"
+        android:textColor="@color/lightBrown"
+        android:gravity="center_horizontal"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
